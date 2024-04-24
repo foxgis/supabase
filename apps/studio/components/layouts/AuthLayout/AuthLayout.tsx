@@ -24,8 +24,8 @@ const AuthLayout = ({ title, children }: PropsWithChildren<AuthLayoutProps>) => 
 
   return (
     <ProjectLayout
-      title={title || 'Authentication'}
-      product="Authentication"
+      title={title || '认证授权'}
+      product="认证授权"
       productMenu={
         <ProductMenu
           page={page}

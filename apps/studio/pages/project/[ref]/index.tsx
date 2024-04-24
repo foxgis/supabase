@@ -32,7 +32,7 @@ const Home: NextPageWithLayout = () => {
   const projectName =
     project?.ref !== 'default' && project?.name !== undefined
       ? project?.name
-      : 'Welcome to your project'
+      : '欢迎使用数据中间件'
 
   return (
     <div className="w-full mx-auto my-16 space-y-16 max-w-7xl">
@@ -58,7 +58,7 @@ const Home: NextPageWithLayout = () => {
         <>
           <div className="space-y-8">
             <div className="mx-6">
-              <h4 className="text-lg">Client libraries</h4>
+              <h4 className="text-lg">SDK</h4>
             </div>
             <div className="grid gap-12 mx-6 mb-12 md:grid-cols-3">
               {CLIENT_LIBRARIES.map((library) => (
@@ -66,16 +66,16 @@ const Home: NextPageWithLayout = () => {
               ))}
             </div>
           </div>
-          <div className="space-y-8">
+          {/* <div className="space-y-8">
             <div className="mx-6">
-              <h4 className="text-lg">Example projects</h4>
+              <h4 className="text-lg">示例代码</h4>
             </div>
             <div className="grid gap-8 mx-6 md:grid-cols-2 lg:grid-cols-3">
               {EXAMPLE_PROJECTS.sort((a, b) => a.title.localeCompare(b.title)).map((project) => (
                 <ExampleProject key={project.url} {...project} />
               ))}
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </div>

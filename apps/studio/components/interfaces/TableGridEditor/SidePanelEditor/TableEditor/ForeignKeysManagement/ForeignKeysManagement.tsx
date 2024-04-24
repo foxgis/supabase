@@ -57,14 +57,14 @@ export const ForeignKeysManagement = ({
   return (
     <>
       <div className="w-full space-y-4 ">
-        <h5>Foreign keys</h5>
+        <h5>外键</h5>
 
         {isLoading && <GenericSkeletonLoader />}
 
         {isError && (
           <AlertError
             error={error as unknown as ResponseError}
-            subject="Failed to retrieve foreign key relationships"
+            subject="获取外键关联失败"
           />
         )}
 
@@ -111,7 +111,7 @@ export const ForeignKeysManagement = ({
 
         <div className="flex items-center justify-center rounded border border-strong border-dashed py-3">
           <Button type="default" onClick={() => setOpen(true)}>
-            Add foreign key relation
+            添加外键关联
           </Button>
         </div>
       </div>

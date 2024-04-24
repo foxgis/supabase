@@ -120,7 +120,7 @@ const TableDefinition = ({ id }: TableDefinitionProps) => {
               formattedDefinition ?? ''
             )}`}
           >
-            Open in SQL Editor
+            在SQL编辑中打开
           </Link>
         </Button>
         <Editor

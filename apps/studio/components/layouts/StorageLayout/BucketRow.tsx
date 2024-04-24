@@ -83,7 +83,7 @@ const BucketRow = ({
               onClick={() => onSelectEditBucket()}
             >
               <IconEdit2 size="tiny" />
-              <p>Edit bucket</p>
+              <p>编辑存储桶</p>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -92,7 +92,7 @@ const BucketRow = ({
               onClick={() => onSelectEmptyBucket()}
             >
               <IconXCircle size="tiny" />
-              <p>Empty bucket</p>
+              <p>清空存储桶</p>
             </DropdownMenuItem>
             <DropdownMenuItem
               key="delete-bucket"
@@ -100,7 +100,7 @@ const BucketRow = ({
               onClick={() => onSelectDeleteBucket()}
             >
               <IconTrash size="tiny" />
-              <p>Delete bucket</p>
+              <p>删除存储桶</p>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -23,7 +23,7 @@ const TableEditorLayout = ({ children }: PropsWithChildren<{}>) => {
 
   return (
     <ProjectLayoutWithAuth
-      product="Table Editor"
+      product="数据表"
       productMenu={tableEditorMenu}
       isBlocking={false}
       resizableSidebar

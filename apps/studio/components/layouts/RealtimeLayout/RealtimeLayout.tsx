@@ -19,7 +19,7 @@ const RealtimeLayout = ({ children }: PropsWithChildren<RealtimeLayoutProps>) =>
   return (
     <ProjectLayout
       isLoading={false}
-      product="Realtime"
+      product="实时消息"
       productMenu={<ProductMenu page={page} menu={generateRealtimeMenu(project)} />}
     >
       {children}

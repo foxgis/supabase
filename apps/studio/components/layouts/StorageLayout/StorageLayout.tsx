@@ -47,7 +47,7 @@ const StorageLayout = ({ title, children }: StorageLayoutProps) => {
   }
 
   return (
-    <ProjectLayout title={title || 'Storage'} product="Storage" productMenu={<StorageMenu />}>
+    <ProjectLayout title={title || '文件存储'} product="文件存储" productMenu={<StorageMenu />}>
       {children}
     </ProjectLayout>
   )

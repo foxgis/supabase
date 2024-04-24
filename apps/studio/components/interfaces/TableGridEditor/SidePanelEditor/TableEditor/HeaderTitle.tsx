@@ -8,20 +8,20 @@ const HeaderTitle = ({ schema, table, isDuplicating }: HeaderTitleProps) => {
   if (!table) {
     return (
       <>
-        Create a new table under <code className="text-sm">{schema}</code>
+        在<code className="text-sm">{schema}</code>模式下创建表
       </>
     )
   }
   if (isDuplicating) {
     return (
       <>
-        Duplicate table <code className="text-sm">{table?.name}</code>
+        复制表<code className="text-sm">{table?.name}</code>
       </>
     )
   }
   return (
     <>
-      Update table <code className="text-sm">{table?.name}</code>
+      更新表<code className="text-sm">{table?.name}</code>
     </>
   )
 }

@@ -38,6 +38,7 @@ const NavigationIconLink = forwardRef<HTMLAnchorElement, NavigationIconButtonPro
         aria-current={isActive}
         ref={ref}
         href={route.link!}
+        target={route.target!}
         {...props}
         onClick={onClick}
         className={cn(classes, props.className)}

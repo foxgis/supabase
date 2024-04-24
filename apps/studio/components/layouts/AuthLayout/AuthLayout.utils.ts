@@ -7,14 +7,14 @@ export const generateAuthMenu = (
 ): ProductMenuGroup[] => {
   return [
     {
-      title: 'Manage',
-      items: [{ name: 'Users', key: 'users', url: `/project/${ref}/auth/users`, items: [] }],
+      title: '管理',
+      items: [{ name: '用户', key: 'users', url: `/project/${ref}/auth/users`, items: [] }],
     },
     {
-      title: 'Configuration',
+      title: '配置',
       items: [
         {
-          name: 'Policies',
+          name: '策略',
           key: 'policies',
           url: `/project/${ref}/auth/policies`,
           items: [],
@@ -22,7 +22,7 @@ export const generateAuthMenu = (
         ...(options?.columnLevelPrivileges
           ? [
               {
-                name: 'Column Privileges',
+                name: '列权限',
                 key: 'column-privileges',
                 url: `/project/${ref}/auth/column-privileges`,
                 items: [],

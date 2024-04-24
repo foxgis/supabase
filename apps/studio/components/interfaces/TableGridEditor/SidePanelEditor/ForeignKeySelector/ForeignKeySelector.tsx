@@ -213,7 +213,7 @@ export const ForeignKeySelector = ({
       visible={visible}
       onCancel={onClose}
       className="max-w-[480px]"
-      header={`${foreignKey === undefined ? 'Add' : 'Manage'} foreign key relationship${foreignKey === undefined ? ' to' : 's for'} ${table.name.length > 0 ? table.name : 'new table'}`}
+      header={`${foreignKey === undefined ? '添加' : '管理'}数据表${table.name}外键关联`}
       customFooter={
         <ActionBar
           backButtonLabel="Cancel"
@@ -228,17 +228,15 @@ export const ForeignKeySelector = ({
         <div className="py-6 space-y-6">
           <InformationBox
             icon={<IconHelpCircle size="large" strokeWidth={1.5} />}
-            title="What are foreign keys?"
-            description={`Foreign keys help maintain referential integrity of your data by ensuring that no
-                one can insert rows into the table that do not have a matching entry to another
-                table.`}
+            title="什么是外键？"
+            description={`外键通过确保不能将没有与另一个表匹配的条目插入到表中来帮助维护数据的参照完整性。`}
             url="https://www.postgresql.org/docs/current/tutorial-fk.html"
-            urlLabel="Postgres Foreign Key Documentation"
+            urlLabel="Postgres外键相关文档"
           />
 
           <Listbox
             id="schema"
-            label="Select a schema"
+            label="选择一个模式"
             value={fk.schema}
             onChange={(value: string) => updateSelectedSchema(value)}
           >
@@ -263,7 +261,7 @@ export const ForeignKeySelector = ({
 
           <Listbox
             id="table"
-            label="Select a table to reference to"
+            label="选择引用的表"
             value={selectedTable?.id ?? 1}
             onChange={(value: string) => updateSelectedTable(Number(value))}
           >
@@ -311,7 +309,7 @@ export const ForeignKeySelector = ({
                   {fk.columns.length === 0 && (
                     <Alert_Shadcn_ className="col-span-10 py-2 px-3">
                       <AlertDescription_Shadcn_>
-                        There are no foreign key relations between the tables
+                        这些表之间没有外键关联
                       </AlertDescription_Shadcn_>
                     </Alert_Shadcn_>
                   )}
@@ -391,9 +389,9 @@ export const ForeignKeySelector = ({
                   {errors.columns && <p className="text-red-900 text-sm">{errors.columns}</p>}
                   {hasTypeErrors && (
                     <Alert_Shadcn_ variant="warning">
-                      <AlertTitle_Shadcn_>Column types do not match</AlertTitle_Shadcn_>
+                      <AlertTitle_Shadcn_>列类型不匹配</AlertTitle_Shadcn_>
                       <AlertDescription_Shadcn_>
-                        The following columns cannot be referenced as they are not of the same type:
+                        以下这些列不是同一类型因而不能被引用：
                       </AlertDescription_Shadcn_>
                       <ul className="list-disc pl-5 mt-2 text-foreground-light">
                         {(errors?.types ?? []).map((x, idx: number) => {
@@ -412,10 +410,11 @@ export const ForeignKeySelector = ({
                   )}
                   {hasTypeNotices && (
                     <Alert_Shadcn_>
-                      <AlertTitle_Shadcn_>Column types will be updated</AlertTitle_Shadcn_>
+                      <AlertTitle_Shadcn_>将更改列类型</AlertTitle_Shadcn_>
                       <AlertDescription_Shadcn_>
                         The following columns will have their types updated to match their
                         referenced column
+                        将更改以下列的类型已匹配引用的列。
                       </AlertDescription_Shadcn_>
                       <ul className="list-disc pl-5 mt-2 text-foreground-light">
                         {(errors?.typeNotice ?? []).map((x, idx: number) => {

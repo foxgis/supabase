@@ -216,23 +216,23 @@ const SideBarContent = () => {
                 onClick={() => handleNewQuery()}
                 icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
               >
-                New query
+                新建查询
               </Button>
 
               <div className="px-2">
                 <InnerSideMenuItem
-                  title="Templates"
+                  title="查询模版"
                   isActive={router.asPath === `/project/${ref}/sql/templates`}
                   href={`/project/${ref}/sql/templates`}
                 >
-                  Templates
+                  查询模版
                 </InnerSideMenuItem>
                 <InnerSideMenuItem
-                  title="Quickstarts"
+                  title="快速上手"
                   isActive={router.asPath === `/project/${ref}/sql/quickstarts`}
                   href={`/project/${ref}/sql/quickstarts`}
                 >
-                  Quickstarts
+                  快速上手
                 </InnerSideMenuItem>
               </div>
 
@@ -240,7 +240,7 @@ const SideBarContent = () => {
                 <InnerSideBarFilters className="mx-2">
                   <InnerSideBarFilterSearchInput
                     name="search-queries"
-                    placeholder="Search queries..."
+                    placeholder="查找历史查询..."
                     onChange={(e) => setSearchText(e.target.value.trim())}
                     value={searchText}
                     aria-labelledby="Search queries"
@@ -324,7 +324,7 @@ const SideBarContent = () => {
 
               {personalSnippets.length > 0 && (
                 <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-                  <InnerSideMenuCollapsibleTrigger title="Your queries" />
+                  <InnerSideMenuCollapsibleTrigger title="您的查询" />
                   <InnerSideMenuCollapsibleContent className="editor-product-menu">
                     <>
                       <div className="space-y-0.5">

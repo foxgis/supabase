@@ -113,7 +113,7 @@ const ColumnManagement = ({
     <>
       <div className="w-full space-y-4 table-editor-columns">
         <div className="flex items-center justify-between w-full">
-          <h5>Columns</h5>
+          <h5>列</h5>
           <div className="flex items-center gap-x-2">
             <Button asChild type="default" icon={<IconExternalLink size={12} strokeWidth={2} />}>
               <a
@@ -121,7 +121,7 @@ const ColumnManagement = ({
                 target="_blank"
                 rel="noreferrer"
               >
-                About data types
+                关于数据类型
               </a>
             </Button>
             {isNewRecord && (
@@ -130,15 +130,15 @@ const ColumnManagement = ({
                 {hasImportContent ? (
                   <div className="flex items-center gap-x-2">
                     <Button type="default" icon={<IconEdit />} onClick={onSelectImportData}>
-                      Edit content
+                      编辑内容
                     </Button>
                     <Button type="danger" icon={<IconTrash />} onClick={onClearImportContent}>
-                      Remove content
+                      删除内容
                     </Button>
                   </div>
                 ) : (
                   <Button type="default" onClick={onSelectImportData}>
-                    Import data via spreadsheet
+                    通过Excel导入数据
                   </Button>
                 )}
               </>
@@ -148,16 +148,13 @@ const ColumnManagement = ({
 
         {hasImportContent && (
           <p className="text-sm text-foreground-light my-2">
-            Your table will be created with {importContent?.rowCount?.toLocaleString()} rows and the
-            following {columns.length} columns.
+            您创建的表有{importContent?.rowCount?.toLocaleString()}行和{columns.length}列。
           </p>
         )}
 
         {primaryKeyColumns.length === 0 && (
-          <Alert title="Warning: No primary keys selected" variant="warning" withIcon>
-            Tables require at least one column as a primary key in order to uniquely identify each
-            row. Without a primary key, you will not be able to update or delete rows from the
-            table.
+          <Alert title="警告：没有设置主键" variant="warning" withIcon>
+            为了唯一标识每一行，数据表至少需要选择一列作为主键。不设置主键，您将无法更新和删除这张表中的数据记录。
           </Alert>
         )}
 
@@ -165,9 +162,8 @@ const ColumnManagement = ({
           <InformationBox
             block
             icon={<IconKey className="text-white" size="large" />}
-            title="Composite primary key selected"
-            description="The columns that you've selected will be grouped as a primary key, and will serve
-          as the unique identifier for the rows in your table"
+            title="创建了复合主键"
+            description="您选择的多个列组合为主键，作为表的唯一标识符"
           />
         )}
 
@@ -177,7 +173,7 @@ const ColumnManagement = ({
             {/* Drag handle */}
             {isNewRecord && <div className="w-[5%]" />}
             <div className="w-[25%] flex items-center space-x-2">
-              <h5 className="text-xs text-foreground-lighter">Name</h5>
+              <h5 className="text-xs text-foreground-lighter">名称</h5>
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger>
                   <h5 className="text-xs text-foreground-lighter">
@@ -194,8 +190,7 @@ const ColumnManagement = ({
                       ].join(' ')}
                     >
                       <span className="text-xs text-foreground">
-                        Recommended to use lowercase and use an underscore to separate words e.g.
-                        column_name
+                        推荐使用小写字母和下划线分隔单词，例如column_name
                       </span>
                     </div>
                   </Tooltip.Content>
@@ -203,10 +198,10 @@ const ColumnManagement = ({
               </Tooltip.Root>
             </div>
             <div className="w-[25%]">
-              <h5 className="text-xs text-foreground-lighter">Type</h5>
+              <h5 className="text-xs text-foreground-lighter">类型</h5>
             </div>
             <div className={`${isNewRecord ? 'w-[25%]' : 'w-[30%]'} flex items-center space-x-2`}>
-              <h5 className="text-xs text-foreground-lighter">Default Value</h5>
+              <h5 className="text-xs text-foreground-lighter">默认值</h5>
 
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger>
@@ -224,8 +219,7 @@ const ColumnManagement = ({
                       ].join(' ')}
                     >
                       <span className="text-xs text-foreground">
-                        Can either be a literal or an expression. When using an expression wrap your
-                        expression in brackets, e.g. (gen_random_uuid())
+                        可以填写字面量或者表达式，当使用表达式时，将表达式用括号括起来，例如(gen_random_uuid())
                       </span>
                     </div>
                   </Tooltip.Content>
@@ -233,7 +227,7 @@ const ColumnManagement = ({
               </Tooltip.Root>
             </div>
             <div className="w-[10%]">
-              <h5 className="text-xs text-foreground-lighter">Primary</h5>
+              <h5 className="text-xs text-foreground-lighter">主键</h5>
             </div>
             {/* Empty space */}
             <div className={`${hasImportContent ? 'w-[10%]' : 'w-0'}`} />
@@ -316,7 +310,7 @@ const ColumnManagement = ({
         {!hasImportContent && (
           <div className="flex items-center justify-center rounded border border-strong border-dashed py-3">
             <Button type="default" onClick={() => onAddColumn()}>
-              Add column
+              添加列
             </Button>
           </div>
         )}

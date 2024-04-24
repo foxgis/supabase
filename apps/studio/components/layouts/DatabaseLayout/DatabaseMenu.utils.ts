@@ -11,36 +11,36 @@ export const generateDatabaseMenu = (
 
   return [
     {
-      title: 'Database',
+      title: '数据库',
       items: [
-        { name: 'Tables', key: 'tables', url: `/project/${ref}/database/tables`, items: [] },
+        { name: '表结构', key: 'tables', url: `/project/${ref}/database/tables`, items: [] },
         {
-          name: 'Schema Visualizer',
+          name: '模式',
           key: 'schemas',
           url: `/project/${ref}/database/schemas`,
           items: [],
         },
         {
-          name: 'Triggers',
+          name: '触发器',
           key: 'triggers',
           url: `/project/${ref}/database/triggers`,
           items: [],
         },
         {
-          name: 'Functions',
+          name: '函数',
           key: 'functions',
           url: `/project/${ref}/database/functions`,
           items: [],
         },
         {
-          name: 'Extensions',
+          name: '扩展',
           key: 'extensions',
           url: `/project/${ref}/database/extensions`,
           items: [],
         },
-        { name: 'Roles', key: 'roles', url: `/project/${ref}/database/roles`, items: [] },
+        { name: '角色', key: 'roles', url: `/project/${ref}/database/roles`, items: [] },
         {
-          name: 'Replication',
+          name: '流复制',
           key: 'replication',
           url: `/project/${ref}/database/replication`,
           items: [],
@@ -56,7 +56,7 @@ export const generateDatabaseMenu = (
             ]
           : []),
         {
-          name: 'Wrappers',
+          name: 'FDW',
           key: 'wrappers',
           url: `/project/${ref}/database/wrappers`,
           items: [],
@@ -64,7 +64,7 @@ export const generateDatabaseMenu = (
         ...(IS_PLATFORM
           ? [
               {
-                name: 'Backups',
+                name: '备份',
                 key: 'backups',
                 url: pitrEnabled
                   ? `/project/${ref}/database/backups/pitr`
@@ -74,31 +74,31 @@ export const generateDatabaseMenu = (
             ]
           : []),
         {
-          name: 'Migrations',
+          name: '迁移',
           key: 'migrations',
           url: `/project/${ref}/database/migrations`,
           items: [],
         },
         {
-          name: 'Indexes',
+          name: '索引',
           key: 'indexes',
           url: `/project/${ref}/database/indexes`,
           items: [],
         },
         {
-          name: 'Enumerated Types',
+          name: '枚举类型',
           key: 'types',
           url: `/project/${ref}/database/types`,
           items: [],
         },
         {
-          name: 'Query Performance',
+          name: '查询性能',
           key: 'query-performance',
           url: `/project/${ref}/database/query-performance`,
           items: [],
         },
         {
-          name: 'Database Linter',
+          name: '诊断',
           key: 'linter',
           url: `/project/${ref}/database/linter`,
           items: [],

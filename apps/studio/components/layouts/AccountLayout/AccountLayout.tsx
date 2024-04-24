@@ -153,8 +153,8 @@ const AccountLayout = ({ children, title, breadcrumbs }: PropsWithChildren<Accou
   return (
     <>
       <Head>
-        <title>{title ? `${title} | Supabase` : 'Supabase'}</title>
-        <meta name="description" content="Supabase Studio" />
+        <title>{title ? `${title}` : 'FoxGIS'}</title>
+        <meta name="description" content="FoxGIS Studio" />
       </Head>
       <div className="h-screen min-h-[0px] basis-0 flex-1">
         <WithSidebar

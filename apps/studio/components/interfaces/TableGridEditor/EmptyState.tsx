@@ -45,13 +45,13 @@ const EmptyState = ({}: EmptyStateProps) => {
       ) : (
         <div className="flex flex-col items-center space-y-4">
           <ProductEmptyState
-            title="Table Editor"
-            ctaButtonLabel={canCreateTables ? 'Create a new table' : undefined}
+            title="数据表"
+            ctaButtonLabel={canCreateTables ? '创建表' : undefined}
             onClickCta={canCreateTables ? snap.onAddTable : undefined}
           >
             <p className="text-sm text-foreground-light">
-              Select a table from the navigation panel on the left to view its data
-              {canCreateTables && ', or create a new one.'}
+              从左侧的面版中选择一张表查看数据
+              {canCreateTables && '，或者新建一张表。'}
             </p>
           </ProductEmptyState>
         </div>

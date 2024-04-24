@@ -246,8 +246,8 @@ const TableEditor = ({
       onConfirm={() => (resolve: () => void) => onSaveChanges(resolve)}
       customFooter={
         <ActionBar
-          backButtonLabel="Cancel"
-          applyButtonLabel="Save"
+          backButtonLabel="取消"
+          applyButtonLabel="保存"
           closePanel={closePanel}
           applyFunction={(resolve: () => void) => onSaveChanges(resolve)}
         />
@@ -255,7 +255,7 @@ const TableEditor = ({
     >
       <SidePanel.Content className="space-y-10 py-6">
         <Input
-          label="Name"
+          label="名称"
           layout="horizontal"
           type="text"
           error={errors.name}
@@ -263,8 +263,8 @@ const TableEditor = ({
           onChange={(event: any) => onUpdateField({ name: event.target.value })}
         />
         <Input
-          label="Description"
-          placeholder="Optional"
+          label="描述"
+          placeholder="选填"
           layout="horizontal"
           type="text"
           value={tableFields?.comment ?? ''}
@@ -278,14 +278,14 @@ const TableEditor = ({
           // @ts-ignore
           label={
             <div className="flex items-center space-x-2">
-              <span>Enable Row Level Security (RLS)</span>
-              <Badge>Recommended</Badge>
+              <span>启用行级安全策略(RLS)</span>
+              <Badge>推荐</Badge>
             </div>
           }
           // @ts-ignore
           description={
             <>
-              <p>Restrict access to your table by enabling RLS and writing Postgres policies.</p>
+              <p>通过启用RLS和自定义访问策略可以限制表的访问。</p>
             </>
           }
           checked={tableFields.isRLSEnabled}
@@ -303,14 +303,13 @@ const TableEditor = ({
             withIcon
             variant="info"
             className="!px-4 !py-3 !mt-3"
-            title="Policies are required to query data"
+            title="必须设置策略才能查询表"
           >
             <p>
-              You need to write an access policy before you can query data from this table. Without
-              a policy, querying this table will result in an <u>empty array</u> of results.
+              您必须编写访问策略后才能查询这张表的数据，否则将查询不到结果。
             </p>
             {isNewRecord && (
-              <p className="mt-3">You can create policies after you create this table.</p>
+              <p className="mt-3">您可创建完这张表之后在创建访问策略。</p>
             )}
             <p className="mt-4">
               <Button asChild type="default" icon={<IconBookOpen strokeWidth={1.5} />}>
@@ -319,7 +318,7 @@ const TableEditor = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  RLS Documentation
+                  RLS文档
                 </Link>
               </Button>
             </p>
@@ -329,11 +328,10 @@ const TableEditor = ({
             withIcon
             variant="warning"
             className="!px-4 !py-3 mt-3"
-            title="You are allowing anonymous access to your table"
+            title="您当前允许匿名用户访问表"
           >
             <p>
-              {tableFields.name ? `The table ${tableFields.name}` : 'Your table'} will be publicly
-              writable and readable
+              {tableFields.name ? `数据表${tableFields.name}` : '您的数据表'}将可公开读写。
             </p>
             <p className="mt-4">
               <Button asChild type="default" icon={<IconBookOpen strokeWidth={1.5} />}>
@@ -351,8 +349,8 @@ const TableEditor = ({
         {realtimeEnabled && (
           <Checkbox
             id="enable-realtime"
-            label="Enable Realtime"
-            description="Broadcast changes on this table to authorized subscribers"
+            label="启用实时消息"
+            description="向授权的订阅方播送这张表的更新"
             checked={tableFields.isRealtimeEnabled}
             onChange={() => onUpdateField({ isRealtimeEnabled: !tableFields.isRealtimeEnabled })}
             size="medium"
@@ -380,8 +378,8 @@ const TableEditor = ({
           <>
             <Checkbox
               id="duplicate-rows"
-              label="Duplicate table entries"
-              description="This will copy all the data in the table into the new table"
+              label="复制表"
+              description="将这张表的数据复制到新表"
               checked={isDuplicateRows}
               onChange={() => setIsDuplicateRows(!isDuplicateRows)}
               size="medium"
@@ -402,8 +400,8 @@ const TableEditor = ({
 
         <ConfirmationModal
           visible={rlsConfirmVisible}
-          title="Turn off Row Level Security"
-          confirmLabel="Confirm"
+          title="关闭行级安全策略"
+          confirmLabel="确定"
           size="medium"
           onCancel={() => setRlsConfirmVisible(false)}
           onConfirm={() => {

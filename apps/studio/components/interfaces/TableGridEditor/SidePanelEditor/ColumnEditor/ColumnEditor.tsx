@@ -187,8 +187,8 @@ const ColumnEditor = ({
       onCancel={closePanel}
       customFooter={
         <ActionBar
-          backButtonLabel="Cancel"
-          applyButtonLabel="Save"
+          backButtonLabel="取消"
+          applyButtonLabel="保存"
           closePanel={closePanel}
           applyFunction={(resolve: () => void) => onSaveChanges(resolve)}
         />
@@ -197,7 +197,7 @@ const ColumnEditor = ({
       <FormSection header={<FormSectionLabel className="lg:!col-span-4">General</FormSectionLabel>}>
         <FormSectionContent loading={false} className="lg:!col-span-8">
           <Input
-            label="Name"
+            label="名称"
             type="text"
             descriptionText="Recommended to use lowercase and use an underscore to separate words e.g. column_name"
             placeholder="column_name"

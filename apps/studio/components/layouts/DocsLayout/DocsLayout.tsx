@@ -49,9 +49,9 @@ function DocsLayout({ title, children }: { title: string; children: ReactElement
 
   return (
     <ProjectLayout
-      title={title || 'API Docs'}
+      title={title || 'API文档'}
       isLoading={isLoading}
-      product="API Docs"
+      product="API文档"
       productMenu={
         !hideMenu && (
           <ProductMenu

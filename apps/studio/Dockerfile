@@ -1,12 +1,12 @@
 # To be run in the root of the turbo monorepo
 # NOTE: It's highly recommended to use the new builder, Buildkit. https://docs.docker.com/build/buildkit/
 ## USAGE:
-# Build:        docker build . -f studio/Dockerfile --target production -t studio:latest
-# Run:          docker run -p 3000:3000 supabase/studio
-# Deploy:       docker push supabase/studio:latest
+# Build:        docker build . -f apps/studio/Dockerfile --target production -t jingsam/supabase-studio:latest
+# Run:          docker run -p 3000:3000 jingsam/supabase-studio:latest
+# Deploy:       docker push jingsam/supabase-studio:latest
 # Clean build:
 #    docker builder prune
-#    docker build . -f studio/Dockerfile --target production -t studio:latest --no-cache
+#    docker build . -f studio/Dockerfile --target production -t jingsam/supabase-studio:latest --no-cache
 
 FROM node:20-slim as base
 
@@ -15,9 +15,9 @@ FROM node:20-slim as base
 RUN apt-get update -qq && \
   apt-get install -y --no-install-recommends \
   git \
-  python3 \ 
+  python3 \
   ca-certificates \
-  build-essential && \ 
+  build-essential && \
   rm -rf /var/lib/apt/lists/* && \
   update-ca-certificates
 

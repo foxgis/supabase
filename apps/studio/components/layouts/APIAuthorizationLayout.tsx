@@ -12,7 +12,7 @@ const APIAuthorizationLayout = ({ children }: PropsWithChildren<APIAuthorization
   return (
     <>
       <Head>
-        <title>Authorize API access | Supabase</title>
+        <title>Authorize API access</title>
       </Head>
       <main className="flex-grow flex flex-col w-full h-full overflow-y-auto">
         <div>

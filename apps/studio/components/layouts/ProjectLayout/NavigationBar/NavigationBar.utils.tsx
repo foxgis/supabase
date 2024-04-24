@@ -12,7 +12,7 @@ import {
   TableEditor,
 } from 'icons'
 import { ICON_SIZE, ICON_STROKE_WIDTH } from './NavigationBar'
-import { Settings, FileText, List } from 'lucide-react'
+import { Settings, FileText, List, Map, Waypoints } from 'lucide-react'
 
 export const generateToolRoutes = (ref?: string, project?: Project): Route[] => {
   const isProjectBuilding = project?.status === PROJECT_STATUS.COMING_UP
@@ -21,13 +21,13 @@ export const generateToolRoutes = (ref?: string, project?: Project): Route[] => 
   return [
     {
       key: 'editor',
-      label: 'Table Editor',
+      label: '数据表',
       icon: <TableEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/editor`),
     },
     {
       key: 'sql',
-      label: 'SQL Editor',
+      label: 'SQL查询',
       icon: <SqlEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: !IS_PLATFORM
         ? `/project/${ref}/sql/1`
@@ -50,26 +50,30 @@ export const generateProductRoutes = (
 
   return [
     {
+      key: 'maps',
+      label: '地图服务',
+      icon: <Map size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      link: '/pg_tileserv/index.html',
+      target: '__blank',
+    },
+    {
+      key: 'features',
+      label: '要素服务',
+      icon: <Waypoints size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      link: '/pg_featureserv/index.html',
+      target: '__blank',
+    },
+    {
       key: 'database',
-      label: 'Database',
+      label: '云数据库',
       icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/database/tables`),
     },
-    ...(authEnabled
-      ? [
-          {
-            key: 'auth',
-            label: 'Authentication',
-            icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-            link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
-          },
-        ]
-      : []),
     ...(storageEnabled
       ? [
           {
             key: 'storage',
-            label: 'Storage',
+            label: '文件存储',
             icon: <Storage size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/storage/buckets`),
           },
@@ -79,7 +83,7 @@ export const generateProductRoutes = (
       ? [
           {
             key: 'functions',
-            label: 'Edge Functions',
+            label: '云函数',
             icon: <EdgeFunctions size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/functions`),
           },
@@ -89,9 +93,19 @@ export const generateProductRoutes = (
       ? [
           {
             key: 'realtime',
-            label: 'Realtime',
+            label: '实时消息',
             icon: <Realtime size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/realtime/inspector`),
+          },
+        ]
+      : []),
+    ...(authEnabled
+      ? [
+          {
+            key: 'auth',
+            label: '授权认证',
+            icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+            link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
           },
         ]
       : []),
@@ -107,7 +121,7 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
       ? [
           {
             key: 'reports',
-            label: 'Reports',
+            label: '报告',
             icon: <Reports size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/reports`),
           },
@@ -115,13 +129,13 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
       : []),
     {
       key: 'logs',
-      label: 'Logs',
+      label: '日志',
       icon: <List size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/logs/explorer`),
     },
     {
       key: 'api',
-      label: 'API Docs',
+      label: 'API文档',
       icon: <FileText size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/api`),
     },
@@ -134,7 +148,7 @@ export const generateSettingsRoutes = (ref?: string, project?: Project): Route[]
       ? [
           {
             key: 'settings',
-            label: 'Project Settings',
+            label: '设置',
             icon: <Settings size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && `/project/${ref}/settings/general`,
           },

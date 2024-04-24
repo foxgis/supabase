@@ -113,9 +113,9 @@ const NavigationBar = () => {
               className="mx-2 flex items-center h-[40px]"
             >
               <img
-                alt="Supabase"
-                src={`${router.basePath}/img/supabase-logo.svg`}
-                className="absolute h-[40px] w-6 cursor-pointer rounded"
+                alt="FoxGIS"
+                src={`${router.basePath}/img/foxgis.png`}
+                className="h-[40px] w-6 cursor-pointer rounded"
               />
             </Link>
           )}
@@ -123,7 +123,7 @@ const NavigationBar = () => {
             isActive={isUndefined(activeRoute) && !isUndefined(router.query.ref)}
             route={{
               key: 'HOME',
-              label: 'Home',
+              label: '首页',
               icon: <Home size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
               link: `/project/${projectRef}`,
             }}
@@ -315,7 +315,7 @@ const NavigationBar = () => {
                 </>
               )}
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                <DropdownMenuLabel>界面风格</DropdownMenuLabel>
                 <DropdownMenuRadioGroup
                   value={theme}
                   onValueChange={(value) => {

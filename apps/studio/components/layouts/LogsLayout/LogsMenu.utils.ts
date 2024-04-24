@@ -17,13 +17,13 @@ export const generateLogsMenu = (
 
   return [
     {
-      title: 'Logs Explorer',
+      title: '日志查看器',
       items: (
         [
-          { key: 'explorer', name: 'Query', root: true },
-          IS_PLATFORM ? { key: 'saved', name: 'Saved Queries' } : null,
-          { key: 'recent', name: 'Recent Queries' },
-          { key: 'templates', name: 'Templates' },
+          { key: 'explorer', name: '查询', root: true },
+          IS_PLATFORM ? { key: 'saved', name: '保存的查询' } : null,
+          { key: 'recent', name: '最近的查询' },
+          { key: 'templates', name: '查询模版' },
         ].filter((item) => item) as { name: string; key: string; root: boolean }[]
       ).map(({ key, name, root }) => ({
         name,
@@ -33,7 +33,7 @@ export const generateLogsMenu = (
       })),
     },
     {
-      title: 'Infrastructure',
+      title: '基础组件',
       items: [
         {
           name: IS_PLATFORM ? 'API Edge Network' : 'Kong API',

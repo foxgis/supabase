@@ -40,7 +40,7 @@ const LogsLayout = ({ title, children }: PropsWithChildren<LogsLayoutProps>) => 
   return (
     <ProjectLayout
       title={title}
-      product="Logs"
+      product="日志"
       productMenu={
         <ProductMenu
           page={page}

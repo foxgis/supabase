@@ -29,7 +29,7 @@ const DatabaseLayout = ({ children }: PropsWithChildren<DatabaseLayoutProps>) =>
 
   return (
     <ProjectLayout
-      product="Database"
+      product="云数据库"
       productMenu={
         <ProductMenu
           page={page}

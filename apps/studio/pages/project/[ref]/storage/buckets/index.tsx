@@ -22,15 +22,15 @@ const PageLayout: NextPageWithLayout = () => {
   return (
     <div className="storage-container flex flex-grow">
       <ProductEmptyState
-        title="Storage"
-        infoButtonLabel="About storage"
+        title="文件存储"
+        infoButtonLabel="关于文件存储"
         infoButtonUrl="https://supabase.com/docs/guides/storage"
       >
         <p className="text-foreground-light text-sm">
-          Create buckets to store and serve any type of digital content.
+          创建存储桶用于存储和共享各种多媒体文件。
         </p>
         <p className="text-foreground-light text-sm">
-          Make your buckets private or public depending on your security preference.
+          可根据您的安全需求将存储桶设置为私有或者公开。
         </p>
       </ProductEmptyState>
     </div>

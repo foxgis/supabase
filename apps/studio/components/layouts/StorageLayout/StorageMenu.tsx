@@ -64,7 +64,7 @@ const StorageMenu = () => {
                 style={{ justifyContent: 'start' }}
                 onClick={() => setShowCreateBucketModal(true)}
               >
-                New bucket
+                创建存储桶
               </Button>
             </Tooltip.Trigger>
             {!canCreateBuckets && (
@@ -88,7 +88,7 @@ const StorageMenu = () => {
         </div>
         <div className="space-y-6">
           <div>
-            <Menu.Group title="All buckets" />
+            <Menu.Group title="存储桶" />
 
             {isLoading && (
               <div className="space-y-2 mx-2">
@@ -120,9 +120,9 @@ const StorageMenu = () => {
                 {buckets.length === 0 && (
                   <div className="px-2">
                     <Alert_Shadcn_>
-                      <AlertTitle_Shadcn_>No buckets available</AlertTitle_Shadcn_>
+                      <AlertTitle_Shadcn_>无存储桶</AlertTitle_Shadcn_>
                       <AlertDescription_Shadcn_>
-                        Buckets that you create will appear here
+                        您创建的存储桶将在这里显示。
                       </AlertDescription_Shadcn_>
                     </Alert_Shadcn_>
                   </div>
@@ -146,10 +146,10 @@ const StorageMenu = () => {
           </div>
           <div className="h-px w-full bg-border"></div>
           <div>
-            <Menu.Group title="Configuration" />
+            <Menu.Group title="配置" />
             <Link href={`/project/${ref}/storage/policies`} legacyBehavior>
               <Menu.Item rounded active={page === 'policies'}>
-                <p className="truncate">Policies</p>
+                <p className="truncate">策略</p>
               </Menu.Item>
             </Link>
           </div>

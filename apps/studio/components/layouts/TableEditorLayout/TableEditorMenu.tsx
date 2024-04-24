@@ -109,8 +109,8 @@ const TableEditorMenu = () => {
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger className="w-full" asChild>
                   <Button
-                    title="Create a new table"
-                    name="New table"
+                    title="新建一张表"
+                    name="新建表"
                     block
                     disabled={!canCreateTables}
                     size="tiny"
@@ -119,7 +119,7 @@ const TableEditorMenu = () => {
                     className="justify-start"
                     onClick={snap.onAddTable}
                   >
-                    New table
+                    新建表
                   </Button>
                 </Tooltip.Trigger>
                 {!canCreateTables && (
@@ -133,7 +133,7 @@ const TableEditorMenu = () => {
                         ].join(' ')}
                       >
                         <span className="text-xs text-foreground">
-                          You need additional permissions to create tables
+                          您需要具有创建表的权限。
                         </span>
                       </div>
                     </Tooltip.Content>
@@ -161,12 +161,12 @@ const TableEditorMenu = () => {
           <InnerSideBarFilters>
             <InnerSideBarFilterSearchInput
               name="search-tables"
-              aria-labelledby="Search tables"
+              aria-labelledby="查找表"
               onChange={(e) => {
                 setSearchText(e.target.value.trim())
               }}
               value={searchText}
-              placeholder="Search tables..."
+              placeholder="查找表..."
             >
               <InnerSideBarFilterSortDropdown
                 value={sort}
@@ -201,14 +201,14 @@ const TableEditorMenu = () => {
                 <InnerSideBarEmptyPanel
                   className="mx-2"
                   title="No entities available"
-                  description="This schema has no entities available yet"
+                  description="此模式下无实体对象。"
                 />
               )}
               {searchText.length > 0 && (entityTypes?.length ?? 0) <= 0 && (
                 <InnerSideBarEmptyPanel
                   className="mx-2"
-                  title="No results found"
-                  description={`Your search for "${searchText}" did not return any results`}
+                  title="无结果"
+                  description={`为查找到名称中包含“${searchText}”的表`}
                 />
               )}
               {(entityTypes?.length ?? 0) > 0 && (

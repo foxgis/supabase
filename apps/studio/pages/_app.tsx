@@ -146,7 +146,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
           <ProfileProvider>
             <FlagProvider>
               <Head>
-                <title>Supabase</title>
+                <title>FoxGIS</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
               </Head>
               <MetaFaviconsPagesRouter applicationName="Supabase Studio" />

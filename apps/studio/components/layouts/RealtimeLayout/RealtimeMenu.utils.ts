@@ -6,10 +6,10 @@ export const generateRealtimeMenu = (project?: Project): ProductMenuGroup[] => {
 
   return [
     {
-      title: 'Realtime',
+      title: '实时消息',
       items: [
         {
-          name: 'Inspector',
+          name: '调试器',
           key: 'inspector',
           url: `/project/${ref}/realtime/inspector`,
           items: [],
