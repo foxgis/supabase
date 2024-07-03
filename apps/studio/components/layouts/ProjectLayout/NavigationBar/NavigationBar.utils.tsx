@@ -54,14 +54,14 @@ export const generateProductRoutes = (
       label: '地图服务',
       icon: <Map size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: '/pg_tileserv/index.html',
-      target: '__blank',
+      target: '_blank',
     },
     {
       key: 'features',
       label: '要素服务',
       icon: <Waypoints size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: '/pg_featureserv/index.html',
-      target: '__blank',
+      target: '_blank',
     },
     {
       key: 'database',
