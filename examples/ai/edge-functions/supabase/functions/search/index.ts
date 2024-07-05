@@ -1,11 +1,13 @@
-import { createClient } from "npm:@supabase/supabase-js@2.42.0";
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+
+import { createClient } from "jsr:@supabase/supabase-js@2";
 import { Database } from "../_shared/database.types.ts";
 
 const supabase = createClient<Database>(
   Deno.env.get("SUPABASE_URL")!,
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
-// @ts-ignore TODO: import Supabase AI types.
+
 const model = new Supabase.ai.Session("gte-small");
 
 Deno.serve(async (req) => {
@@ -20,7 +22,7 @@ Deno.serve(async (req) => {
   // Query embeddings.
   const { data: result, error } = await supabase
     .rpc("query_embeddings", {
-      embedding,
+      embedding: JSON.stringify(embedding),
       match_threshold: 0.8,
     })
     .select("content")

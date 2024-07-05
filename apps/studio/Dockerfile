@@ -27,7 +27,7 @@ WORKDIR /app
 FROM base as turbo
 COPY . .
 
-RUN npx turbo@1.13.2 prune --scope=studio --docker
+RUN npx turbo@2.0.4 prune studio --docker
 
 # Install dev dependencies (only if needed)
 FROM base as deps
@@ -47,7 +47,7 @@ CMD ["npm", "run", "dev:studio"]
 # Compile Next.js
 FROM dev as builder
 
-RUN npx turbo run build --scope=studio --include-dependencies --no-deps
+RUN npx turbo@2.0.4 run build --filter studio -- --no-lint
 
 # Copy only compiled code and dependencies
 FROM base as production

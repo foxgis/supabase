@@ -1,10 +1,7 @@
 import type { ProductMenuGroup } from 'components/ui/ProductMenu/ProductMenu.types'
 import { IS_PLATFORM } from 'lib/constants'
 
-export const generateAuthMenu = (
-  ref: string,
-  options: { columnLevelPrivileges?: boolean } = {}
-): ProductMenuGroup[] => {
+export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
   return [
     {
       title: '管理',
@@ -19,17 +16,6 @@ export const generateAuthMenu = (
           url: `/project/${ref}/auth/policies`,
           items: [],
         },
-        ...(options?.columnLevelPrivileges
-          ? [
-              {
-                name: '列权限',
-                key: 'column-privileges',
-                url: `/project/${ref}/auth/column-privileges`,
-                items: [],
-                label: 'ALPHA',
-              },
-            ]
-          : []),
         ...(IS_PLATFORM
           ? [
               {

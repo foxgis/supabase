@@ -13,6 +13,7 @@ import { useOrganizationsQuery } from 'data/organizations/organizations-query'
 import { usePermissionsQuery } from 'data/permissions/permissions-query'
 import { ProjectInfo, useProjectsQuery } from 'data/projects/projects-query'
 import { ResourceWarning, useResourceWarningsQuery } from 'data/usage/resource-warnings-query'
+import { useIsFeatureEnabled } from 'hooks'
 import { IS_PLATFORM } from 'lib/constants'
 import { makeRandomString } from 'lib/helpers'
 import type { Organization, ResponseError } from 'types'
@@ -70,7 +71,7 @@ const ProjectList = ({ search, rewriteHref }: ProjectListProps) => {
       {organizations?.map((organization) => {
         return (
           <OrganizationProjects
-            key={organization.id}
+            key={organization.slug}
             organization={organization}
             projects={projectsByOrg[organization.id]}
             overdueInvoices={(allOverdueInvoices ?? []).filter(
@@ -162,7 +163,7 @@ const OrganizationProjects = ({
   if (search.length > 0 && filteredProjects.length === 0) return null
 
   return (
-    <div className="space-y-3" key={organization.id}>
+    <div className="space-y-3" key={organization.slug}>
       <div className="flex space-x-4 items-center">
         <h4 className="text-lg flex items-center">{organization.name}</h4>
 
@@ -244,17 +245,20 @@ const OrganizationProjects = ({
 }
 
 const NoProjectsState = ({ slug }: { slug: string }) => {
+  const projectCreationEnabled = useIsFeatureEnabled('projects:create')
+
   return (
     <div className="col-span-4 space-y-4 rounded-lg border border-dashed p-6 text-center">
       <div className="space-y-1">
         <p>No projects</p>
         <p className="text-sm text-foreground-light">Get started by creating a new project.</p>
       </div>
-      <div>
+
+      {projectCreationEnabled && (
         <Button asChild icon={<IconPlus />}>
           <Link href={`/new/${slug}`}>New Project</Link>
         </Button>
-      </div>
+      )}
     </div>
   )
 }

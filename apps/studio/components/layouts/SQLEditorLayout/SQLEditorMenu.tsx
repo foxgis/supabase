@@ -8,24 +8,16 @@ import toast from 'react-hot-toast'
 import { useParams } from 'common'
 import { untitledSnippetTitle } from 'components/interfaces/SQLEditor/SQLEditor.constants'
 import { createSqlSnippetSkeleton } from 'components/interfaces/SQLEditor/SQLEditor.utils'
+import AlertError from 'components/ui/AlertError'
 import { useContentDeleteMutation } from 'data/content/content-delete-mutation'
 import { SqlSnippet, useSqlSnippetsQuery } from 'data/content/sql-snippets-query'
 import { useCheckPermissions, useSelectedProject } from 'hooks'
 import { uuidv4 } from 'lib/helpers'
 import { useProfile } from 'lib/profile'
 import { useSnippets, useSqlEditorStateSnapshot } from 'state/sql-editor'
-import {
-  AlertDescription_Shadcn_,
-  AlertTitle_Shadcn_,
-  Alert_Shadcn_,
-  Button,
-  Modal,
-  TooltipContent_Shadcn_,
-  TooltipTrigger_Shadcn_,
-  Tooltip_Shadcn_,
-} from 'ui'
+import { ResponseError } from 'types'
+import { Button, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_, Tooltip_Shadcn_ } from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
-import { WarningIcon } from 'ui-patterns/Icons/StatusIcons'
 import {
   InnerSideBarEmptyPanel,
   InnerSideBarFilterSearchInput,
@@ -40,7 +32,7 @@ import {
 import QueryItem from './QueryItem'
 import { selectItemsInRange } from './SQLEditorLayout.utils'
 
-const SideBarContent = () => {
+export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: () => void }) => {
   const { ref, id: activeId } = useParams()
   const router = useRouter()
   const { profile } = useProfile()
@@ -51,7 +43,7 @@ const SideBarContent = () => {
   const [selectedQueries, setSelectedQueries] = useState<string[]>([])
 
   const snap = useSqlEditorStateSnapshot()
-  const { isLoading, isSuccess } = useSqlSnippetsQuery(ref, {
+  const { isLoading, isSuccess, isError, error } = useSqlSnippetsQuery(ref, {
     refetchOnWindowFocus: false,
     staleTime: 300, // 5 minutes
     onSuccess(data) {
@@ -204,46 +196,55 @@ const SideBarContent = () => {
 
   return (
     <>
-      <div className="mt-6">
-        {isLoading ? (
-          <InnerSideBarShimmeringLoaders />
-        ) : isSuccess ? (
-          <div>
-            <div className="flex flex-col gap-4">
-              <Button
-                type="default"
-                className="justify-start mx-4"
-                onClick={() => handleNewQuery()}
-                icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
-              >
-                新建查询
-              </Button>
+      <div className="h-full flex flex-col justify-between">
+        <div className="mt-4 mb-2 flex flex-col gap-4">
+          <div className="mx-4">
+            <Button
+              block
+              type="default"
+              className="justify-start"
+              onClick={() => handleNewQuery()}
+              icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
+            >
+              新建查询
+            </Button>
+          </div>
 
-              <div className="px-2">
-                <InnerSideMenuItem
-                  title="查询模版"
-                  isActive={router.asPath === `/project/${ref}/sql/templates`}
-                  href={`/project/${ref}/sql/templates`}
-                >
-                  查询模版
-                </InnerSideMenuItem>
-                <InnerSideMenuItem
-                  title="快速上手"
-                  isActive={router.asPath === `/project/${ref}/sql/quickstarts`}
-                  href={`/project/${ref}/sql/quickstarts`}
-                >
-                  快速上手
-                </InnerSideMenuItem>
-              </div>
+          <div className="px-2">
+            <InnerSideMenuItem
+              title="Templates"
+              isActive={router.asPath === `/project/${ref}/sql/templates`}
+              href={`/project/${ref}/sql/templates`}
+            >
+              查询模板
+            </InnerSideMenuItem>
+            <InnerSideMenuItem
+              title="Quickstarts"
+              isActive={router.asPath === `/project/${ref}/sql/quickstarts`}
+              href={`/project/${ref}/sql/quickstarts`}
+            >
+              快速开始
+            </InnerSideMenuItem>
+          </div>
 
+          {isLoading && <InnerSideBarShimmeringLoaders />}
+
+          {isError && (
+            <div className="px-4">
+              <AlertError error={error as ResponseError} subject="Failed to load SQL snippets" />
+            </div>
+          )}
+
+          {isSuccess && (
+            <>
               {snippets.length > 0 && (
                 <InnerSideBarFilters className="mx-2">
                   <InnerSideBarFilterSearchInput
                     name="search-queries"
-                    placeholder="查找历史查询..."
-                    onChange={(e) => setSearchText(e.target.value.trim())}
+                    placeholder="检索历史查询..."
+                    onChange={(e) => setSearchText(e.target.value)}
                     value={searchText}
-                    aria-labelledby="Search queries"
+                    aria-labelledby="历史查询"
                   />
                 </InnerSideBarFilters>
               )}
@@ -258,7 +259,7 @@ const SideBarContent = () => {
                     description="Click the New query button to create a new query"
                     actions={
                       <Button type="default" onClick={() => handleNewQuery()}>
-                        New query
+                        新建查询
                       </Button>
                     }
                   />
@@ -343,9 +344,15 @@ const SideBarContent = () => {
                   </InnerSideMenuCollapsibleContent>
                 </InnerSideMenuCollapsible>
               )}
-            </div>
-          </div>
-        ) : null}
+            </>
+          )}
+        </div>
+
+        <div className="p-4 border-t sticky bottom-0 bg-studio">
+          <Button block type="default" onClick={onViewOngoingQueries}>
+            View running queries
+          </Button>
+        </div>
       </div>
 
       <ConfirmationModal
@@ -371,5 +378,3 @@ const SideBarContent = () => {
     </>
   )
 }
-
-export default SideBarContent

@@ -36,7 +36,7 @@ export const generateLogsMenu = (
       title: '基础组件',
       items: [
         {
-          name: IS_PLATFORM ? 'API Edge Network' : 'Kong API',
+          name: 'API Gateway',
           key: 'edge-logs',
           url: `/project/${ref}/logs/edge-logs`,
           items: [],

@@ -1,9 +1,8 @@
 import type { PostgresTable } from '@supabase/postgres-meta'
 import { isEmpty, isUndefined, noop } from 'lodash'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Alert, Badge, Button, Checkbox, IconBookOpen, Input, Modal, SidePanel } from 'ui'
+import { Alert, Badge, Button, Checkbox, Input, SidePanel } from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
@@ -20,6 +19,7 @@ import {
 import { useEnumeratedTypesQuery } from 'data/enumerated-types/enumerated-types-query'
 import { useIsFeatureEnabled } from 'hooks'
 import { EXCLUDED_SCHEMAS_WITHOUT_EXTENSIONS } from 'lib/constants/schemas'
+import { ExternalLink } from 'lucide-react'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
 import { SpreadsheetImport } from '../'
 import ActionBar from '../ActionBar'
@@ -213,7 +213,7 @@ const TableEditor = ({
         setFkRelations([])
       } else {
         const tableFields = generateTableFieldFromPostgresTable(
-          table!,
+          table,
           foreignKeyMeta || [],
           isDuplicating,
           isRealtimeEnabled
@@ -255,6 +255,7 @@ const TableEditor = ({
     >
       <SidePanel.Content className="space-y-10 py-6">
         <Input
+          data-testid="table-name-input"
           label="名称"
           layout="horizontal"
           type="text"
@@ -282,12 +283,7 @@ const TableEditor = ({
               <Badge>推荐</Badge>
             </div>
           }
-          // @ts-ignore
-          description={
-            <>
-              <p>通过启用RLS和自定义访问策略可以限制表的访问。</p>
-            </>
-          }
+          description="通过启用RLS和自定义访问策略可以限制表的访问。"
           checked={tableFields.isRLSEnabled}
           onChange={() => {
             // if isEnabled, show confirm modal to turn off
@@ -306,22 +302,19 @@ const TableEditor = ({
             title="必须设置策略才能查询表"
           >
             <p>
-              您必须编写访问策略后才能查询这张表的数据，否则将查询不到结果。
+              您必须编写访问策略后才能查询这张表的数据。
+              如果没有访问策略，查询这张表将会返回{' '}<u className="text-foreground">空数组</u>{' '}。
+              {isNewRecord ? '您可以在保存这张表之后再创建访问策略。' : ''}
             </p>
-            {isNewRecord && (
-              <p className="mt-3">您可创建完这张表之后在创建访问策略。</p>
-            )}
-            <p className="mt-4">
-              <Button asChild type="default" icon={<IconBookOpen strokeWidth={1.5} />}>
-                <Link
-                  href="https://supabase.com/docs/guides/auth/row-level-security"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  RLS文档
-                </Link>
-              </Button>
-            </p>
+            <Button asChild type="default" icon={<ExternalLink />} className="mt-4">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://supabase.com/docs/guides/auth/row-level-security"
+              >
+                RLS Documentation
+              </a>
+            </Button>
           </Alert>
         ) : (
           <Alert
@@ -333,17 +326,15 @@ const TableEditor = ({
             <p>
               {tableFields.name ? `数据表${tableFields.name}` : '您的数据表'}将可公开读写。
             </p>
-            <p className="mt-4">
-              <Button asChild type="default" icon={<IconBookOpen strokeWidth={1.5} />}>
-                <Link
-                  href="https://supabase.com/docs/guides/auth/row-level-security"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  RLS Documentation
-                </Link>
-              </Button>
-            </p>
+            <Button asChild type="default" icon={<ExternalLink />} className="mt-4">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://supabase.com/docs/guides/auth/row-level-security"
+              >
+                RLS Documentation
+              </a>
+            </Button>
           </Alert>
         )}
         {realtimeEnabled && (
@@ -361,6 +352,7 @@ const TableEditor = ({
       <SidePanel.Content className="space-y-10 py-6">
         {!isDuplicating && (
           <ColumnManagement
+            table={tableFields}
             columns={tableFields?.columns}
             relations={fkRelations}
             enumTypes={enumTypes}
@@ -372,6 +364,7 @@ const TableEditor = ({
               onUpdateField({ columns: DEFAULT_COLUMNS })
               setImportContent(undefined)
             }}
+            onUpdateFkRelations={onUpdateFkRelations}
           />
         )}
         {isDuplicating && (
