@@ -35,7 +35,7 @@ const Home: NextPageWithLayout = () => {
       : '欢迎使用数据中间件'
 
   return (
-    <div className="w-full mx-auto my-16 space-y-16 max-w-7xl">
+    <div className="w-full mx-auto my-16 space-y-8 max-w-7xl">
       <div className="flex items-center justify-between mx-6 space-x-6">
         <h1 className="text-3xl">{projectName}</h1>
         <div className="flex items-center gap-x-3">
@@ -43,6 +43,8 @@ const Home: NextPageWithLayout = () => {
           {IS_PLATFORM && project?.status === PROJECT_STATUS.ACTIVE_HEALTHY && <Connect />}
         </div>
       </div>
+
+      <p className="mx-6 text-sm">数据中间件基于 Supabase + FoxGIS 构建。</p>
 
       <div className="mx-6">
         <ProjectUpgradeFailedBanner />
@@ -58,7 +60,7 @@ const Home: NextPageWithLayout = () => {
         <>
           <div className="space-y-8">
             <div className="mx-6">
-              <h4 className="text-lg">SDK</h4>
+              <h4 className="text-lg">客户端SDK</h4>
             </div>
             <div className="grid gap-12 mx-6 mb-12 md:grid-cols-3">
               {CLIENT_LIBRARIES.map((library) => (
@@ -66,7 +68,7 @@ const Home: NextPageWithLayout = () => {
               ))}
             </div>
           </div>
-          {/* <div className="space-y-8">
+          <div className="space-y-8">
             <div className="mx-6">
               <h4 className="text-lg">示例代码</h4>
             </div>
@@ -75,7 +77,7 @@ const Home: NextPageWithLayout = () => {
                 <ExampleProject key={project.url} {...project} />
               ))}
             </div>
-          </div> */}
+          </div>
         </>
       )}
     </div>

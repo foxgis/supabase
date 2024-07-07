@@ -36,13 +36,13 @@ const ClientLibrary = ({
           {docsUrl && (
             <a href={docsUrl} target="_blank" rel="noreferrer">
               <Button icon={<IconBookOpen />} type="default">
-                Docs
+                文档
               </Button>
             </a>
           )}
           <a href={gitUrl} target="_blank" rel="noreferrer">
             <Button icon={<IconGitHub />} type="default">
-              See GitHub
+              到 GitHub 上查看
             </Button>
           </a>
         </div>
