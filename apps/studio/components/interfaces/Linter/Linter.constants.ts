@@ -17,17 +17,17 @@ export type LintInfo = {
 export const LINT_TABS = [
   {
     id: LINTER_LEVELS.ERROR,
-    label: 'Errors',
-    description: 'You should consider these issues urgent and and fix them as soon as you can.',
+    label: '错误',
+    description: '你应该将这些问题视为紧急问题，并尽快修复。',
   },
   {
     id: LINTER_LEVELS.WARN,
-    label: 'Warnings ',
-    description: 'You should try and read through these issues and fix them if necessary.',
+    label: '警告 ',
+    description: '你应该尝试浏览这些问题，并在必要时进行修复。',
   },
   {
     id: LINTER_LEVELS.INFO,
-    label: 'Info ',
-    description: 'You should read through these suggestions and consider implementing them.',
+    label: '建议 ',
+    description: '你应该仔细阅读这些建议，并考虑实施它们。',
   },
 ]

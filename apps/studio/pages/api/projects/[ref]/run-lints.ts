@@ -75,13 +75,13 @@ index_ as (
 )
 select
     'unindexed_foreign_keys' as name,
-    'Unindexed foreign keys' as title,
+    '未索引的外键' as title,
     'INFO' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Identifies foreign key constraints without a covering index, which can impact database performance.' as description,
+    '识别没有包含索引的外键约束，这可能会影响数据库性能。' as description,
     format(
-        'Table \`%s.%s\` has a foreign key \`%s\` without a covering index. This can lead to suboptimal query performance.',
+        '表\`%s.%s\`存在没有包含索引的外键 \`%s\`。这可能导致查询性能下降。'
         fk.schema_name,
         fk.table_name,
         fk.fkey_name
@@ -117,13 +117,13 @@ union all
 (
 select
     'auth_users_exposed' as name,
-    'Exposed Auth Users' as title,
+    '暴露的认证用户' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects if auth.users is exposed to anon or authenticated roles via a view or materialized view in schemas exposed to PostgREST, potentially compromising user data security.' as description,
+    '检测是否在暴露给 PostgREST 的模式中，通过视图或物化视图将 auth.users 暴露给 anon 或 authenticated 角色，可能会危及用户数据安全性。' as description,
     format(
-        'View/Materialized View "%s" in the public schema may expose \`auth.users\` data to anon or authenticated roles.',
+        '视图/物化视图 "%s" 在公共模式中可能会将 \`auth.users\` 的数据暴露给 anon 或 authenticated 角色。',
         c.relname
     ) as detail,
     'https://supabase.com/docs/guides/database/database-linter?lint=0002_auth_users_exposed' as remediation,
@@ -235,13 +235,13 @@ with policies as (
 )
 select
     'auth_rls_initplan' as name,
-    'Auth RLS Initialization Plan' as title,
+    '认证 RLS 初始化计划' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Detects if calls to \`auth.<function>()\` in RLS policies are being unnecessarily re-evaluated for each row' as description,
+    '检测在行级安全（RLS）策略中，对\`auth.<function>()\`的调用是否每行都进行了不必要的重复取值。' as description,
     format(
-        'Table \`%s.%s\` has a row level security policy \`%s\` that re-evaluates an auth.<function>() for each row. This produces suboptimal query performance at scale. Resolve the issue by replacing \`auth.<function>()\` with \`(select auth.<function>())\`. See [docs](https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select) for more info.',
+        '表\`%s.%s\`具有一个行级安全策略\`%s\`，该策略为每一行重复执行 auth.<function>()。在大量数据时，这会导致查询性能不佳。通过用\`(select auth.<function>())\`替换\`auth.<function>()\`来解决此问题。更多信息请参见[文档](https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select)。',
         schema_name,
         table_name,
         policy_name
@@ -299,13 +299,13 @@ union all
 (
 select
     'no_primary_key' as name,
-    'No Primary Key' as title,
+    '没有主键' as title,
     'INFO' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Detects if a table does not have a primary key. Tables without a primary key can be inefficient to interact with at scale.' as description,
+    '检测表是否没有主键。没有主键的表在大量数据交互时可能会效率低下。' as description,
     format(
-        'Table \`%s.%s\` does not have a primary key',
+        '表\`%s.%s\`没有主键。',
         pgns.nspname,
         pgc.relname
     ) as detail,
@@ -345,13 +345,13 @@ union all
 (
 select
     'unused_index' as name,
-    'Unused Index' as title,
+    '未使用的索引' as title,
     'INFO' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Detects if an index has never been used and may be a candidate for removal.' as description,
+    '检测索引是否从未被使用过，可能是移除的候选对象。' as description,
     format(
-        'Index \`%s\` on table \`%s.%s\` has not been used',
+        '在表\`%s.%s\`中的索引\`%s\`从未被使用过。',
         psui.indexrelname,
         psui.schemaname,
         psui.relname
@@ -387,13 +387,13 @@ union all
 (
 select
     'multiple_permissive_policies' as name,
-    'Multiple Permissive Policies' as title,
+    '多个允许性行级安全策略' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Detects if multiple permissive row level security policies are present on a table for the same \`role\` and \`action\` (e.g. insert). Multiple permissive policies are suboptimal for performance as each policy must be executed for every relevant query.' as description,
+    '检测表中是否对同一\`role\`（角色）和\`action\`（操作，例如插入）存在多个允许性行级安全策略。多个允许性策略对性能来说不是最优的，因为每个相关查询都必须执行所有策略。' as description,
     format(
-        'Table \`%s.%s\` has multiple permissive policies for role \`%s\` for action \`%s\`. Policies include \`%s\`',
+        '表\`%s.%s\`对于角色\`%s\`在操作\`%s\`上有多个允许性策略。这些策略包括\`%s\。',
         n.nspname,
         c.relname,
         r.rolname,
@@ -462,13 +462,13 @@ union all
 (
 select
     'policy_exists_rls_disabled' as name,
-    'Policy Exists RLS Disabled' as title,
+    '策略存在但 RLS 未启用' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects cases where row level security (RLS) policies have been created, but RLS has not been enabled for the underlying table.' as description,
+    '检测已创建行级安全（RLS）策略但相关表未启用 RLS 的情况。' as description,
     format(
-        'Table \`%s.%s\` has RLS policies but RLS is not enabled on the table. Policies include %s.',
+        '表\`%s.%s\`有RLS策略但表上未启用 RLS。策略包括 %s。',
         n.nspname,
 
         c.relname,
@@ -508,13 +508,13 @@ union all
 (
 select
     'rls_enabled_no_policy' as name,
-    'RLS Enabled No Policy' as title,
+    'RLS 已启用但无策略' as title,
     'INFO' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.' as description,
+    '检测在表上启用了行级安全（RLS）但未创建任何 RLS 策略的情况。' as description,
     format(
-        'Table \`%s.%s\` has RLS enabled, but no policies exist',
+        '表\`%s.%s\`已启用 RLS，但未定义任何策略。',
         n.nspname,
         c.relname
     ) as detail,
@@ -554,13 +554,13 @@ union all
 (
 select
     'duplicate_index' as name,
-    'Duplicate Index' as title,
+    '重复索引' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['PERFORMANCE'] as categories,
-    'Detects cases where two ore more identical indexes exist.' as description,
+    '检测存在两个或更多相同索引的情况。' as description,
     format(
-        'Table \`%s.%s\` has identical indexes %s. Drop all except one of them',
+        '表\`%s.%s\`拥有相同的索引 %s。请只保留一个索引删除其他相同的索引。',
         n.nspname,
         c.relname,
         array_agg(pi.indexname order by pi.indexname)
@@ -611,13 +611,13 @@ union all
 (
 select
     'security_definer_view' as name,
-    'Security Definer View' as title,
+    '定义者视图' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects views defined with the SECURITY DEFINER property. These views enforce Postgres permissions and row level security policies (RLS) of the view creator, rather than that of the querying user' as description,
+    '检测使用 SECURITY DEFINER 属性定义的视图。这些视图强制执行视图创建者的 PostgreSQL 权限和行级安全策略（RLS），而不是查询用户的权限和策略。' as description,
     format(
-        'View \`%s.%s\` is defined with the SECURITY DEFINER property',
+        '视图\`%s.%s\`定义了 SECURITY DEFINER 属性。',
         n.nspname,
         c.relname
     ) as detail,
@@ -663,13 +663,13 @@ union all
 (
 select
     'function_search_path_mutable' as name,
-    'Function Search Path Mutable' as title,
+    '函数搜索路径可变' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects functions with a mutable search_path parameter which could fail to execute successfully for some roles.' as description,
+    '检测具有可变 search_path 参数的函数，这些函数可能无法为某些角色成功执行。' as description,
     format(
-        'Function \`%s.%s\` has a role mutable search_path',
+        '函数\`%s.%s\`拥有一个可随角色变化的 search_path。',
         n.nspname,
         p.proname
     ) as detail,
@@ -703,13 +703,13 @@ union all
 (
 select
     'rls_disabled_in_public' as name,
-    'RLS Disabled in Public' as title,
+    '在 Public 中未启用 RLS' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects cases where row level security (RLS) has not been enabled on tables in schemas exposed to PostgREST' as description,
+    '检测在暴露给 PostgREST 的模式中，哪些表的行级安全（RLS）未被启用。' as description,
     format(
-        'Table \`%s.%s\` is public, but RLS has not been enabled.',
+        '表\`%s.%s\`在 public 中，但 RLS 未被启用。',
         n.nspname,
         c.relname
     ) as detail,
@@ -746,13 +746,13 @@ union all
 (
 select
     'extension_in_public' as name,
-    'Extension in Public' as title,
+    'Public 中的扩展' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects extensions installed in the \`public\` schema.' as description,
+    '检测安装在\`public\`模式下的扩展。' as description,
     format(
-        'Extension \`%s\` is installed in the public schema. Move it to another schema.',
+        '\`%s\`扩展安装在 public 模式下，建议移到其他模式。',
 
         pe.extname
     ) as detail,
@@ -802,13 +802,13 @@ with policies as (
 )
 select
     'rls_references_user_metadata' as name,
-    'RLS references user metadata' as title,
+    'RLS 引用用户元数据' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects when Supabase Auth user_metadata is referenced insecurely in a row level security (RLS) policy.' as description,
+    '检测在行级安全（RLS）策略中是否以不安全的方式引用了 Supabase Auth 的 user_metadata。' as description,
     format(
-        'Table \`%s.%s\` has a row level security policy \`%s\` that references Supabase Auth \`user_metadata\`. \`user_metadata\` is editable by end users and should never be used in a security context.',
+        '表\`%s.%s\`有一个行级安全策略\`%s\`，该策略引用了 Supabase Auth 的\`user_metadata\`。\`user_metadata\`是可由最终用户编辑的，因此绝不应在安全上下文中使用。',
         schema_name,
         table_name,
         policy_name
@@ -843,14 +843,14 @@ union all
 select
 
     'materialized_view_in_api' as name,
-    'Materialized View in API' as title,
+    'API 中的物化视图' as title,
     'WARN' as level,
 
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects materialized views that are accessible over the Data APIs.' as description,
+    '检测可通过数据 API 访问的物化视图。' as description,
     format(
-        'Materialized view \`%s.%s\` is selectable by anon or authenticated roles',
+        '物化视图\`%s.%s\`可被匿名角色或已认证角色查看。',
         n.nspname,
         c.relname
     ) as detail,
@@ -887,13 +887,13 @@ union all
 (
 select
     'foreign_table_in_api' as name,
-    'Foreign Table in API' as title,
+    'API 中的外部表' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
-    'Detects foreign tables that are accessible over APIs. Foreign tables do not respect row level security policies.' as description,
+    '检测可通过 API 访问的外部表。外部表不遵守行级安全策略。' as description,
     format(
-        'Foreign table \`%s.%s\` is accessible over APIs',
+        '外部表\`%s.%s\`可通过API访问。',
         n.nspname,
         c.relname
     ) as detail,

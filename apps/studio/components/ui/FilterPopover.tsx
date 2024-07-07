@@ -40,7 +40,7 @@ export const FilterPopover = ({
       disabled={disabled}
       open={open}
       onOpenChange={() => setOpen(!open)}
-      header={<div className="prose text-xs">Select {name.toLowerCase()}</div>}
+      header={<div className="prose text-xs">选择{name.toLowerCase()}</div>}
       overlay={
         <>
           <div className="space-y-4 min-w-[170px]">

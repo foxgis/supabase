@@ -8,142 +8,142 @@ import { Badge, Button } from 'ui'
 export const lintInfoMap: LintInfo[] = [
   {
     name: 'unindexed_foreign_keys',
-    title: 'Unindexed foreign keys',
+    title: '未索引的外键',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/indexes?schema=${metadata?.schema}`,
-    linkText: 'Create an index',
+    linkText: '创建索引',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0001_unindexed_foreign_keys',
   },
   {
     name: 'auth_users_exposed',
-    title: 'Exposed Auth Users',
+    title: '暴露的认证用户',
     icon: <Lock className="text-foreground-muted" size={15} strokeWidth={1.5} />,
     link: ({ projectRef }) => `/project/${projectRef}/editor`,
-    linkText: 'View table',
+    linkText: '查看数据表',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0002_auth_users_exposed',
   },
   {
     name: 'auth_rls_initplan',
-    title: 'Auth RLS Initialization Plan',
+    title: '认证 RLS 初始化计划',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/policies`,
-    linkText: 'View policies',
+    linkText: '查看策略',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0003_auth_rls_initplan',
   },
   {
     name: 'no_primary_key',
-    title: 'No Primary Key',
+    title: '无主键',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/editor`,
-    linkText: 'View table',
+    linkText: '查看数据表',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0004_no_primary_key',
   },
   {
     name: 'unused_index',
-    title: 'Unused Index',
+    title: '未使用的索引',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/indexes?schema=${metadata?.schema}&table=${metadata?.name}`,
-    linkText: 'View index',
+    linkText: '查看索引',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0005_unused_index',
   },
   {
     name: 'multiple_permissive_policies',
-    title: 'Multiple Permissive Policies',
+    title: '多个允许性策略',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/auth/policies?schema=${metadata?.schema}&search=${metadata?.name}`,
-    linkText: 'View policies',
+    linkText: '查看策略',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0006_multiple_permissive_policies',
   },
   {
     name: 'policy_exists_rls_disabled',
-    title: 'Policy Exists RLS Disabled',
+    title: '策略存在但 RLS 未启用',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/auth/policies?schema=${metadata?.schema}&search=${metadata?.name}`,
-    linkText: 'View policies',
+    linkText: '查看策略',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0007_policy_exists_rls_disabled',
   },
   {
     name: 'rls_enabled_no_policy',
-    title: 'RLS Enabled No Policy',
+    title: 'RLS 已启用但没有策略',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/auth/policies?schema=${metadata?.schema}&search=${metadata?.name}`,
-    linkText: 'View table',
+    linkText: '查看数据表',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0008_rls_enabled_no_policy',
   },
   {
     name: 'duplicate_index',
-    title: 'Duplicate Index',
+    title: '重复索引',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/indexes?schema=${metadata?.schema}&table=${metadata?.name}`,
-    linkText: 'View index',
+    linkText: '查看索引',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0009_duplicate_index',
   },
   {
     name: 'security_definer_view',
-    title: 'Security Definer View',
+    title: '定义者视图',
     icon: <Eye className="text-foreground-muted" size={15} strokeWidth={1.5} />,
     link: () =>
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0010_security_definer_view',
-    linkText: 'View docs',
+    linkText: '查看文档',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0010_security_definer_view',
   },
   {
     name: 'function_search_path_mutable',
-    title: 'Function Search Path Mutable',
+    title: '函数搜索路径可变',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/functions?schema=${metadata?.schema}&search=${metadata?.name}`,
-    linkText: 'View functions',
+    linkText: '查看函数',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0011_function_search_path_mutable',
   },
   {
     name: 'rls_disabled_in_public',
-    title: 'RLS Disabled in Public',
+    title: '在 Public 中未启用 RLS',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/auth/policies?schema=${metadata?.schema}&search=${metadata?.name}`,
-    linkText: 'View policies',
+    linkText: '查看策略',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0013_rls_disabled_in_public',
   },
   {
     name: 'extension_in_public',
-    title: 'Extension in Public',
+    title: 'Public 中的扩展',
     icon: <Unlock className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/extensions?filter=${metadata?.name}`,
-    linkText: 'View extension',
+    linkText: '查看扩展',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0014_extension_in_public',
   },
   {
     name: 'auth_otp_long_expiry',
-    title: 'Auth OTP Long Expiry',
+    title: '身份认证一次性密码（OTP）过期时间过长',
     icon: <Clock className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/providers`,
-    linkText: 'View settings',
+    linkText: '查看设置',
     docsLink: 'https://supabase.com/docs/guides/platform/going-into-prod#security',
   },
   {
     name: 'auth_otp_short_length',
-    title: 'Auth OTP Short Length',
+    title: '身份认证一次性密码（OTP）长度太短',
     icon: <Ruler className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/providers`,
     linkText: 'View settings',
@@ -151,30 +151,30 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'rls_references_user_metadata',
-    title: 'RLS references user metadata',
+    title: 'RLS 引用用户元数据',
     icon: <User className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/policies`,
-    linkText: 'View policies',
+    linkText: '查看策略',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0015_rls_references_user_metadata',
   },
   {
     name: 'materialized_view_in_api',
-    title: 'Materialized View in API',
+    title: 'API 中的物化视图',
     icon: <Eye className="text-foreground-muted" size={15} strokeWidth={1.5} />,
     link: () =>
       `https://supabase.com/docs/guides/database/database-advisors?lint=0016_materialized_view_in_api`,
-    linkText: 'View docs',
+    linkText: '查看文档',
     docsLink:
       'https://supabase.com/docs/guides/database/database-advisors?lint=0016_materialized_view_in_api',
   },
   {
     name: 'foreign_table_in_api',
-    title: 'Foreign Table in API',
+    title: 'API 中的外部表',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1.5} />,
     link: () =>
       `https://supabase.com/docs/guides/database/database-linter?lint=0017_foreign_table_in_api`,
-    linkText: 'View docs',
+    linkText: '查看文档',
     docsLink:
       'https://supabase.com/docs/guides/database/database-linter?lint=0017_foreign_table_in_api',
   },
@@ -238,14 +238,14 @@ export const LintCategoryBadge = ({ category }: { category: string }) => {
 }
 
 export const NoIssuesFound = ({ level }: { level: string }) => {
-  const noun = level === LINTER_LEVELS.ERROR ? 'errors' : 'warnings'
+  const noun = level === LINTER_LEVELS.ERROR ? '错误' : '警告'
   return (
     <div className="absolute top-28 px-6 flex flex-col items-center justify-center w-full gap-y-2">
       <TextSearch className="text-foreground-muted" strokeWidth={1} />
       <div className="text-center">
-        <p className="text-foreground">No {noun} detected</p>
+        <p className="text-foreground">未检测到{noun}</p>
         <p className="text-foreground-light">
-          Congrats! There are no {noun} detected for this database
+          恭喜！此数据库未检测到任何{noun}
         </p>
       </div>
     </div>

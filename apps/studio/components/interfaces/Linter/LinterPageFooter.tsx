@@ -19,9 +19,9 @@ const LinterPageFooter = ({
       <div
         className={cn(hideDbInspectCTA ? 'w-[35%]' : 'w-[33%]', 'flex flex-col gap-y-1 text-sm')}
       >
-        <p>Reset suggestions</p>
+        <p>重置优化建议</p>
         <p className="text-xs text-foreground-light">
-          Consider resetting the analysis making any changes
+          在做出更改后建议重置分析
         </p>
 
         <Button
@@ -31,27 +31,26 @@ const LinterPageFooter = ({
           loading={isLoading || isRefetching}
           onClick={() => refetch()}
         >
-          Rerun linter
+          重新运行检查器
         </Button>
       </div>
 
       <div
         className={cn(hideDbInspectCTA ? 'w-[35%]' : 'w-[33%]', 'flex flex-col gap-y-1 text-sm')}
       >
-        <p>How are these suggestions generated?</p>
+        <p>这些建议是如何生成的？</p>
         <Markdown
           className="text-xs"
-          content="These suggestions use [splinter (Supabase Postgres LINTER)](https://github.com/supabase/splinter)."
+          content="这些建议使用[splinter (Supabase Postgres LINTER)](https://github.com/supabase/splinter)生成。"
         />
       </div>
 
       {!hideDbInspectCTA && (
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>Inspect your database for potential issues</p>
+          <p>检查您的数据库以查找潜在问题</p>
           <Markdown
             className="text-xs"
-            content="The Supabase CLI comes with a range of tools to help inspect your Postgres instances for
-            potential issues. [Learn more here](https://supabase.com/docs/guides/database/inspect)."
+            content="Supabase CLI 提供了一系列工具，可帮助您检查 Postgres 实例中的潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
           />
         </div>
       )}

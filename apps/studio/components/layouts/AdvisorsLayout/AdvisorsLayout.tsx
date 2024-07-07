@@ -19,7 +19,7 @@ const AdvisorsLayout = ({ children }: PropsWithChildren<AdvisorsLayoutProps>) =>
   return (
     <ProjectLayout
       isLoading={false}
-      product="Advisors"
+      product="优化助手"
       productMenu={<ProductMenu page={page} menu={generateAdvisorsMenu(project)} />}
     >
       {children}

@@ -42,17 +42,17 @@ const LintPageTabs = ({
     let label = ''
     if (tab.id === LINTER_LEVELS.ERROR) {
       count = errorLintsCount
-      label = 'errors'
+      label = '错误'
     }
 
     if (tab.id === LINTER_LEVELS.WARN) {
       count = warnLintsCount
-      label = 'warnings'
+      label = '警告'
     }
 
     if (tab.id === LINTER_LEVELS.INFO) {
       count = infoLintsCount
-      label = 'suggestions'
+      label = '建议'
     }
 
     return (

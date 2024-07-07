@@ -103,9 +103,9 @@ const ProjectLayout = ({
                   ? `${projectName} | ${organizationName}`
                   : organizationName
                     ? `${organizationName}`
-                    : 'Supabase'}
+                    : 'FoxGIS'}
           </title>
-          <meta name="description" content="Supabase Studio" />
+          <meta name="description" content="FoxGIS Studio" />
         </Head>
         <div className="flex h-full">
           {/* Left-most navigation side bar to access products */}

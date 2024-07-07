@@ -47,7 +47,7 @@ const LinterDataGrid = ({
   const lintCols = [
     {
       id: 'name',
-      name: 'Issue type',
+      name: '问题类型',
       description: undefined,
       minWidth: 240,
       value: (row: any) => (
@@ -61,7 +61,7 @@ const LinterDataGrid = ({
     },
     {
       id: 'metadata.name',
-      name: 'Entity/item',
+      name: '实体/条目',
       description: undefined,
       minWidth: 230,
       value: (row: any) => (
@@ -75,7 +75,7 @@ const LinterDataGrid = ({
     },
     {
       id: 'description',
-      name: 'Description',
+      name: '描述',
       description: undefined,
       minWidth: 400,
       value: (row: any) => <ReactMarkdown className="text-xs">{row.description}</ReactMarkdown>,
@@ -197,7 +197,7 @@ const LinterDataGrid = ({
                   value="details"
                   className="px-0 pb-0 h-full text-xs  data-[state=active]:bg-transparent !shadow-none"
                 >
-                  Overview
+                  概述
                 </TabsTrigger_Shadcn_>
               </TabsList_Shadcn_>
               <TabsContent_Shadcn_
@@ -213,7 +213,7 @@ const LinterDataGrid = ({
                       <LintCategoryBadge category={selectedLint.categories[0]} />
                     </div>
                     <div className="flex items-center gap-2 text-sm mt-4">
-                      <span>Entity</span>
+                      <span>实体</span>
                       <div className="flex items-center gap-1 px-2 py-0.5 bg-surface-200 border rounded-lg ">
                         <EntityTypeIcon type={selectedLint.metadata?.type} />
                         <LintEntity metadata={selectedLint.metadata} />
@@ -222,20 +222,20 @@ const LinterDataGrid = ({
 
                     <div className="grid">
                       <div>
-                        <h3 className="text-sm">Issue</h3>
+                        <h3 className="text-sm">问题</h3>
                         <ReactMarkdown className="leading-6 text-sm">
                           {selectedLint.detail.replace(/\\`/g, '`')}
                         </ReactMarkdown>
                       </div>
                       <div>
-                        <h3 className="text-sm">Description</h3>
+                        <h3 className="text-sm">描述</h3>
                         <ReactMarkdown className="text-sm">
                           {selectedLint.description.replace(/\\`/g, '`')}
                         </ReactMarkdown>
                       </div>
 
                       <div className="grid gap-2">
-                        <h3 className="text-sm">Resolve</h3>
+                        <h3 className="text-sm">解决方法</h3>
                         <div className="flex items-center gap-2">
                           <LintCTA
                             title={selectedLint.name}
@@ -254,7 +254,7 @@ const LinterDataGrid = ({
                               className="no-underline"
                             >
                               <span className="flex items-center gap-2">
-                                Learn more <ExternalLink size={14} />
+                                了解更多<ExternalLink size={14} />
                               </span>
                             </Link>
                           </Button>

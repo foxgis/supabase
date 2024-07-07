@@ -162,7 +162,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   <title>FoxGIS</title>
                   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 </Head>
-                <MetaFaviconsPagesRouter applicationName="Supabase Studio" />
+                <MetaFaviconsPagesRouter applicationName="FoxGIS Studio" />
                 <PageTelemetry>
                   <TooltipProvider>
                     <RouteValidationWrapper>

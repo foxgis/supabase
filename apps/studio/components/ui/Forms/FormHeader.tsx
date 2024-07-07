@@ -33,7 +33,7 @@ const FormHeader = ({
         {docsUrl !== undefined && (
           <Button asChild type="default" icon={<ExternalLink size={14} />}>
             <Link href={docsUrl} target="_blank" rel="noreferrer">
-              Documentation
+              帮助文档
             </Link>
           </Button>
         )}

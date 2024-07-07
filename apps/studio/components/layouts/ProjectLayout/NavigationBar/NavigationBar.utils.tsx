@@ -12,7 +12,7 @@ import {
   TableEditor,
 } from 'icons'
 import { ICON_SIZE, ICON_STROKE_WIDTH } from './NavigationBar'
-import { Settings, FileText, List, Lightbulb } from 'lucide-react'
+import { Settings, FileText, List, Lightbulb, Waypoints, Map } from 'lucide-react'
 
 export const generateToolRoutes = (ref?: string, project?: Project): Route[] => {
   const isProjectBuilding = project?.status === PROJECT_STATUS.COMING_UP
@@ -65,7 +65,7 @@ export const generateProductRoutes = (
     },
     {
       key: 'database',
-      label: '云数据库',
+      label: '数据库',
       icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/database/tables`),
     },
@@ -119,7 +119,7 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
   return [
     {
       key: 'advisors',
-      label: 'Advisors',
+      label: '优化助手',
       icon: <Lightbulb size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/advisors/security`),
     },

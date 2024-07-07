@@ -6,16 +6,16 @@ export const generateAdvisorsMenu = (project?: Project): ProductMenuGroup[] => {
 
   return [
     {
-      title: 'Advisors',
+      title: '优化助手',
       items: [
         {
-          name: 'Security',
+          name: '安全',
           key: 'security',
           url: `/project/${ref}/advisors/security`,
           items: [],
         },
         {
-          name: 'Performance',
+          name: '性能',
           key: 'performance',
           url: `/project/${ref}/advisors/performance`,
           items: [],
