@@ -5,12 +5,12 @@ name: Studio Unit Tests & Build Check
 
 on:
   push:
-    branches: [master, studio]
+    branches: [foxgis]
     paths:
       - 'apps/studio/**'
       - 'package-lock.json'
   pull_request:
-    branches: [master, studio]
+    branches: [foxgis]
     paths:
       - 'apps/studio/**'
       - 'package-lock.json'
