@@ -27,8 +27,8 @@ const FilterPopover = ({ table, filters, setParams }: FilterPopoverProps) => {
 
   const btnText =
     (filters || []).length > 0
-      ? `Filtered by ${filters.length} rule${filters.length > 1 ? 's' : ''}`
-      : 'Filter'
+      ? `已按${filters.length}个条件筛选`
+      : '筛选'
 
   const onApplyFilters = (appliedFilters: Filter[]) => {
     setParams((prevParams) => {
@@ -130,22 +130,26 @@ const FilterOverlay = ({ table, filters: filtersFromUrl, onApplyFilters }: Filte
         ))}
         {filters.length == 0 && (
           <div className="space-y-1 px-3">
-            <h5 className="text-sm text-foreground-light">No filters applied to this view</h5>
-            <p className="text-xs text-foreground-lighter">Add a column below to filter the view</p>
+            <h5 className="text-sm text-foreground-light">
+              此视图未应用任何筛选条件
+            </h5>
+            <p className="text-xs text-foreground-lighter">
+              请在下方添加列以筛选此视图
+            </p>
           </div>
         )}
       </div>
       <PopoverSeparator_Shadcn_ />
       <div className="px-3 flex flex-row justify-between">
         <Button icon={<Plus />} type="text" onClick={onAddFilter}>
-          Add filter
+          添加筛选条件
         </Button>
         <Button
           disabled={isEqual(filters, initialFilters)}
           type="default"
           onClick={() => onApplyFilters(filters)}
         >
-          Apply filter
+          应用筛选条件
         </Button>
       </div>
     </div>

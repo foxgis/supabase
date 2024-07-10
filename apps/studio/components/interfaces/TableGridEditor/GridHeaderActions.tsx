@@ -53,7 +53,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
 
   const { mutate: updateTable } = useTableUpdateMutation({
     onError: (error) => {
-      toast.error(`Failed to toggle RLS: ${error.message}`)
+      toast.error(`启用 RLS 失败：${error.message}`)
     },
     onSettled: () => {
       closeConfirmModal()
@@ -89,7 +89,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
         setShowEnableRealtime(false)
       },
       onError: (error) => {
-        toast.error(`Failed to toggle realtime for ${table.name}: ${error.message}`)
+        toast.error(`为 ${table.name} 启用实时消息失败：${error.message}`)
       },
     })
 
@@ -117,8 +117,8 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
     )
 
   const toggleRealtime = async () => {
-    if (!project) return console.error('Project is required')
-    if (!realtimePublication) return console.error('Unable to find realtime publication')
+    if (!project) return console.error('未找到项目')
+    if (!realtimePublication) return console.error('未发现实时消息发布')
 
     const exists = realtimeEnabledTables.some((x: any) => x.id == table.id)
     const tables = !exists
@@ -162,7 +162,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
           <Tooltip.Root delayDuration={0}>
             <Tooltip.Trigger className="w-full">
               <div className="border border-strong rounded bg-overlay-hover px-3 py-1 text-xs">
-                Viewing as read-only
+                以只读模式查看
               </div>
             </Tooltip.Trigger>
             <Tooltip.Portal>
@@ -175,7 +175,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                   ].join(' ')}
                 >
                   <span className="text-xs text-foreground">
-                    You need additional permissions to manage your project's data
+                    您需要额外的权限才能管理您的项目数据
                   </span>
                 </div>
               </Tooltip.Content>
@@ -199,7 +199,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                         passHref
                         href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
                       >
-                        Add RLS policy
+                        添加 RLS 策略
                       </Link>
                     </Button>
                   </Tooltip.Trigger>
@@ -213,9 +213,9 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                         ].join(' ')}
                       >
                         <div className="text-xs text-foreground p-1 leading-relaxed">
-                          <p>RLS is enabled for this table, but no policies are set. </p>
+                          <p>此表启用了 RLS，但没有设置策略。</p>
                           <p>
-                            Select queries will return an <u>empty array</u> of results.
+                            Select 查询将返回一个<u>空数组</u>的结果。
                           </p>
                         </div>
                       </div>
@@ -241,7 +241,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                     passHref
                     href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
                   >
-                    Auth {policies.length > 1 ? 'policies' : 'policy'}
+                    认证策略
                   </Link>
                 </Button>
               )}
@@ -250,21 +250,19 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="warning" icon={<Lock strokeWidth={1.5} />}>
-                  RLS disabled
+                  RLS 已禁用
                 </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
                 <h3 className="flex items-center gap-2">
-                  <Lock size={16} /> Row Level Security (RLS)
+                  <Lock size={16} /> 行级安全策略（RLS）
                 </h3>
                 <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                   <p>
-                    You can restrict and control who can read, write and update data in this table
-                    using Row Level Security.
+                    在这张表中，您可以使用行级安全性来限制和控制谁可以读取、写入和更新数据。
                   </p>
                   <p>
-                    With RLS enabled, anonymous users will not be able to read/write data in the
-                    table.
+                    启用 RLS 后，匿名用户将无法在表中读取/写入数据。
                   </p>
                   {!isLocked && (
                     <div className="mt-2">
@@ -272,7 +270,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                         type="default"
                         onClick={() => setRlsConfirmModalOpen(!rlsConfirmModalOpen)}
                       >
-                        Enable RLS for this table
+                        启用此表的 RLS
                       </Button>
                     </div>
                   )}
@@ -286,21 +284,20 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
           <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
             <PopoverTrigger_Shadcn_ asChild>
               <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                Security Definer view
+                Security Definer 视图
               </Button>
             </PopoverTrigger_Shadcn_>
             <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
               <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> Secure your View
+                <Unlock size={16} /> 保护你的视图
               </h3>
               <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                 <p>
-                  This view is defined with the Security Definer property, giving it permissions of
-                  the view's creator (Postgres), rather than the permissions of the querying user.
+                  这个视图是用 Security Definer 属性定义的，它赋予了它创建者（Postgres）的权限，而不是查询用户的权限。
                 </p>
 
                 <p>
-                  Since this view is in the public schema, it is accessible via your project's APIs.
+                  由于这个视图在 public 模式下，所以可以通过你的项目的 API 访问。
                 </p>
 
                 <div className="mt-2">
@@ -309,7 +306,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                       target="_blank"
                       href={`/project/${ref}/advisors/security?preset=${matchingViewLint?.level}&id=${matchingViewLint?.cache_key}`}
                     >
-                      Learn more
+                      了解更多
                     </Link>
                   </Button>
                 </div>
@@ -322,21 +319,20 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
           <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
             <PopoverTrigger_Shadcn_ asChild>
               <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                Security Definer view
+                Security Definer 物化视图
               </Button>
             </PopoverTrigger_Shadcn_>
             <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
               <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> Secure your View
+                <Unlock size={16} /> 保护你的物化视图
               </h3>
               <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                 <p>
-                  This view is defined with the Security Definer property, giving it permissions of
-                  the view's creator (Postgres), rather than the permissions of the querying user.
+                  这个视图是用 Security Definer 属性定义的，它赋予了它创建者（Postgres）的权限，而不是查询用户的权限。
                 </p>
 
                 <p>
-                  Since this view is in the public schema, it is accessible via your project's APIs.
+                  由于这个视图在 public 模式下，所以可以通过你的项目的 API 访问。
                 </p>
 
                 <div className="mt-2">
@@ -345,7 +341,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                       target="_blank"
                       href={`/project/${ref}/advisors/security?preset=${matchingMaterializedViewLint?.level}&id=${matchingMaterializedViewLint?.cache_key}`}
                     >
-                      Learn more
+                      了解更多
                     </Link>
                   </Button>
                 </div>
@@ -363,18 +359,17 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             </PopoverTrigger_Shadcn_>
             <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
               <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> Secure Foreign table
+                <Unlock size={16} /> 保护外部表
               </h3>
               <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                 <p>
-                  Foreign tables do not enforce RLS. Move them to a private schema not exposed to
-                  Postgrest or disable Postgrest.
+                  外部表无法应用 RLS。请将它们移动到一个私有的模式，使其不被暴露给 Postgrest 或禁用 Postgrest。
                 </p>
 
                 <div className="mt-2">
                   <Button type="default" asChild>
                     <Link target="_blank" href="https://github.com/orgs/supabase/discussions/21647">
-                      Learn more
+                      了解更多
                     </Link>
                   </Button>
                 </div>
@@ -396,7 +391,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             }
             onClick={() => setShowEnableRealtime(true)}
           >
-            Realtime {isRealtimeEnabled ? 'on' : 'off'}
+            实时消息 {isRealtimeEnabled ? '已开启' : '已关闭'}
           </Button>
         )}
 
@@ -406,24 +401,23 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
       <ConfirmationModal
         visible={showEnableRealtime}
         loading={isTogglingRealtime}
-        title={`${isRealtimeEnabled ? 'Disable' : 'Enable'} realtime for ${table.name}`}
-        confirmLabel={`${isRealtimeEnabled ? 'Disable' : 'Enable'} realtime`}
-        confirmLabelLoading={`${isRealtimeEnabled ? 'Disabling' : 'Enabling'} realtime`}
+        title={`为表 ${table.name} ${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
+        confirmLabel={`${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
+        confirmLabelLoading={`${isRealtimeEnabled ? '正在禁用' : '正在启用'}实时消息`}
         onCancel={() => setShowEnableRealtime(false)}
         onConfirm={() => toggleRealtime()}
       >
         <div className="space-y-2">
           <p className="text-sm">
-            Once realtime has been {isRealtimeEnabled ? 'disabled' : 'enabled'}, the table will{' '}
-            {isRealtimeEnabled ? 'no longer ' : ''}broadcast any changes to authorized subscribers.
+            一旦实时消息被{isRealtimeEnabled ? '禁用' : '启用'}，将{isRealtimeEnabled ? '不再' : ''}向授权的订阅者广播表的任何更新事件。
           </p>
           {!isRealtimeEnabled && (
             <p className="text-sm">
-              You may also select which events to broadcast to subscribers on the{' '}
+              您也可以在{' '}
               <Link href={`/project/${ref}/database/publications`} className="text-brand">
-                database publications
+                数据库消息发布
               </Link>{' '}
-              settings.
+              设置中选择要向订阅者广播的事件。
             </p>
           )}
         </div>
@@ -433,10 +427,10 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
         <ConfirmModal
           danger={(table as PostgresTable).rls_enabled}
           visible={rlsConfirmModalOpen}
-          title="Confirm to enable Row Level Security"
-          description="Are you sure you want to enable Row Level Security for this table?"
-          buttonLabel="Enable RLS"
-          buttonLoadingLabel="Updating"
+          title="确认启用行级安全策略"
+          description="您确定要启用这个表的行级安全策略吗？"
+          buttonLabel="启用 RLS"
+          buttonLoadingLabel="正在更新"
           onSelectCancel={closeConfirmModal}
           onSelectConfirm={onToggleRLS}
         />

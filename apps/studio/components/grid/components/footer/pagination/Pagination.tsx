@@ -13,9 +13,9 @@ import { useDispatch, useTrackedState } from '../../../store'
 import { DropdownControl } from '../../common'
 
 const rowsPerPageOptions = [
-  { value: 100, label: '100 rows' },
-  { value: 500, label: '500 rows' },
-  { value: 1000, label: '1000 rows' },
+  { value: 100, label: '100 条/页' },
+  { value: 500, label: '500 条/页' },
+  { value: 1000, label: '1000 条/页' },
 ]
 
 const Pagination = () => {
@@ -136,7 +136,7 @@ const Pagination = () => {
 
   return (
     <div className="sb-grid-pagination">
-      {isLoading && <p className="text-sm text-foreground-light">Loading records count...</p>}
+      {isLoading && <p className="text-sm text-foreground-light">加载记录数量...</p>}
 
       {isSuccess && (
         <>
@@ -147,7 +147,7 @@ const Pagination = () => {
             disabled={page <= 1 || isLoading}
             onClick={onPreviousPage}
           />
-          <p className="text-sm text-foreground-light">Page</p>
+          <p className="text-sm text-foreground-light">第</p>
           <div className="sb-grid-pagination-input-container">
             <InputNumber
               // [Fran] we'll have to upgrade the UI component types to accept the null value when users delete the input content
@@ -162,7 +162,7 @@ const Pagination = () => {
               min={1}
             />
           </div>
-          <p className="text-sm text-foreground-light">of {totalPages}</p>
+          <p className="text-sm text-foreground-light">页，共计 {totalPages} 页</p>
           <Button
             icon={<ArrowRight />}
             type="outline"
@@ -178,38 +178,38 @@ const Pagination = () => {
             align="start"
           >
             <Button asChild type="outline" style={{ padding: '3px 10px' }}>
-              <span>{`${snap.rowsPerPage} rows`}</span>
+              <span>{`${snap.rowsPerPage} 条/页`}</span>
             </Button>
           </DropdownControl>
           <p className="text-sm text-foreground-light">{`${data.count.toLocaleString()} ${
-            data.count === 0 || data.count > 1 ? `records` : 'record'
+            data.count === 0 || data.count > 1 ? `条记录` : '条记录'
           }`}</p>
 
           <ConfirmationModal
             visible={isConfirmPreviousModalOpen}
-            title="Confirm moving to previous page"
-            confirmLabel="Confirm"
+            title="确定要切换到上一页吗？"
+            confirmLabel="确定"
             onCancel={() => setIsConfirmPreviousModalOpen(false)}
             onConfirm={() => {
               onConfirmPreviousPage()
             }}
           >
             <p className="py-4 text-sm text-foreground-light">
-              The currently selected lines will be deselected, do you want to proceed?
+              当前选中的行会被取消选中，确定要切换到上一页吗？
             </p>
           </ConfirmationModal>
 
           <ConfirmationModal
             visible={isConfirmNextModalOpen}
-            title="Confirm moving to next page"
-            confirmLabel="Confirm"
+            title="确定要切换到下一页吗？"
+            confirmLabel="确定"
             onCancel={() => setIsConfirmNextModalOpen(false)}
             onConfirm={() => {
               onConfirmNextPage()
             }}
           >
             <p className="py-4 text-sm text-foreground-light">
-              The currently selected lines will be deselected, do you want to proceed?
+              当前选中的行会被取消选中，确定要切换到下一页吗？
             </p>
           </ConfirmationModal>
         </>
@@ -217,7 +217,7 @@ const Pagination = () => {
 
       {isError && (
         <p className="text-sm text-foreground-light">
-          Error fetching records count. Please refresh the page.
+          加载记录数量失败，请刷新页面重试。
         </p>
       )}
     </div>

@@ -34,19 +34,19 @@ const EmptyState = ({}: EmptyStateProps) => {
     <div className="w-full h-full flex items-center justify-center">
       {totalCount === 0 ? (
         <ProductEmptyState
-          title="Table Editor"
-          ctaButtonLabel={canCreateTables ? 'Create a new table' : undefined}
+          title="表编辑器"
+          ctaButtonLabel={canCreateTables ? '新建表' : undefined}
           onClickCta={canCreateTables ? snap.onAddTable : undefined}
         >
           <p className="text-sm text-foreground-light">
-            There are no tables available in this schema.
+            这个模式下没有可查看的表。
           </p>
         </ProductEmptyState>
       ) : (
         <div className="flex flex-col items-center space-y-4">
           <ProductEmptyState
             title="数据表"
-            ctaButtonLabel={canCreateTables ? '创建表' : undefined}
+            ctaButtonLabel={canCreateTables ? '新建表' : undefined}
             onClickCta={canCreateTables ? snap.onAddTable : undefined}
           >
             <p className="text-sm text-foreground-light">

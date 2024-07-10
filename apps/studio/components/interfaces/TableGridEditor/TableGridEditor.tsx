@@ -196,7 +196,7 @@ const TableGridEditor = ({
     if (column) {
       snap.onEditColumn(column)
     } else {
-      toast.error(`Unable to find column ${name} in ${selectedTable?.name}`)
+      toast.error(`在 ${selectedTable?.name} 中找不到名为 ${name} 的列`)
     }
   }
 
@@ -205,7 +205,7 @@ const TableGridEditor = ({
     if (column) {
       snap.onDeleteColumn(column)
     } else {
-      toast.error(`Unable to find column ${name} in ${selectedTable?.name}`)
+      toast.error(`在 ${selectedTable?.name} 中找不到名为 ${name} 的列`)
     }
   }
 
@@ -238,13 +238,13 @@ const TableGridEditor = ({
         title: (
           <Markdown
             className="text-foreground [&>p]:m-0"
-            content="Unable to update row as table has no primary keys"
+            content="无法更新行，因为表中没有主键"
           />
         ) as any,
         description: (
           <Markdown
             className="[&>p]:m-0"
-            content="Add a primary key column to your table first to serve as a unique identifier for each row before updating or deleting the row."
+            content="在更新或删除行之前，请先向表中添加主键列，作为每一行的唯一标识符。"
           />
         ),
         action: (
@@ -255,7 +255,7 @@ const TableGridEditor = ({
                 rel="noreferrer"
                 href="https://supabase.com/docs/guides/database/tables#primary-keys"
               >
-                Documentation
+                查看文档
               </a>
             </Button>
           </div>
@@ -315,9 +315,9 @@ const TableGridEditor = ({
           (isViewSelected || isTableSelected) && selectedView === 'definition' ? (
             <div className="flex items-center space-x-2">
               <p>
-                SQL Definition of <code className="text-sm">{selectedTable.name}</code>{' '}
+                <code className="text-sm">{selectedTable.name}</code>的 SQL 定义{' '}
               </p>
-              <p className="text-foreground-light text-sm">(Read only)</p>
+              <p className="text-foreground-light text-sm">（只读）</p>
             </div>
           ) : null
         }

@@ -221,11 +221,11 @@ const DeleteConfirmationDialogs = ({
         variant="destructive"
         size="small"
         visible={snap.confirmationDialog?.type === 'column'}
-        title={`Confirm deletion of column "${
+        title={`确认删除列 "${
           snap.confirmationDialog?.type === 'column' && snap.confirmationDialog.column.name
         }"`}
-        confirmLabel="Delete"
-        confirmLabelLoading="Deleting"
+        confirmLabel="删除"
+        confirmLabelLoading="删除中"
         onCancel={() => {
           snap.closeConfirmationDialog()
         }}
@@ -236,19 +236,18 @@ const DeleteConfirmationDialogs = ({
             Are you sure you want to delete the selected column? This action cannot be undone.
           </p>
           <Checkbox
-            label="Drop column with cascade?"
-            description="Deletes the column and its dependent objects"
+            label="级联删除列？"
+            description="删除列及其相关联的对象"
             checked={isDeleteWithCascade}
             onChange={() => snap.toggleConfirmationIsWithCascade()}
           />
           {isDeleteWithCascade && (
             <Alert_Shadcn_
               variant="warning"
-              title="Warning: Dropping with cascade may result in unintended consequences"
+              title="警告：级联删除可能导致意外后果"
             >
               <AlertTitle_Shadcn_>
-                All dependent objects will be removed, as will any objects that depend on them,
-                recursively.
+                所有相关联的对象都会被删除，包括任何依赖它们的对象，递归执行删除。
               </AlertTitle_Shadcn_>
               <AlertDescription_Shadcn_>
                 <Button asChild size="tiny" type="default" icon={<ExternalLink />}>
@@ -257,7 +256,7 @@ const DeleteConfirmationDialogs = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    About dependency tracking
+                    关于依赖跟踪
                   </Link>
                 </Button>
               </AlertDescription_Shadcn_>
@@ -271,10 +270,10 @@ const DeleteConfirmationDialogs = ({
         size="small"
         visible={snap.confirmationDialog?.type === 'table'}
         title={
-          <span className="break-words">{`Confirm deletion of table "${selectedTable?.name}"`}</span>
+          <span className="break-words">{`确认删除表 "${selectedTable?.name}"`}</span>
         }
-        confirmLabel="Delete"
-        confirmLabelLoading="Deleting"
+        confirmLabel="删除"
+        confirmLabelLoading="删除中"
         onCancel={() => {
           snap.closeConfirmationDialog()
         }}
@@ -282,22 +281,21 @@ const DeleteConfirmationDialogs = ({
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground-light">
-            Are you sure you want to delete the selected table? This action cannot be undone.
+            您确定要删除选中的表吗？此操作无法撤消。
           </p>
           <Checkbox
-            label="Drop table with cascade?"
-            description="Deletes the table and its dependent objects"
+            label="级联删除表？"
+            description="删除表及其相关联的对象"
             checked={isDeleteWithCascade}
             onChange={() => snap.toggleConfirmationIsWithCascade(!isDeleteWithCascade)}
           />
           {isDeleteWithCascade && (
             <Alert_Shadcn_ variant="warning">
               <AlertTitle_Shadcn_>
-                Warning: Dropping with cascade may result in unintended consequences
+                警告：级联删除可能导致意外后果
               </AlertTitle_Shadcn_>
               <AlertDescription_Shadcn_>
-                All dependent objects will be removed, as will any objects that depend on them,
-                recursively.
+                所有相关联的对象都会被删除，包括任何依赖它们的对象，递归执行删除。
               </AlertDescription_Shadcn_>
               <AlertDescription_Shadcn_ className="mt-4">
                 <Button asChild size="tiny" type="default" icon={<ExternalLink />}>
@@ -306,7 +304,7 @@ const DeleteConfirmationDialogs = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    About dependency tracking
+                    关于依赖跟踪
                   </Link>
                 </Button>
               </AlertDescription_Shadcn_>
@@ -321,23 +319,23 @@ const DeleteConfirmationDialogs = ({
         visible={snap.confirmationDialog?.type === 'row'}
         title={
           <p className="break-words">
-            <span>Confirm to delete the selected row</span>
-            <span>{numRows > 1 && 's'}</span>
+            <span>确认删除选中的行</span>
+            <span>{numRows > 1 && ''}</span>
           </p>
         }
-        confirmLabel="Delete"
-        confirmLabelLoading="Deleting"
+        confirmLabel="删除"
+        confirmLabelLoading="删除中"
         onCancel={() => snap.closeConfirmationDialog()}
         onConfirm={() => onConfirmDeleteRow()}
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground-light">
-            <span>Are you sure you want to delete </span>
-            <span>{isAllRowsSelected ? 'all' : 'the selected'} </span>
+            <span>您确定要删除</span>
+            <span>{isAllRowsSelected ? '所有的' : '选中的'} </span>
             <span>{numRows > 1 && `${numRows} `}</span>
-            <span>row</span>
-            <span>{numRows > 1 && 's'}</span>
-            <span>? This action cannot be undone.</span>
+            <span>行</span>
+            <span>{numRows > 1 && ''}</span>
+            <span>？此操作无法撤消。</span>
           </p>
         </div>
       </ConfirmationModal>

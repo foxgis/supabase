@@ -3,7 +3,7 @@ name: Check code with TypeScript
 on:
   pull_request:
     branches:
-      - 'master'
+      - 'foxgis'
 
 # Cancel old builds on new commit for same workflow + branch/PR
 concurrency:

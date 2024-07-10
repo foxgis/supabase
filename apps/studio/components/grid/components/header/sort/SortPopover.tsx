@@ -27,8 +27,8 @@ const SortPopover = ({ table, sorts, setParams }: SortPopoverProps) => {
 
   const btnText =
     (sorts || []).length > 0
-      ? `Sorted by ${sorts.length} rule${sorts.length > 1 ? 's' : ''}`
-      : 'Sort'
+      ? `已按${sorts.length}条规则排序`
+      : '排序'
 
   const onApplySorts = (appliedSorts: Sort[]) => {
     setParams((prevParams) => {
@@ -128,8 +128,8 @@ const SortOverlay = ({ table, sorts: sortsFromUrl, onApplySorts }: SortOverlayPr
       ))}
       {sorts.length === 0 && (
         <div className="space-y-1 px-3">
-          <h5 className="text-sm text-foreground-light">No sorts applied to this view</h5>
-          <p className="text-xs text-foreground-lighter">Add a column below to sort the view</p>
+          <h5 className="text-sm text-foreground-light">此视图未应用任何排序规则</h5>
+          <p className="text-xs text-foreground-lighter">在下方添加一列，对视图进行排序</p>
         </div>
       )}
 
@@ -149,11 +149,11 @@ const SortOverlay = ({ table, sorts: sortsFromUrl, onApplySorts }: SortOverlayPr
               className="sb-grid-dropdown__item-trigger"
               data-testid="table-editor-pick-column-to-sort-button"
             >
-              <span>Pick {sorts.length > 1 ? 'another' : 'a'} column to sort by</span>
+              <span>选择{sorts.length > 1 ? '另一列' : '一列'}对视图进行排序</span>
             </Button>
           </DropdownControl>
         ) : (
-          <p className="text-sm text-foreground-light">All columns have been added</p>
+          <p className="text-sm text-foreground-light">所有列都已添加</p>
         )}
         <div className="flex items-center">
           <Button
@@ -161,7 +161,7 @@ const SortOverlay = ({ table, sorts: sortsFromUrl, onApplySorts }: SortOverlayPr
             type="default"
             onClick={() => onApplySorts(sorts)}
           >
-            Apply sorting
+            应用排序规则
           </Button>
         </div>
       </div>

@@ -3,7 +3,7 @@ name: Build studio multiarch image with buildx
 on:
   # run this action every day at 04:00 UTC (Singapore noon)
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 4 * * 1'
   workflow_dispatch:
 
 jobs:

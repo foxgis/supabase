@@ -28,20 +28,20 @@ const SchemaEditor = ({ visible, closePanel }: SchemaEditorProps) => {
 
   const onSaveChanges = (resolve: any) => {
     const errors: any = {}
-    if (name.length === 0) errors.name = 'Please provide a name for your schema'
+    if (name.length === 0) errors.name = '请为模式指定名称'
     if (Object.keys(errors).length > 0) {
       resolve()
       return setErrors(errors)
     }
 
-    if (project === undefined) return console.error('Project is required')
+    if (project === undefined) return console.error('未找到项目')
     createSchema(
       { projectRef: project.ref, connectionString: project.connectionString, name },
       {
         onSuccess: () => {
           resolve()
           closePanel()
-          toast.success(`Successfully created schema "${name}"`)
+          toast.success(`成功创建了模式 "${name}"`)
         },
       }
     )
@@ -52,14 +52,14 @@ const SchemaEditor = ({ visible, closePanel }: SchemaEditorProps) => {
       size="large"
       key="SchemaEditor"
       visible={visible}
-      header={'Create a new schema'}
+      header={'创建模式'}
       className="transition-all duration-100 ease-in"
       onCancel={closePanel}
       onConfirm={() => (resolve: () => void) => onSaveChanges(resolve)}
       customFooter={
         <ActionBar
-          backButtonLabel="Cancel"
-          applyButtonLabel="Save"
+          backButtonLabel="取消"
+          applyButtonLabel="保存"
           closePanel={closePanel}
           applyFunction={(resolve: () => void) => onSaveChanges(resolve)}
         />
@@ -69,7 +69,7 @@ const SchemaEditor = ({ visible, closePanel }: SchemaEditorProps) => {
         <SidePanel.Content>
           <div className="space-y-10 py-6">
             <Input
-              label="Name"
+              label="名称"
               layout="horizontal"
               type="text"
               error={errors?.name}

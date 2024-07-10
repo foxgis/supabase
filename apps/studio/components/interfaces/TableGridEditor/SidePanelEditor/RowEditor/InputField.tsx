@@ -55,8 +55,8 @@ const InputField = ({
               field.defaultValue === null
                 ? ''
                 : typeof field.defaultValue === 'string' && field.defaultValue.length === 0
-                  ? 'EMPTY'
-                  : `Default: ${field.defaultValue}`
+                  ? '空字符'
+                  : `默认值：${field.defaultValue}`
             }
             onChange={(event: any) => onUpdateField({ [field.name]: event.target.value })}
           />

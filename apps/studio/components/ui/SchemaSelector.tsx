@@ -70,20 +70,20 @@ const SchemaSelector = ({
     <div className={className}>
       {isSchemasLoading && (
         <Button type="default" className="justify-start" block size={size} loading>
-          Loading schemas...
+          加载模式...
         </Button>
       )}
 
       {showError && isSchemasError && (
         <Alert_Shadcn_ variant="warning" className="!px-3 !py-3">
           <AlertTitle_Shadcn_ className="text-xs text-amber-900">
-            Failed to load schemas
+            加载模式失败
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="text-xs mb-2 break-words">
-            Error: {(schemasError as any)?.message}
+            错误：{(schemasError as any)?.message}
           </AlertDescription_Shadcn_>
           <Button type="default" size="tiny" onClick={() => refetchSchemas()}>
-            Reload schemas
+            重新加载模式
           </Button>
         </Alert_Shadcn_>
       )}
@@ -101,7 +101,7 @@ const SchemaSelector = ({
               }
             >
               <div className="w-full flex gap-1">
-                <p className="text-foreground-lighter">schema:</p>
+                <p className="text-foreground-lighter">模式：</p>
                 <p className="text-foreground">
                   {selectedSchemaName === '*' ? 'All schemas' : selectedSchemaName}
                 </p>
@@ -110,7 +110,7 @@ const SchemaSelector = ({
           </PopoverTrigger_Shadcn_>
           <PopoverContent_Shadcn_ className="p-0" side="bottom" align="start" sameWidthAsTrigger>
             <Command_Shadcn_>
-              <CommandInput_Shadcn_ placeholder="Find schema..." />
+              <CommandInput_Shadcn_ placeholder="查找模式..." />
               <CommandList_Shadcn_>
                 <CommandEmpty_Shadcn_>No schemas found</CommandEmpty_Shadcn_>
                 <CommandGroup_Shadcn_>
@@ -171,7 +171,7 @@ const SchemaSelector = ({
                         }}
                       >
                         <Plus size={12} />
-                        Create a new schema
+                        创建模式
                       </CommandItem_Shadcn_>
                     </CommandGroup_Shadcn_>
                   </>

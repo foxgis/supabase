@@ -173,9 +173,9 @@ const RowEditor = ({
                 <SidePanel.Content>
                   <div className="space-y-10 py-6">
                     <div>
-                      <h3 className="text-base text-foreground">Optional Fields</h3>
+                      <h3 className="text-base text-foreground">可选字段</h3>
                       <p className="text-sm text-foreground-lighter">
-                        These are columns that do not need any value
+                        这些列不一定需要设置值
                       </p>
                     </div>
                     {optionalFields.map((field: RowField) => {
@@ -221,8 +221,8 @@ const RowEditor = ({
           <div className="flex-shrink">
             <ActionBar
               loading={loading}
-              backButtonLabel="Cancel"
-              applyButtonLabel="Save"
+              backButtonLabel="取消"
+              applyButtonLabel="保存"
               closePanel={closePanel}
             />
           </div>

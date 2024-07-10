@@ -158,7 +158,7 @@ const InnerSideBarFilterSortDropdown = forwardRef<
             <IconChevronsDown size={18} strokeWidth={1} />
           </TooltipTrigger_Shadcn_>
         </DropdownMenuTrigger>
-        <TooltipContent_Shadcn_ side="bottom">Sort By</TooltipContent_Shadcn_>
+        <TooltipContent_Shadcn_ side="bottom">排序</TooltipContent_Shadcn_>
       </Tooltip_Shadcn_>
       <DropdownMenuContent side="bottom" align="end" className={cn('w-48', contentClassName)}>
         <DropdownMenuRadioGroup value={value} onValueChange={onValueChange}>

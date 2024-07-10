@@ -109,13 +109,13 @@ const SortRow = ({ table, index, columnName, sort, onDelete, onToggle, onDrag }:
       <div className="grow">
         <span className="flex grow items-center gap-1 truncate text-sm text-foreground">
           <span className="text-xs text-foreground-lighter">
-            {index > 0 ? 'then by' : 'sort by'}
+            {index > 0 ? '然后按' : '排序按'}
           </span>
           {column.name}
         </span>
       </div>
       <div className="flex items-center gap-1">
-        <label className="text-xs text-foreground-lighter">ascending:</label>
+        <label className="text-xs text-foreground-lighter">升序：</label>
         <Toggle
           size="tiny"
           layout="flex"

@@ -29,10 +29,10 @@ export const DropdownControl = ({
           {options.map((x) => {
             return (
               <DropdownMenuItem key={x.value} onClick={() => onSelect(x.value)}>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 whitespace-nowrap">
                   {x.preLabel && <span className="grow text-foreground-lighter">{x.preLabel}</span>}
                   <span>{x.label}</span>
-                  {x.postLabel && <span className="text-foreground-lighter">{x.postLabel}</span>}
+                  {x.postLabel && <span className="text-foreground-lighter whitespace-nowrap">{x.postLabel}</span>}
                 </div>
               </DropdownMenuItem>
             )

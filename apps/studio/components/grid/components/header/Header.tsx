@@ -120,7 +120,7 @@ const DefaultHeader = ({ table, onAddColumn, onAddRow, onImportData }: DefaultHe
                     size="tiny"
                     icon={<ChevronDown strokeWidth={1.5} />}
                   >
-                    Insert
+                    插入
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">
@@ -143,9 +143,9 @@ const DefaultHeader = ({ table, onAddColumn, onAddRow, onImportData }: DefaultHe
                               />
                             </div>
                             <div>
-                              <p>Insert row</p>
+                              <p>插入行</p>
                               <p className="text-foreground-light">
-                                Insert a new row into {table.name}
+                                向 {table.name} 插入新行
                               </p>
                             </div>
                           </DropdownMenuItem>,
@@ -169,9 +169,9 @@ const DefaultHeader = ({ table, onAddColumn, onAddRow, onImportData }: DefaultHe
                               />
                             </div>
                             <div>
-                              <p>Insert column</p>
+                              <p>插入</p>
                               <p className="text-foreground-light">
-                                Insert a new column into {table.name}
+                                向 {table.name} 插入新列
                               </p>
                             </div>
                           </DropdownMenuItem>,
@@ -200,8 +200,8 @@ const DefaultHeader = ({ table, onAddColumn, onAddRow, onImportData }: DefaultHe
                               />
                             </div>
                             <div>
-                              <p>Import data from CSV</p>
-                              <p className="text-foreground-light">Insert new rows from a CSV</p>
+                              <p>导入 CSV</p>
+                              <p className="text-foreground-light">通过 CSV 批量插入新行</p>
                             </div>
                           </DropdownMenuItem>,
                         ]
@@ -288,13 +288,13 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
 
     if (allRowsSelected && totalRows > MAX_EXPORT_ROW_COUNT) {
       toast.error(
-        `Sorry! We're unable to support exporting of CSV for row counts larger than ${MAX_EXPORT_ROW_COUNT.toLocaleString()} at the moment.`
+        `抱歉！我们暂时无法支持导出超过 ${MAX_EXPORT_ROW_COUNT.toLocaleString()} 行的 CSV。`
       )
       return setIsExporting(false)
     }
 
     if (!project) {
-      toast.error('Project is required')
+      toast.error('未找到项目')
       return setIsExporting(false)
     }
 
@@ -349,14 +349,14 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
         <Button type="default" className="px-1" icon={<X />} onClick={deselectRows} />
         <span className="text-xs text-foreground">
           {allRowsSelected
-            ? `${totalRows} rows selected`
+            ? `已选择了 ${totalRows} 行`
             : selectedRows.size > 1
-              ? `${selectedRows.size} rows selected`
-              : `${selectedRows.size} row selected`}
+              ? `已选择了 ${selectedRows.size} 行`
+              : `已选择了 ${selectedRows.size} 行`}
         </span>
         {!allRowsSelected && totalRows > allRows.length && (
           <Button type="link" onClick={() => onSelectAllRows()}>
-            Select all {totalRows} rows
+            选择所有 {totalRows} 行
           </Button>
         )}
       </div>
@@ -370,7 +370,7 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
           disabled={isExporting}
           onClick={onRowsExportCSV}
         >
-          Export to CSV
+          导出为 CSV
         </Button>
         {editable && (
           <Tooltip.Root delayDuration={0}>
@@ -383,10 +383,10 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
                 disabled={allRowsSelected && isImpersonatingRole}
               >
                 {allRowsSelected
-                  ? `Delete ${totalRows} rows`
+                  ? `删除 ${totalRows} 行`
                   : selectedRows.size > 1
-                    ? `Delete ${selectedRows.size} rows`
-                    : `Delete ${selectedRows.size} row`}
+                    ? `删除 ${selectedRows.size} 行`
+                    : `删除 ${selectedRows.size} 行`}
               </Button>
             </Tooltip.Trigger>
 
@@ -401,7 +401,7 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      Table truncation is not supported when impersonating a role
+                      模拟角色不支持清空表操作
                     </span>
                   </div>
                 </Tooltip.Content>

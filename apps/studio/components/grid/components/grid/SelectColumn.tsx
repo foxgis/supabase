@@ -158,7 +158,7 @@ function SelectCellFormatter({
                   'border border-background',
                 ].join(' ')}
               >
-                <span className="text-xs text-foreground">Expand row</span>
+                <span className="text-xs text-foreground">展开行</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Portal>

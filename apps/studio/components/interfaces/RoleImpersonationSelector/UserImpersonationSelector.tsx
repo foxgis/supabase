@@ -53,14 +53,14 @@ const UserImpersonationSelector = () => {
               impersonatingUser.email ??
                 impersonatingUser.phone ??
                 impersonatingUser.id ??
-                'Unknown'
+                '未知用户'
             )}`
-          : 'Impersonate a User'}
+          : '模拟用户'}
       </h2>
       <p className="text-sm text-foreground-light max-w-md">
         {!impersonatingUser
-          ? "Select a user to respect your database's Row-Level Security policies for that particular user."
-          : "Results will respect your database's Row-Level Security policies for this user."}
+          ? '选择一个遵守数据库行级安全策略的用户。'
+          : '查询结果将遵守数据库的行级安全策略。'}
       </p>
 
       {!impersonatingUser ? (
@@ -78,7 +78,7 @@ const UserImpersonationSelector = () => {
                 <Search className="text-foreground-lighter" size={16} strokeWidth={1.5} />
               )
             }
-            placeholder="Search for a user.."
+            placeholder="查找用户..."
             onChange={(e) => setSearchText(e.target.value.trim())}
             value={searchText}
             size="small"
@@ -94,7 +94,7 @@ const UserImpersonationSelector = () => {
           {isLoading && (
             <div className="flex flex-col gap-2 items-center justify-center h-24">
               <Loader2 className="animate-spin" size={24} />
-              <span>Loading users...</span>
+              <span>加载用户...</span>
             </div>
           )}
 
@@ -112,7 +112,7 @@ const UserImpersonationSelector = () => {
             ) : (
               <div className="flex flex-col gap-2 items-center justify-center h-24">
                 <p className="text-foreground-light text-xs" role="status">
-                  No users found
+                  未找到用户
                 </p>
               </div>
             ))}
@@ -162,7 +162,7 @@ const UserImpersonatingRow = ({ user, onClick, isImpersonating = false }: UserRo
           onClick(user)
         }}
       >
-        {isImpersonating ? 'Stop Impersonating' : 'Impersonate'}
+        {isImpersonating ? '停止模拟' : '模拟'}
       </Button>
     </div>
   )
@@ -200,7 +200,7 @@ const UserRow = ({ user, onClick, isImpersonating = false }: UserRowProps) => {
           onClick(user)
         }}
       >
-        {isImpersonating ? 'Stop Impersonating' : 'Impersonate'}
+        {isImpersonating ? '停止模拟' : '模拟'}
       </Button>
     </div>
   )

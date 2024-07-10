@@ -12,7 +12,7 @@ const NotFoundState = ({ id }: NotFoundStateProps) => {
       <div className="w-[400px]">
         <InformationBox
           icon={<IconAlertCircle strokeWidth={2} />}
-          title={`Unable to find your table with ID ${id}`}
+          title={`无法找到 ID 为 ${id} 的表`}
         />
       </div>
     </div>

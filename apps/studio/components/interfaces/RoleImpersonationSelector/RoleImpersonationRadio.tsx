@@ -61,7 +61,7 @@ function RoleImpersonationRadio<T extends string>({
           isSelected && 'text-foreground'
         )}
       >
-        {label ?? value} role
+        {label ?? value} 角色
       </span>
     </label>
   )

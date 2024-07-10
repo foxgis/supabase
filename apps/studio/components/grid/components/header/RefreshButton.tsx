@@ -28,7 +28,7 @@ const RefreshButton = ({ table, isRefetching }: RefreshButtonProps) => {
       icon={<RefreshCw className="text-foreground-muted" strokeWidth={1.5} />}
       onClick={() => onClick()}
     >
-      Refresh
+      刷新
     </Button>
   )
 }

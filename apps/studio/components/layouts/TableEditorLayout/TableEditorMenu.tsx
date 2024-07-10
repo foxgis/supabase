@@ -123,7 +123,7 @@ const TableEditorMenu = () => {
               <ButtonTooltip
                 block
                 title="新建一张表"
-                name="创建表"
+                name="新建表"
                 disabled={!canCreateTables}
                 size="tiny"
                 icon={<Plus size={14} strokeWidth={1.5} className="text-foreground-muted" />}
@@ -133,16 +133,16 @@ const TableEditorMenu = () => {
                 tooltip={{
                   content: {
                     side: 'bottom',
-                    text: '您需要获取额外的权限才能创建表',
+                    text: '您需要获取额外的权限才能新建表',
                   },
                 }}
               >
-                New table
+                新建表
               </ButtonTooltip>
             ) : (
               <Alert_Shadcn_>
                 <AlertTitle_Shadcn_ className="text-sm">
-                  查询受保护的模式
+                  查看受保护的模式
                 </AlertTitle_Shadcn_>
                 <AlertDescription_Shadcn_ className="text-xs">
                   <p className="mb-2">
@@ -176,13 +176,13 @@ const TableEditorMenu = () => {
                   value="alphabetical"
                   className="flex gap-2"
                 >
-                  Alphabetical
+                  名称
                 </InnerSideBarFilterSortDropdownItem>
                 <InnerSideBarFilterSortDropdownItem
                   key="grouped-alphabetical"
                   value="grouped-alphabetical"
                 >
-                  Entity Type
+                  实体类型
                 </InnerSideBarFilterSortDropdownItem>
               </InnerSideBarFilterSortDropdown>
             </InnerSideBarFilterSearchInput>
@@ -196,7 +196,7 @@ const TableEditorMenu = () => {
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
                 <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
-                  <p className="text-xs">Show entity types</p>
+                  <p className="text-xs">显示的实体类型</p>
                   <div className="flex flex-col">
                     {Object.entries(ENTITY_TYPE).map(([key, value]) => (
                       <div key={key} className="group flex items-center justify-between py-0.5">
@@ -223,7 +223,7 @@ const TableEditorMenu = () => {
                           onClick={() => setVisibleTypes([value])}
                           className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
                         >
-                          Select only
+                          单选
                         </Button>
                       </div>
                     ))}
@@ -244,7 +244,7 @@ const TableEditorMenu = () => {
               {searchText.length === 0 && (entityTypes?.length ?? 0) <= 0 && (
                 <InnerSideBarEmptyPanel
                   className="mx-2"
-                  title="No entities available"
+                  title="无实体对象"
                   description="此模式下无实体对象。"
                 />
               )}
@@ -252,7 +252,7 @@ const TableEditorMenu = () => {
                 <InnerSideBarEmptyPanel
                   className="mx-2"
                   title="无结果"
-                  description={`为查找到名称中包含“${searchText}”的表`}
+                  description={`未查找到名称中包含“${searchText}”的表`}
                 />
               )}
               {(entityTypes?.length ?? 0) > 0 && (

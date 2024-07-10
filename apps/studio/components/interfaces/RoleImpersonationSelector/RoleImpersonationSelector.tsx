@@ -56,7 +56,7 @@ const RoleImpersonationSelector = ({
   return (
     <>
       <div className={cn('flex flex-col gap-3', padded ? 'p-5' : 'pb-5')}>
-        <h2 className="text-foreground text-base">Database role settings</h2>
+        <h2 className="text-foreground text-base">数据库角色设置</h2>
 
         <form
           onSubmit={(e) => {
@@ -94,24 +94,25 @@ const RoleImpersonationSelector = ({
 
         {selectedOption === 'service_role' && (
           <p className="text-foreground-light text-sm">
-            The default Postgres/superuser role. This has admin privileges.
+            默认的 Postgres/superuser 角色。此角色具有管理员权限。
             <br />
-            It will bypass Row Level Security (RLS) policies.
+            它会绕过行级安全策略（RLS）。
           </p>
         )}
 
         {selectedOption === 'anon' && (
           <p className="text-foreground-light text-sm">
-            For "anonymous access". This is the role which the API (PostgREST) will use when a user
+            用于“匿名访问”。此角色是 API（PostgREST）在用户未登录时使用的角色。
             <br />
-            is not logged in. It will respect Row Level Security (RLS) policies.
+            它将遵守行级安全策略（RLS）。
           </p>
         )}
 
         {selectedOption === 'authenticated' && (
           <p className="text-foreground-light text-sm">
-            For "authenticated access". This is the role which the API (PostgREST) will use when
-            <br /> a user is logged in. It will respect Row Level Security (RLS) policies.
+            用于“已认证访问”。此角色是 API（PostgREST）在用户登录时使用的角色。
+            <br />
+            它将遵守行级安全策略（RLS）。
           </p>
         )}
       </div>

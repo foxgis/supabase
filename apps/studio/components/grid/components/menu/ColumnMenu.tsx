@@ -53,7 +53,7 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
             <Tooltip.Trigger asChild className={`${isEncrypted ? 'opacity-50' : ''}`}>
               <DropdownMenuItem className="space-x-2" onClick={onEditColumn} disabled={isEncrypted}>
                 <IconEdit size="tiny" />
-                <p>Edit column</p>
+                <p>编辑列</p>
               </DropdownMenuItem>
             </Tooltip.Trigger>
             {isEncrypted && (
@@ -67,7 +67,7 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      Encrypted columns cannot be edited
+                      加密列不能被编辑
                     </span>
                   </div>
                 </Tooltip.Content>
@@ -82,12 +82,12 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
           {column.frozen ? (
             <>
               <IconUnlock size="tiny" />
-              <p>Unfreeze column</p>
+              <p>解冻列</p>
             </>
           ) : (
             <>
               <IconLock size="tiny" />
-              <p>Freeze column</p>
+              <p>冻结列</p>
             </>
           )}
         </DropdownMenuItem>
@@ -96,7 +96,7 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
             <Separator />
             <DropdownMenuItem className="space-x-2" onClick={onDeleteColumn}>
               <IconTrash size="tiny" stroke="red" />
-              <p>Delete column</p>
+              <p>删除列</p>
             </DropdownMenuItem>
           </>
         )}

@@ -38,7 +38,7 @@ const RoleImpersonationPopover = ({
           )}
         >
           <div className="flex items-center gap-1">
-            <span className="text-foreground-muted">role</span>
+            <span className="text-foreground-muted">角色</span>
             <span>{currentRole}</span>
             {state.role?.type === 'postgrest' && state.role.role === 'authenticated' && (
               <UserRoleButtonSection user={state.role.user} />

@@ -195,7 +195,7 @@ export const Grid = memo(
                   )}
                   {isError && (
                     <div className="p-2 col-span-full">
-                      <AlertError error={error} subject="Failed to retrieve rows from table" />
+                      <AlertError error={error} subject="从表中获取数据失败" />
                     </div>
                   )}
                   {isSuccess && (
@@ -205,16 +205,16 @@ export const Grid = memo(
                           style={{ height: `calc(100% - 35px)` }}
                           className="flex flex-col items-center justify-center col-span-full"
                         >
-                          <p className="text-sm text-light">This table is empty</p>
+                          <p className="text-sm text-light">这张表是空的</p>
                           {onAddRow !== undefined && onImportData !== undefined && (
                             <>
                               <p className="text-sm text-light mt-1">
-                                Add rows to your table to get started.
+                                开始给这张表添加数据吧。
                               </p>
                               <div className="flex items-center space-x-2 mt-4">
                                 {onAddRow !== undefined && onImportData !== undefined && (
                                   <Button type="default" onClick={onImportData}>
-                                    Import data via CSV
+                                    通过 CSV 导入数据
                                   </Button>
                                 )}
                               </div>
@@ -227,11 +227,11 @@ export const Grid = memo(
                           className="flex flex-col items-center justify-center col-span-full"
                         >
                           <p className="text-sm text-light">
-                            The filters applied has returned no results from this table
+                            应用筛选条件后没有返回任何结果
                           </p>
                           <div className="flex items-center space-x-2 mt-4">
                             <Button type="default" onClick={() => removeAllFilters()}>
-                              Remove all filters
+                              移除所有的过滤条件
                             </Button>
                           </div>
                         </div>

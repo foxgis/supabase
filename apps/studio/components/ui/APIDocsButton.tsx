@@ -19,7 +19,7 @@ const APIDocsButton = ({ section }: APIDocsButtonProps) => {
       }}
       icon={<Code strokeWidth={1.5} className="text-foreground-muted" />}
     >
-      API Docs
+      API 文档
     </Button>
   )
 }
