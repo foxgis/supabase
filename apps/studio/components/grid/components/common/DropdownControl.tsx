@@ -29,8 +29,8 @@ export const DropdownControl = ({
           {options.map((x) => {
             return (
               <DropdownMenuItem key={x.value} onClick={() => onSelect(x.value)}>
-                <div className="flex items-center gap-2 whitespace-nowrap">
-                  {x.preLabel && <span className="grow text-foreground-lighter">{x.preLabel}</span>}
+                <div className="flex items-center gap-2">
+                  {x.preLabel && <span className="grow text-foreground-lighter whitespace-nowrap">{x.preLabel}</span>}
                   <span>{x.label}</span>
                   {x.postLabel && <span className="text-foreground-lighter whitespace-nowrap">{x.postLabel}</span>}
                 </div>

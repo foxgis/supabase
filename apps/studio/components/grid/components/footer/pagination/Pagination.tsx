@@ -1,16 +1,25 @@
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, HelpCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { PostgresTable } from '@supabase/postgres-meta'
 
 import { formatFilterURLParams } from 'components/grid/SupabaseGrid.utils'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
-import { useTableRowsCountQuery } from 'data/table-rows/table-rows-count-query'
-import { useUrlState } from 'hooks'
+import { THRESHOLD_COUNT, useTableRowsCountQuery } from 'data/table-rows/table-rows-count-query'
+import useTable from 'hooks/misc/useTable'
+import { useUrlState } from 'hooks/ui/useUrlState'
 import { useRoleImpersonationStateSnapshot } from 'state/role-impersonation-state'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
-import { Button, InputNumber } from 'ui'
+import {
+  Button,
+  InputNumber,
+  TooltipContent_Shadcn_,
+  TooltipTrigger_Shadcn_,
+  Tooltip_Shadcn_,
+} from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
-import { useDispatch, useTrackedState } from '../../../store'
-import { DropdownControl } from '../../common'
+import { useParams } from 'common'
+import { useDispatch, useTrackedState } from '../../../store/Store'
+import { DropdownControl } from '../../common/DropdownControl'
 
 const rowsPerPageOptions = [
   { value: 100, label: '100 条/页' },
@@ -19,28 +28,36 @@ const rowsPerPageOptions = [
 ]
 
 const Pagination = () => {
+  const { id: _id } = useParams()
+  const id = _id ? Number(_id) : undefined
+
   const state = useTrackedState()
   const dispatch = useDispatch()
-
+  const { project } = useProjectContext()
   const snap = useTableEditorStateSnapshot()
-  const page = snap.page
 
-  const [{ filter }] = useUrlState({
-    arrayKeys: ['filter'],
-  })
+  const { data: selectedTable } = useTable(id)
+  // [Joshen] Only applicable to table entities
+  const rowsCountEstimate = (selectedTable as PostgresTable)?.live_rows_estimate ?? null
+
+  const [{ filter }] = useUrlState({ arrayKeys: ['filter'] })
   const filters = formatFilterURLParams(filter as string[])
+  const page = snap.page
   const table = state.table ?? undefined
 
   const roleImpersonationState = useRoleImpersonationStateSnapshot()
+  const [isConfirmNextModalOpen, setIsConfirmNextModalOpen] = useState(false)
+  const [isConfirmPreviousModalOpen, setIsConfirmPreviousModalOpen] = useState(false)
+  const [isConfirmFetchExactCountModalOpen, setIsConfirmFetchExactCountModalOpen] = useState(false)
 
-  const { project } = useProjectContext()
-  const { data, isLoading, isSuccess, isError } = useTableRowsCountQuery(
+  const { data, isLoading, isSuccess, isError, isFetching } = useTableRowsCountQuery(
     {
-      queryKey: [table?.schema, table?.name, 'count'],
+      queryKey: [table?.schema, table?.name, 'count-estimate'],
       projectRef: project?.ref,
       connectionString: project?.connectionString,
       table,
       filters,
+      enforceExactCount: snap.enforceExactCount,
       impersonatedRole: roleImpersonationState.role,
     },
     {
@@ -56,21 +73,6 @@ const Pagination = () => {
 
   const maxPages = Math.ceil((data?.count ?? 0) / snap.rowsPerPage)
   const totalPages = (data?.count ?? 0) > 0 ? maxPages : 1
-
-  useEffect(() => {
-    if (page && page > totalPages) {
-      snap.setPage(totalPages)
-    }
-  }, [page, totalPages])
-
-  // [Joshen] Oddly without this, state.selectedRows will be stale
-  useEffect(() => {}, [state.selectedRows])
-
-  // [Joshen] Note: I've made pagination buttons disabled while rows are being fetched for now
-  // at least until we can send an abort signal to cancel requests if users are mashing the
-  // pagination buttons to find the data they want
-
-  const [isConfirmPreviousModalOpen, setIsConfirmPreviousModalOpen] = useState(false)
 
   const onPreviousPage = () => {
     if (page > 1) {
@@ -90,8 +92,6 @@ const Pagination = () => {
     })
   }
 
-  const [isConfirmNextModalOpen, setIsConfirmNextModalOpen] = useState(false)
-
   const onNextPage = () => {
     if (page < maxPages) {
       if (state.selectedRows.size >= 1) {
@@ -110,8 +110,6 @@ const Pagination = () => {
     })
   }
 
-  // TODO: look at aborting useTableRowsQuery if the user presses the button quickly
-
   const goToPreviousPage = () => {
     const previousPage = page - 1
     snap.setPage(previousPage)
@@ -122,96 +120,112 @@ const Pagination = () => {
     snap.setPage(nextPage)
   }
 
-  function onPageChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const onPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     const pageNum = Number(value) > maxPages ? maxPages : Number(value)
     snap.setPage(pageNum || 1)
   }
 
-  function onRowsPerPageChange(value: string | number) {
+  const onRowsPerPageChange = (value: string | number) => {
     const rowsPerPage = Number(value)
-
     snap.setRowsPerPage(isNaN(rowsPerPage) ? 100 : rowsPerPage)
   }
 
+  useEffect(() => {
+    if (page && page > totalPages) {
+      snap.setPage(totalPages)
+    }
+  }, [page, totalPages])
+
+  useEffect(() => {
+    if (id !== undefined) {
+      snap.setEnforceExactCount(rowsCountEstimate !== null && rowsCountEstimate <= THRESHOLD_COUNT)
+    }
+  }, [id])
+
   return (
-    <div className="sb-grid-pagination">
-      {isLoading && <p className="text-sm text-foreground-light">加载记录数量...</p>}
+    <div className="flex items-center gap-x-4">
+      {isLoading && <p className="text-sm text-foreground-light">正在加载记录数量...</p>}
 
       {isSuccess && (
         <>
-          <Button
-            icon={<ArrowLeft />}
-            type="outline"
-            className="px-1.5"
-            disabled={page <= 1 || isLoading}
-            onClick={onPreviousPage}
-          />
-          <p className="text-sm text-foreground-light">第</p>
-          <div className="sb-grid-pagination-input-container">
-            <InputNumber
-              // [Fran] we'll have to upgrade the UI component types to accept the null value when users delete the input content
-              // @ts-ignore
-              value={page}
-              onChange={onPageChange}
-              size="tiny"
-              style={{
-                width: '3rem',
-              }}
-              max={maxPages}
-              min={1}
+          <div className="flex items-center gap-x-2">
+            <Button
+              icon={<ArrowLeft />}
+              type="outline"
+              className="px-1.5"
+              disabled={page <= 1 || isLoading}
+              onClick={onPreviousPage}
             />
+            <p className="text-xs text-foreground-light">第</p>
+            <div className="w-12">
+              <InputNumber
+                size="tiny"
+                value={page}
+                onChange={onPageChange}
+                style={{ width: '3rem' }}
+                min={1}
+                max={maxPages}
+              />
+            </div>
+
+            <p className="text-xs text-foreground-light">页，共计 {totalPages.toLocaleString()} 页</p>
+
+            <Button
+              icon={<ArrowRight />}
+              type="outline"
+              className="px-1.5"
+              disabled={page >= maxPages || isLoading}
+              onClick={onNextPage}
+            />
+
+            <DropdownControl
+              options={rowsPerPageOptions}
+              onSelect={onRowsPerPageChange}
+              side="top"
+              align="start"
+            >
+              <Button asChild type="outline" style={{ padding: '3px 10px' }}>
+                <span>{`${snap.rowsPerPage} 条/页`}</span>
+              </Button>
+            </DropdownControl>
           </div>
-          <p className="text-sm text-foreground-light">页，共计 {totalPages} 页</p>
-          <Button
-            icon={<ArrowRight />}
-            type="outline"
-            className="px-1.5"
-            disabled={page >= maxPages || isLoading}
-            onClick={onNextPage}
-          />
 
-          <DropdownControl
-            options={rowsPerPageOptions}
-            onSelect={onRowsPerPageChange}
-            side="top"
-            align="start"
-          >
-            <Button asChild type="outline" style={{ padding: '3px 10px' }}>
-              <span>{`${snap.rowsPerPage} 条/页`}</span>
-            </Button>
-          </DropdownControl>
-          <p className="text-sm text-foreground-light">{`${data.count.toLocaleString()} ${
-            data.count === 0 || data.count > 1 ? `条记录` : '条记录'
-          }`}</p>
-
-          <ConfirmationModal
-            visible={isConfirmPreviousModalOpen}
-            title="确定要切换到上一页吗？"
-            confirmLabel="确定"
-            onCancel={() => setIsConfirmPreviousModalOpen(false)}
-            onConfirm={() => {
-              onConfirmPreviousPage()
-            }}
-          >
-            <p className="py-4 text-sm text-foreground-light">
-              当前选中的行会被取消选中，确定要切换到上一页吗？
+          <div className="flex items-center gap-x-2">
+            <p className="text-xs text-foreground-light">
+              {`${data.count.toLocaleString()} ${
+                data.count === 0 || data.count > 1 ? `条记录` : '条记录'
+              }`}{' '}
+              {data.is_estimate ? '（估计）' : ''}
             </p>
-          </ConfirmationModal>
 
-          <ConfirmationModal
-            visible={isConfirmNextModalOpen}
-            title="确定要切换到下一页吗？"
-            confirmLabel="确定"
-            onCancel={() => setIsConfirmNextModalOpen(false)}
-            onConfirm={() => {
-              onConfirmNextPage()
-            }}
-          >
-            <p className="py-4 text-sm text-foreground-light">
-              当前选中的行会被取消选中，确定要切换到下一页吗？
-            </p>
-          </ConfirmationModal>
+            {data.is_estimate && (
+              <Tooltip_Shadcn_>
+                <TooltipTrigger_Shadcn_ asChild>
+                  <Button
+                    size="tiny"
+                    type="text"
+                    className="px-1.5"
+                    loading={isFetching}
+                    icon={<HelpCircle />}
+                    onClick={() => {
+                      // Show warning if either NOT a table entity, or table rows estimate is beyond threshold
+                      if (rowsCountEstimate === null || data.count > THRESHOLD_COUNT) {
+                        setIsConfirmFetchExactCountModalOpen(true)
+                      } else snap.setEnforceExactCount(true)
+                    }}
+                  />
+                </TooltipTrigger_Shadcn_>
+                <TooltipContent_Shadcn_ side="top" className="w-72">
+                  由于您的这张表超过{' '}
+                  {THRESHOLD_COUNT.toLocaleString()} 行，这是一个估计的行数。 <br />
+                  <span className="text-brand">
+                    点击获取表精确的行数。
+                  </span>
+                </TooltipContent_Shadcn_>
+              </Tooltip_Shadcn_>
+            )}
+          </div>
         </>
       )}
 
@@ -220,6 +234,54 @@ const Pagination = () => {
           加载记录数量失败，请刷新页面重试。
         </p>
       )}
+
+      <ConfirmationModal
+        visible={isConfirmPreviousModalOpen}
+        title="确定前往上一页"
+        confirmLabel="确定"
+        onCancel={() => setIsConfirmPreviousModalOpen(false)}
+        onConfirm={() => {
+          onConfirmPreviousPage()
+        }}
+      >
+        <p className="text-sm text-foreground-light">
+          您当前选中的行会被取消选中，是否继续？
+        </p>
+      </ConfirmationModal>
+
+      <ConfirmationModal
+        visible={isConfirmNextModalOpen}
+        title="确定前往下一页"
+        confirmLabel="确定"
+        onCancel={() => setIsConfirmNextModalOpen(false)}
+        onConfirm={() => {
+          onConfirmNextPage()
+        }}
+      >
+        <p className="text-sm text-foreground-light">
+          您当前选中的行会被取消选中，是否继续？
+        </p>
+      </ConfirmationModal>
+
+      <ConfirmationModal
+        variant="warning"
+        visible={isConfirmFetchExactCountModalOpen}
+        title="确定获取表的精确行数"
+        confirmLabel="获取精确行数"
+        onCancel={() => setIsConfirmFetchExactCountModalOpen(false)}
+        onConfirm={() => {
+          snap.setEnforceExactCount(true)
+          setIsConfirmFetchExactCountModalOpen(false)
+        }}
+      >
+        <p className="text-sm text-foreground-light">
+          {rowsCountEstimate === null
+            ? `如果您的表有超过 ${THRESHOLD_COUNT.toLocaleString()} 行，
+          获取表的精确行数可能会导致数据库性能问题。`
+            : `您的表有超过 ${THRESHOLD_COUNT.toLocaleString()} 行，
+          获取表的精确行数可能会导致数据库性能问题。`}
+        </p>
+      </ConfirmationModal>
     </div>
   )
 }

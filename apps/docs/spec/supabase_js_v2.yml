@@ -576,7 +576,7 @@ functions:
             const [session, setSession] = React.useState(null)
 
             React.useEffect(() => {
-              const subscription = supabase.auth.onAuthStateChange(
+              const {data: { subscription }} = supabase.auth.onAuthStateChange(
                 (event, session) => {
                   if (event === 'SIGNED_OUT') {
                     setSession(null)
@@ -7240,7 +7240,8 @@ functions:
           ```json
           {
             "data": {
-              "path": "avatars/public/avatar1.png"
+              "path": "public/avatar1.png",
+              "fullPath": "avatars/public/avatar1.png"
             },
             "error": null
           }
@@ -7286,7 +7287,8 @@ functions:
           ```json
           {
             "data": {
-              "path": "avatars/public/avatar1.png"
+              "path": "public/avatar1.png",
+              "fullPath": "avatars/public/avatar1.png"
             },
             "error": null
           }

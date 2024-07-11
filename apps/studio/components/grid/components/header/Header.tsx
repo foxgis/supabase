@@ -7,12 +7,13 @@ import Papa from 'papaparse'
 import { ReactNode, useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { useDispatch, useTrackedState } from 'components/grid/store'
+import { useDispatch, useTrackedState } from 'components/grid/store/Store'
 import type { Filter, Sort, SupaTable } from 'components/grid/types'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import { useTableRowsCountQuery } from 'data/table-rows/table-rows-count-query'
 import { fetchAllTableRows, useTableRowsQuery } from 'data/table-rows/table-rows-query'
-import { useCheckPermissions, useUrlState } from 'hooks'
+import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
+import { useUrlState } from 'hooks/ui/useUrlState'
 import {
   useRoleImpersonationStateSnapshot,
   useSubscribeToImpersonatedRole,
@@ -26,7 +27,7 @@ import {
   DropdownMenuTrigger,
   cn,
 } from 'ui'
-import { FilterPopover } from './filter'
+import FilterPopover from './filter/FilterPopover'
 import { SortPopover } from './sort'
 
 // [Joshen] CSV exports require this guard as a fail-safe if the table is
@@ -248,7 +249,7 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
 
   const { data: countData } = useTableRowsCountQuery(
     {
-      queryKey: [table?.schema, table?.name, 'count'],
+      queryKey: [table?.schema, table?.name, 'count-estimate'],
       projectRef: project?.ref,
       connectionString: project?.connectionString,
       table,
@@ -349,14 +350,14 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
         <Button type="default" className="px-1" icon={<X />} onClick={deselectRows} />
         <span className="text-xs text-foreground">
           {allRowsSelected
-            ? `已选择了 ${totalRows} 行`
+            ? `已选中表所有行`
             : selectedRows.size > 1
-              ? `已选择了 ${selectedRows.size} 行`
-              : `已选择了 ${selectedRows.size} 行`}
+              ? `已选中 ${selectedRows.size} 行`
+              : `已选中 ${selectedRows.size} 行`}
         </span>
         {!allRowsSelected && totalRows > allRows.length && (
           <Button type="link" onClick={() => onSelectAllRows()}>
-            选择所有 {totalRows} 行
+            选中表所有行
           </Button>
         )}
       </div>
@@ -383,7 +384,7 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
                 disabled={allRowsSelected && isImpersonatingRole}
               >
                 {allRowsSelected
-                  ? `删除 ${totalRows} 行`
+                  ? `删除表所有行`
                   : selectedRows.size > 1
                     ? `删除 ${selectedRows.size} 行`
                     : `删除 ${selectedRows.size} 行`}

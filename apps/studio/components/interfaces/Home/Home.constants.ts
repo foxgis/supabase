@@ -93,4 +93,10 @@ export const EXAMPLE_PROJECTS = [
     description: 'Svelte 待办事项应用，使用 TailwindCSS 和 Snowpack。',
     url: 'https://github.com/supabase/supabase/tree/master/examples/todo-list/sveltejs-todo-list',
   },
+  {
+    framework: 'Flutter',
+    title: 'Flutter 多因素认证（MFA）应用',
+    description: '一个 Flutter 应用，用来演示如何实现多因素认证（MFA）。',
+    url: 'https://github.com/supabase/supabase/tree/master/examples/auth/flutter-mfa',
+  },
 ]

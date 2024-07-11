@@ -1,5 +1,11 @@
 import * as Tooltip from '@radix-ui/react-tooltip'
-import { PermissionAction } from '@supabase/shared-types/out/constants'
+import Link from 'next/link'
+import React, { useState } from 'react'
+
+import Table from 'components/to-be-cleaned/Table'
+import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
+import { copyToClipboard } from 'lib/helpers'
+import { logConstants } from 'shared-data'
 import {
   Alert,
   Badge,
@@ -18,22 +24,14 @@ import {
   SidePanel,
   Tabs,
 } from 'ui'
-
-import { useCheckPermissions, useIsFeatureEnabled } from 'hooks'
-import { useProfile } from 'lib/profile'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import DatePickers from './Logs.DatePickers'
 import {
   EXPLORER_DATEPICKER_HELPERS,
-  LogsTableName,
-  LogsWarning,
   LOGS_SOURCE_DESCRIPTION,
-  LogTemplate,
-} from '.'
-import DatePickers from './Logs.DatePickers'
-import Table from 'components/to-be-cleaned/Table'
-import { logConstants } from 'shared-data'
-import { copyToClipboard } from 'lib/helpers'
+  LogsTableName,
+} from './Logs.constants'
+import type { LogTemplate, LogsWarning } from './Logs.types'
+import { IS_PLATFORM } from 'common'
 
 export interface LogsQueryPanelProps {
   templates?: LogTemplate[]
@@ -102,25 +100,28 @@ const LogsQueryPanel = ({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button type="default" iconRight={<IconChevronDown />}>
-                  Templates
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="start">
-                {templates
-                  .sort((a, b) => a.label!.localeCompare(b.label!))
-                  .map((template) => (
-                    <DropdownMenuItem
-                      key={template.label}
-                      onClick={() => onSelectTemplate(template)}
-                    >
-                      <p>{template.label}</p>
-                    </DropdownMenuItem>
-                  ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {IS_PLATFORM && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button type="default" iconRight={<IconChevronDown />}>
+                    Templates
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="bottom" align="start">
+                  {templates
+                    .sort((a, b) => a.label!.localeCompare(b.label!))
+                    .map((template) => (
+                      <DropdownMenuItem
+                        key={template.label}
+                        onClick={() => onSelectTemplate(template)}
+                      >
+                        <p>{template.label}</p>
+                      </DropdownMenuItem>
+                    ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
             <DatePickers
               to={defaultTo}
               from={defaultFrom}
