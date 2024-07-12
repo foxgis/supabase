@@ -15,7 +15,7 @@ const DrilldownPane = ({ pane, jsonData, activeKey, onSelectKey = noop }: Drilld
     return (
       <div className={`flex-1 ${pane === 2 ? 'border-l border-default' : ''}`}>
         <div className="flex space-x-2 py-2 px-5">
-          <p className="text-sm">Invalid JSON</p>
+          <p className="text-sm">无效 JSON</p>
         </div>
       </div>
     )
@@ -25,7 +25,7 @@ const DrilldownPane = ({ pane, jsonData, activeKey, onSelectKey = noop }: Drilld
     return (
       <div className={`max-w-[50%] flex-1 ${pane === 2 ? 'border-l border-default' : ''}`}>
         <div className="flex space-x-2 py-2 px-5">
-          <p className="text-sm opacity-50">No data available</p>
+          <p className="text-sm opacity-50">无可用数据</p>
         </div>
       </div>
     )

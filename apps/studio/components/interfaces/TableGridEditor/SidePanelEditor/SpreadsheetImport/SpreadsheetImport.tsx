@@ -80,15 +80,15 @@ const SpreadsheetImport = ({
       event.target.value = ''
       return toast(
         <div className="space-y-1">
-          <p>The dashboard currently only supports importing of CSVs below 100MB.</p>
-          <p>For bulk data loading, we recommend doing so directly through the database.</p>
+          <p>当前仪表盘仅支持导入小于 100MB 的 CSV 文件。</p>
+          <p>对于大批量数据加载，我们建议您直接通过数据库进行。</p>
           <Button asChild type="default" icon={<IconExternalLink />} className="!mt-2">
             <Link
               href="https://supabase.com/docs/guides/database/tables#bulk-data-loading"
               target="_blank"
               rel="noreferrer"
             >
-              Learn more
+              了解更多
             </Link>
           </Button>
         </div>,
@@ -97,7 +97,7 @@ const SpreadsheetImport = ({
     }
 
     if (!file || !includes(UPLOAD_FILE_TYPES, file?.type) || !acceptedFileExtension(file)) {
-      toast.error('Sorry! We only accept CSV or TSV file types, please upload another file.')
+      toast.error('抱歉！我们仅接受 CSV 或 TSV 文件类型，请上传另一个文件。')
     } else {
       updateEditorDirty(true)
       setUploadedFile(file)
@@ -107,7 +107,7 @@ const SpreadsheetImport = ({
       )
       if (errors.length > 0) {
         toast.error(
-          `Some issues have been detected on ${errors.length} rows. More details below the content preview.`
+          `检测到 ${errors.length} 行中的一些问题。更多详细信息在内容预览下方。`
         )
       }
 
@@ -131,7 +131,7 @@ const SpreadsheetImport = ({
       const { headers, rows, columnTypeMap, errors } = await parseSpreadsheetText(text)
       if (errors.length > 0) {
         toast.error(
-          `Some issues have been detected on ${errors.length} rows. More details below the content preview.`
+          `检测到 ${errors.length} 行中的一些问题。更多详细信息在内容预览下方。`
         )
       }
       setErrors(errors)
@@ -157,14 +157,14 @@ const SpreadsheetImport = ({
 
   const onConfirm = (resolve: () => void) => {
     if (tab === 'fileUpload' && uploadedFile === undefined) {
-      toast.error('Please upload a file to import your data with')
+      toast.error('请上传文件以导入您的数据')
       resolve()
     } else if (selectedHeaders.length === 0) {
-      toast.error('Please select at least one header from your CSV')
+      toast.error('请至少从 CSV 中选择一列')
       resolve()
     } else if (!isCompatible) {
       toast.error(
-        'The data that you are trying to import is incompatible with your table structure'
+        '您尝试导入的数据与您的表结构不兼容'
       )
       resolve()
     } else {
@@ -180,20 +180,20 @@ const SpreadsheetImport = ({
       header={
         selectedTable !== undefined ? (
           <>
-            Add data to{' '}
+            添加数据到{' '}
             <code className="text-sm">
               {selectedTable.schema}.{selectedTable.name}
             </code>
           </>
         ) : (
-          'Add content to new table'
+          '添加内容到新表'
         )
       }
       onCancel={() => closePanel()}
       customFooter={
         <ActionBar
-          backButtonLabel="Cancel"
-          applyButtonLabel={selectedTable === undefined ? 'Save' : 'Import data'}
+          backButtonLabel="取消"
+          applyButtonLabel={selectedTable === undefined ? '保存' : '导入数据'}
           closePanel={closePanel}
           applyFunction={onConfirm}
         />
@@ -202,7 +202,7 @@ const SpreadsheetImport = ({
       <SidePanel.Content>
         <div className="pt-6">
           <Tabs block type="pills" onChange={setTab}>
-            <Tabs.Panel id="fileUpload" label="Upload CSV">
+            <Tabs.Panel id="fileUpload" label="上传 CSV">
               <SpreadSheetFileUpload
                 parseProgress={parseProgress}
                 uploadedFile={uploadedFile}
@@ -210,7 +210,7 @@ const SpreadsheetImport = ({
                 removeUploadedFile={resetSpreadsheetImport}
               />
             </Tabs.Panel>
-            <Tabs.Panel id="pasteText" label="Paste text">
+            <Tabs.Panel id="pasteText" label="粘贴文本">
               <SpreadSheetTextInput input={input} onInputChange={onInputChange} />
             </Tabs.Panel>
           </Tabs>

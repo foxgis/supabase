@@ -43,22 +43,22 @@ const SecondLevelNav = () => {
 
   const content: { [key: string]: { title: string; options: any[]; docsUrl: string } } = {
     entities: {
-      title: 'Tables & Views',
+      title: '表和视图',
       options: tables,
       docsUrl: 'https://supabase.com/docs/reference/javascript/select',
     },
     'stored-procedures': {
-      title: 'Stored Procedures',
+      title: '存储过程',
       options: functions,
       docsUrl: 'https://supabase.com/docs/reference/javascript/rpc',
     },
     storage: {
-      title: 'Storage',
+      title: '文件存储',
       options: buckets ?? [],
       docsUrl: 'https://supabase.com/docs/reference/javascript/storage-createbucket',
     },
     'edge-functions': {
-      title: 'Edge Functions',
+      title: '边缘函数',
       options: edgeFunctions ?? [],
       docsUrl: 'https://supabase.com/docs/reference/javascript/functions-invoke',
     },
@@ -147,15 +147,14 @@ const SecondLevelNav = () => {
       <div className="px-4 py-4 border-t space-y-2">
         <Alert_Shadcn_ className="p-3">
           <AlertTitle_Shadcn_>
-            <p className="text-xs">Unable to find what you're looking for?</p>
+            <p className="text-xs">没找到您想要的内容？</p>
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="space-y-1">
             <p className="text-xs !leading-normal">
-              The API methods shown here are only the commonly used ones to get you started building
-              quickly.
+              这里展示的 API 方法是为了让你快速入门而设计的。
             </p>
             <p className="text-xs !leading-normal">
-              Head over to our docs site for the full API documentation.
+              前往我们的文档站点查看完整的 API 文档。
             </p>
             <Button
               asChild
@@ -165,7 +164,7 @@ const SecondLevelNav = () => {
               icon={<IconExternalLink strokeWidth={1.5} />}
             >
               <Link href={content[section].docsUrl} target="_blank" rel="noreferrer">
-                Documentation
+                文档
               </Link>
             </Button>
           </AlertDescription_Shadcn_>

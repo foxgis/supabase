@@ -10,13 +10,13 @@ const HeaderTitle: React.FC<Props> = ({ table, column }) => {
   if (!column) {
     return (
       <>
-        Add new column to <code>{table.name}</code>
+        向 <code>{table.name}</code> 添加列
       </>
     )
   }
   return (
     <>
-      Update column <code>{column.name}</code> from <code>{column.table}</code>
+      更新表 <code>{column.table}</code> 的 <code>{column.name}</code> 列
     </>
   )
 }

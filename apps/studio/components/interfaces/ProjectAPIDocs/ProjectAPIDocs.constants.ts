@@ -1,34 +1,34 @@
 export const DOCS_MENU = [
-  { name: 'Connect', key: 'introduction' },
-  { name: 'User Management', key: 'user-management' },
-  { name: 'Tables & Views', key: 'entities' },
-  { name: 'Stored Procedures', key: 'stored-procedures' },
-  { name: 'Storage', key: 'storage' },
-  { name: 'Edge Functions', key: 'edge-functions' },
-  { name: 'Realtime', key: 'realtime' },
+  { name: '连接', key: 'introduction' },
+  { name: '用户管理', key: 'user-management' },
+  { name: '表和视图', key: 'entities' },
+  { name: '存储过程', key: 'stored-procedures' },
+  { name: '文件存储', key: 'storage' },
+  { name: '边缘函数', key: 'edge-functions' },
+  { name: '实时通信', key: 'realtime' },
 ]
 
 export const DOCS_CONTENT = {
   init: {
     key: 'introduction',
     category: 'introduction',
-    title: `Connect to your project`,
-    description: `Projects have a RESTful endpoint that you can use with your project's API key to query and manage your database. Put these keys in your .env file.`,
+    title: `连接到你的项目`,
+    description: `项目都有一套 RESTful API 接口，您可以使用项目的 API key 来查询和管理数据库。请将这些密钥放入您的 .env 文件中。`,
     js: (apikey?: string, endpoint?: string) => `
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = '${endpoint}'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)`,
-    bash: () => `# No client library required for Bash.`,
+    bash: () => `# 无需客户端库即可在 Bash 中使用。`,
   },
   clientApiKeys: {
     key: 'client-api-keys',
     category: 'introduction',
-    title: `Client API Keys`,
-    description: `Client keys allow "anonymous access" to your database, until the user has logged in. After logging in, the keys will switch to the user's own login token.
+    title: `客户端 API 密钥`,
+    description: `客户端密钥允许“匿名访问”到您的数据库，直到用户登录。登录后，密钥将切换到用户的登录令牌。
 
-In this documentation, we will refer to the key using the name \`SUPABASE_KEY\`. You can find the \`anon\` key in the [API settings](/project/[ref]/settings/api) page.`,
+在本文档中，我们将使用名称 \`SUPABASE_KEY\` 来引用密钥。您可以在 [API 设置](/project/[ref]/settings/api) 页面中找到 \`anon\` 密钥。`,
     js: (apikey?: string, endpoint?: string) => `
 const SUPABASE_KEY = '${apikey}'
 const SUPABASE_URL = '${endpoint}'
@@ -38,10 +38,10 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
   serviceApiKeys: {
     key: 'service-keys',
     category: 'introduction',
-    title: `Service Keys`,
-    description: `Service keys have *FULL* access to your data, bypassing any security policies. Be VERY careful where you expose these keys. They should only be used on a server and never on a client or browser.
+    title: `服务端密钥`,
+    description: `服务端密钥具有对您的数据的完全访问权限，绕过任何安全策略。请务必小心暴露这些密钥。它们只能在服务器上使用，绝不应该在客户端或浏览器上使用。
 
-In this documentation, we refer to the key using the name \`SERVICE_KEY\`. You can find the \`service_role\` key above or in the [API settings](/project/[ref]/settings/api) page.`,
+在本文档中，我们将使用名称 \`SERVICE_KEY\` 来引用密钥。您可以在 [API 设置](/project/[ref]/settings/api) 页面中找到 \`service_role\` 密钥。`,
     js: (apikey?: string, endpoint?: string) => `
 const SUPABASE_KEY = '${apikey}'
 const SUPABASE_URL = 'https://${endpoint}'
@@ -52,22 +52,22 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
   userManagement: {
     key: 'user-management',
     category: 'user-management',
-    title: `Introduction`,
-    description: `Supabase makes it easy to manage your users.
+    title: `概述`,
+    description: `Supabase 使用户管理变得容易。
 
-  Supabase assigns each user a unique ID. You can reference this ID anywhere in your database. For example, you might create a \`profiles\` table references the user using a \`user_id\` field.
+  Supabase 会自动为每个用户分配一个唯一的 ID。您可以在数据库中的任何位置引用此 ID。例如，您可能会创建一个 \`profiles\` 表，该表引用用户使用 \`user_id\` 字段。
 
-  Supabase already has built in the routes to sign up, login, and log out for managing users in your apps and websites.`,
+  Supabase 已经内置了管理用户的路由，包括注册、登录和注销。`,
     js: undefined,
     bash: undefined,
   },
   signUp: {
     key: 'sign-up',
     category: 'user-management',
-    title: `Sign up`,
-    description: `Allow your users to sign up and create a new account
+    title: `注册`,
+    description: `允许用户注册以及创建账号。
 
-  After they have signed up, all interactions using the Supabase client will be performed as "that user".`,
+  当他们完成注册后，所有使用 Supabase 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signUp({
   email: 'someone@email.com',
@@ -87,9 +87,9 @@ curl -X POST '${endpoint}/auth/v1/signup' \\
     category: 'user-management',
     title: `Log in with Email/Password`,
     description: `
-If an account is created, users can login to your app.
+如果创建了账号，用户可以登录到您的应用。
 
-After they have logged in, all interactions using the Supabase JS client will be performed as "that user".`,
+当他们完成登录后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithPassword({
   email: 'someone@email.com',
@@ -109,11 +109,11 @@ curl -X POST '${endpoint}/auth/v1/token?grant_type=password' \\
   magicLinkLogin: {
     key: 'magic-link-login',
     category: 'user-management',
-    title: `Log in with Magic Link via Email`,
+    title: `通过向 Email 发送 Magic Link 登录`,
     description: `
-Send a user a passwordless link which they can use to redeem an access_token.
+发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。
 
-After they have clicked the link, all interactions using the Supabase JS client will be performed as "that user".`,
+当他们点击链接后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithOtp({
   email: 'someone@email.com'
@@ -131,13 +131,13 @@ curl -X POST '${endpoint}/auth/v1/magiclink' \\
   phoneLogin: {
     key: 'phone-log-in',
     category: 'user-management',
-    title: `Sign up with Phone/Password`,
+    title: `使用电话号码/密码注册`,
     description: `
-A phone number can be used instead of an email as a primary account confirmation mechanism.
+电话号码可以用作主要账号确认机制。
 
-The user will receive a mobile OTP via sms with which they can verify that they control the phone number.
+用户将收到一个短信验证码，他们可以使用该验证码验证他们是否控制该电话号码。
 
-You must enter your own twilio credentials on the auth settings page to enable sms confirmations.`,
+您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用短信确认。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signUp({
   phone: '+13334445555',
@@ -157,11 +157,11 @@ curl -X POST '${endpoint}/auth/v1/signup' \\
   smsLogin: {
     key: 'sms-otp-log-in',
     category: 'user-management',
-    title: `Login via SMS OTP`,
+    title: `通过短信验证码登录`,
     description: `
-SMS OTPs work like magic links, except you have to provide an interface for the user to verify the 6 digit number they receive.
+短信验证码类似于 magic link，除了您还要提供一个界面来验证用户收到的 6 位数字验证码。
 
-You must enter your own twilio credentials on the auth settings page to enable SMS-based Logins.`,
+您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用基于短信的登录。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithOtp({
   phone: '+13334445555'
@@ -179,11 +179,11 @@ curl -X POST '${endpoint}/auth/v1/otp' \\
   smsVerify: {
     key: 'sms-verify',
     category: 'user-management',
-    title: `Verify an SMS OTP`,
+    title: `验证短信验证码`,
     description: `
-Once the user has received the OTP, have them enter it in a form and send it for verification
+当用户收到验证码后，他们可以在表单中输入并发送验证码进行验证
 
-You must enter your own twilio credentials on the auth settings page to enable SMS-based OTP verification.`,
+您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用基于短信的 OTP 验证。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.verifyOtp({
   phone: '+13334445555',
@@ -205,15 +205,15 @@ curl -X POST '${endpoint}/auth/v1/verify' \\
   oauthLogin: {
     key: 'oauth-login',
     category: 'user-management',
-    title: `Log in with Third Party OAuth`,
+    title: `使用第三方 OAuth 登录`,
     description: `
-Users can log in with Third Party OAuth like Google, Facebook, GitHub, and more. You must first enable each of these in the Auth Providers settings [here](https://supabase.com).
+用户可以使用第三方 OAuth 登录，如 Google、Facebook、GitHub 等。您必须先在身份验证提供商设置中启用这些选项 [这里](https://supabase.com)。
 
-View all the available [Third Party OAuth providers](https://supabase.com).
+查看所有可用的 [第三方 OAuth 提供商](https://supabase.com)。
 
-After they have logged in, all interactions using the Supabase JS client will be performed as "that user".
+登录后，使用 Supabase JS 客户端的所有交互都将被视为“该用户”。
 
-Generate your Client ID and secret from: [Google](https://console.developers.google.com/apis/credentials), [Github](https://github.com/settings/applications/new), [Gitlab](https://gitlab.com/oauth/applications), [Facebook](https://developers.facebook.com/apps), and [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud).`,
+从 [Google](https://console.developers.google.com/apis/credentials)、[Github](https://github.com/settings/applications/new)、[Gitlab](https://gitlab.com/oauth/applications)、[Facebook](https://developers.facebook.com/apps) 和 [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud)生成您的 Client ID 和 secret `,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithOAuth({
   provider: 'github'
@@ -224,8 +224,8 @@ const { data, error } = await supabase.auth.signInWithOAuth({
   user: {
     key: 'get-user',
     category: 'user-management',
-    title: `Get user`,
-    description: `Get the JSON object for the logged in user.`,
+    title: `获取用户`,
+    description: `获取登录用户的 JSON 对象。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data: { user } } = await supabase.auth.getUser()
     `,
@@ -238,8 +238,8 @@ curl -X GET '${endpoint}/auth/v1/user' \\
   forgotPassWordEmail: {
     key: 'forgot-password-email',
     category: 'user-management',
-    title: `Forgot password / email`,
-    description: `Sends the user a log in link via email. Once logged in you should direct the user to a new password form. And use "Update User" below to save the new password.`,
+    title: `忘记密码或 email`,
+    description: `通过电子邮件向用户发送登录链接。用户一旦登录，您应该将用户导向一个新密码表单，并在下方使用“更新用户”保存新密码。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.resetPasswordForEmail(email)
     `,
@@ -255,8 +255,8 @@ curl -X POST '${endpoint}/auth/v1/recover' \\
   updateUser: {
     key: 'update-user',
     category: 'user-management',
-    title: `Update User`,
-    description: `Update the user with a new email or password. Each key (email, password, and data) is optional.`,
+    title: `更新用户`,
+    description: `更新用户的电子邮件地址或密码。每个键（email、password 和 data）都是可选的。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.updateUser({
   email: "new@email.com",
@@ -281,8 +281,8 @@ curl -X PUT '${endpoint}/auth/v1/user' \\
   logout: {
     key: 'log-out',
     category: 'user-management',
-    title: `Log out`,
-    description: `After calling log out, all interactions using the Supabase JS client will be "anonymous".`,
+    title: `注销`,
+    description: `调用注销后，使用 Supabase JS 客户端的所有交互都将被视为“匿名”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { error } = await supabase.auth.signOut()
     `,
@@ -296,13 +296,13 @@ curl -X POST '${endpoint}/auth/v1/logout' \\
   emailInvite: {
     key: 'email-invite',
     category: 'user-management',
-    title: `Invite user over email`,
+    title: `通过电子邮件邀请用户`,
     description: `
-Send a user a passwordless link which they can use to sign up and log in.
+向用户发送一个无密码链接，他们可以使用该链接注册和登录。
 
-After they have clicked the link, all interactions using the Supabase JS client will be performed as "that user".
+用户点击链接后，使用 Supabase JS 客户端的所有交互都将被视为“该用户”。
 
-This endpoint requires you use the \`service_role_key\` when initializing the client, and should only be invoked from the server, never from the client.`,
+此接口需要在初始化客户端时使用 \`service_role_key\`，并且只能在服务端调用，不要在客户端调用。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.api.inviteUserByEmail('someone@email.com')
     `,
@@ -320,10 +320,10 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
   storage: {
     key: 'storage',
     category: 'storage',
-    title: `Introduction`,
-    description: `Supabase Storage makes it simple to upload and serve files of any size, providing a robust framework for file access controls.
+    title: `概述`,
+    description: `Supabase Storage 使文件上传和提供文件访问控制变得简单。
 
-You can use Supabase Storage to store images, videos, documents, and any other file type. Serve your assets with a global CDN to reduce latency from over 285 cities globally. Supabase Storage includes a built-in image optimizer, so you can resize and compress your media files on the fly.`,
+您可以使用 Supabase Storage 存储图像、视频、文档和其他任何文件类型。通过全球 CDN 为超过 285 个城市提供快速的服务。Supabase Storage 内置了图像优化器，因此您可以在不牺牲质量的情况下在运行时调整媒体文件的大小和压缩。`,
     js: undefined,
     bash: undefined,
   },
@@ -331,9 +331,9 @@ You can use Supabase Storage to store images, videos, documents, and any other f
   edgeFunctions: {
     key: 'edge-function',
     category: 'edge-functions',
-    title: 'Introduction',
+    title: '概述',
     description: `
-Edge Functions are server-side TypeScript functions, distributed globally at the edge—close to your users. They can be used for listening to webhooks or integrating your Supabase project with third-parties like Stripe. Edge Functions are developed using Deno, which offers a few benefits to you as a developer:
+Edge Functions 是在边缘（靠近用户）处运行的服务器端 TypeScript 函数。它们可用于侦听 webhooks 或将与第三方服务（如 Stripe）集成到 Supabase 项目中。Edge Functions 是使用 Deno 开发的，这为开发者提供了一些好处：
 `,
     js: undefined,
     bash: undefined,
@@ -341,15 +341,15 @@ Edge Functions are server-side TypeScript functions, distributed globally at the
   edgeFunctionsPreReq: {
     key: 'edge-function-pre-req',
     category: 'edge-functions',
-    title: 'Pre-requisites',
+    title: '前提条件',
     description: `
-Follow the steps to prepare your Supabase project on your local machine.
+按照以下步骤在本地机器上准备您的 Supabase 项目。
 
-- Install the Supabase [CLI](https://supabase.com/docs/guides/cli).
-- [Login to the CLI](https://supabase.com/docs/reference/cli/usage#supabase-login) using the command: \`supabase login\`..
-- [Initialize Supabase](https://supabase.com/docs/guides/getting-started/local-development#getting-started) inside your project using the command: \`supabase init\`..
-- [Link to your Remote Project](https://supabase.com/docs/reference/cli/usage#supabase-link) using the command \`supabase link --project-ref [ref]\`..
-- Setup your environment: Follow the steps [here](https://supabase.com/docs/guides/functions/quickstart#setting-up-your-environment).
+- 安装 Supabase [CLI](https://supabase.com/docs/guides/cli).
+- [登录到 CLI](https://supabase.com/docs/reference/cli/usage#supabase-login) 使用命令：\`supabase login\`..
+- [初始化 Supabase](https://supabase.com/docs/guides/getting-started/local-development#getting-started) 在项目中使用命令：\`supabase init\`..
+- [链接到您的云端项目](https://supabase.com/docs/reference/cli/usage#supabase-link) 使用命令 \`supabase link --project-ref [ref]\`..
+- 设置您的环境：按照[这里](https://supabase.com/docs/guides/functions/quickstart#setting-up-your-environment)的步骤进行设置。
 `,
     js: undefined,
     bash: undefined,
@@ -357,11 +357,11 @@ Follow the steps to prepare your Supabase project on your local machine.
   createEdgeFunction: {
     key: 'create-edge-function',
     category: 'edge-functions',
-    title: 'Create an Edge Function',
+    title: '创建一个 Edge Function',
     description: `
-Create a Supabase Edge Function locally via the Supabase CLI.
+通过 Supabase CLI 在本地创建一个 Supabase Edge Function。
 `,
-    js: () => `// Create an edge function via the Supabase CLI`,
+    js: () => `// 通过 Supabase CLI 创建一个 edge function`,
     bash: () => `
 supabase functions new hello-world
 `,
@@ -369,11 +369,11 @@ supabase functions new hello-world
   deployEdgeFunction: {
     key: 'deploy-edge-function',
     category: 'edge-functions',
-    title: 'Deploy an Edge Function',
+    title: '部署一个 Edge Function',
     description: `
-Deploy a Supabase Edge Function to your Supabase project via the Supabase CLI.
+通过 Supabase CLI 将一个 Supabase Edge Function 部署到您的 Supabase 项目。
 `,
-    js: () => `// Deploy an edge function via the Supabase CLI`,
+    js: () => `// 通过 Supabase CLI 部署一个 edge function`,
     bash: () => `supabase functions deploy hello-world --project-ref [ref]
 `,
   },
@@ -381,11 +381,11 @@ Deploy a Supabase Edge Function to your Supabase project via the Supabase CLI.
   entitiesIntroduction: {
     key: 'entities-introduction',
     category: 'entities',
-    title: 'Introduction',
+    title: '概述',
     description: `
-All views and tables in the \`public\` schema, and those accessible by the active database role for a request are available for querying via the API.
+在 \`public\` 模式下所有的视图和表，以及那些可由当前角色访问的表，都可以通过 API 查询。
 
-If you don't want to expose tables in your API, simply add them to a different schema (not the \`public\` schema).
+如果您有不想通过 API 公开的表，只需将它们添加到不同的模式（非 \`public\` 模式）。
 `,
     js: undefined,
     bash: undefined,
@@ -393,11 +393,11 @@ If you don't want to expose tables in your API, simply add them to a different s
   generatingTypes: {
     key: 'generating-types',
     category: 'entities',
-    title: 'Generating Types',
+    title: '生成类型',
     description: `
-Supabase APIs are generated from your database, which means that we can use database introspection to generate type-safe API definitions.
+Supabase API 是从您的数据库生成的，这意味着我们可以使用数据库内省来生成类型安全的 API 定义。
 
-You can generate types from your database either through the [Supabase CLI](https://supabase.com/docs/guides/database/api/generating-types), or by downloading the types file via the button on the right and importing it in your application within \`src/index.ts\`.
+您可以通过 [Supabase CLI](https://supabase.com/docs/guides/database/api/generating-types) 或通过右侧的下载按钮将类型文件导入到您的应用程序的 \`src/index.ts\` 中。
 `,
     js: undefined,
     bash: undefined,
@@ -407,13 +407,13 @@ You can generate types from your database either through the [Supabase CLI](http
     category: 'entities',
     title: 'GraphQL vs PostgREST',
     description: `
-If you have a GraphQL background, you might be wondering if you can fetch your data in a single round-trip. The answer is yes! The syntax is very similar. This example shows how you might achieve the same thing with Apollo GraphQL and Supabase.
+如果您有 GraphQL 使用经历，您可能会想知道是否可以在单个往返中获取您的数据。答案是肯定的！语法非常相似。这个例子展示了如何使用 Apollo GraphQL 和 Supabase 实现相同的功能。
 
-Still want GraphQL?
-If you still want to use GraphQL, you can. Supabase provides you with a full Postgres database, so as long as your middleware can connect to the database then you can still use the tools you love. You can find the database connection details [in the settings](/project/[ref]/settings/database).
+仍然想使用 GraphQL？
+如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要您的中间件可以连接到数据库，您就可以继续使用您喜爱的工具。您可以在 [设置](/project/[ref]/settings/database) 中找到数据库连接详细信息。
 `,
     js: (apikey?: string, endpoint?: string) => `
-// With Apollo GraphQL
+// 使用 Apollo GraphQL
 const { loading, error, data } = useQuery(gql\`
   query GetDogs {
     dogs {
@@ -427,7 +427,7 @@ const { loading, error, data } = useQuery(gql\`
   }
     \`)
 
-// With Supabase
+// 使用 Supabase
 const { data, error } = await supabase
   .from('dogs')
   .select(\`
@@ -436,7 +436,7 @@ const { data, error } = await supabase
   \`)
 `,
     bash: (apikey?: string, endpoint?: string) => `
-// With Apollo GraphQL
+// 使用 Apollo GraphQL
 const { loading, error, data } = useQuery(gql\`
   query GetDogs {
     dogs {
@@ -450,7 +450,7 @@ const { loading, error, data } = useQuery(gql\`
   }
     \`)
 
-// With Supabase
+// 使用 Supabase
 const { data, error } = await supabase
   .from('dogs')
   .select(\`
@@ -463,11 +463,11 @@ const { data, error } = await supabase
   storedProceduresIntroduction: {
     key: 'stored-procedures-introduction',
     category: 'stored-procedures',
-    title: 'Introduction',
+    title: '概述',
     description: `
-All of your database stored procedures are available on your API. This means you can build your logic directly into the database (if you're brave enough)!
+数据库中的所有存储过程都可以通过 API 直接访问。这意味着您可以直接在数据库中构建逻辑（如果您足够勇敢）！
 
-The API endpoint supports POST (and in some cases GET) to execute the function.
+API 接口支持 POST 方式（有些情况下是 GET 方式）执行存储过程。
 `,
     js: undefined,
     bash: undefined,
@@ -476,13 +476,13 @@ The API endpoint supports POST (and in some cases GET) to execute the function.
   realtime: {
     key: 'realtime-introduction',
     category: 'realtime',
-    title: 'Introduction',
+    title: '概述',
     description: `
-Supabase provides a globally distributed cluster of Realtime servers that enable the following functionality:
+Supabase 提供了一个全球分布的实时服务器集群，可用于以下功能：
 
-- [Broadcast](https://supabase.com/docs/guides/realtime/broadcast): Send ephemeral messages from client to clients with low latency.
-- [Presence](https://supabase.com/docs/guides/realtime/presence): Track and synchronize shared state between clients.
-- [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes): Listen to Postgres database changes and send them to authorized clients.
+- [广播](https://supabase.com/docs/guides/realtime/broadcast): 客户端之间发送实时消息，具有较低的延迟。
+- [状态同步](https://supabase.com/docs/guides/realtime/presence): 跟踪和同步客户端之间的共享状态。
+- [Postgres 变更](https://supabase.com/docs/guides/realtime/postgres-changes): 侦听 Postgres 数据库变更并将其发送给授权客户端。
 `,
     js: undefined,
     bash: undefined,
@@ -490,14 +490,14 @@ Supabase provides a globally distributed cluster of Realtime servers that enable
   subscribeChannel: {
     key: 'subscribe-to-channel',
     category: 'realtime',
-    title: 'Subscribe to channel',
+    title: '订阅频道',
     description: `
-Creates an event handler that listens to changes.
+创建一个事件处理程序，用于侦听更改。
 
-- By default, Broadcast and Presence are enabled for all projects.
-- By default, listening to database changes is disabled for new projects due to database performance and security concerns. You can turn it on by managing Realtime's [replication](https://supabase.com/docs/guides/api#realtime-api-overview).
-- You can receive the "previous" data for updates and deletes by setting the table's \`REPLICA IDENTITY\` to \`FULL\` (e.g., \`ALTER TABLE your_table REPLICA IDENTITY FULL;\`).
-- Row level security is not applied to delete statements. When RLS is enabled and replica identity is set to full, only the primary key is sent to clients.
+- 默认情况下，广播和状态同步对所有项目都是启用的。
+- 默认情况下，侦听数据库更改对新项目是禁用的，因为数据库性能和安全方面的考虑。您可以通过管理实时通信 API 的 [复制](https://supabase.com/docs/guides/api#realtime-api-overview) 来打开它。
+- 您可以通过将表的 \`REPLICA IDENTITY\` 设置为 \`FULL\` （例如 \`ALTER TABLE your_table REPLICA IDENTITY FULL;\`）来接收更新和删除操作的“先前”数据。
+- 行级安全策略不应用于删除语句。当启用 RLS 并将副本标识设置为 full 时，仅发送主键给客户端。
 `,
     js: () => `
 supabase
@@ -515,41 +515,41 @@ supabase
     }
   })
     `,
-    bash: () => `# Realtime streams are only supported by our client libraries`,
+    bash: () => `# 实时通信推送功能仅能通过客户端SDK支持`,
   },
   unsubscribeChannel: {
     key: 'unsubscribe-channel',
     category: 'realtime',
-    title: 'Unsubscribe from a channel',
+    title: '取消订阅频道',
     description: `
-Unsubscribes and removes Realtime channel from Realtime client.
+取消订阅并删除实时通信频道。
 
-Removing a channel is a great way to maintain the performance of your project's Realtime service as well as your database if you're listening to Postgres changes. Supabase will automatically handle cleanup 30 seconds after a client is disconnected, but unused channels may cause degradation as more clients are simultaneously subscribed.
+当您正在侦听 Postgres 更改时，删除频道是维护您项目的实时通信服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
 `,
     js: () => `supabase.removeChannel(myChannel)`,
-    bash: () => `# Realtime streams are only supported by our client libraries`,
+    bash: () => `# 实时通信推送功能仅能通过客户端SDK支持`,
   },
   unsubscribeChannels: {
     key: 'unsubscribe-channels',
     category: 'realtime',
-    title: 'Unsubscribe from all channels',
+    title: '取消订阅所有频道',
     description: `
-Unsubscribes and removes all Realtime channels from Realtime client.
+取消订阅并删除所有实时通信频道。
 
-Removing a channel is a great way to maintain the performance of your project's Realtime service as well as your database if you're listening to Postgres changes. Supabase will automatically handle cleanup 30 seconds after a client is disconnected, but unused channels may cause degradation as more clients are simultaneously subscribed.
+当您正在侦听 Postgres 更改时，删除频道是维护您项目的实时通信服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
 `,
     js: () => `supabase.removeChannels()`,
-    bash: () => `# Realtime streams are only supported by our client libraries`,
+    bash: () => `# 实时通信推送功能仅能通过客户端SDK支持`,
   },
   retrieveAllChannels: {
-    key: 'unsubscribe-channel',
+    key: 'retrieve-all-channels',
     category: 'realtime',
-    title: 'Unsubscribe from a channel',
+    title: '获取订阅的频道',
     description: `
-Returns all Realtime channels.
+返回所有实时通信频道。
 `,
     js: () => `const channels = supabase.getChannels()`,
-    bash: () => `# Realtime streams are only supported by our client libraries`,
+    bash: () => `# 实时通信推送功能仅能通过客户端SDK支持`,
   },
 }
 
@@ -565,7 +565,7 @@ export const DOCS_RESOURCE_CONTENT: {
 } = {
   rpcSingle: {
     key: 'invoke-function',
-    title: 'Invoke function',
+    title: '调用函数',
     category: 'stored-procedures',
     description: undefined,
     docsUrl: 'https://supabase.com/docs/reference/javascript/rpc',
@@ -622,10 +622,10 @@ else console.log(data)
   },
   readRows: {
     key: 'read-rows',
-    title: `Read rows`,
+    title: `读取行`,
     category: 'entities',
     docsUrl: 'https://supabase.com/docs/reference/javascript/select',
-    description: `To read rows in this table, use the \`select\` method.`,
+    description: `读取此表中的行，请使用 \`select\` 方法。`,
     code: ({
       resourceId,
       endpoint,
@@ -638,7 +638,7 @@ else console.log(data)
       return [
         {
           key: 'read-all-rows',
-          title: 'Read all rows',
+          title: '读取所有行',
           bash: `
 curl '${endpoint}/rest/v1/${resourceId}?select=*' \\
 -H "apikey: ${apikey}" \\
@@ -652,7 +652,7 @@ let { data: ${resourceId}, error } = await supabase
         },
         {
           key: 'read-specific-columns',
-          title: 'Read specific columns',
+          title: '读取特定列',
           bash: `
 curl '${endpoint}/rest/v1/${resourceId}?select=some_column,other_column' \\
 -H "apikey: ${apikey}" \\
@@ -666,7 +666,7 @@ let { data: ${resourceId}, error } = await supabase
         },
         {
           key: 'read-foreign-tables',
-          title: 'Read referenced tables',
+          title: '读取关联表',
           bash: `
 curl '${endpoint}/rest/v1/${resourceId}?select=some_column,other_table(foreign_key)' \\
 -H "apikey: ${apikey}" \\
@@ -685,7 +685,7 @@ let { data: ${resourceId}, error } = await supabase
         },
         {
           key: 'with-pagination',
-          title: 'With pagination',
+          title: '使用分页',
           bash: `
 curl '${endpoint}/rest/v1/${resourceId}?select=*' \\
 -H "apikey: ${apikey}" \\
@@ -705,8 +705,8 @@ let { data: ${resourceId}, error } = await supabase
   filtering: {
     key: 'filter-rows',
     category: 'entities',
-    title: 'Filtering',
-    description: `Supabase provides a wide range of filters`,
+    title: '过滤',
+    description: `Supabase 提供了丰富的过滤方法`,
     docsUrl: 'https://supabase.com/docs/reference/javascript/using-filters',
     code: ({
       resourceId,
@@ -720,7 +720,7 @@ let { data: ${resourceId}, error } = await supabase
       return [
         {
           key: 'with-filtering',
-          title: 'With filtering',
+          title: '使用过滤',
           bash: `
 curl '${endpoint}/rest/v1/${resourceId}?id=eq.1&select=*' \\
 -H "apikey: ${apikey}" \\
@@ -732,7 +732,7 @@ let { data: ${resourceId}, error } = await supabase
   .from('${resourceId}')
   .select("*")
 
-  // Filters
+  // 过滤条件
   .eq('column', 'Equal to')
   .gt('column', 'Greater than')
   .lt('column', 'Less than')
@@ -744,7 +744,7 @@ let { data: ${resourceId}, error } = await supabase
   .in('column', ['Array', 'Values'])
   .neq('column', 'Not equal to')
 
-  // Arrays
+  // 数组
   .contains('array_column', ['array', 'contains'])
   .containedBy('array_column', ['contained', 'by'])
           `,
@@ -755,11 +755,11 @@ let { data: ${resourceId}, error } = await supabase
   insertRows: {
     key: 'insert-rows',
     category: 'entities',
-    title: 'Insert rows',
+    title: '插入行',
     description: `
-\`insert\` lets you insert into your tables. You can also insert in bulk and do UPSERT.
+\`insert\` 让您能够向表插入数据。您也可以批量插入并执行 UPSERT。
 
-\`insert\` will also return the replaced values for UPSERT.
+\`insert\` 也会返回 UPSERT 操作的替换值。
 `,
     docsUrl: 'https://supabase.com/docs/reference/javascript/insert',
     code: ({
@@ -794,7 +794,7 @@ const { data, error } = await supabase
         },
         {
           key: 'insert-many-rows',
-          title: 'Insert many rows',
+          title: '插入多行',
           bash: `
 curl -X POST '${endpoint}/rest/v1/${resourceId}' \\
 -H "apikey: ${apikey}" \\
@@ -814,7 +814,7 @@ const { data, error } = await supabase
         },
         {
           key: 'upsert-matching-rows',
-          title: 'Upsert matching rows',
+          title: '插入或更新行',
           bash: `
 curl -X POST '${endpoint}/rest/v1/${resourceId}' \\
 -H "apikey: ${apikey}" \\
@@ -836,11 +836,11 @@ const { data, error } = await supabase
   updateRows: {
     key: 'update-rows',
     category: 'entities',
-    title: 'Update rows',
+    title: '更新行',
     description: `
-\`update\` lets you update rows. \`update\` will match all rows by default. You can update specific rows using horizontal filters, e.g. \`eq\`, \`lt\`, and \`is\`.
+\`update\` 让您能够更新行。\`update\` 将默认匹配所有行。您可以使用过滤器，例如 \`eq\`、\`lt\` 和 \`is\`，来更新特定的行。
 
-\`update\` will also return the replaced values for UPDATE.
+\`update\` 也会返回 UPDATE 操作的替换值。
 `,
     docsUrl: 'https://supabase.com/docs/reference/javascript/update',
     code: ({
@@ -855,7 +855,7 @@ const { data, error } = await supabase
       return [
         {
           key: 'update-matching-rows',
-          title: 'Update matching rows',
+          title: '更新特定行',
           bash: `
 curl -X PATCH '${endpoint}/rest/v1/${resourceId}?some_column=eq.someValue' \\
 -H "apikey: ${apikey}" \\
@@ -878,9 +878,9 @@ const { data, error } = await supabase
   deleteRows: {
     key: 'delete-rows',
     category: 'entities',
-    title: 'Delete rows',
+    title: '删除行',
     description: `
-\`delete\` lets you delete rows. \`delete\` will match all rows by default, so remember to specify your filters!
+\`delete\` 让您能够删除行。\`delete\` 将默认匹配所有行，因此请务必指定过滤条件！
 `,
     docsUrl: 'https://supabase.com/docs/reference/javascript/delete',
     code: ({
@@ -895,7 +895,7 @@ const { data, error } = await supabase
       return [
         {
           key: 'delete-matching-rows',
-          title: 'Delete matching rows',
+          title: '删除特定行',
           bash: `
 curl -X DELETE '${endpoint}/rest/v1/${resourceId}?some_column=eq.someValue' \\
 -H "apikey: ${apikey}" \\
@@ -914,17 +914,17 @@ const { error } = await supabase
   subscribeChanges: {
     key: 'subscribe-changes',
     category: 'entities',
-    title: 'Subscribe to changes',
+    title: '订阅更改',
     description: `
-Supabase provides realtime functionality and broadcasts database changes to authorized users depending on Row Level Security (RLS) policies.
+Supabase 提供实时通信功能，根据行级安全策略（RLS），将数据库更改广播给授权用户。
 `,
     docsUrl: 'https://supabase.com/docs/reference/javascript/subscribe',
     code: ({ resourceId }: { resourceId: string }) => {
       return [
         {
           key: 'subscribe-all-events',
-          title: 'Subscribe to all events',
-          bash: `# Realtime streams are only supported by our client libraries`,
+          title: '订阅所有事件',
+          bash: `# 实时通信功能只能通过客户端SDK支持`,
           js: `
 const channels = supabase.channel('custom-all-channel')
   .on(
@@ -938,8 +938,8 @@ const channels = supabase.channel('custom-all-channel')
         },
         {
           key: 'subscribe-to-inserts',
-          title: 'Subscribe to inserts',
-          bash: `# Realtime streams are only supported by our client libraries`,
+          title: '订阅插入操作',
+          bash: `# 实时通信功能只能通过客户端SDK支持`,
           js: `
 const channels = supabase.channel('custom-insert-channel')
   .on(
@@ -953,8 +953,8 @@ const channels = supabase.channel('custom-insert-channel')
         },
         {
           key: 'subscribe-to-updates',
-          title: 'Subscribe to updates',
-          bash: `# Realtime streams are only supported by our client libraries`,
+          title: '订阅更新操作',
+          bash: `# 实时通信功能只能通过客户端SDK支持`,
           js: `
 const channels = supabase.channel('custom-update-channel')
   .on(
@@ -968,8 +968,8 @@ const channels = supabase.channel('custom-update-channel')
         },
         {
           key: 'subscribe-to-deletes',
-          title: 'Subscribe to deletes',
-          bash: `# Realtime streams are only supported by our client libraries`,
+          title: '订阅删除操作',
+          bash: `# 实时通信功能只能通过客户端SDK支持`,
           js: `
 const channels = supabase.channel('custom-delete-channel')
   .on(
@@ -983,8 +983,8 @@ const channels = supabase.channel('custom-delete-channel')
         },
         {
           key: 'subscribe-to-specific-rows',
-          title: 'Subscribe to specific rows',
-          bash: `# Realtime streams are only supported by our client libraries`,
+          title: '订阅特定行',
+          bash: `# 实时通信功能只能通过客户端SDK支持`,
           js: `
 const channels = supabase.channel('custom-filter-channel')
   .on(
@@ -1002,12 +1002,12 @@ const channels = supabase.channel('custom-filter-channel')
   uploadFile: {
     key: 'upload-file',
     category: 'storage',
-    title: 'Upload a file',
+    title: '上传文件',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-upload',
     description: `
-Upload a file to an existing bucket. RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: only \`insert\` when you are uploading new files and \`select\`, \`insert\`, and \`update\` when you are upserting files.
+上传文件到已存在的存储桶。RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：当您上传新文件时需 \`insert\`权限， 当您替换文件时需\`select\`， \`insert\`，和 \`update\` 权限。
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
@@ -1038,12 +1038,12 @@ const { data, error } = await supabase
   deleteFiles: {
     key: 'delete-files',
     category: 'storage',
-    title: 'Delete files',
+    title: '删除文件',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-remove',
     description: `
-Delete files within the bucket. RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: \`delete\` and \`select\`
+删除文件。RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：\`delete\` 和 \`select\` 权限
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
@@ -1067,12 +1067,12 @@ const { data, error } = await supabase
   listFiles: {
     key: 'list-files',
     category: 'storage',
-    title: 'List all files',
+    title: '列出所有文件',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-list',
     description: `
-List all files within the bucket. RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: \`select\`
+列出所有文件。RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：\`select\` 权限
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
@@ -1099,12 +1099,12 @@ const { data, error } = await supabase
   downloadFile: {
     key: 'download-file',
     category: 'storage',
-    title: 'Download a file',
+    title: '下载文件',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-download',
     description: `
-Downloads a file from a private bucket. For public buckets, make a request to the URL returned from getPublicUrl instead. RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: \`select\`
+从一个私有的存储桶下载文件。对于公开的存储桶，您可以向 getPublicUrl 返回的 URL 发出请求。RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：\`select\` 权限
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
@@ -1128,12 +1128,12 @@ const { data, error } = await supabase
   createSignedURL: {
     key: 'create-signed-url',
     category: 'storage',
-    title: 'Create a signed URL',
+    title: '创建一个签名 URL',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-createsignedurl',
     description: `
-Create a signed URL which can be used to share a file for a fixed amount of time. RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: \`select\`
+创建一个签名 URL，可用于在固定时间内共享文件。RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：\`select\` 权限
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
@@ -1157,27 +1157,27 @@ const { data, error } = await supabase
   retrievePublicURL: {
     key: 'retrieve-public-url',
     category: 'storage',
-    title: 'Retrieve public URL',
+    title: '获取公开 URL',
     docsUrl: 'https://supabase.com/docs/reference/javascript/storage-from-getpublicurl',
     description: `
-A simple convenience function to get the URL for an asset in a public bucket. If you do not want to use this function, you can construct the public URL by concatenating the bucket URL with the path to the asset.
+一个用于获取存储桶中文件资源的公开 URL 的简易函数。如果您不想使用这个函数，可以通过拼接存储桶的 URL 和资源路径来构造公开 URL。
 
-This function does not verify if the bucket is public. If a public URL is created for a bucket which is not public, you will not be able to download the asset.
+此函数不验证存储桶是否公开。如果为一个非公开的存储桶创建了公开 URL，您将无法下载文件资源。
 
-The bucket needs to be set to public, either via \`updateBucket()\` or by going to Storage on supabase.com/dashboard, clicking the overflow menu on a bucket and choosing "Make public"
+存储桶需要设置为公开，通过 \`updateBucket()\` 或在 supabase.com/dashboard 上的存储桶页面上，通过点击存储桶的弹出菜单并选择“设为公开”
 
-RLS policy permissions required:
-- \`buckets\` table permissions: none
-- \`objects\` table permissions: none
+RLS 策略权限要求：
+- \`buckets\` 表权限：无需权限
+- \`objects\` 表权限：无需权限
 `,
     code: ({ name, apikey, endpoint }: { name: string; apikey: string; endpoint: string }) => [
       {
         key: 'storage-retrieve-public-url',
         title: undefined,
         bash: `
-# No bash command available.
-# You can construct the public URL by concatenating the bucket URL with the path to the asset
-# e.g ${endpoint}/storage/v1/object/public/${name}/folder/avatar1.png`,
+# 无可用 bash 命令。
+# 您可以通过拼接存储桶的 URL 和资源路径来构造公开 URL。
+# 例如 ${endpoint}/storage/v1/object/public/${name}/folder/avatar1.png`,
         js: `
 const { data } = supabase
   .storage
@@ -1190,14 +1190,14 @@ const { data } = supabase
   invokeEdgeFunction: {
     key: 'invoke-edge-function',
     category: 'edge-functions',
-    title: 'Invoke an edge function',
+    title: '调用 Edge Function',
     docsUrl: 'https://supabase.com/docs/reference/javascript/functions-invoke',
     description: `
-Invokes a Supabase Edge Function. Requires an Authorization header, and invoke params generally match the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) spec.
+调用 Supabase Edge Function。需要一个 Authorization 头部，并且调用参数通常遵循 [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) 规范。
 
-When you pass in a body to your function, we automatically attach the \`Content-Type\` header for \`Blob\`, \`ArrayBuffer\`, \`File\`, \`FormData\` and \`String\`. If it doesn't match any of these types we assume the payload is \`json\`, serialize it and attach the \`Content-Type\` header as \`application/json\`. You can override this behavior by passing in a \`Content-Type\` header of your own.
+当您向函数传递一个请求体时，我们会自动附加 \`Blob\`、\`ArrayBuffer\`、\`File\`、\`FormData\` 和 \`String\` 的 \`Content-Type\` 请求头。如果不匹配这些类型，我们会假设负载是 \`json\`，将其序列化为 JSON 并附加 \`Content-Type\` 头部为 \`application/json\`。您可以通过传递自己的 \`Content-Type\` 头部来覆盖此行为。
 
-Responses are automatically parsed as \`json\`, \`blob\` and \`form-data\` depending on the \`Content-Type\` header sent by your function. Responses are parsed as \`text\` by default.
+响应会自动解析为 \`json\`、\`blob\` 和 \`form-data\`，根据您的函数发送的 \`Content-Type\` 请求头。默认情况下，响应会被解析为 \`text\`。
 `,
     code: ({ name, endpoint, apikey }: { name: string; endpoint: string; apikey: string }) => [
       {

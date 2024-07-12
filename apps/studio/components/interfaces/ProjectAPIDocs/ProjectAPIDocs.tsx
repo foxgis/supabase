@@ -64,11 +64,11 @@ const ProjectAPIDocs = () => {
       <div className="flex items-start h-full">
         <div className="w-72 border-r h-full">
           <div className="border-b px-4 py-2 flex items-center justify-between">
-            <h4>API Docs</h4>
+            <h4>API 文档</h4>
             <div className="flex items-center space-x-1">
               {!isEntityDocs && <LanguageSelector simplifiedVersion />}
               <Button type="default" onClick={() => setShowKeys(!showKeys)}>
-                {showKeys ? 'Hide keys' : 'Show keys'}
+                {showKeys ? '隐藏 key' : '显示 key'}
               </Button>
             </div>
           </div>

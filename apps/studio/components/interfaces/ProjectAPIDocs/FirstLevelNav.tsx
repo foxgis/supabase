@@ -175,7 +175,7 @@ const FirstLevelNav = () => {
             rel="noreferrer"
             className="!justify-start"
           >
-            GraphQL guide
+            GraphQL 指南
           </Link>
         </Button>
       </div>
@@ -188,7 +188,7 @@ const FirstLevelNav = () => {
             rel="noreferrer"
             className="!justify-start"
           >
-            Documentation
+            文档
           </Link>
         </Button>
         <Button block asChild type="text" size="small" icon={<IconBookOpen />}>
@@ -198,7 +198,7 @@ const FirstLevelNav = () => {
             rel="noreferrer"
             className="!justify-start"
           >
-            REST guide
+            REST 指南
           </Link>
         </Button>
       </div>

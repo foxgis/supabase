@@ -84,7 +84,7 @@ const ColumnType = ({
           <Input
             readOnly
             disabled
-            label={showLabel ? 'Type' : ''}
+            label={showLabel ? '类型' : ''}
             layout={showLabel ? 'horizontal' : undefined}
             className="md:gap-x-0"
             size="small"
@@ -92,7 +92,7 @@ const ColumnType = ({
             value={value}
             descriptionText={
               showLabel
-                ? 'Custom non-native psql data types currently cannot be changed to a different data type via Supabase Studio'
+                ? '当前无法通过 Supabase Studio 将非 psql 原生数据类型更改到其他数据类型'
                 : ''
             }
           />
@@ -108,8 +108,7 @@ const ColumnType = ({
                 ].join(' ')}
               >
                 <span className="text-xs text-foreground">
-                  Custom non-native psql data types currently cannot be changed to a different data
-                  type via Supabase Studio
+                  当前无法通过 Supabase Studio 将非 psql 原生数据类型更改到其他数据类型
                 </span>
               </div>
             </Tooltip.Content>
@@ -156,7 +155,7 @@ const ColumnType = ({
   return (
     <div className="space-y-2">
       <Listbox
-        label={showLabel ? 'Type' : ''}
+        label={showLabel ? '类型' : ''}
         layout={layout || (showLabel ? 'horizontal' : 'vertical')}
         value={value}
         size={size}
@@ -180,7 +179,7 @@ const ColumnType = ({
         */}
         {enumTypes.length > 0 ? (
           <Listbox.Option disabled key="header-1" value="header-1" label="header-1">
-            Other Data Types
+            其他数据类型
           </Listbox.Option>
         ) : (
           <></>
@@ -210,7 +209,7 @@ const ColumnType = ({
         )}
 
         <Listbox.Option disabled value="header-2" label="header-2">
-          PostgreSQL Data Types
+          PostgreSQL 数据类型
         </Listbox.Option>
 
         {POSTGRES_DATA_TYPE_OPTIONS.map((option: PostgresDataTypeOption) => (
@@ -233,23 +232,22 @@ const ColumnType = ({
           variant="warning"
           title={
             <>
-              It is recommended to use <code className="text-xs">{recommendation.alternative}</code>{' '}
-              instead
+              建议使用 <code className="text-xs">{recommendation.alternative}</code>{' '}
             </>
           }
         >
           <p>
-            Postgres recommends against using the data type <code className="text-xs">{value}</code>{' '}
-            unless you have a very specific use case.
+            除非您有特殊需求，Postgres 不建议使用 <code className="text-xs">{value}</code>{' '}
+            数据类型。
           </p>
           <div className="flex items-center space-x-2 mt-3">
             <Button asChild type="default" icon={<IconExternalLink />}>
               <Link href={recommendation.reference} target="_blank" rel="noreferrer">
-                Read more
+                了解更多
               </Link>
             </Button>
             <Button type="primary" onClick={() => onOptionSelect(recommendation.alternative)}>
-              Use {recommendation.alternative}
+              使用 {recommendation.alternative}
             </Button>
           </div>
         </Alert>

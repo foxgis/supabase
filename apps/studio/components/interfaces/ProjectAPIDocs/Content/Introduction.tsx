@@ -32,18 +32,18 @@ const Introduction = ({ showKeys, language, apikey, endpoint }: ContentProps) =>
       >
         <div className="px-4 space-y-6">
           <div className="flex space-x-4 mt-8">
-            <p className="text-sm w-40">Project URL</p>
+            <p className="text-sm w-40">项目 URL</p>
             <Input disabled readOnly copy size="small" value={endpoint} className="w-full" />
           </div>
           <div className="flex space-x-4">
-            <p className="text-sm w-40">Client API key</p>
+            <p className="text-sm w-40">客户端 API key</p>
             <Input
               disabled
               readOnly
               size="small"
-              value={showKeys ? apikey : 'Reveal API keys via dropdown in the header'}
+              value={showKeys ? apikey : '通过下拉菜单在头部显示 API key'}
               className="w-full"
-              descriptionText="This key is safe to use in a browser if you have enabled Row Level Security (RLS) for your tables and configured policies."
+              descriptionText="这个 key 可以安全地在浏览器中使用，前提是您启用行级安全（RLS）并且配置了相应的策略。"
               actions={[
                 <Button
                   key="copy"
@@ -56,23 +56,23 @@ const Introduction = ({ showKeys, language, apikey, endpoint }: ContentProps) =>
                     )
                   }}
                 >
-                  {copied === 'anon' ? 'Copied' : 'Copy'}
+                  {copied === 'anon' ? '已复制' : '复制'}
                 </Button>,
               ]}
             />
           </div>
           <div className="flex space-x-4">
-            <p className="text-sm w-40 mb-16">Service key</p>
+            <p className="text-sm w-40 mb-16">服务端 key</p>
             <Input
               disabled
               readOnly
               size="small"
-              value={showKeys ? serviceKey : 'Reveal API keys via dropdown in the header'}
+              value={showKeys ? serviceKey : '通过下拉菜单在头部显示 API key'}
               className="w-full"
               descriptionText={
                 <p>
-                  This key has the ability to bypass Row Level Security.{' '}
-                  <span className="text-amber-900">Never share it publicly.</span>
+                  这个 key 可以绕过行级安全策略。{' '}
+                  <span className="text-amber-900">请务必不要公开它。</span>
                 </p>
               }
               actions={[
@@ -87,7 +87,7 @@ const Introduction = ({ showKeys, language, apikey, endpoint }: ContentProps) =>
                     )
                   }}
                 >
-                  {copied === 'service' ? 'Copied' : 'Copy'}
+                  {copied === 'service' ? '已复制' : '复制'}
                 </Button>,
               ]}
             />

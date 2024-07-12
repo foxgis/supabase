@@ -37,7 +37,7 @@ const ColumnDefaultValue = ({
     if (enumType !== undefined) {
       return (
         <Select
-          label="Default Value"
+          label="默认值"
           layout="vertical"
           value={formattedValue}
           onChange={(event: any) => onUpdateField({ defaultValue: event.target.value })}
@@ -57,18 +57,18 @@ const ColumnDefaultValue = ({
 
   return (
     <InputWithSuggestions
-      label="Default Value"
+      label="默认值"
       layout="vertical"
-      description="Can either be a literal or an expression. When using an expression wrap your expression in brackets, e.g. (gen_random_uuid())"
+      description="可以是字面量或者表达式。当使用表达式时，请将您的表达式用英文括号括起来，例如 (gen_random_uuid())"
       placeholder={
         typeof columnFields.defaultValue === 'string' && columnFields.defaultValue.length === 0
-          ? 'EMPTY'
+          ? '空字符'
           : 'NULL'
       }
       value={columnFields?.defaultValue ?? ''}
       suggestions={suggestions}
-      suggestionsHeader="Suggested expressions"
-      suggestionsTooltip="Suggested expressions"
+      suggestionsHeader="建议的表达式"
+      suggestionsTooltip="建议的表达式"
       onChange={(event: any) => onUpdateField({ defaultValue: event.target.value })}
       onSelectSuggestion={(suggestion: Suggestion) =>
         onUpdateField({ defaultValue: suggestion.value })

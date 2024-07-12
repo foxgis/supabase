@@ -90,7 +90,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
         setShowEnableRealtime(false)
       },
       onError: (error) => {
-        toast.error(`为 ${table.name} 启用实时消息失败：${error.message}`)
+        toast.error(`为 ${table.name} 启用实时通信失败：${error.message}`)
       },
     })
 
@@ -119,7 +119,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
 
   const toggleRealtime = async () => {
     if (!project) return console.error('未找到项目')
-    if (!realtimePublication) return console.error('未发现实时消息发布')
+    if (!realtimePublication) return console.error('未发现实时通信发布')
 
     const exists = realtimeEnabledTables.some((x: any) => x.id == table.id)
     const tables = !exists
@@ -392,7 +392,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             }
             onClick={() => setShowEnableRealtime(true)}
           >
-            实时消息 {isRealtimeEnabled ? '已开启' : '已关闭'}
+            实时通信 {isRealtimeEnabled ? '已开启' : '已关闭'}
           </Button>
         )}
 
@@ -402,15 +402,15 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
       <ConfirmationModal
         visible={showEnableRealtime}
         loading={isTogglingRealtime}
-        title={`为表 ${table.name} ${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
-        confirmLabel={`${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
-        confirmLabelLoading={`${isRealtimeEnabled ? '正在禁用' : '正在启用'}实时消息`}
+        title={`为表 ${table.name} ${isRealtimeEnabled ? '禁用' : '启用'}实时通信`}
+        confirmLabel={`${isRealtimeEnabled ? '禁用' : '启用'}实时通信`}
+        confirmLabelLoading={`${isRealtimeEnabled ? '正在禁用' : '正在启用'}实时通信`}
         onCancel={() => setShowEnableRealtime(false)}
         onConfirm={() => toggleRealtime()}
       >
         <div className="space-y-2">
           <p className="text-sm">
-            一旦实时消息被{isRealtimeEnabled ? '禁用' : '启用'}，将{isRealtimeEnabled ? '不再' : ''}向授权的订阅者广播表的任何更新事件。
+            一旦实时通信被{isRealtimeEnabled ? '禁用' : '启用'}，将{isRealtimeEnabled ? '不再' : ''}向授权的订阅者广播表的任何更新事件。
           </p>
           {!isRealtimeEnabled && (
             <p className="text-sm">

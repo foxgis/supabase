@@ -99,13 +99,13 @@ const InputField = ({
               <span className="text-sm text-foreground-lighter">{field.comment} </span>
             )}
             <span className="text-sm text-foreground-lighter">
-              {field.comment && '('}Has a foreign key relation to
+              {field.comment && '（'}有外键关联到
             </span>
             <span className="text-code font-mono text-xs text-foreground-lighter">
               {field.foreignKey.target_table_schema}.{field.foreignKey.target_table_name}.
               {field.foreignKey.target_column_name}
             </span>
-            {field.comment && <span className="text-sm text-foreground-lighter">{`)`}</span>}
+            {field.comment && <span className="text-sm text-foreground-lighter">{`）`}</span>}
           </>
         }
         labelOptional={field.format}
@@ -120,7 +120,7 @@ const InputField = ({
             onClick={onSelectForeignKey}
             icon={<Link />}
           >
-            Select record
+            选择记录
           </Button>
         }
       />
@@ -142,8 +142,7 @@ const InputField = ({
               {field.comment && <p>{field.comment}</p>}
               {isTruncated && (
                 <p>
-                  Note: Value is too large to be rendered in the dashboard. Please expand the editor
-                  to edit the value
+                  注意：值太长无法在仪表盘中呈现，请在编辑框中展开查看和编辑
                 </p>
               )}
             </>
@@ -169,12 +168,12 @@ const InputField = ({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem onClick={() => onUpdateField({ [field.name]: null })}>
-                  Set to NULL
+                  设置为 NULL
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => onEditText({ column: field.name, value: field.value })}
                 >
-                  Expand editor
+                  展开编辑器
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -199,8 +198,7 @@ const InputField = ({
             {field.comment && <p>{field.comment}</p>}
             {isTruncated && (
               <p>
-                Note: Value is too large to be rendered in the dashboard. Please expand the editor
-                to edit the value
+                注意：值太长无法在仪表盘中呈现，请在编辑框中展开查看和编辑
               </p>
             )}
           </>
@@ -217,7 +215,7 @@ const InputField = ({
             onClick={() => onEditJson({ column: field.name, value: field.value })}
             icon={<Edit2 />}
           >
-            Edit JSON
+            编辑 JSON
           </Button>
         }
       />
@@ -297,9 +295,9 @@ const InputField = ({
       value={field.value ?? ''}
       placeholder={
         field.isIdentity
-          ? 'Automatically generated as identity'
+          ? '自动生成的主键'
           : field.defaultValue !== null
-            ? `Default: ${field.defaultValue}`
+            ? `默认值：${field.defaultValue}`
             : 'NULL'
       }
       disabled={!isEditable}

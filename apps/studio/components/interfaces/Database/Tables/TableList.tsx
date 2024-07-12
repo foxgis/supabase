@@ -216,7 +216,7 @@ const TableList = ({
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
                 <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
-                  <p className="text-xs">Show entity types</p>
+                  <p className="text-xs">显示的实体类型</p>
                   <div className="flex flex-col">
                     {Object.entries(ENTITY_TYPE).map(([key, value]) => (
                       <div key={key} className="group flex items-center justify-between py-0.5">
@@ -243,7 +243,7 @@ const TableList = ({
                           onClick={() => setVisibleTypes([value])}
                           className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
                         >
-                          Select only
+                          单选
                         </Button>
                       </div>
                     ))}
@@ -268,10 +268,10 @@ const TableList = ({
             disabled={!canUpdateTables}
             onClick={() => onAddTable()}
             tooltip={{
-              content: { side: 'bottom', text: 'You need additional permissions to create tables' },
+              content: { side: 'bottom', text: '需要创建表的额外权限' },
             }}
           >
-            New table
+            新建表
           </ButtonTooltip>
         )}
       </div>
@@ -280,25 +280,25 @@ const TableList = ({
 
       {isLoading && <GenericSkeletonLoader />}
 
-      {isError && <AlertError error={error} subject="Failed to retrieve tables" />}
+      {isError && <AlertError error={error} subject="获取表失败" />}
 
       {isSuccess && (
         <div className="my-4 w-full">
           <Table
             head={[
               <Table.th key="icon" className="!px-0" />,
-              <Table.th key="name">Name</Table.th>,
+              <Table.th key="name">名称</Table.th>,
               <Table.th key="description" className="hidden lg:table-cell">
-                Description
+                描述
               </Table.th>,
               <Table.th key="rows" className="hidden text-right xl:table-cell">
-                Rows (Estimated)
+                行数（估计）
               </Table.th>,
               <Table.th key="size" className="hidden text-right xl:table-cell">
-                Size (Estimated)
+                大小（估计）
               </Table.th>,
               <Table.th key="realtime" className="hidden xl:table-cell text-center">
-                Realtime Enabled
+                实时通信已启用
               </Table.th>,
               <Table.th key="buttons"></Table.th>,
             ]}
@@ -310,17 +310,17 @@ const TableList = ({
                       {visibleTypes.length === 0 ? (
                         <>
                           <p className="text-sm text-foreground">
-                            Please select at least one entity type to filter with
+                            请至少选择一种实体类型进行筛选
                           </p>
                           <p className="text-sm text-foreground-light">
-                            There are currently no results based on the filter that you have applied
+                            根据您选择的筛选条件未找到任何表
                           </p>
                         </>
                       ) : (
                         <>
-                          <p className="text-sm text-foreground">No tables created yet</p>
+                          <p className="text-sm text-foreground">还未创建表</p>
                           <p className="text-sm text-foreground-light">
-                            There are no{' '}
+                            在模式 "{snap.selectedSchemaName}" 中未找到任何{' '}
                             {visibleTypes.length === 5
                               ? 'tables'
                               : visibleTypes.length === 1
@@ -330,8 +330,7 @@ const TableList = ({
                                     .map((x) => `${formatTooltipText(x)}s`)
                                     .join(
                                       ', '
-                                    )}, and ${formatTooltipText(visibleTypes[visibleTypes.length - 1])}s`}{' '}
-                            found in the schema "{snap.selectedSchemaName}"
+                                    )}, 和 ${formatTooltipText(visibleTypes[visibleTypes.length - 1])}s`}{' '}
                           </p>
                         </>
                       )}
@@ -341,9 +340,9 @@ const TableList = ({
                 {entities.length === 0 && filterString.length > 0 && (
                   <Table.tr key={snap.selectedSchemaName}>
                     <Table.td colSpan={7}>
-                      <p className="text-sm text-foreground">No results found</p>
+                      <p className="text-sm text-foreground">未找到结果</p>
                       <p className="text-sm text-foreground-light">
-                        Your search for "{filterString}" did not return any results
+                        您搜索的“{filterString}”没有返回任何结果
                       </p>
                     </Table.td>
                   </Table.tr>
@@ -423,7 +422,7 @@ const TableList = ({
                             {x.comment}
                           </span>
                         ) : (
-                          <p className="text-border-stronger">No description</p>
+                          <p className="text-border-stronger">无描述</p>
                         )}
                       </Table.td>
                       <Table.td className="hidden text-right xl:table-cell">
@@ -455,7 +454,7 @@ const TableList = ({
                             style={{ paddingTop: 3, paddingBottom: 3 }}
                           >
                             <Link href={`/project/${ref}/database/tables/${x.id}`}>
-                              {x.columns.length} columns
+                              {x.columns.length} 列
                             </Link>
                           </Button>
 
@@ -472,7 +471,7 @@ const TableList = ({
                                   }
                                 >
                                   <Eye size={12} />
-                                  <p>View in Table Editor</p>
+                                  <p>在表编辑器中查看</p>
                                 </DropdownMenuItem>
 
                                 {x.type === ENTITY_TYPE.TABLE && (
@@ -488,12 +487,12 @@ const TableList = ({
                                           }}
                                         >
                                           <Edit size={12} />
-                                          <p>Edit table</p>
+                                          <p>编辑表</p>
                                         </DropdownMenuItem>
                                       </TooltipTrigger_Shadcn_>
                                       {!canUpdateTables && (
                                         <TooltipContent_Shadcn_ side="left">
-                                          You need additional permissions to edit this table
+                                          您需要额外的权限才能编辑此表
                                         </TooltipContent_Shadcn_>
                                       )}
                                     </Tooltip_Shadcn_>
@@ -506,7 +505,7 @@ const TableList = ({
                                       }}
                                     >
                                       <Copy size={12} />
-                                      <span>Duplicate Table</span>
+                                      <span>复制表</span>
                                     </DropdownMenuItem>
                                     <Tooltip_Shadcn_>
                                       <TooltipTrigger_Shadcn_ asChild>
@@ -523,12 +522,12 @@ const TableList = ({
                                           }}
                                         >
                                           <Trash stroke="red" size={12} />
-                                          <p>Delete table</p>
+                                          <p>删除表</p>
                                         </DropdownMenuItem>
                                       </TooltipTrigger_Shadcn_>
                                       {!canUpdateTables && (
                                         <TooltipContent_Shadcn_ side="left">
-                                          You need additional permissions to delete tables
+                                          您需要额外的权限才能删除此表
                                         </TooltipContent_Shadcn_>
                                       )}
                                     </Tooltip_Shadcn_>

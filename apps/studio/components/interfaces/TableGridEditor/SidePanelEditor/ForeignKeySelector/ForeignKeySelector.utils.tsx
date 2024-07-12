@@ -26,26 +26,24 @@ export const generateCascadeActionDescription = (
   cascadeAction: string,
   reference: string
 ) => {
-  const actionVerb = action === 'update' ? 'Updating' : 'Deleting'
-  const actionName = getForeignKeyCascadeAction(cascadeAction) ?? 'No action'
+  const actionVerb = action === 'update' ? '更新' : '删除'
+  const actionName = getForeignKeyCascadeAction(cascadeAction) ?? '无操作'
 
   switch (cascadeAction) {
     case FOREIGN_KEY_CASCADE_ACTION.NO_ACTION:
       return (
         <>
-          <span className="text-foreground-light">{actionName}</span>: {actionVerb} a record from{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> will{' '}
-          <span className="text-amber-900 opacity-75">raise an error</span> if there are records
-          existing in this table that reference it
+          <span className="text-foreground-light">{actionName}</span>：{actionVerb}一条在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code> 中的记录，如果表中存在引用它的记录将会{' '}
+          <span className="text-amber-900 opacity-75">报错</span>
         </>
       )
     case FOREIGN_KEY_CASCADE_ACTION.CASCADE:
       return (
         <>
-          <span className="text-foreground-light">{actionName}</span>: {actionVerb} a record from{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> will{' '}
-          <span className="text-amber-900 opacity-75">also {action}</span> any records that
-          reference it in this table
+          <span className="text-foreground-light">{actionName}</span>：{actionVerb}一条在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code> 中的记录， 也将会{' '}
+          <span className="text-amber-900 opacity-75">{actionVerb}</span> 表中引用它的记录。
         </>
       )
     case FOREIGN_KEY_CASCADE_ACTION.RESTRICT:
@@ -66,35 +64,32 @@ export const generateCascadeActionDescription = (
                   ].join(' ')}
                 >
                   <p className="text-xs text-foreground">
-                    This is similar to no action, but the restrict check cannot be deferred till
-                    later in the transaction
+                    这类似于无操作， 但这个检查不能延迟到事务之后。
                   </p>
                 </div>
               </Tooltip.Content>
             </Tooltip.Portal>
           </Tooltip.Root>
-          : {actionVerb} a record from{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> will{' '}
-          <span className="text-amber-900 opacity-75">prevent {actionVerb.toLowerCase()}</span>{' '}
-          existing referencing rows from this table.
+          : {actionVerb}一条在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code> 中的记录，将会{' '}
+          <span className="text-amber-900 opacity-75">阻止{actionVerb.toLowerCase()}</span>{' '}
+          表中引用它的记录。
         </>
       )
     case FOREIGN_KEY_CASCADE_ACTION.SET_DEFAULT:
       return (
         <>
-          <span className="text-foreground-light">{actionName}</span>: {actionVerb} a record from{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> will set the value of
-          any existing records in this table referencing it to their{' '}
-          <span className="text-amber-900 opacity-75">default value</span>
+          <span className="text-foreground-light">{actionName}</span>：{actionVerb}一条在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code>中的记录，会将表中引用它的记录设置为{' '}
+          <span className="text-amber-900 opacity-75">默认值</span>
         </>
       )
     case FOREIGN_KEY_CASCADE_ACTION.SET_NULL:
       return (
         <>
-          <span className="text-foreground-light">{actionName}</span>: {actionVerb} a record from{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> will set the value of
-          any existing records in this table referencing it{' '}
-          <span className="text-amber-900 opacity-75">to NULL</span>
+          <span className="text-foreground-light">{actionName}</span>：{actionVerb}一条在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code> 中的记录， 会将表中引用它的记录设置为{' '}
+          <span className="text-amber-900 opacity-75">NULL</span>
         </>
       )
   }

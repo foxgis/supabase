@@ -18,7 +18,7 @@ export const generateDatabaseMenu = (
     {
       title: '数据库管理',
       items: [
-        { name: '表结构', key: 'tables', url: `/project/${ref}/database/tables`, items: [] },
+        { name: '表', key: 'tables', url: `/project/${ref}/database/tables`, items: [] },
         {
           name: '函数',
           key: 'functions',
@@ -59,13 +59,13 @@ export const generateDatabaseMenu = (
       ],
     },
     {
-      title: 'Access Control',
+      title: '访问控制',
       items: [
-        { name: 'Roles', key: 'roles', url: `/project/${ref}/database/roles`, items: [] },
+        { name: '角色', key: 'roles', url: `/project/${ref}/database/roles`, items: [] },
         ...(columnLevelPrivileges
           ? [
               {
-                name: 'Column Privileges',
+                name: '列权限',
                 key: 'column-privileges',
                 url: `/project/${ref}/database/column-privileges`,
                 items: [],
@@ -83,7 +83,7 @@ export const generateDatabaseMenu = (
       ],
     },
     {
-      title: 'Platform',
+      title: '平台功能',
       items: [
         ...(IS_PLATFORM
           ? [
@@ -122,7 +122,7 @@ export const generateDatabaseMenu = (
       ],
     },
     {
-      title: 'Tools',
+      title: '工具',
       items: [
         {
           name: '表结构查看器',

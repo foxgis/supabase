@@ -27,22 +27,22 @@ const Bucket = ({ language, apikey, endpoint }: ContentProps) => {
         <div className="flex items-center space-x-2">
           <h2 className="text-xl">{bucket.name}</h2>
           <Badge variant={bucket.public ? 'warning' : 'default'}>
-            {bucket.public ? 'Public' : 'Private'}
+            {bucket.public ? '公开' : '私有'}
           </Badge>
         </div>
         <p className="text-sm text-foreground-light">
           Allowed MIME types:{' '}
           {allowedMimeTypes === null
-            ? 'All types are allowed'
+            ? '允许所有类型'
             : (allowedMimeTypes ?? []).length === 0
-              ? 'No types are allowed'
+              ? '不允许任何类型'
               : (allowedMimeTypes ?? []).length > 1
                 ? (allowedMimeTypes ?? []).join(', ')
-                : 'Unknown'}
+                : '未知类型'}
         </p>
         <p className="text-sm text-foreground-light">
-          Max file size limit:{' '}
-          {maxFileSizeLimit === null ? 'No limit' : `${formatBytes(maxFileSizeLimit)}`}
+          文件大小限制:{' '}
+          {maxFileSizeLimit === null ? '无限制' : `${formatBytes(maxFileSizeLimit)}`}
         </p>
       </div>
 

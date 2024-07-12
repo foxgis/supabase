@@ -34,7 +34,7 @@ const Pagination = ({
         type="outline"
         disabled={page <= 1 || isLoading}
         onClick={onPreviousPage}
-        title="Previous Page"
+        title="上一页"
         style={{ padding: '3px 10px' }}
       />
 
@@ -43,7 +43,7 @@ const Pagination = ({
         type="outline"
         disabled={hasRunOutOfRows || isLoading}
         onClick={onNextPage}
-        title="Next Page"
+        title="下一页"
         style={{ padding: '3px 10px' }}
       />
     </div>

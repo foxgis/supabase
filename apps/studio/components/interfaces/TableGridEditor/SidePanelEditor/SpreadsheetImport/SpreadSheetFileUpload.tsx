@@ -38,13 +38,11 @@ const SpreadSheetFileUpload = ({
     <div className="space-y-4">
       <div>
         <p className="mb-2 text-sm text-foreground-light">
-          Upload a CSV or TSV file. The first row should be the headers of the table, and your
-          headers should not include any special characters other than hyphens (
-          <span className="text-code">-</span>) or underscores (<span className="text-code">_</span>
-          ).
+          上传 CSV 或 TSV 文件。第一行应为表头，表头不应包含除连字符（
+          <span className="text-code">-</span>）或者下划线（<span className="text-code">_</span>）之外的任何特殊字符。
         </p>
         <p className="text-sm text-foreground-light">
-          Tip: Datetime columns should be formatted as YYYY-MM-DD HH:mm:ss
+          提示：日期时间列应以 YYYY-MM-DD HH:mm:ss 格式。
         </p>
       </div>
       {!uploadedFile ? (
@@ -58,7 +56,7 @@ const SpreadSheetFileUpload = ({
           onClick={() => (uploadButtonRef.current as any)?.click()}
         >
           <p className="text-sm">
-            Drag and drop, or <span className="text-brand">browse</span> your files
+            拖拽文件或<span className="text-brand">浏览</span>文件
           </p>
         </div>
       ) : (
@@ -69,7 +67,7 @@ const SpreadSheetFileUpload = ({
           </div>
           {parseProgress === 100 ? (
             <Button type="outline" onClick={removeUploadedFile}>
-              Remove File
+              移除文件
             </Button>
           ) : (
             <div className="flex w-3/5 items-center space-x-2">

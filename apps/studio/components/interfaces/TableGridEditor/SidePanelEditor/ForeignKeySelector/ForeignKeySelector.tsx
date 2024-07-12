@@ -142,7 +142,7 @@ export const ForeignKeySelector = ({
     const incompleteColumns = fk.columns.filter(
       (column) => column.source === '' || column.target === ''
     )
-    if (incompleteColumns.length > 0) errors['columns'] = 'Please ensure that columns are selected'
+    if (incompleteColumns.length > 0) errors['columns'] = '请确保选择了列'
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors)
@@ -213,12 +213,12 @@ export const ForeignKeySelector = ({
       visible={visible}
       onCancel={onClose}
       className="max-w-[480px]"
-      header={`${foreignKey === undefined ? '添加' : '管理'}数据表${table.name}外键关联`}
+      header={`${foreignKey === undefined ? '添加' : '管理'} ${table.name} 的外键关联`}
       customFooter={
         <ActionBar
-          backButtonLabel="Cancel"
+          backButtonLabel="取消"
           disableApply={disableApply}
-          applyButtonLabel="Save"
+          applyButtonLabel="保存"
           closePanel={onClose}
           applyFunction={(resolve: any) => validateSelection(resolve)}
         />
@@ -229,9 +229,9 @@ export const ForeignKeySelector = ({
           <InformationBox
             icon={<IconHelpCircle size="large" strokeWidth={1.5} />}
             title="什么是外键？"
-            description={`外键通过确保不能将没有与另一个表匹配的条目插入到表中来帮助维护数据的参照完整性。`}
+            description={`外键通过确保没有人能够向表中插入在另一个表中没有匹配项的行，来帮助维护数据的参照完整性。`}
             url="https://www.postgresql.org/docs/current/tutorial-fk.html"
-            urlLabel="Postgres外键相关文档"
+            urlLabel="Postgres 外键相关文档"
           />
 
           <Listbox
@@ -292,11 +292,11 @@ export const ForeignKeySelector = ({
             <>
               <div className="flex flex-col gap-y-3">
                 <label className="text-foreground-light text-sm">
-                  Select columns from{' '}
+                  从{' '}
                   <code className="text-xs">
                     {fk.schema}.{fk.table}
                   </code>
-                  to reference to
+                  选择列引用
                 </label>
                 <div className="grid grid-cols-10 gap-y-2">
                   <div className="col-span-5 text-xs text-foreground-lighter">
@@ -384,7 +384,7 @@ export const ForeignKeySelector = ({
                 </div>
                 <div className="space-y-2">
                   <Button type="default" onClick={addColumn}>
-                    Add another column
+                    添加另一列
                   </Button>
                   {errors.columns && <p className="text-red-900 text-sm">{errors.columns}</p>}
                   {hasTypeErrors && (
@@ -438,44 +438,36 @@ export const ForeignKeySelector = ({
 
               <InformationBox
                 icon={<IconHelpCircle size="large" strokeWidth={1.5} />}
-                title="Which action is most appropriate?"
+                title="那种操作最为合适？"
                 description={
                   <>
                     <p>
-                      The choice of the action depends on what kinds of objects the related tables
-                      represent:
+                      操作的选择取决于相关表所表示的对象类型：
                     </p>
                     <ul className="mt-2 list-disc pl-4 space-y-1">
                       <li>
-                        <code className="text-xs">Cascade</code>: if the referencing table
-                        represents something that is a component of what is represented by the
-                        referenced table and cannot exist independently
+                        <code className="text-xs">级联操作</code>：如果引用表表示的内容是被引用表表示内容的组成部分，并且不能独立存在。
                       </li>
                       <li>
-                        <code className="text-xs">Restrict</code> or{' '}
-                        <code className="text-xs">No action</code>: if the two tables represent
-                        independent objects
+                        <code className="text-xs">限制操作</code>或<code className="text-xs">无操作</code>：如果两个表表示独立的对象
                       </li>
                       <li>
-                        <code className="text-xs">Set NULL</code> or{' '}
-                        <code className="text-xs">Set default</code>: if a foreign-key relationship
-                        represents optional information
+                        <code className="text-xs">设为 NULL</code>或<code className="text-xs">设为默认值</code>：如果一个外键关系表示的是可选信息
                       </li>
                     </ul>
                     <p className="mt-2">
-                      Typically, restricting and cascading deletes are the most common options, but
-                      the default behavior is no action
+                      一般情况下，限制和级联删除是最常见的操作，但是默认行为是无操作
                     </p>
                   </>
                 }
                 url="https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK"
-                urlLabel="More information"
+                urlLabel="更多信息"
               />
 
               <Listbox
                 id="updateAction"
                 value={fk.updateAction}
-                label="Action if referenced row is updated"
+                label="被引用的行更新之后的操作"
                 descriptionText={
                   <p>
                     {generateCascadeActionDescription(
@@ -500,7 +492,7 @@ export const ForeignKeySelector = ({
                 id="deletionAction"
                 value={fk.deletionAction}
                 className="[&>div>label]:flex [&>div>label]:items-center"
-                label="Action if referenced row is removed"
+                label="被引用的行删除之后的操作"
                 // @ts-ignore
                 labelOptional={
                   <Button asChild type="default" icon={<IconExternalLink />}>
@@ -509,7 +501,7 @@ export const ForeignKeySelector = ({
                       rel="noreferrer"
                       href="https://supabase.com/docs/guides/database/postgres/cascade-deletes"
                     >
-                      Documentation
+                      文档
                     </a>
                   </Button>
                 }

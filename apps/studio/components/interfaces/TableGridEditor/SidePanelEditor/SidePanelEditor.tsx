@@ -76,12 +76,12 @@ const SidePanelEditor = ({
 
   const { mutateAsync: createTableRows } = useTableRowCreateMutation({
     onSuccess() {
-      toast.success('Successfully created row')
+      toast.success('成功创建了行')
     },
   })
   const { mutateAsync: updateTableRow } = useTableRowUpdateMutation({
     onSuccess() {
-      toast.success('Successfully updated row')
+      toast.success('成功更新了行')
     },
   })
   const { data: publications } = useDatabasePublicationsQuery({
@@ -102,7 +102,7 @@ const SidePanelEditor = ({
     onComplete: (err?: any) => void
   ) => {
     if (!project || selectedTable === undefined) {
-      return console.error('no project or table selected')
+      return console.error('未选择项目或表')
     }
 
     let saveRowError: Error | undefined
@@ -137,9 +137,9 @@ const SidePanelEditor = ({
             saveRowError = error
           }
         } else {
-          saveRowError = new Error('No primary key')
+          saveRowError = new Error('无主键')
           toast.error(
-            "We can't make changes to this table because there is no primary key. Please create a primary key and try again."
+            '无法对这个表进行更改，因为没有主键。请先创建主键并再次尝试。'
           )
         }
       }
@@ -296,7 +296,7 @@ const SidePanelEditor = ({
   }
 
   const updateTableRealtime = async (table: PostgresTable, enabled: boolean) => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
     let realtimePublication = (publications ?? []).find((pub) => pub.name === 'supabase_realtime')
     const publicTables = await queryClient.fetchQuery({
       queryKey: tableKeys.list(project.ref, 'public', includeColumns),
@@ -357,7 +357,7 @@ const SidePanelEditor = ({
         })
       }
     } catch (error: any) {
-      toast.error(`Failed to update realtime for ${table.name}: ${error.message}`)
+      toast.error(`更新 ${table.name} 的实时通信失败：${error.message}`)
     }
   }
 
@@ -400,7 +400,7 @@ const SidePanelEditor = ({
       ) {
         const tableToDuplicate = selectedTable
 
-        toastId = toast.loading(`Duplicating table: ${tableToDuplicate.name}...`)
+        toastId = toast.loading(`正在复制表：${tableToDuplicate.name}...`)
 
         const table = await duplicateTable(project?.ref!, project?.connectionString, payload, {
           isRLSEnabled,
@@ -416,12 +416,12 @@ const SidePanelEditor = ({
         ])
 
         toast.success(
-          `Table ${tableToDuplicate.name} has been successfully duplicated into ${table.name}!`,
+          `表 ${tableToDuplicate.name} 已经成功地复制到 ${table.name}!`,
           { id: toastId }
         )
         onTableCreated(table)
       } else if (isNewRecord) {
-        toastId = toast.loading(`Creating new table: ${payload.name}...`)
+        toastId = toast.loading(`创建新表：${payload.name}...`)
 
         const table = await createTable({
           projectRef: project?.ref!,
@@ -440,10 +440,10 @@ const SidePanelEditor = ({
           queryClient.invalidateQueries(entityTypeKeys.list(project?.ref)),
         ])
 
-        toast.success(`Table ${table.name} is good to go!`, { id: toastId })
+        toast.success(`表 ${table.name} 已经成功创建！`, { id: toastId })
         onTableCreated(table as PostgresTable)
       } else if (selectedTable) {
-        toastId = toast.loading(`Updating table: ${selectedTable?.name}...`)
+        toastId = toast.loading(`正在更新表：${selectedTable?.name}...`)
 
         const { table, hasError } = await updateTable({
           projectRef: project?.ref!,
@@ -460,7 +460,7 @@ const SidePanelEditor = ({
         await updateTableRealtime(table, isRealtimeEnabled)
 
         if (hasError) {
-          toast(`Table ${table.name} has been updated, but there were some errors`, { id: toastId })
+          toast(`表 ${table.name} 已经成功更新，但是有一些错误发生！`, { id: toastId })
         } else {
           queryClient.invalidateQueries(sqlKeys.query(project?.ref, ['foreign-key-constraints']))
           await Promise.all([
@@ -478,7 +478,7 @@ const SidePanelEditor = ({
             queryClient.invalidateQueries(tableKeys.table(project?.ref, table.id)),
           ])
 
-          toast.success(`Successfully updated ${table.name}!`, { id: toastId })
+          toast.success(`成功更新了表：${table.name}!`, { id: toastId })
         }
       }
     } catch (error: any) {
@@ -496,12 +496,12 @@ const SidePanelEditor = ({
 
   const onImportData = async (importContent: ImportContent) => {
     if (!project || selectedTable === undefined) {
-      return console.error('no project or table selected')
+      return console.error('未选择项目或表')
     }
 
     const { file, rowCount, selectedHeaders, resolve } = importContent
     const toastId = toast.loading(
-      `Adding ${rowCount.toLocaleString()} rows to ${selectedTable.name}`
+      `正在向表 ${selectedTable.name} 中添加 ${rowCount.toLocaleString()} 行...`
     )
 
     if (file && rowCount > 0) {
@@ -516,14 +516,14 @@ const SidePanelEditor = ({
           toast.loading(
             <ToastLoader
               progress={progress}
-              message={`Adding ${rowCount.toLocaleString()} rows to ${selectedTable.name}`}
+              message={`正在向表 ${selectedTable.name} 中添加 ${rowCount.toLocaleString()} 行...`}
             />,
             { id: toastId }
           )
         }
       )
       if (res.error) {
-        toast.error(`Failed to import data: ${res.error.message}`, { id: toastId })
+        toast.error(`导入数据失败：${res.error.message}`, { id: toastId })
         return resolve()
       }
     } else {
@@ -538,8 +538,8 @@ const SidePanelEditor = ({
           toast.loading(
             <ToastLoader
               progress={progress}
-              message={`Adding ${importContent.rows.length.toLocaleString()} rows to ${
-                selectedTable.name
+              message={`正在向表 ${selectedTable.name} 中添加 ${
+                importContent.rows.length.toLocaleString()
               }`}
             />,
             { id: toastId }
@@ -547,7 +547,7 @@ const SidePanelEditor = ({
         }
       )
       if (res.error) {
-        toast.error(`Failed to import data: ${res.error.message}`, { id: toastId })
+        toast.error(`导入数据失败：${res.error.message}`, { id: toastId })
         return resolve()
       }
     }
@@ -557,7 +557,7 @@ const SidePanelEditor = ({
         sqlKeys.query(project?.ref, [selectedTable!.schema, selectedTable!.name])
       ),
     ])
-    toast.success(`Successfully imported ${rowCount} rows of data into ${selectedTable.name}`, {
+    toast.success(`成功地向表 ${selectedTable.name} 中添加了 ${rowCount.toLocaleString()} 行！`, {
       id: toastId,
     })
     resolve()
@@ -616,8 +616,8 @@ const SidePanelEditor = ({
         visible={snap.sidePanel?.type === 'json'}
         column={(snap.sidePanel?.type === 'json' && snap.sidePanel.jsonValue.column) || ''}
         jsonString={(snap.sidePanel?.type === 'json' && snap.sidePanel.jsonValue.value) || ''}
-        backButtonLabel="Cancel"
-        applyButtonLabel="Save changes"
+        backButtonLabel="取消"
+        applyButtonLabel="保存变更"
         readOnly={!editable}
         closePanel={onClosePanel}
         onSaveJSON={onSaveColumnValue}
@@ -649,8 +649,8 @@ const SidePanelEditor = ({
       />
       <ConfirmationModal
         visible={isClosingPanel}
-        title="Discard changes"
-        confirmLabel="Discard"
+        title="放弃变更"
+        confirmLabel="放弃"
         onCancel={() => setIsClosingPanel(false)}
         onConfirm={() => {
           setIsClosingPanel(false)
@@ -659,8 +659,7 @@ const SidePanelEditor = ({
         }}
       >
         <p className="text-sm text-foreground-light">
-          There are unsaved changes. Are you sure you want to close the panel? Your changes will be
-          lost.
+          存在未保存的变更。确定要关闭面板吗？您的变更将会丢失。
         </p>
       </ConfirmationModal>
     </>

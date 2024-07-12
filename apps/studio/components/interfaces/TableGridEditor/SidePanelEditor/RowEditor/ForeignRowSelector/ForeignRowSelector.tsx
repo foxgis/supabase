@@ -119,11 +119,11 @@ const ForeignRowSelector = ({
           {isError && (
             <div className="flex h-full py-6 flex-col items-center justify-center">
               <p className="text-sm text-foreground-light">
-                Unable to load rows from{' '}
+                无法从{' '}
                 <code>
                   {schemaName}.{tableName}
                 </code>
-                . Please try again or contact support.
+                加载行。请重试或者寻求技术支持。
               </p>
             </div>
           )}
@@ -171,7 +171,7 @@ const ForeignRowSelector = ({
                 />
               ) : (
                 <div className="flex h-full items-center justify-center border-b border-t border-default">
-                  <span className="text-foreground-light text-sm">No Rows Found</span>
+                  <span className="text-foreground-light text-sm">未找到任何行</span>
                 </div>
               )}
             </div>

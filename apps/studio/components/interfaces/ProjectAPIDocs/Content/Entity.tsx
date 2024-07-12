@@ -59,19 +59,19 @@ const Entity = ({ language, apikey = '', endpoint = '' }: ContentProps) => {
         <div className="flex flex-col gap-y-1">
           <h2 className="text-xl">{resource}</h2>
           <p className="text-sm text-foreground-light">
-            {definition?.description ?? 'No description available'}
+            {definition?.description ?? '无描述'}
           </p>
         </div>
         <LanguageSelector />
       </div>
       <div className="space-y-2 px-4 py-4 !border-t-0">
-        <p className="text-sm text-foreground-light">Columns</p>
+        <p className="text-sm text-foreground-light">列</p>
         <Table
           head={[
-            <Table.th key="name">Name</Table.th>,
-            <Table.th key="format">Format</Table.th>,
-            <Table.th key="type">Type</Table.th>,
-            <Table.th key="description">Description</Table.th>,
+            <Table.th key="name">名称</Table.th>,
+            <Table.th key="format">格式</Table.th>,
+            <Table.th key="type">类型</Table.th>,
+            <Table.th key="description">描述</Table.th>,
           ]}
           body={columns.map((column) => {
             const formattedColumnType = getColumnType(column.type, column.format)

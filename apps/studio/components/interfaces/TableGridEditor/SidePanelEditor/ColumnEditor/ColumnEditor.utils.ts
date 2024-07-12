@@ -171,10 +171,10 @@ export const generateUpdateColumnPayload = (
 export const validateFields = (field: ColumnField) => {
   const errors = {} as Dictionary<any>
   if (field.name.length === 0) {
-    errors['name'] = `Please assign a name for your column`
+    errors['name'] = `请为列命名`
   }
   if (field.format.length === 0) {
-    errors['format'] = `Please select a type for your column`
+    errors['format'] = `请选择列的数据类型`
   }
   return errors
 }
@@ -184,11 +184,11 @@ export const getForeignKeyUIState = (
   updatedConfig: ExtendedPostgresRelationship | undefined
 ): 'Info' | 'Add' | 'Remove' | 'Update' => {
   if (originalConfig === undefined && updatedConfig !== undefined) {
-    return 'Add'
+    return '添加'
   }
 
   if (originalConfig !== undefined && updatedConfig === undefined) {
-    return 'Remove'
+    return '移除'
   }
 
   if (
@@ -198,7 +198,7 @@ export const getForeignKeyUIState = (
     originalConfig?.deletion_action !== updatedConfig?.deletion_action ||
     originalConfig?.update_action !== updatedConfig?.update_action
   ) {
-    return 'Update'
+    return '更新'
   }
 
   return 'Info'
@@ -237,13 +237,13 @@ const formatArrayToPostgresArray = (arrayString: string) => {
 export const getForeignKeyCascadeAction = (action?: string) => {
   switch (action) {
     case FOREIGN_KEY_CASCADE_ACTION.CASCADE:
-      return 'Cascade'
+      return '级联'
     case FOREIGN_KEY_CASCADE_ACTION.RESTRICT:
-      return 'Restrict'
+      return '限制'
     case FOREIGN_KEY_CASCADE_ACTION.SET_DEFAULT:
-      return 'Set default'
+      return '设为默认值'
     case FOREIGN_KEY_CASCADE_ACTION.SET_NULL:
-      return 'Set NULL'
+      return '设为 NULL'
     default:
       return undefined
   }

@@ -53,7 +53,7 @@ const LanguageSelector = ({ simplifiedVersion = false }: LanguageSelectorProps) 
             iconRight={!simplifiedVersion && <IconChevronDown size={14} strokeWidth={2} />}
           >
             {!simplifiedVersion
-              ? `Language: ${snap.docsLanguage === 'js' ? 'Javascript' : 'Bash'}`
+              ? `编程语言：${snap.docsLanguage === 'js' ? 'Javascript' : 'Bash'}`
               : undefined}
           </Button>
         </PopoverTrigger_Shadcn_>

@@ -45,14 +45,15 @@ const DatabaseProductMenu = () => {
       <div className="px-3">
         <Alert_Shadcn_>
           <AlertTitle_Shadcn_ className="text-sm">
-            Replication section has been renamed
+            副本模块已更名
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="text-xs">
             <p className="mb-2">
-              It can be now found under{' '}
+              该功能可在{' '}
               <Link href={`/project/${project?.ref}/database/publications`} className="underline">
-                Publications
-              </Link>
+                订阅
+              </Link>{' '}
+              处找到。
             </p>
           </AlertDescription_Shadcn_>
         </Alert_Shadcn_>

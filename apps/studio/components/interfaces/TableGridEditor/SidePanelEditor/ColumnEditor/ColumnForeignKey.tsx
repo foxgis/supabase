@@ -97,7 +97,7 @@ const ColumnForeignKey = ({
         )}
 
         <Button type="default" className="w-min" onClick={() => setOpen(true)}>
-          Add foreign key
+          添加外键
         </Button>
       </div>
 

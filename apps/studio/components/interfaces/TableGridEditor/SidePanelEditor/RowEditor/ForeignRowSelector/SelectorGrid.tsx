@@ -28,7 +28,7 @@ const columnRender = (name: string, isPrimaryKey = false) => {
             <Tooltip.Content side="bottom">
               <Tooltip.Arrow className="radix-tooltip-arrow" />
               <div className="rounded bg-alternative py-1 px-2 leading-none shadow border border-background">
-                <span className="text-xs text-foreground">Primary key</span>
+                <span className="text-xs text-foreground">主键</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Portal>

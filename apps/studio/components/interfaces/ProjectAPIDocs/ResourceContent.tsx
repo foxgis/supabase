@@ -27,7 +27,7 @@ const ResourceContent = ({ selectedLanguage, snippet, codeSnippets }: ResourceCo
           {snippet.docsUrl !== undefined && (
             <Button asChild type="default" icon={<IconExternalLink />}>
               <Link href={snippet.docsUrl} target="_blank" rel="noreferrer">
-                Documentation
+                文档
               </Link>
             </Button>
           )}

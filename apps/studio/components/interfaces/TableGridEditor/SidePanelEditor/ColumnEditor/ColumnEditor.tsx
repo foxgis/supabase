@@ -207,20 +207,20 @@ const ColumnEditor = ({
         />
       }
     >
-      <FormSection header={<FormSectionLabel className="lg:!col-span-4">General</FormSectionLabel>}>
+      <FormSection header={<FormSectionLabel className="lg:!col-span-4">常规</FormSectionLabel>}>
         <FormSectionContent loading={false} className="lg:!col-span-8">
           <Input
             label="名称"
             type="text"
-            descriptionText="Recommended to use lowercase and use an underscore to separate words e.g. column_name"
+            descriptionText="建议使用小写字母，并使用下划线分隔单词，例如 column_name"
             placeholder="column_name"
             error={errors.name}
             value={columnFields?.name ?? ''}
             onChange={(event: any) => onUpdateField({ name: event.target.value })}
           />
           <Input
-            label="Description"
-            labelOptional="Optional"
+            label="描述"
+            labelOptional="可选"
             type="text"
             value={columnFields?.comment ?? ''}
             onChange={(event: any) => onUpdateField({ comment: event.target.value })}
@@ -241,7 +241,7 @@ const ColumnEditor = ({
                   icon={<Plus size={14} strokeWidth={2} />}
                 >
                   <Link href={`/project/${ref}/database/types`} target="_blank" rel="noreferrer">
-                    Create enum types
+                    创建枚举类型
                   </Link>
                 </Button>
                 <Button
@@ -255,13 +255,13 @@ const ColumnEditor = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    About data types
+                    关于数据类型
                   </Link>
                 </Button>
               </div>
             }
           >
-            Data Type
+            数据类型
           </FormSectionLabel>
         }
       >
@@ -273,7 +273,7 @@ const ColumnEditor = ({
             enumTypes={enumTypes}
             error={errors.format}
             description={
-              lockColumnType ? 'Column type cannot be changed as it has a foreign key relation' : ''
+              lockColumnType ? '无法改变列类型，因为它设置了外键关联' : ''
             }
             disabled={lockColumnType}
             onOptionSelect={(format: string) => onUpdateField({ format, defaultValue: null })}
@@ -283,8 +283,8 @@ const ColumnEditor = ({
               {columnFields.format.includes('int') && (
                 <div className="w-full">
                   <Checkbox
-                    label="Is Identity"
-                    description="Automatically assign a sequential unique number to the column"
+                    label="设为标识符"
+                    description="自动为列分配一个连续的唯一数字"
                     checked={columnFields.isIdentity}
                     onChange={() => {
                       const isIdentity = !columnFields.isIdentity
@@ -297,8 +297,8 @@ const ColumnEditor = ({
               {!columnFields.isPrimaryKey && (
                 <div className="w-full">
                   <Checkbox
-                    label="Define as Array"
-                    description="Allow column to be defined as variable-length multidimensional arrays"
+                    label="定义为数组"
+                    description="允许列被定义为可变长度的多维数组"
                     checked={columnFields.isArray}
                     onChange={() => {
                       const isArray = !columnFields.isArray
@@ -319,7 +319,7 @@ const ColumnEditor = ({
       </FormSection>
       <SidePanel.Separator />
       <FormSection
-        header={<FormSectionLabel className="lg:!col-span-4">Foreign Keys</FormSectionLabel>}
+        header={<FormSectionLabel className="lg:!col-span-4">外键</FormSectionLabel>}
       >
         <FormSectionContent loading={false} className="lg:!col-span-8">
           <ColumnForeignKey
@@ -333,31 +333,31 @@ const ColumnEditor = ({
       </FormSection>
       <SidePanel.Separator />
       <FormSection
-        header={<FormSectionLabel className="lg:!col-span-4">Constraints</FormSectionLabel>}
+        header={<FormSectionLabel className="lg:!col-span-4">约束</FormSectionLabel>}
       >
         <FormSectionContent loading={false} className="lg:!col-span-8">
           <Toggle
-            label="Is Primary Key"
-            descriptionText="A primary key indicates that a column or group of columns can be used as a unique identifier for rows in the table"
+            label="设为主键"
+            descriptionText="主键表示可唯一标识行的一列或一组列"
             checked={columnFields?.isPrimaryKey ?? false}
             onChange={() => onUpdateField({ isPrimaryKey: !columnFields?.isPrimaryKey })}
           />
           <Toggle
-            label="Allow Nullable"
-            descriptionText="Allow the column to assume a NULL value if no value is provided"
+            label="可空"
+            descriptionText="允许该列在没有提供值时设为 NULL 值"
             checked={columnFields.isNullable}
             onChange={() => onUpdateField({ isNullable: !columnFields.isNullable })}
           />
           <Toggle
-            label="Is Unique"
-            descriptionText="Enforce values in the column to be unique across rows"
+            label="设为唯一值"
+            descriptionText="强制该列的值在所有行中唯一"
             checked={columnFields.isUnique}
             onChange={() => onUpdateField({ isUnique: !columnFields.isUnique })}
           />
           <Input
-            label="CHECK Constraint"
-            labelOptional="Optional"
-            placeholder={`e.g length(${columnFields?.name || 'column_name'}) < 500`}
+            label="约束检查"
+            labelOptional="可选"
+            placeholder={`例如 length(${columnFields?.name || 'column_name'}) < 500`}
             type="text"
             value={columnFields?.check ?? ''}
             onChange={(event: any) => onUpdateField({ check: event.target.value })}
@@ -370,24 +370,24 @@ const ColumnEditor = ({
         <>
           <SidePanel.Separator />
           <FormSection
-            header={<FormSectionLabel className="lg:!col-span-4">Security</FormSectionLabel>}
+            header={<FormSectionLabel className="lg:!col-span-4">安全</FormSectionLabel>}
           >
             <FormSectionContent loading={false} className="lg:!col-span-8">
               <Alert_Shadcn_>
                 <WarningIcon />
                 <AlertTitle_Shadcn_>
-                  Column encryption has been removed from the GUI
+                  本界面已移除列加密设置功能
                 </AlertTitle_Shadcn_>
                 <AlertDescription_Shadcn_>
                   <p className="!leading-normal">
-                    You may still encrypt new columns through the SQL editor using{' '}
+                    您仍然可以通过在 SQL 编辑器中使用{' '}
                     <Link
                       href={`/project/${ref}/database/extensions?filter=pgsodium`}
                       className="text-brand hover:underline"
                     >
-                      pgsodium's
+                      pgsodium
                     </Link>{' '}
-                    Transparent Column Encryption (TCE).
+                    的透明列加密（TCE）功能加密新的列。
                   </p>
                   <Button asChild type="default" icon={<ExternalLink />} className="mt-2">
                     <Link
@@ -395,7 +395,7 @@ const ColumnEditor = ({
                       rel="noreferrer"
                       href="https://github.com/orgs/supabase/discussions/18849"
                     >
-                      Learn more
+                      了解更多
                     </Link>
                   </Button>
                 </AlertDescription_Shadcn_>

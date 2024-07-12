@@ -90,9 +90,9 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
 
   const exportTableAsCSV = async () => {
     if (IS_PLATFORM && !project?.connectionString) {
-      return console.error('Connection string is required')
+      return console.error('连接字符串是必需的')
     }
-    const toastId = toast.loading(`Exporting ${entity.name} as CSV...`)
+    const toastId = toast.loading(`导出 ${entity.name} 为 CSV...`)
 
     try {
       const table = await getTable({
@@ -134,9 +134,9 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
         saveAs(csvData, `${entity!.name}_rows.csv`)
       }
 
-      toast.success(`Successfully exported ${entity.name} as CSV`, { id: toastId })
+      toast.success(`成功导出 ${entity.name} 为 CSV`, { id: toastId })
     } catch (error: any) {
-      toast.error(`Failed to export table: ${error.message}`, { id: toastId })
+      toast.error(`导出表失败：${error.message}`, { id: toastId })
     }
   }
 
@@ -146,22 +146,22 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
     switch (entity.type) {
       case ENTITY_TYPE.TABLE:
         if (tableHasLints) {
-          tooltipContent = 'RLS Disabled'
+          tooltipContent = 'RLS 已禁用'
         }
         break
       case ENTITY_TYPE.VIEW:
         if (viewHasLints) {
-          tooltipContent = 'Security Definer view'
+          tooltipContent = 'Security Definer 视图'
         }
         break
       case ENTITY_TYPE.MATERIALIZED_VIEW:
         if (materializedViewHasLints) {
-          tooltipContent = 'Security Definer view'
+          tooltipContent = 'Security Definer 视图'
         }
 
         break
       case ENTITY_TYPE.FOREIGN_TABLE:
-        tooltipContent = 'RLS is not enforced on foreign tables'
+        tooltipContent = 'RLS 不在外部表上生效'
 
         break
       default:
@@ -286,7 +286,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
               }}
             >
               <Edit size={12} />
-              <span>Edit Table</span>
+              <span>编辑表</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               key="duplicate-table"
@@ -297,7 +297,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
               }}
             >
               <Copy size={12} />
-              <span>Duplicate Table</span>
+              <span>复制表</span>
             </DropdownMenuItem>
             <DropdownMenuItem key="view-policies" className="space-x-2" asChild>
               <Link
@@ -305,7 +305,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
                 href={`/project/${projectRef}/auth/policies?schema=${snap.selectedSchemaName}&search=${entity.id}`}
               >
                 <Lock size={12} />
-                <span>View Policies</span>
+                <span>查看策略</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -317,7 +317,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
               }}
             >
               <Download size={12} />
-              <span>Export as CSV</span>
+              <span>导出为 CSV</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -329,7 +329,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
               }}
             >
               <Trash size={12} />
-              <span>Delete Table</span>
+              <span>删除表</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -81,7 +81,7 @@ const SimpleCodeBlock = ({
             {showCopy && (
               <div className="invisible absolute right-0 top-0 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100">
                 <Button size="tiny" type="default" onClick={() => handleCopyCode(children)}>
-                  {showCopied ? 'Copied' : 'Copy'}
+                  {showCopied ? '已复制' : '复制'}
                 </Button>
               </div>
             )}

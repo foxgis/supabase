@@ -57,7 +57,7 @@ const JsonEdit = ({
       if (onSaveJSON) onSaveJSON(minifiedJSON, resolve)
     } catch (error: any) {
       resolve()
-      toast.error('JSON seems to have an invalid structure.')
+      toast.error('似乎不是有效的 JSON 结构。')
     }
   }
 
@@ -69,7 +69,7 @@ const JsonEdit = ({
   const loadFullValue = () => {
     if (selectedTable === undefined || project === undefined || row === undefined) return
     if ((selectedTable as PostgresTable).primary_keys.length === 0) {
-      return toast('Unable to load value as table has no primary keys')
+      return toast('表没有主键导致不能加载值')
     }
 
     const pkMatch = (selectedTable as PostgresTable).primary_keys.reduce((a, b) => {
@@ -106,11 +106,11 @@ const JsonEdit = ({
         <div className="flex items-center justify-between">
           {view === 'edit' ? (
             <p>
-              {readOnly ? 'Viewing' : 'Editing'} JSON Field: <code>{column}</code>
+              {readOnly ? '正在查看' : '正在编辑'}JSON 字段：<code>{column}</code>
             </p>
           ) : (
             <p>
-              Viewing JSON Field: <code>{column}</code>
+              正在查看JSON 字段：<code>{column}</code>
             </p>
           )}
           {(!isTruncated || (isTruncated && isSuccess)) && (
@@ -134,7 +134,7 @@ const JsonEdit = ({
                           'border border-background',
                         ].join(' ')}
                       >
-                        <span className="text-xs text-foreground">Prettify JSON</span>
+                        <span className="text-xs text-foreground">格式化 JSON</span>
                       </div>
                     </Tooltip.Content>
                   </Tooltip.Portal>
@@ -184,14 +184,13 @@ const JsonEdit = ({
             )}
           >
             <div className="flex flex-col gap-y-1 w-80">
-              <p>JSON value is larger than {MAX_CHARACTERS.toLocaleString()} characters</p>
+              <p>JSON 长度超过 {MAX_CHARACTERS.toLocaleString()} 个字符</p>
               <p className="text-foreground-light">
-                You may try to render the entire JSON value, but your browser may run into
-                performance issues
+                你可以尝试渲染整个 JSON 数据，但你的浏览器可能会遇到性能问题
               </p>
             </div>
             <Button type="default" loading={isLoading} onClick={loadFullValue}>
-              Load full JSON data
+              加载完整 JSON 数据
             </Button>
           </div>
         )}

@@ -35,7 +35,7 @@ const DateTimeInput = ({ value, onChange, name, format, description }: DateTimeI
         <div className="space-y-1">
           {description}
           {format.includes('tz') && (
-            <p>Your local timezone will be automatically applied ({dayjs().format('ZZ')})</p>
+            <p>将自动使用您的本地时区设置（{dayjs().format('ZZ')}）</p>
           )}
         </div>
       }

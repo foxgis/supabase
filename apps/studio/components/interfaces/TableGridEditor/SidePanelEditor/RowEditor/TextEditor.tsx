@@ -47,7 +47,7 @@ export const TextEditor = ({
   const loadFullValue = () => {
     if (selectedTable === undefined || project === undefined || row === undefined) return
     if ((selectedTable as PostgresTable).primary_keys.length === 0) {
-      return toast('Unable to load value as table has no primary keys')
+      return toast('表没有主键导致无法加载值')
     }
 
     const pkMatch = (selectedTable as PostgresTable).primary_keys.reduce((a, b) => {
@@ -85,7 +85,7 @@ export const TextEditor = ({
       header={
         <div className="flex items-center justify-between">
           <p>
-            {readOnly ? 'Viewing' : 'Editing'} value of: <code>{column}</code>
+            {readOnly ? '查看' : '编辑'} <code>{column}</code> 的值
           </p>
           {(!isTruncated || (isTruncated && isSuccess)) && (
             <TwoOptionToggle
@@ -101,8 +101,8 @@ export const TextEditor = ({
         <ActionBar
           hideApply={readOnly}
           closePanel={closePanel}
-          backButtonLabel="Cancel"
-          applyButtonLabel="Save value"
+          backButtonLabel="取消"
+          applyButtonLabel="保存值"
           applyFunction={readOnly ? undefined : saveValue}
         />
       }
@@ -159,14 +159,13 @@ export const TextEditor = ({
             )}
           >
             <div className="flex flex-col gap-y-1 w-80">
-              <p>Text value is larger than {MAX_CHARACTERS.toLocaleString()} characters</p>
+              <p>文本长度超过 {MAX_CHARACTERS.toLocaleString()} 个字符</p>
               <p className="text-foreground-light">
-                You may try to render the entire text value, but your browser may run into
-                performance issues
+                你可以尝试渲染整个文本，但你的浏览器可能会遇到性能问题
               </p>
             </div>
             <Button type="default" loading={isLoading} onClick={loadFullValue}>
-              Load full text data
+              加载全部文本数据
             </Button>
           </div>
         )}
