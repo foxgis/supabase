@@ -38,10 +38,10 @@ import {
 import SavingIndicator from './SavingIndicator'
 
 const ROWS_PER_PAGE_OPTIONS = [
-  { value: -1, label: 'No limit' },
-  { value: 100, label: '100 rows' },
-  { value: 500, label: '500 rows' },
-  { value: 1000, label: '1,000 rows' },
+  { value: -1, label: '无限制' },
+  { value: 100, label: '100 行' },
+  { value: 500, label: '500 行' },
+  { value: 1000, label: '1,000 行' },
 ]
 
 export type UtilityActionsProps = {
@@ -78,7 +78,7 @@ const UtilityActions = ({
   const toggleIntellisense = () => {
     setIntellisenseEnabled(!intellisenseEnabled)
     toast.success(
-      `Successfully ${intellisenseEnabled ? 'disabled' : 'enabled'} intellisense. ${intellisenseEnabled ? 'Please refresh your browser for changes to take place.' : ''}`
+      `成功地 ${intellisenseEnabled ? '禁用' : '启用'} 了 intellisense。${intellisenseEnabled ? '请刷新您的浏览器使配置生效。' : ''}`
     )
   }
 
@@ -144,7 +144,7 @@ const UtilityActions = ({
           <DropdownMenuItem className="justify-between" onClick={toggleIntellisense}>
             <span className="flex items-center gap-x-2">
               <Keyboard size={14} className="text-foreground-light" />
-              Intellisense enabled
+              Intellisense 已启用
             </span>
             {intellisenseEnabled && <Check className="text-brand" size={16} />}
           </DropdownMenuItem>
@@ -163,11 +163,11 @@ const UtilityActions = ({
                 isFavorite ? 'fill-brand stroke-none' : 'fill-none stroke-foreground-light'
               }
             />
-            {isFavorite ? 'Remove from' : 'Add to'} favorites
+            {isFavorite ? '移除' : '添加到'}收藏
           </DropdownMenuItem>
           <DropdownMenuItem className="gap-x-2" onClick={prettifyQuery}>
             <AlignLeft size={14} strokeWidth={2} />
-            Prettify SQL
+            格式化 SQL
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -183,7 +183,7 @@ const UtilityActions = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48">
             <DropdownMenuItem className="justify-between" onClick={toggleIntellisense}>
-              Intellisense enabled
+              Intellisense 已启用
               {intellisenseEnabled && <Check className="text-brand" size={16} />}
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -211,7 +211,7 @@ const UtilityActions = ({
               )}
             </TooltipTrigger_Shadcn_>
             <TooltipContent_Shadcn_ side="bottom">
-              {isFavorite ? 'Remove from' : 'Add to'} favorites
+              {isFavorite ? '移除' : '添加到'}收藏
             </TooltipContent_Shadcn_>
           </Tooltip_Shadcn_>
         )}
@@ -225,7 +225,7 @@ const UtilityActions = ({
               icon={<AlignLeft size="tiny" strokeWidth={2} />}
             />
           </TooltipTrigger_Shadcn_>
-          <TooltipContent_Shadcn_ side="bottom">Prettify SQL</TooltipContent_Shadcn_>
+          <TooltipContent_Shadcn_ side="bottom">格式化 SQL</TooltipContent_Shadcn_>
         </Tooltip_Shadcn_>
       </div>
 
@@ -251,8 +251,8 @@ const UtilityActions = ({
 
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center">
-          <DatabaseSelector variant="connected-on-right" onSelectId={() => snap.resetResult(id)} />
-          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-both" />
+          {/* <DatabaseSelector variant="connected-on-right" onSelectId={() => snap.resetResult(id)} /> */}
+          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-right" />
           <Button
             onClick={() => executeQuery()}
             disabled={isDisabled || isExecuting}
@@ -274,7 +274,7 @@ const UtilityActions = ({
             }
             className="rounded-l-none"
           >
-            {hasSelection ? 'Run selected' : 'Run'}
+            {hasSelection ? '执行选中语句' : '执行'}
           </Button>
         </div>
       </div>

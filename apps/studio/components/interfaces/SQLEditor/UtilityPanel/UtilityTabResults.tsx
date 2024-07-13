@@ -43,7 +43,7 @@ const UtilityTabResults = ({
     return (
       <div className="flex items-center gap-x-4 px-6 py-4 bg-table-header-light [[data-theme*=dark]_&]:bg-table-header-dark">
         <Loader2 size={14} className="animate-spin" />
-        <p className="m-0 border-0 font-mono text-sm">Running...</p>
+        <p className="m-0 border-0 font-mono text-sm">执行中...</p>
       </div>
     )
   } else if (result?.error) {
@@ -59,25 +59,25 @@ const UtilityTabResults = ({
         <div className="flex flex-row justify-between items-start py-4 px-6 gap-x-4">
           {isTimeout ? (
             <div className="flex flex-col gap-y-1">
-              <p className="font-mono text-sm">SQL query ran into an upstream timeout</p>
+              <p className="font-mono text-sm">SQL 查询超时</p>
               <p className="font-mono text-sm text-foreground-light">
-                You can either{' '}
+                您要么{' '}
                 <a
                   target="_blank"
                   rel="noreferrer"
                   className="underline transition hover:text-foreground"
                   href="https://supabase.com/docs/guides/platform/performance#examining-query-performance"
                 >
-                  optimize your query
+                  优化查询
                 </a>
-                , or{' '}
+                ，或者{' '}
                 <a
                   target="_blank"
                   rel="noreferrer"
                   className="underline transition hover:text-foreground"
                   href="https://supabase.com/docs/guides/database/timeouts"
                 >
-                  increase the statement timeout
+                  增加最大超时时间
                 </a>
                 .
               </p>
@@ -91,18 +91,18 @@ const UtilityTabResults = ({
                   </pre>
                 ))
               ) : (
-                <p className="font-mono text-sm">Error: {result.error?.message}</p>
+                <p className="font-mono text-sm">错误：{result.error?.message}</p>
               )}
               {result.autoLimit && (
                 <p className="text-sm text-foreground-light">
-                  Note: A limit of {result.autoLimit} was applied to your query. If this was the
-                  cause of a syntax error, try selecting "No limit" instead and re-run the query.
+                  注意：您的查询添加了最多 {result.autoLimit} 条的限制。
+                  如果出现了语法错误，请尝试选择“无限制”，并重新运行查询。
                 </p>
               )}
               {readReplicaError && (
                 <p className="text-sm text-foreground-light">
-                  Note: Read replicas are for read only queries. Run write queries on the primary
-                  database instead.
+                  注意：只读节点用于只读查询。
+                  执行写操作的查询请在数据库主节点上执行。
                 </p>
               )}
             </div>
@@ -118,7 +118,7 @@ const UtilityTabResults = ({
                   snap.resetResult(id)
                 }}
               >
-                Switch to primary database
+                切换到数据库主节点
               </Button>
             )}
             {!hasHipaaAddon && (
@@ -127,7 +127,7 @@ const UtilityTabResults = ({
                 disabled={!!isDisabled || isDebugging}
                 onClick={onDebug}
               >
-                Debug with Supabase AI
+                使用 Supabase AI 调试
               </Button>
             )}
           </div>
@@ -138,7 +138,7 @@ const UtilityTabResults = ({
     return (
       <div className="bg-table-header-light [[data-theme*=dark]_&]:bg-table-header-dark">
         <p className="m-0 border-0 px-6 py-4 text-sm text-foreground-light">
-          Click <code>Run</code> to execute your query.
+          点击 <code>执行</code> 运行您的查询。
         </p>
       </div>
     )

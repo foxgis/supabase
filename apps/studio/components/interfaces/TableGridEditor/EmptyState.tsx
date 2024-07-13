@@ -46,7 +46,7 @@ const EmptyState = ({}: EmptyStateProps) => {
       ) : (
         <div className="flex flex-col items-center space-y-4">
           <ProductEmptyState
-            title="数据表"
+            title="表编辑器"
             ctaButtonLabel={canCreateTables ? '新建表' : undefined}
             onClickCta={canCreateTables ? snap.onAddTable : undefined}
           >

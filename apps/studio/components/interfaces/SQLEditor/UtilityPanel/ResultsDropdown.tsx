@@ -90,7 +90,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
       const markdownData = markdownTable(table)
 
       copyToClipboard(markdownData, () => {
-        toast.success('Copied results to clipboard')
+        toast.success('已将结果复制到了剪贴板')
         Telemetry.sendEvent(
           { category: 'sql_editor', action: 'sql_copy_as_markdown', label: '' },
           telemetryProps,
@@ -107,7 +107,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
       if (result.rows.length == 0) return 'results is empty'
 
       copyToClipboard(JSON.stringify(result.rows, null, 2), () => {
-        toast.success('Copied results to clipboard')
+        toast.success('已将结果复制到了剪贴板')
         Telemetry.sendEvent(
           { category: 'sql_editor', action: 'sql_copy_as_json', label: '' },
           telemetryProps,
@@ -121,7 +121,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button type="text" iconRight={<ChevronDownIcon size={14} />}>
-          Export
+          导出
         </Button>
       </DropdownMenuTrigger>
 
@@ -136,15 +136,15 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
       <DropdownMenuContent side="bottom" align="start">
         <DropdownMenuItem onClick={onDownloadCSV} className="space-x-2">
           <Download size={14} />
-          <p>Download CSV</p>
+          <p>下载 CSV</p>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onCopyAsMarkdown} className="space-x-2">
           <Clipboard size={14} />
-          <p>Copy as markdown</p>
+          <p>复制为 markdown</p>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onCopyAsJSON} className="space-x-2">
           <Clipboard size={14} />
-          <p>Copy as JSON</p>
+          <p>复制为 JSON</p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

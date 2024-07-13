@@ -167,10 +167,10 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
   }
 
   const handleNewQuery = async () => {
-    if (!ref) return console.error('Project is required')
-    if (!profile) return console.error('Profile is required')
+    if (!ref) return console.error('未找到项目')
+    if (!profile) return console.error('未找到用户')
     if (!canCreateSQLSnippet) {
-      return toast('Your queries will not be saved as you do not have sufficient permissions')
+      return toast('您的查询历史可能会丢失，因为您没有足够的权限')
     }
 
     try {
@@ -186,12 +186,12 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
       router.push(`/project/${ref}/sql/${snippet.id}`)
       setSearchText('')
     } catch (error: any) {
-      toast.error(`Failed to create new query: ${error.message}`)
+      toast.error(`创建查询失败: ${error.message}`)
     }
   }
 
   const onConfirmDelete = async () => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
     deleteContent({ projectRef: ref, ids: selectedQueries })
   }
 
@@ -232,7 +232,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
 
           {isError && (
             <div className="px-4">
-              <AlertError error={error as ResponseError} subject="Failed to load SQL snippets" />
+              <AlertError error={error as ResponseError} subject="加载 SQL 模板失败" />
             </div>
           )}
 
@@ -242,7 +242,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                 <InnerSideBarFilters className="mx-2">
                   <InnerSideBarFilterSearchInput
                     name="search-queries"
-                    placeholder="检索历史查询..."
+                    placeholder="查找历史查询..."
                     onChange={(e) => setSearchText(e.target.value)}
                     value={searchText}
                     aria-labelledby="历史查询"
@@ -256,8 +256,8 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                 filteredProjectSnippets.length === 0 && (
                   <InnerSideBarEmptyPanel
                     className="mx-4"
-                    title="No project queries found"
-                    description="Click the New query button to create a new query"
+                    title="未发现查询"
+                    description="点击新建查询按钮创建查询"
                     actions={
                       <Button type="default" onClick={() => handleNewQuery()}>
                         新建查询
@@ -289,8 +289,8 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                   <InnerSideMenuSeparator />
                   <div className="px-4 flex items-center gap-x-2 py-2">
                     <Button block type="danger" onClick={() => setShowDeleteModal(true)}>
-                      Delete {selectedQueries.length.toLocaleString()} quer
-                      {selectedQueries.length > 1 ? 'ies' : 'y'}
+                      删除 {selectedQueries.length.toLocaleString()} 查询
+                      {selectedQueries.length > 1 ? '' : ''}
                     </Button>
                     <Tooltip_Shadcn_ delayDuration={100}>
                       <TooltipTrigger_Shadcn_ asChild>
@@ -298,7 +298,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                           Cancel
                         </Button>
                       </TooltipTrigger_Shadcn_>
-                      <TooltipContent_Shadcn_ side="bottom">Clear selection</TooltipContent_Shadcn_>
+                      <TooltipContent_Shadcn_ side="bottom">清除选中</TooltipContent_Shadcn_>
                     </Tooltip_Shadcn_>
                   </div>
                 </>
@@ -351,15 +351,15 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
 
         <div className="p-4 border-t sticky bottom-0 bg-studio">
           <Button block type="default" onClick={onViewOngoingQueries}>
-            View running queries
+            查询正在运行的查询
           </Button>
         </div>
       </div>
 
       <ConfirmationModal
-        title="Confirm to delete query"
-        confirmLabel={`Delete ${selectedQueries.length.toLocaleString()} quer${selectedQueries.length > 1 ? 'ies' : 'y'}`}
-        confirmLabelLoading="Deleting query"
+        title="确定要删除查询？"
+        confirmLabel={`删除 ${selectedQueries.length.toLocaleString()} 条查询${selectedQueries.length > 1 ? '' : ''}`}
+        confirmLabelLoading="正在删除查询"
         size="medium"
         loading={isDeleting}
         visible={showDeleteModal}
@@ -367,13 +367,13 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
         onCancel={() => setShowDeleteModal(false)}
         variant={'destructive'}
         alert={{
-          title: 'This action cannot be undone',
-          description: 'The selected SQL snippets cannot be recovered once deleted',
+          title: '本操作无法被撤销',
+          description: '一旦删除了选中的 SQL 代码片段将不能再恢复',
         }}
       >
         <p className="text-sm text-foreground-light">
-          Are you sure you want to delete the selected {selectedQueries.length} quer
-          {selectedQueries.length > 1 ? 'ies' : 'y'}?
+          您确定想要删除选中的 {selectedQueries.length} 条查询吗？
+          {selectedQueries.length > 1 ? '' : ''}
         </p>
       </ConfirmationModal>
     </>

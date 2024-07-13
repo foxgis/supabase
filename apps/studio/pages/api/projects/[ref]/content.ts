@@ -28,7 +28,7 @@ const handleGetAll = async (req: NextApiRequest, res: NextApiResponse) => {
     {
       id: '1',
       owner_id: 1,
-      name: 'SQL查询',
+      name: 'SQL 查询',
       description: '',
       type: 'sql',
       visibility: 'user',

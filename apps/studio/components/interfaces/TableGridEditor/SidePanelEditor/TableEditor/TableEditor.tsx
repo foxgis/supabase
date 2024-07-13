@@ -279,11 +279,11 @@ const TableEditor = ({
           // @ts-ignore
           label={
             <div className="flex items-center space-x-2">
-              <span>启用行级安全策略(RLS)</span>
+              <span>启用行级安全策略（RLS）</span>
               <Badge>推荐</Badge>
             </div>
           }
-          description="通过启用RLS和自定义访问策略可以限制表的访问。"
+          description="通过启用 RLS 和自定义访问策略可以限制表的访问。"
           checked={tableFields.isRLSEnabled}
           onChange={() => {
             // if isEnabled, show confirm modal to turn off
@@ -312,7 +312,7 @@ const TableEditor = ({
                 rel="noreferrer"
                 href="https://supabase.com/docs/guides/auth/row-level-security"
               >
-                RLS Documentation
+                RLS 文档
               </a>
             </Button>
           </Alert>
@@ -332,7 +332,7 @@ const TableEditor = ({
                 rel="noreferrer"
                 href="https://supabase.com/docs/guides/auth/row-level-security"
               >
-                RLS Documentation
+                RLS 文档
               </a>
             </Button>
           </Alert>

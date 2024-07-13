@@ -70,7 +70,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
       <div className="p-2">
         <NoDataPlaceholder
           size="normal"
-          description="Execute a query and configure the chart options."
+          description="执行查询后配置图表选项。"
         />
       </div>
     )
@@ -97,7 +97,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
               data={resultToRender as any}
               xAxisKey={config.xKey}
               yAxisKey={config.yKey}
-              emptyStateMessage="Execute a query and configure the chart options"
+              emptyStateMessage="执行查询后配置图表选项"
               showGrid={config.showGrid}
               XAxisProps={{
                 angle: 0,
@@ -123,7 +123,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
         <ResizablePanel defaultSize={25} minSize={15} className="px-3 py-3 space-y-4">
           <form className="grid gap-4">
             <div className="flex justify-between items-center h-5">
-              <h2 className="text-sm text-foreground-lighter">Chart options</h2>
+              <h2 className="text-sm text-foreground-lighter">图表选项</h2>
               {config.xKey && config.yKey && (
                 <Button
                   type="text"
@@ -132,10 +132,10 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
                     const currentY = config.yKey
                     onConfigChange({ ...config, xKey: currentY, yKey: currentX })
                   }}
-                  title="Swap X and Y axis"
+                  title="交换 XY 轴"
                   icon={<ArrowUpDown size="15" className="text-foreground-lighter" />}
                 >
-                  Flip
+                  翻转
                 </Button>
               )}
             </div>
@@ -147,7 +147,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
               }}
             >
               <SelectTrigger_Shadcn_>
-                X Axis {config.xKey && `- ${config.xKey}`}
+                X 轴 {config.xKey && `- ${config.xKey}`}
               </SelectTrigger_Shadcn_>
               <SelectContent_Shadcn_>
                 <SelectGroup_Shadcn_>
@@ -166,7 +166,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
               }}
             >
               <SelectTrigger_Shadcn_>
-                Y Axis {config.yKey && `- ${config.yKey}`}
+                Y 轴 {config.yKey && `- ${config.yKey}`}
               </SelectTrigger_Shadcn_>
               <SelectContent_Shadcn_>
                 <SelectGroup_Shadcn_>
@@ -186,7 +186,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
                   checked={config.cumulative}
                   onClick={() => onConfigChange({ ...config, cumulative: !config.cumulative })}
                 />
-                Cumulative
+                合计
               </Label_Shadcn_>
 
               <Label_Shadcn_ htmlFor="showLabels">
@@ -196,7 +196,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
                   checked={config.showLabels}
                   onClick={() => onConfigChange({ ...config, showLabels: !config.showLabels })}
                 />
-                Show labels
+                显示标签
               </Label_Shadcn_>
 
               <Label_Shadcn_ htmlFor="showGrid">
@@ -206,7 +206,7 @@ export function ChartConfig({ results = { rows: [] }, config, onConfigChange }: 
                   checked={config.showGrid}
                   onClick={() => onConfigChange({ ...config, showGrid: !config.showGrid })}
                 />
-                Show grid
+                显示格网
               </Label_Shadcn_>
             </div>
           </form>

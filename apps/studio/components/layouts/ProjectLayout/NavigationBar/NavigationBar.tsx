@@ -114,13 +114,13 @@ const NavigationBar = () => {
           {(!navLayoutV2 || !IS_PLATFORM) && (
             <Link
               href={IS_PLATFORM ? '/projects' : `/project/${projectRef}`}
-              className="mx-2 flex items-center h-[40px]"
+              className="flex items-center h-[40px]"
               onClick={onCloseNavigationIconLink}
             >
               <img
                 alt="FoxGIS"
-                src={`${router.basePath}/img/foxgis.png`}
-                className="h-[40px] w-6 cursor-pointer rounded"
+                src={`${router.basePath}/img/foxgis-logo.png`}
+                className="h-[40px] cursor-pointer rounded"
               />
             </Link>
           )}
@@ -173,12 +173,12 @@ const NavigationBar = () => {
                   }}
                   icon={<FileText size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />}
                 >
-                  Project API
+                  API 文档
                 </NavigationIconButton>
               )
             } else if (route.key === 'logs') {
               // TODO: Undo this when warehouse flag is removed
-              const label = showWarehouse ? 'Logs & Analytics' : route.label
+              const label = showWarehouse ? '日志和分析' : route.label
               const newRoute = { ...route, label }
               return (
                 <NavigationIconLink
@@ -325,7 +325,7 @@ const NavigationBar = () => {
                     <DropdownMenuItem className="flex gap-2" asChild>
                       <Link href="/account/me">
                         <Settings size={14} strokeWidth={1.5} className="text-foreground-muted" />
-                        Account preferences
+                        账户设置
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -334,7 +334,7 @@ const NavigationBar = () => {
                       onSelect={() => snap.setShowFeaturePreviewModal(true)}
                     >
                       <FlaskConical size={14} strokeWidth={1.5} className="text-foreground-muted" />
-                      Feature previews
+                      功能预览
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </DropdownMenuGroup>
@@ -369,7 +369,7 @@ const NavigationBar = () => {
                         await router.push('/sign-in')
                       }}
                     >
-                      Log out
+                      登出
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                 </>

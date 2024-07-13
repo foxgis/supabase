@@ -49,7 +49,7 @@ const SavingIndicator = ({ id }: SavingIndicatorProps) => {
             icon={<RefreshCcw className="text-gray-1100" size="tiny" strokeWidth={2} />}
             onClick={retry}
           >
-            Retry
+            重试
           </Button>
         )}
         {showSavedText ? (
@@ -65,7 +65,7 @@ const SavingIndicator = ({ id }: SavingIndicatorProps) => {
                   'border-background border ',
                 ].join(' ')}
               >
-                <span className="text-foreground text-xs">All changes saved</span>
+                <span className="text-foreground text-xs">所有更变已保存</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Root>
@@ -82,7 +82,7 @@ const SavingIndicator = ({ id }: SavingIndicatorProps) => {
                   'border-background border',
                 ].join(' ')}
               >
-                <span className="text-foreground text-xs">Saving changes...</span>
+                <span className="text-foreground text-xs">保存变更中...</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Root>
@@ -100,7 +100,7 @@ const SavingIndicator = ({ id }: SavingIndicatorProps) => {
                     'border-background border ',
                   ].join(' ')}
                 >
-                  <span className="text-foreground text-xs">Failed to save changes</span>
+                  <span className="text-foreground text-xs">保存变更失败</span>
                 </div>
               </Tooltip.Content>
             </Tooltip.Root>

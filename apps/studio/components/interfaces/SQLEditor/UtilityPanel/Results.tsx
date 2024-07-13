@@ -120,7 +120,7 @@ const Results = ({ id, rows }: { id: string; rows: readonly any[] }) => {
           <Menu id={SQL_CONTEXT_EDITOR_ID} animation={false}>
             <Item onClick={onCopyCell}>
               <Clipboard size={14} />
-              <span className="ml-2 text-xs">Copy cell content</span>
+              <span className="ml-2 text-xs">复制单元格内容</span>
             </Item>
           </Menu>,
           document.body
@@ -128,8 +128,8 @@ const Results = ({ id, rows }: { id: string; rows: readonly any[] }) => {
 
       <GridFooter className="flex items-center justify-center">
         <p className="text-xs text-foreground-light">
-          {rows.length} row{rows.length > 1 ? 's' : ''}
-          {results.autoLimit !== undefined && ` (auto limit ${results.autoLimit} rows)`}
+          {rows.length} 行{rows.length > 1 ? '' : ''}
+          {results.autoLimit !== undefined && ` （自动限制为 ${results.autoLimit} 行）`}
         </p>
       </GridFooter>
     </>

@@ -39,7 +39,7 @@ function DocsLayout({ title, children }: { title: string; children: ReactElement
 
   if (error) {
     return (
-      <ProjectLayout product="API Docs">
+      <ProjectLayout product="API 文档">
         <Error error={error} />
       </ProjectLayout>
     )
@@ -51,9 +51,9 @@ function DocsLayout({ title, children }: { title: string; children: ReactElement
 
   return (
     <ProjectLayout
-      title={title || 'API文档'}
+      title={title || 'API 文档'}
       isLoading={isLoading}
-      product="API文档"
+      product="API 文档"
       productMenu={
         !hideMenu && (
           <ProductMenu

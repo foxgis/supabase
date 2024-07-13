@@ -29,10 +29,10 @@ const SQLTemplates = () => {
   })
 
   const handleNewQuery = async (sql: string, name: string) => {
-    if (!project) return console.error('Project is required')
-    if (!profile) return console.error('Profile is required')
+    if (!project) return console.error('未找到项目')
+    if (!profile) return console.error('未找到用户')
     if (!canCreateSQLSnippet) {
-      return toast('Your queries will not be saved as you do not have sufficient permissions')
+      return toast('您的查询不会被保存，因为您没有足够的权限')
     }
 
     try {
@@ -48,7 +48,7 @@ const SQLTemplates = () => {
       snap.addNeedsSaving(snippet.id!)
       router.push(`/project/${project.ref}/sql/${snippet.id}`)
     } catch (error: any) {
-      toast.error(`Failed to create new query: ${error.message}`)
+      toast.error(`创建新查询失败: ${error.message}`)
     }
   }
 
@@ -56,11 +56,11 @@ const SQLTemplates = () => {
     <div className="block h-full space-y-8 overflow-y-auto p-6">
       <div>
         <div className="mb-4">
-          <h1 className="text-foreground mb-3 text-xl">Scripts</h1>
-          <p className="text-foreground-light text-sm">Quick scripts to run on your database.</p>
+          <h1 className="text-foreground mb-3 text-xl">脚本</h1>
+          <p className="text-foreground-light text-sm">能够立即在数据库上运行的脚本。</p>
           <p className="text-foreground-light text-sm">
-            Click on any script to fill the query box, modify the script, then click
-            <span className="text-code">Run</span>.
+            点击任意脚本即可填充查询框，修改脚本，然后点击
+            <span className="text-code">执行</span>。
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ">

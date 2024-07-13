@@ -50,7 +50,7 @@ export default function RLSDisableModalContent() {
                 target="_blank"
                 rel="noreferrer"
               >
-                RLS Documentation
+                RLS 文档
               </Link>
             </Button>
           </p>

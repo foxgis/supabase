@@ -27,7 +27,7 @@ export const generateToolRoutes = (ref?: string, project?: Project): Route[] => 
     },
     {
       key: 'sql',
-      label: 'SQL查询',
+      label: 'SQL 查询',
       icon: <SqlEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: !IS_PLATFORM
         ? `/project/${ref}/sql/1`
@@ -127,7 +127,7 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
     },
     {
       key: 'api',
-      label: 'API文档',
+      label: 'API 文档',
       icon: <FileText size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/api`),
     },

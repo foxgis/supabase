@@ -61,7 +61,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
 
   const { mutate: abortQuery, isLoading } = useQueryAbortMutation({
     onSuccess: () => {
-      toast.success(`Successfully aborted query (ID: ${selectedId})`)
+      toast.success(`成功地终止了查询（ID: ${selectedId}）`)
       setSelectedId(undefined)
     },
   })
@@ -72,8 +72,8 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
         <SheetContent size="lg">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-x-2">
-              Running queries on{' '}
-              {database?.identifier === project?.ref ? 'primary database' : 'read replica'}
+              查询正在运行在
+              {!database?.identifier || database?.identifier === project?.ref ? '数据库主节点上' : '数据库只读节点上'}
               <Button
                 type="default"
                 className="px-1.5"
@@ -83,17 +83,17 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
               />
             </SheetTitle>
             <SheetDescription>
-              There {queries.length === 1 ? 'is' : 'are'}{' '}
-              <span className="text-foreground-light">{queries.length}</span> quer
-              {queries.length === 1 ? 'y' : 'ies'} currently running{' '}
-              {database?.identifier !== project?.ref ? `on replica ${database?.identifier}` : ''}
+              当前{queries.length === 1 ? '有' : '有'}{' '}
+              <span className="text-foreground-light">{queries.length}</span> 条查询
+              {queries.length === 1 ? '' : ''}正在运行在
+              {database?.identifier && database?.identifier !== project?.ref ? `数据库只读节点 ${database?.identifier} 上` : '数据库上'}
             </SheetDescription>
           </SheetHeader>
           <div className="max-h-full h-full divide-y overflow-y-auto">
             {isError && (
               <div className="flex items-center justify-center h-full px-16">
                 <AlertError
-                  subject="Failed to retrieve ongoing queries"
+                  subject="无法检索到正在运行的查询"
                   error={error as ResponseError}
                 />
               </div>
@@ -101,12 +101,12 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
             {queries.length === 0 && (
               <div className="flex flex-col gap-y-2 items-center justify-center h-full text-foreground-light text-sm">
                 <span>
-                  No queries are currently running on the{' '}
-                  {database?.identifier !== project?.ref
-                    ? `read replica ${database?.identifier}`
+                  当前没有查询运行在
+                  {database?.identifier && database?.identifier !== project?.ref
+                    ? `数据只读节点 ${database?.identifier} 上`
                     : (databases ?? []).length > 1
-                      ? 'primary database'
-                      : 'database'}
+                      ? '数据库主节点上'
+                      : '数据库上'}
                 </span>
                 <Button
                   type="default"
@@ -114,7 +114,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
                   icon={<RefreshCw />}
                   onClick={() => refetch()}
                 >
-                  Refresh
+                  刷新
                 </Button>
               </div>
             )}
@@ -135,7 +135,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
                     <p className="text-foreground-light text-xs">PID: {query.pid}</p>
                     <p className="text-foreground-light text-xs">•</p>
                     <p className="text-foreground-light text-xs">
-                      Started since: {dayjs(query.query_start).format('DD MMM YYYY HH:mm (ZZ)')}
+                      开始于：{dayjs(query.query_start).format('DD MMM YYYY HH:mm (ZZ)')}
                     </p>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
                       onClick={() => setSelectedId(query.pid)}
                     />
                   </TooltipTrigger_Shadcn_>
-                  <TooltipContent_Shadcn_ side="bottom">Abort query</TooltipContent_Shadcn_>
+                  <TooltipContent_Shadcn_ side="bottom">终止查询</TooltipContent_Shadcn_>
                 </Tooltip_Shadcn_>
               </SheetSection>
             ))}
@@ -160,7 +160,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
       <ConfirmationModal
         loading={isLoading}
         variant="warning"
-        title={`Confirm to abort this query? (ID: ${selectedId})`}
+        title={`确定要终止查询？（ID: ${selectedId}）`}
         visible={selectedId !== undefined}
         onCancel={() => setSelectedId(undefined)}
         onConfirm={() => {
@@ -172,7 +172,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
             })
         }}
       >
-        <p className="text-sm">This will force the query to stop running.</p>
+        <p className="text-sm">此操作将强行终止查询运行。</p>
       </ConfirmationModal>
     </>
   )

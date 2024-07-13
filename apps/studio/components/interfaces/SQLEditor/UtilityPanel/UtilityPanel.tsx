@@ -115,10 +115,10 @@ const UtilityPanel = ({
       <TabsList_Shadcn_ className="flex justify-between gap-2 pl-6 pr-2">
         <div className="flex items-center gap-4">
           <TabsTrigger_Shadcn_ className="py-3 text-xs" value="results">
-            <span className="translate-y-[1px]">Results</span>
+            <span className="translate-y-[1px]">结果</span>
           </TabsTrigger_Shadcn_>
           <TabsTrigger_Shadcn_ className="py-3 text-xs" value="chart">
-            <span className="translate-y-[1px]">Chart</span>
+            <span className="translate-y-[1px]">图表</span>
           </TabsTrigger_Shadcn_>
           {result?.rows && <ResultsDropdown id={id} />}
         </div>

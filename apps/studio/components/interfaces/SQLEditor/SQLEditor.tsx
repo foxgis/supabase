@@ -350,7 +350,7 @@ const SQLEditor = () => {
 
   const handleNewQuery = useCallback(
     async (sql: string, name: string) => {
-      if (!ref) return console.error('Project ref is required')
+      if (!ref) return console.error('未找到项目号')
 
       try {
         const snippet = createSqlSnippetSkeleton({
@@ -364,7 +364,7 @@ const SQLEditor = () => {
         snap.addNeedsSaving(snippet.id!)
         router.push(`/project/${ref}/sql/${snippet.id}`)
       } catch (error: any) {
-        toast.error(`Failed to create new query: ${error.message}`)
+        toast.error(`创建新查询失败：${error.message}`)
       }
     },
     [profile?.id, project?.id, ref, router, snap]
@@ -627,7 +627,7 @@ const SQLEditor = () => {
           direction="vertical"
           autoSaveId={LOCAL_STORAGE_KEYS.SQL_EDITOR_SPLIT_SIZE}
         >
-          {(isAiOpen || isDiffOpen) && !hasHipaaAddon && (
+          {/* {(isAiOpen || isDiffOpen) && !hasHipaaAddon && (
             <AISchemaSuggestionPopover
               onClickSettings={() => {
                 appSnap.setShowAiSettingsModal(true)
@@ -660,10 +660,10 @@ const SQLEditor = () => {
                 </motion.div>
               ) : null}
             </AISchemaSuggestionPopover>
-          )}
+          )} */}
           <ResizablePanel collapsible collapsedSize={10} minSize={20}>
             <div className="flex-grow overflow-y-auto border-b h-full">
-              {!isAiOpen && (
+              {/* {!isAiOpen && (
                 <motion.button
                   layoutId="ask-ai-input-icon"
                   transition={{ duration: 0.1 }}
@@ -674,7 +674,7 @@ const SQLEditor = () => {
                 >
                   <AiIconAnimation loading={false} allowHoverEffect />
                 </motion.button>
-              )}
+              )} */}
 
               {isLoading ? (
                 <div className="flex h-full w-full items-center justify-center">
@@ -752,7 +752,7 @@ const SQLEditor = () => {
           </ResizablePanel>
         </ResizablePanelGroup>
 
-        {isAiOpen && (
+        {/* {isAiOpen && (
           <AiAssistantPanel
             messages={messages}
             selectedMessage={selectedMessage}
@@ -768,7 +768,7 @@ const SQLEditor = () => {
             onDiff={updateEditorWithCheckForDiff}
             onClose={() => setIsAiOpen(false)}
           />
-        )}
+        )} */}
       </div>
     </>
   )

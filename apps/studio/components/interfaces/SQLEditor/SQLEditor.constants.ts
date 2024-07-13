@@ -20,7 +20,7 @@ export const sqlAiDisclaimerComment = `
 -- Always verify the output before executing
 `.trim()
 
-export const untitledSnippetTitle = 'Untitled query'
+export const untitledSnippetTitle = '未命名的查询'
 
 export const destructiveSqlRegex = [/^(.*;)?\s*(drop|delete|truncate)\s/is]
 

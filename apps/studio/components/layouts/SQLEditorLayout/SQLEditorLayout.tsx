@@ -24,7 +24,7 @@ const SQLEditorLayout = ({ title, children }: SQLEditorLayoutProps) => {
   return (
     <ProjectLayout
       title={title || 'SQL'}
-      product="SQL查询"
+      product="SQL 查询"
       productMenu={productMenu}
       isBlocking={false}
       resizableSidebar

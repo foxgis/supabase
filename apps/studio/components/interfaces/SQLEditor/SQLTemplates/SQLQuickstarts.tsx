@@ -30,9 +30,9 @@ const SQLQuickstarts = () => {
   })
 
   const handleNewQuery = async (sql: string, name: string) => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目')
     if (!canCreateSQLSnippet) {
-      return toast('Your queries will not be saved as you do not have sufficient permissions')
+      return toast('您的查询不能被保存，因为您没有足够的权限')
     }
 
     try {
@@ -55,11 +55,11 @@ const SQLQuickstarts = () => {
     <div className="block h-full space-y-8 overflow-y-auto p-6">
       <div className="mb-8">
         <div className="mb-4">
-          <h1 className="text-foreground mb-3 text-xl">Quickstarts</h1>
+          <h1 className="text-foreground mb-3 text-xl">快速上手</h1>
 
           <p className="text-foreground-light text-sm">
-            Click on any script to fill the query box, modify the script, then click
-            <span className="text-code">Run</span>.
+            点击任意脚本即可填充查询框，修改脚本，然后点击
+            <span className="text-code">执行</span>。
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
