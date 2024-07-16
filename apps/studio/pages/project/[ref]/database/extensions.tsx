@@ -16,14 +16,14 @@ const DatabaseExtensions: NextPageWithLayout = () => {
   const isPermissionsLoaded = usePermissionsLoaded()
 
   if (isPermissionsLoaded && !canReadExtensions) {
-    return <NoPermission isFullPage resourceText="view database extensions" />
+    return <NoPermission isFullPage resourceText="查看数据库扩展" />
   }
 
   return (
     <ScaffoldContainer>
       <ScaffoldSection>
         <div className="col-span-12">
-          <FormHeader title="Database Extensions" />
+          <FormHeader title="数据库扩展" />
           <Extensions />
         </div>
       </ScaffoldSection>

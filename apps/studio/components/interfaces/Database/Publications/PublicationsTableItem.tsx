@@ -33,7 +33,7 @@ const PublicationsTableItem = ({ table, selectedPublication }: PublicationsTable
     table: PostgresTable,
     publication: PostgresPublication
   ) => {
-    if (project === undefined) return console.error('Project is required')
+    if (project === undefined) return console.error('未找到项目')
 
     const originalChecked = checked
     setChecked(!checked)
@@ -58,11 +58,11 @@ const PublicationsTableItem = ({ table, selectedPublication }: PublicationsTable
       {
         onSuccess: () => {
           toast.success(
-            `Successfully ${checked ? 'disabled' : 'enabled'} replication for ${table.name}`
+            `成功${checked ? '禁用' : '启用'}表 ${table.name} 复制`
           )
         },
         onError: (error) => {
-          toast.error(`Failed to toggle replication for ${table.name}: ${error.message}`)
+          toast.error(`启停表 ${table.name} 复制失败：${error.message}`)
           setChecked(originalChecked)
         },
       }
@@ -80,8 +80,8 @@ const PublicationsTableItem = ({ table, selectedPublication }: PublicationsTable
         <div className="flex justify-end gap-2">
           {enabledForAllTables ? (
             <Badge>
-              <span>Enabled</span>
-              <span className="hidden lg:inline-block">&nbsp;for all tables</span>
+              <span className="hidden lg:inline-block">&nbsp;所有表</span>
+              <span>已启用</span>
             </Badge>
           ) : (
             <Toggle

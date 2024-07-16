@@ -19,8 +19,8 @@ const IndexesPage: NextPageWithLayout = () => {
         <ScaffoldSectionContent className="gap-0">
           <FormHeader
             className="!mb-0"
-            title="Database Indexes"
-            description="Improve query performance against your database"
+            title="数据库索引"
+            description="提高数据库的查询性能"
           />
         </ScaffoldSectionContent>
         <ScaffoldSectionDetail className="flex items-center justify-end gap-x-2">
@@ -31,7 +31,7 @@ const IndexesPage: NextPageWithLayout = () => {
               className="no-underline"
               href="https://supabase.com/docs/guides/database/query-optimization"
             >
-              Documentation
+              文档
             </a>
           </Button>
           <Button asChild type="default" icon={<ExternalLink size={14} strokeWidth={1.5} />}>
@@ -41,7 +41,7 @@ const IndexesPage: NextPageWithLayout = () => {
               className="no-underline"
               href="https://supabase.com/docs/guides/database/extensions/index_advisor"
             >
-              Optimization with index_advisor
+              使用 index_advisor 优化查询
             </a>
           </Button>
         </ScaffoldSectionDetail>

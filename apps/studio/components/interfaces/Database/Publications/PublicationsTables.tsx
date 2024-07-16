@@ -64,7 +64,7 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
             <div>
               <Input
                 size="small"
-                placeholder={'Filter'}
+                placeholder={'查找'}
                 value={filterString}
                 onChange={(e) => setFilterString(e.target.value)}
                 icon={<IconSearch size="tiny" />}
@@ -75,7 +75,7 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
             <div className="w-[500px]">
               <InformationBox
                 icon={<IconAlertCircle className="text-foreground-light" strokeWidth={2} />}
-                title="You need additional permissions to update database replications"
+                title="您需要额外的权限才能更新数据库复制"
               />
             </div>
           )}
@@ -87,7 +87,7 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
         </div>
       )}
 
-      {isError && <AlertError error={error} subject="Failed to retrieve tables" />}
+      {isError && <AlertError error={error} subject="获取表失败" />}
 
       {isSuccess &&
         (tables.length === 0 ? (
@@ -96,10 +96,10 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
           <div>
             <Table
               head={[
-                <Table.th key="header-name">Name</Table.th>,
-                <Table.th key="header-schema">Schema</Table.th>,
+                <Table.th key="header-name">名称</Table.th>,
+                <Table.th key="header-schema">模式</Table.th>,
                 <Table.th key="header-desc" className="hidden text-left lg:table-cell">
-                  Description
+                  描述
                 </Table.th>,
                 <Table.th key="header-all">
                   {/* Temporarily disable All tables toggle for publications. See https://github.com/supabase/supabase/pull/7233.

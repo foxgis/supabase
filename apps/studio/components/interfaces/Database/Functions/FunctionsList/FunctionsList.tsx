@@ -94,17 +94,16 @@ const FunctionsList = ({
         <div className="flex h-full w-full items-center justify-center">
           <ProductEmptyState
             title="Functions"
-            ctaButtonLabel="Create a new function"
+            ctaButtonLabel="创建新函数"
             onClickCta={() => createFunction()}
             disabled={!canCreateFunctions}
-            disabledMessage="You need additional permissions to create functions"
+            disabledMessage="您需要额外的权限才能创建函数"
           >
             <p className="text-sm text-foreground-light">
-              PostgreSQL functions, also known as stored procedures, is a set of SQL and procedural
-              commands such as declarations, assignments, loops, flow-of-control, etc.
+              PostgreSQL 函数，也称为存储过程，是一组 SQL 和过程命令，如声明、赋值、循环、流程控制等。
             </p>
             <p className="text-sm text-foreground-light">
-              It's stored on the database server and can be invoked using the SQL interface.
+              函数存储在数据库服务器上，并且可以通过 SQL 接口进行调用。
             </p>
           </ProductEmptyState>
         </div>
@@ -120,7 +119,7 @@ const FunctionsList = ({
                 onSelectSchema={setSelectedSchema}
               />
               <Input
-                placeholder="Search for a function"
+                placeholder="查找函数"
                 size="small"
                 icon={<IconSearch size="tiny" />}
                 value={filterString}
@@ -133,7 +132,7 @@ const FunctionsList = ({
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger asChild>
                   <Button disabled={!canCreateFunctions} onClick={() => createFunction()}>
-                    Create a new function
+                    创建新函数
                   </Button>
                 </Tooltip.Trigger>
                 {!canCreateFunctions && (
@@ -148,7 +147,7 @@ const FunctionsList = ({
                           ].join(' ')}
                         >
                           <span className="text-xs text-foreground">
-                            You need additional permissions to create functions
+                            您需要额外的权限才能创建函数
                           </span>
                         </div>
                       </Tooltip.Content>
@@ -165,15 +164,15 @@ const FunctionsList = ({
             className="table-fixed"
             head={
               <>
-                <Table.th key="name">Name</Table.th>
+                <Table.th key="name">名称</Table.th>
                 <Table.th key="arguments" className="hidden md:table-cell">
-                  Arguments
+                  参数
                 </Table.th>
                 <Table.th key="return_type" className="hidden lg:table-cell">
-                  Return type
+                  返回类型
                 </Table.th>
                 <Table.th key="security" className="hidden lg:table-cell w-[100px]">
-                  Security
+                  安全
                 </Table.th>
                 <Table.th key="buttons" className="w-1/6"></Table.th>
               </>

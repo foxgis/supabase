@@ -25,16 +25,16 @@ const DeleteEnumeratedTypeModal = ({
   const { project } = useProjectContext()
   const { mutate: deleteEnumeratedType, isLoading: isDeleting } = useEnumeratedTypeDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully deleted "${selectedEnumeratedType.name}"`)
+      toast.success(`成功删除了 "${selectedEnumeratedType.name}"`)
       onClose()
     },
   })
 
   const onConfirmDeleteType = () => {
-    if (selectedEnumeratedType === undefined) return console.error('No enumerated type selected')
-    if (project?.ref === undefined) return console.error('Project ref required')
+    if (selectedEnumeratedType === undefined) return console.error('未选择枚举类型N')
+    if (project?.ref === undefined) return console.error('未找到项目号')
     if (project?.connectionString === undefined)
-      return console.error('Project connectionString required')
+      return console.error('未找到项目连接字符串')
 
     deleteEnumeratedType({
       projectRef: project?.ref,
@@ -52,24 +52,23 @@ const DeleteEnumeratedTypeModal = ({
       visible={visible}
       title={
         <>
-          Confirm to delete enumerated type{' '}
-          <code className="text-sm">{selectedEnumeratedType?.name}</code>
+          确定要删除枚举类型 <code className="text-sm">{selectedEnumeratedType?.name}</code>
         </>
       }
-      confirmLabel="Confirm delete"
-      confirmLabelLoading="Deleting..."
+      confirmLabel="确定删除"
+      confirmLabelLoading="正在删除..."
       onCancel={onClose}
       onConfirm={() => onConfirmDeleteType()}
       alert={{
-        title: 'This action cannot be undone',
+        title: '此操作无法撤销',
         description:
-          'You will need to re-create the enumerated type if you want to revert the deletion.',
+          '如果希望撤销删除，您需要重新创建此枚举类型。',
       }}
     >
-      <p className="text-sm">Before deleting this enumerated type, consider:</p>
+      <p className="text-sm">在删除此枚举类型之前，请考虑：</p>
       <ul className="space-y-2 mt-2 text-sm text-foreground-light">
         <li className="list-disc ml-6">
-          This enumerated type is no longer in use in any tables or functions
+          此枚举类型已不在任何表或函数中使用
         </li>
       </ul>
     </ConfirmationModal>

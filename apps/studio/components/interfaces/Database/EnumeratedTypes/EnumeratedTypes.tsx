@@ -72,13 +72,13 @@ const EnumeratedTypes = () => {
             value={search}
             className="w-64"
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search for a type"
+            placeholder="查找类型"
             icon={<Search size={14} />}
           />
         </div>
         {!isLocked && (
           <Button type="primary" onClick={() => setShowCreateTypePanel(true)}>
-            Create type
+            创建类型
           </Button>
         )}
       </div>
@@ -88,15 +88,15 @@ const EnumeratedTypes = () => {
       {isLoading && <GenericSkeletonLoader />}
 
       {isError && (
-        <AlertError error={error} subject="Failed to retrieve database enumerated types" />
+        <AlertError error={error} subject="获取数据库枚举类型失败" />
       )}
 
       {isSuccess && (
         <Table
           head={[
-            <Table.th key="schema">Schema</Table.th>,
-            <Table.th key="name">Name</Table.th>,
-            <Table.th key="values">Values</Table.th>,
+            <Table.th key="schema">模式</Table.th>,
+            <Table.th key="name">名称</Table.th>,
+            <Table.th key="values">值列表</Table.th>,
             <Table.th key="actions" />,
           ]}
           body={
@@ -104,9 +104,9 @@ const EnumeratedTypes = () => {
               {filteredEnumeratedTypes.length === 0 && search.length === 0 && (
                 <Table.tr>
                   <Table.td colSpan={4}>
-                    <p className="text-sm text-foreground">No enumerated types created yet</p>
+                    <p className="text-sm text-foreground">尚未创建枚举类型</p>
                     <p className="text-sm text-foreground-light">
-                      There are no enumerated types found in the schema "{selectedSchema}"
+                      在模式 "{selectedSchema}" 中没有找到枚举类型
                     </p>
                   </Table.td>
                 </Table.tr>
@@ -114,9 +114,9 @@ const EnumeratedTypes = () => {
               {filteredEnumeratedTypes.length === 0 && search.length > 0 && (
                 <Table.tr>
                   <Table.td colSpan={4}>
-                    <p className="text-sm text-foreground">No results found</p>
+                    <p className="text-sm text-foreground">未找到结果</p>
                     <p className="text-sm text-foreground-light">
-                      Your search for "{search}" did not return any results
+                      您搜索的 "{search}" 没有返回任何结果
                     </p>
                   </Table.td>
                 </Table.tr>
@@ -142,14 +142,14 @@ const EnumeratedTypes = () => {
                                 onClick={() => setSelectedTypeToEdit(type)}
                               >
                                 <Edit size={14} />
-                                <p>Update type</p>
+                                <p>更新类型</p>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 className="space-x-2"
                                 onClick={() => setSelectedTypeToDelete(type)}
                               >
                                 <Trash size={14} />
-                                <p>Delete type</p>
+                                <p>删除类型</p>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>

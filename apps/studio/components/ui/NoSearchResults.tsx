@@ -15,14 +15,14 @@ const NoSearchResults = ({ searchString, onResetFilter, className }: NoSearchRes
       )}
     >
       <div className="space-y-1">
-        <p className="text-sm text-foreground">No results found</p>
+        <p className="text-sm text-foreground">为查找到结果</p>
         <p className="text-sm text-foreground-light">
-          Your search for "{searchString}" did not return any results
+          您查找的“{searchString}”没有返回任何结果
         </p>
       </div>
       {onResetFilter !== undefined && (
         <Button type="default" onClick={() => onResetFilter()}>
-          Reset filter
+          重置查找条件
         </Button>
       )}
     </div>

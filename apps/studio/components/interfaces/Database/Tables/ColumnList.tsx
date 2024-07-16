@@ -62,7 +62,7 @@ const ColumnList = ({
           </Button>
           <Input
             size="small"
-            placeholder="Filter columns"
+            placeholder="筛选列"
             value={filterString}
             onChange={(e: any) => setFilterString(e.target.value)}
             icon={<Search size={12} />}
@@ -73,7 +73,7 @@ const ColumnList = ({
             <Tooltip.Root delayDuration={0}>
               <Tooltip.Trigger asChild>
                 <Button disabled={!canUpdateColumns} icon={<Plus />} onClick={() => onAddColumn()}>
-                  New column
+                  新建列
                 </Button>
               </Tooltip.Trigger>
               {!canUpdateColumns && (
@@ -87,7 +87,7 @@ const ColumnList = ({
                       ].join(' ')}
                     >
                       <span className="text-xs text-foreground">
-                        You need additional permissions to create columns
+                        您需要额外的权限才能创建列
                       </span>
                     </div>
                   </Tooltip.Content>
@@ -105,7 +105,7 @@ const ColumnList = ({
       {isError && (
         <AlertError
           error={error as any}
-          subject={`Failed to retrieve columns for table "${selectedTable?.schema}.${selectedTable?.name}"`}
+          subject={`获取表 "${selectedTable?.schema}.${selectedTable?.name}" 的列失败`}
         />
       )}
 
@@ -117,15 +117,15 @@ const ColumnList = ({
             <div>
               <Table
                 head={[
-                  <Table.th key="name">Name</Table.th>,
+                  <Table.th key="name">名称</Table.th>,
                   <Table.th key="description" className="hidden lg:table-cell">
-                    Description
+                    描述
                   </Table.th>,
                   <Table.th key="type" className="hidden xl:table-cell">
-                    Data Type
+                    数据类型
                   </Table.th>,
                   <Table.th key="format" className="hidden xl:table-cell">
-                    Format
+                    数据格式
                   </Table.th>,
                   <Table.th key="buttons"></Table.th>,
                 ]}
@@ -138,7 +138,7 @@ const ColumnList = ({
                       {x.comment !== null ? (
                         <p title={x.comment}>{x.comment}</p>
                       ) : (
-                        <p className="text-border-stronger">No description</p>
+                        <p className="text-border-stronger">无描述信息</p>
                       )}
                     </Table.td>
                     <Table.td>
@@ -161,7 +161,7 @@ const ColumnList = ({
                               <Tooltip.Root delayDuration={0}>
                                 <Tooltip.Trigger className="flex items-center space-x-2">
                                   <Edit size={12} />
-                                  <p>Edit column</p>
+                                  <p>编辑列</p>
                                 </Tooltip.Trigger>
                                 {!canUpdateColumns && (
                                   <Tooltip.Portal>
@@ -174,7 +174,7 @@ const ColumnList = ({
                                         ].join(' ')}
                                       >
                                         <span className="text-xs text-foreground">
-                                          Additional permissions required to edit column
+                                          需要额外的权限才能编辑列
                                         </span>
                                       </div>
                                     </Tooltip.Content>
@@ -190,7 +190,7 @@ const ColumnList = ({
                               <Tooltip.Root delayDuration={0}>
                                 <Tooltip.Trigger className="flex items-center space-x-2">
                                   <Trash stroke="red" size={12} />
-                                  <p>Delete column</p>
+                                  <p>删除列</p>
                                 </Tooltip.Trigger>
                                 {!canUpdateColumns && (
                                   <Tooltip.Portal>
@@ -203,7 +203,7 @@ const ColumnList = ({
                                         ].join(' ')}
                                       >
                                         <span className="text-xs text-foreground">
-                                          Additional permissions required to edit column
+                                          需要额外的权限才能删除列
                                         </span>
                                       </div>
                                     </Tooltip.Content>

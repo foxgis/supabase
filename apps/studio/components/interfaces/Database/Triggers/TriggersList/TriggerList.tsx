@@ -54,10 +54,10 @@ const TriggerList = ({
   if (_triggers.length === 0 && filterString.length === 0) {
     return (
       <Table.tr key={schema}>
-        <Table.td colSpan={6}>
-          <p className="text-sm text-foreground">No triggers created yet</p>
+        <Table.td colSpan={7}>
+          <p className="text-sm text-foreground">还未创建触发器</p>
           <p className="text-sm text-foreground-light">
-            There are no triggers found in the schema "{schema}"
+            在 "{schema}" 模式下还未找到触发器
           </p>
         </Table.td>
       </Table.tr>
@@ -67,10 +67,10 @@ const TriggerList = ({
   if (_triggers.length === 0 && filterString.length > 0) {
     return (
       <Table.tr key={schema}>
-        <Table.td colSpan={6}>
-          <p className="text-sm text-foreground">No results found</p>
+        <Table.td colSpan={7}>
+          <p className="text-sm text-foreground">未找到结果</p>
           <p className="text-sm text-foreground-light">
-            Your search for "{filterString}" did not return any results
+            您搜索的“{filterString}”没有返回任何结果
           </p>
         </Table.td>
       </Table.tr>
@@ -107,6 +107,12 @@ const TriggerList = ({
             </div>
           </Table.td>
 
+          <Table.td className="hidden space-x-2 xl:table-cell">
+            <p title={x.orientation} className="truncate">
+              {x.orientation}
+            </p>
+          </Table.td>
+
           <Table.td className="hidden xl:table-cell">
             <div className="flex items-center justify-center">
               {x.enabled_mode !== 'DISABLED' ? (
@@ -130,11 +136,11 @@ const TriggerList = ({
                     <DropdownMenuContent side="bottom" align="end" className="w-36">
                       <DropdownMenuItem className="space-x-2" onClick={() => editTrigger(x)}>
                         <IconEdit3 size="tiny" />
-                        <p>Edit trigger</p>
+                        <p>编辑触发器</p>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="space-x-2" onClick={() => deleteTrigger(x)}>
                         <IconTrash stroke="red" size="tiny" />
-                        <p>Delete trigger</p>
+                        <p>删除触发器</p>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -153,7 +159,7 @@ const TriggerList = ({
                           ].join(' ')}
                         >
                           <span className="text-xs text-foreground">
-                            You need additional permissions to update triggers
+                            您需要额外权限才能更新触发器
                           </span>
                         </div>
                       </Tooltip.Content>

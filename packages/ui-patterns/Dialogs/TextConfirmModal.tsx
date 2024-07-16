@@ -62,8 +62,8 @@ const TextConfirmModal = forwardRef<
       visible,
       onCancel,
       loading,
-      cancelLabel = 'Cancel',
-      confirmLabel = 'Submit',
+      cancelLabel = '取消',
+      confirmLabel = '提交',
       confirmPlaceholder,
       confirmString,
       alert,
@@ -81,7 +81,7 @@ const TextConfirmModal = forwardRef<
   ) => {
     const formSchema = z.object({
       confirmValue: z.literal(confirmString, {
-        required_error: 'Value entered does not match.',
+        required_error: '输入值不匹配。',
       }),
     })
 
@@ -150,8 +150,8 @@ const TextConfirmModal = forwardRef<
                 render={({ field }) => (
                   <FormItem_Shadcn_ className="flex flex-col gap-y-1">
                     <FormLabel_Shadcn_ {...label}>
-                      Type <span className="text-foreground break-all">{confirmString}</span> to
-                      confirm.
+                      请输入 <span className="text-foreground break-all">{confirmString}</span>{' '}
+                      确认操作。
                     </FormLabel_Shadcn_>
                     <FormControl_Shadcn_>
                       <Input_Shadcn_ placeholder={confirmPlaceholder} {...input} {...field} />

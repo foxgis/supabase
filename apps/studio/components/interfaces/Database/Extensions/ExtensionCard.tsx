@@ -43,7 +43,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
   }
 
   const onConfirmDisable = () => {
-    if (project === undefined) return console.error('Project is required')
+    if (project === undefined) return console.error('未找到项目')
 
     disableExtension({
       projectRef: project.ref,
@@ -124,7 +124,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
           {isOn && extension.schema && (
             <div className="py-3 px-4">
               <div className="flex items-center flex-grow space-x-2 text-sm text-foreground-light">
-                <span>Schema:</span>
+                <span>模式：</span>
                 <Badge>{`${extension.schema}`}</Badge>
               </div>
             </div>
@@ -139,14 +139,14 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
       />
       <ConfirmationModal
         visible={isDisableModalOpen}
-        title="Confirm to disable extension"
-        confirmLabel="Disable"
-        confirmLabelLoading="Disabling"
+        title="确认禁用扩展"
+        confirmLabel="禁用"
+        confirmLabelLoading="正在禁用"
         onCancel={() => setIsDisableModalOpen(false)}
         onConfirm={() => onConfirmDisable()}
       >
         <p className="text-sm text-foreground-light">
-          Are you sure you want to turn OFF the "{extension.name}" extension?
+          您确定要关闭 "{extension.name}" 扩展吗？
         </p>
       </ConfirmationModal>
     </>

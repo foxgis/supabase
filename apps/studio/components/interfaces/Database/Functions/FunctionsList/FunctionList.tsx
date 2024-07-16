@@ -59,9 +59,9 @@ const FunctionList = ({
     return (
       <Table.tr key={schema}>
         <Table.td colSpan={5}>
-          <p className="text-sm text-foreground">No functions created yet</p>
+          <p className="text-sm text-foreground">还未创建函数</p>
           <p className="text-sm text-foreground-light">
-            There are no functions found in the schema "{schema}"
+            在模式 "{schema}" 中未找到函数
           </p>
         </Table.td>
       </Table.tr>
@@ -72,9 +72,9 @@ const FunctionList = ({
     return (
       <Table.tr key={schema}>
         <Table.td colSpan={5}>
-          <p className="text-sm text-foreground">No results found</p>
+          <p className="text-sm text-foreground">未找到结果</p>
           <p className="text-sm text-foreground-light">
-            Your search for "{filterString}" did not return any results
+            您搜索的 "{filterString}" 没有返回任何结果
           </p>
         </Table.td>
       </Table.tr>
@@ -119,16 +119,16 @@ const FunctionList = ({
                             onClick={() => router.push(`/project/${projectRef}/api?rpc=${x.name}`)}
                           >
                             <IconFileText size="tiny" />
-                            <p>Client API docs</p>
+                            <p>客户端 API 文档</p>
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem className="space-x-2" onClick={() => editFunction(x)}>
                           <IconEdit3 size="tiny" />
-                          <p>Edit function</p>
+                          <p>编辑函数</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="space-x-2" onClick={() => deleteFunction(x)}>
                           <IconTrash stroke="red" size="tiny" />
-                          <p>Delete function</p>
+                          <p>删除函数</p>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -152,7 +152,7 @@ const FunctionList = ({
                             ].join(' ')}
                           >
                             <span className="text-xs text-foreground">
-                              You need additional permissions to update functions
+                              您需要额外的权限才能更新函数
                             </span>
                           </div>
                         </Tooltip.Content>

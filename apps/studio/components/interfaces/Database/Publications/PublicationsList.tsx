@@ -33,7 +33,7 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
   })
   const { mutate: updatePublications } = useDatabasePublicationUpdateMutation({
     onSuccess: () => {
-      toast.success('Successfully updated event')
+      toast.success('成功更新了事件')
       setToggleListenEventValue(null)
     },
   })
@@ -82,7 +82,7 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
             <Input
               size="small"
               icon={<IconSearch size="tiny" />}
-              placeholder={'Filter'}
+              placeholder={'查找'}
               value={filterString}
               onChange={(e) => setFilterString(e.target.value)}
             />
@@ -91,7 +91,7 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
             <div className="w-[500px]">
               <InformationBox
                 icon={<IconAlertCircle className="text-foreground-light" strokeWidth={2} />}
-                title="You need additional permissions to update database publications"
+                title="您需要额外的权限才能更新数据库订阅"
               />
             </div>
           )}
@@ -102,17 +102,17 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
         <Table
           head={[
             <Table.th key="header.name" style={{ width: '25%' }}>
-              Name
+              名称
             </Table.th>,
             <Table.th key="header.id" className="hidden lg:table-cell" style={{ width: '25%' }}>
-              System ID
+              系统 ID
             </Table.th>,
-            <Table.th key="header.insert">Insert</Table.th>,
-            <Table.th key="header.update">Update</Table.th>,
-            <Table.th key="header.delete">Delete</Table.th>,
-            <Table.th key="header.truncate">Truncate</Table.th>,
+            <Table.th key="header.insert">插入</Table.th>,
+            <Table.th key="header.update">更新</Table.th>,
+            <Table.th key="header.delete">删除</Table.th>,
+            <Table.th key="header.truncate">清空</Table.th>,
             <Table.th key="header.source" className="text-right">
-              Source
+              数据源
             </Table.th>,
           ]}
           body={
@@ -150,9 +150,9 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
                           onClick={() => onSelectPublication(x.id)}
                         >
                           {x.tables == null
-                            ? 'All tables'
+                            ? '所有表'
                             : `${x.tables.length} ${
-                                x.tables.length > 1 || x.tables.length == 0 ? 'tables' : 'table'
+                                x.tables.length > 1 || x.tables.length == 0 ? '张表' : '张表'
                               }`}
                         </Button>
                       </div>
@@ -173,17 +173,17 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
 
       <ConfirmationModal
         visible={toggleListenEventValue !== null}
-        title={`Confirm to toggle sending ${toggleListenEventValue?.event.event.toLowerCase()} events`}
-        confirmLabel="Confirm"
-        confirmLabelLoading="Updating"
+        title={`确定要启停发送 ${toggleListenEventValue?.event.event.toLowerCase()} 事件吗?`}
+        confirmLabel="确定"
+        confirmLabelLoading="正在更新"
         onCancel={() => setToggleListenEventValue(null)}
         onConfirm={() => {
           toggleListenEvent()
         }}
       >
         <p className="text-sm text-foreground-light">
-          Are you sure you want to {toggleListenEventValue?.currentStatus ? 'stop' : 'start'}{' '}
-          sending {toggleListenEventValue?.event.event.toLowerCase()} events for{' '}
+          您确定要 {toggleListenEventValue?.currentStatus ? '停止' : '开启'}{' '}
+          发送 {toggleListenEventValue?.event.event.toLowerCase()} 事件给{' '}
           {toggleListenEventValue?.publication.name}?
         </p>
       </ConfirmationModal>

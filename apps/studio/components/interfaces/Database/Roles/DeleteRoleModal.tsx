@@ -16,14 +16,14 @@ const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
 
   const { mutate: deleteDatabaseRole, isLoading: isDeleting } = useDatabaseRoleDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully deleted role: ${role.name}`)
+      toast.success(`成功删除了角色：${role.name}`)
       onClose()
     },
   })
 
   const deleteRole = async () => {
-    if (!project) return console.error('Project is required')
-    if (!role) return console.error('Failed to delete role: role is missing')
+    if (!project) return console.error('未找到项目')
+    if (!role) return console.error('删除角色失败：角色不存在')
     deleteDatabaseRole({
       projectRef: project.ref,
       connectionString: project.connectionString,
@@ -38,13 +38,12 @@ const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
       visible={visible}
       onCancel={onClose}
       onConfirm={deleteRole}
-      header={<h3>Confirm to delete role "{role?.name}"</h3>}
+      header={<h3>确定要删除角色 "{role?.name}"</h3>}
       loading={isDeleting}
     >
       <Modal.Content>
         <p className="text-sm">
-          This will automatically revoke any membership of this role in other roles, and this action
-          cannot be undone.
+          这将自动撤销此角色在其他角色中的成员资格，此操作无法撤消。
         </p>
       </Modal.Content>
     </Modal>

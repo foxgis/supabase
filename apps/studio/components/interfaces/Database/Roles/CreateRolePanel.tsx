@@ -25,7 +25,7 @@ interface CreateRolePanelProps {
 }
 
 const FormSchema = z.object({
-  name: z.string().trim().min(1, 'You must provide a name').default(''),
+  name: z.string().trim().min(1, '您必须提供一个名称').default(''),
   isSuperuser: z.boolean().default(false),
   canLogin: z.boolean().default(false),
   canCreateRole: z.boolean().default(false),
@@ -55,13 +55,13 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
 
   const { mutate: createDatabaseRole, isLoading: isCreating } = useDatabaseRoleCreateMutation({
     onSuccess: (_, vars) => {
-      toast.success(`Successfully created new role: ${vars.payload.name}`)
+      toast.success(`成功创建了角色：${vars.payload.name}`)
       handleClose()
     },
   })
 
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (values) => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
     createDatabaseRole({
       projectRef: project.ref,
       connectionString: project.connectionString,
@@ -78,7 +78,7 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
     <SidePanel
       size="large"
       visible={visible}
-      header="Create a new role"
+      header="创建新角色"
       className="mr-0 transform transition-all duration-300 ease-in-out"
       loading={false}
       onCancel={handleClose}
@@ -105,7 +105,7 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
             render={({ field }) => (
               <FormItem_Shadcn_ className="grid gap-2 md:grid md:grid-cols-12 space-y-0">
                 <FormLabel_Shadcn_ className="flex flex-col space-y-2 col-span-4 text-sm justify-center text-foreground-light">
-                  Name
+                  名称
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_ className="col-span-8">
                   <Input_Shadcn_ {...field} className="w-full" />
@@ -117,7 +117,7 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
           <div className="grid gap-2 mt-4 md:grid md:grid-cols-12">
             <div className="col-span-4">
               <FormLabel_Shadcn_ className="flex flex-col space-y-2 col-span-4 text-sm justify-center text-foreground-light">
-                Role privileges
+                角色权限
               </FormLabel_Shadcn_>
             </div>
             <div className="col-span-8 grid gap-4">
@@ -149,7 +149,7 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
               <SidePanel.Separator />
 
               <div className="grid gap-4">
-                <p className="text-sm">These privileges cannot be granted via the Dashboard:</p>
+                <p className="text-sm">此权限不能通过仪表板授予：</p>
                 {(Object.keys(ROLE_PERMISSIONS) as (keyof typeof ROLE_PERMISSIONS)[])
                   .filter((permissionKey) => !ROLE_PERMISSIONS[permissionKey].grant_by_dashboard)
                   .map((permissionKey) => {

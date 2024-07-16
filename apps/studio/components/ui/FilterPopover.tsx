@@ -75,7 +75,7 @@ export const FilterPopover = ({
                 setOpen(false)
               }}
             >
-              Clear
+              清除
             </Button>
             <Button
               type="primary"
@@ -84,7 +84,7 @@ export const FilterPopover = ({
                 setOpen(false)
               }}
             >
-              Save
+              保存
             </Button>
           </div>
         </>
@@ -98,10 +98,10 @@ export const FilterPopover = ({
       >
         <div>
           <span>{name}</span>
-          {activeOptions.length > 0 && <span className="mr-1">:</span>}
+          {activeOptions.length > 0 && <span className="mr-1">：</span>}
           {activeOptions.length >= 3 ? (
             <span>
-              {formattedOptions[0]} and {activeOptions.length - 1} others
+              {formattedOptions[0]} 和另外 {activeOptions.length - 1} 个
             </span>
           ) : activeOptions.length > 0 ? (
             <span>{formattedOptions.join(', ')}</span>

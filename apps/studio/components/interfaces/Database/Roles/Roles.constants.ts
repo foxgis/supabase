@@ -36,33 +36,33 @@ export const SYSTEM_ROLES = [
 export const ROLE_PERMISSIONS = {
   canLogin: {
     disabled: false,
-    description: 'User can login',
+    description: '用户可登录',
     grant_by_dashboard: true,
   },
   canCreateRole: {
     disabled: false,
-    description: 'User can create roles',
+    description: '用户可创建角色',
     grant_by_dashboard: true,
   },
   canCreateDb: {
     disabled: false,
-    description: 'User can create databases',
+    description: '用户可创建数据库',
     grant_by_dashboard: true,
   },
   canBypassRls: {
     disabled: false,
-    description: 'User bypasses every row level security policy',
+    description: '用户可绕过所有行级安全策略',
     grant_by_dashboard: true,
   },
   isSuperuser: {
     disabled: true,
-    description: 'User is a Superuser',
+    description: '超级用户',
     grant_by_dashboard: false,
   },
   isReplicationRole: {
     disabled: false,
     description:
-      'User can initiate streaming replication and put the system in and out of backup mode',
+      '用户可发起流式复制并将系统置于备份模式',
     grant_by_dashboard: true,
   },
 } as const

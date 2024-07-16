@@ -182,7 +182,7 @@ class CreateTriggerStore implements ICreateTriggerStore {
         case 'name': {
           if (isEmpty(x.value) || hasWhitespace(x.value)) {
             isValidated = false
-            return { ...x, error: 'Invalid trigger name' }
+            return { ...x, error: '无效的触发器名称' }
           } else {
             return x
           }
@@ -190,7 +190,7 @@ class CreateTriggerStore implements ICreateTriggerStore {
         case 'activation': {
           if (isEmpty(x.value)) {
             isValidated = false
-            return { ...x, error: 'you have an error' }
+            return { ...x, error: '您遇到了错误' }
           } else {
             return x
           }
@@ -198,7 +198,7 @@ class CreateTriggerStore implements ICreateTriggerStore {
         case 'events': {
           if (isEmpty(x.value)) {
             isValidated = false
-            return { ...x, error: 'Select at least 1 event' }
+            return { ...x, error: '至少选择一个事件' }
           } else {
             return x
           }
@@ -206,7 +206,7 @@ class CreateTriggerStore implements ICreateTriggerStore {
         case 'tableId': {
           if (isEmpty(`${x.value}`)) {
             isValidated = false
-            return { ...x, error: 'You must choose a table' }
+            return { ...x, error: '您必须选择一张表' }
           } else {
             return x
           }
@@ -275,7 +275,7 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
   }, [visible, trigger])
 
   async function handleSubmit() {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
 
     if (_localState.validateForm()) {
       const body = _localState.formState.requestBody
@@ -289,11 +289,11 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
           },
           {
             onSuccess: () => {
-              toast.success(`Successfully updated trigger ${body.name}`)
+              toast.success(`成功更新了触发器 ${body.name}`)
               setVisible(!visible)
             },
             onError: (error) => {
-              toast.error(`Failed to update trigger: ${error.message}`)
+              toast.error(`更新触发器失败：${error.message}`)
             },
           }
         )
@@ -306,11 +306,11 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
           },
           {
             onSuccess: () => {
-              toast.success(`Successfully created trigger ${body.name}`)
+              toast.success(`成功创建了触发器 ${body.name}`)
               setVisible(!visible)
             },
             onError: (error) => {
-              toast.error(`Failed to create trigger: ${error.message}`)
+              toast.error(`创建触发器失败：${error.message}`)
             },
           }
         )
@@ -332,8 +332,8 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
         onCancel={isClosingSidePanel}
         header={
           _localState.formState.id
-            ? `Edit '${_localState.formState.originalName}' trigger`
-            : 'Add a new Trigger'
+            ? `编辑 '${_localState.formState.originalName}' 触发器`
+            : '添加一个新的触发器'
         }
         hideFooter={!hasPublicTables}
         className={
@@ -360,7 +360,7 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
                     </div>
                     <SidePanel.Separator />
                     <div className="space-y-12 px-6">
-                      <h5>Conditions to fire trigger</h5>
+                      <h5>触发条件</h5>
                       <ListboxTable />
                       <CheckboxEvents />
                       <ListboxActivation />
@@ -383,8 +383,8 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
             </CreateTriggerContext.Provider>
             <ConfirmationModal
               visible={isClosingPanel}
-              title="Discard changes"
-              confirmLabel="Discard"
+              title="舍弃更改"
+              confirmLabel="舍弃"
               onCancel={() => setIsClosingPanel(false)}
               onConfirm={() => {
                 setIsClosingPanel(false)
@@ -392,13 +392,12 @@ const CreateTrigger = ({ trigger, visible, setVisible }: CreateTriggerProps) => 
               }}
             >
               <p className="text-sm text-foreground-light">
-                There are unsaved changes. Are you sure you want to close the panel? Your changes
-                will be lost.
+                有未保存的更改。您确定要关闭面板吗？您的更改将会丢失。
               </p>
             </ConfirmationModal>
           </div>
         ) : (
-          <NoTableState message="You will need to create a table first before you can make a trigger" />
+          <NoTableState message="您需要先创建表才能创建触发器" />
         )}
       </SidePanel>
     </>
@@ -412,9 +411,9 @@ const InputName = observer(({}) => {
   return (
     <Input
       id="name"
-      label="Name of trigger"
+      label="触发器名称"
       layout="horizontal"
-      placeholder="Name of trigger"
+      placeholder="触发器名称"
       value={_localState!.formState.name.value}
       onChange={(e) =>
         _localState!.onFormChange({
@@ -424,7 +423,7 @@ const InputName = observer(({}) => {
       }
       size="small"
       error={_localState!.formState.name.error}
-      descriptionText="The name is also stored as the actual postgres name of the trigger. Do not use spaces/whitespace."
+      descriptionText="触发器名称也会作为 Postgres 触发器的实际名称。请勿使用空格或空白字符。"
     />
   )
 })
@@ -434,7 +433,7 @@ const SelectEnabledMode = observer(({}) => {
   return (
     <Listbox
       id="enabled-mode"
-      label="Enabled mode"
+      label="启用状态"
       layout="horizontal"
       value={_localState!.formState.enabledMode.value}
       onChange={(value) =>
@@ -444,7 +443,7 @@ const SelectEnabledMode = observer(({}) => {
         })
       }
       size="small"
-      descriptionText="Determines if a trigger should or should not fire. Can also be used to disable a trigger, but not delete it."
+      descriptionText="决定触发器是否触发。也可用于禁用而不删除触发器。"
     >
       <Listbox.Option
         addOnBefore={({ active, selected }: any) => {
@@ -456,7 +455,7 @@ const SelectEnabledMode = observer(({}) => {
         label="Origin"
       >
         Origin
-        <span className="block text-foreground-lighter">This is a default behavior</span>
+        <span className="block text-foreground-lighter">这是默认行为</span>
       </Listbox.Option>
       <Listbox.Option
         addOnBefore={({ active, selected }: any) => {
@@ -465,11 +464,11 @@ const SelectEnabledMode = observer(({}) => {
           )
         }}
         value="REPLICA"
-        label="Replica"
+        label="副本"
       >
         Replica
         <span className="block text-foreground-lighter">
-          Will only fire if the session is in “replica” mode
+          仅在“replica”模式下触发
         </span>
       </Listbox.Option>
       <Listbox.Option
@@ -483,7 +482,7 @@ const SelectEnabledMode = observer(({}) => {
       >
         Always
         <span className="block text-foreground-lighter">
-          Will fire regardless of the current replication role
+          无论当前的副本角色如何都会触发
         </span>
       </Listbox.Option>
       <Listbox.Option
@@ -496,7 +495,7 @@ const SelectEnabledMode = observer(({}) => {
         label="Disabled"
       >
         Disabled
-        <span className="block text-foreground-lighter">Will not fire</span>
+        <span className="block text-foreground-lighter">不触发</span>
       </Listbox.Option>
     </Listbox>
   )
@@ -507,7 +506,7 @@ const SelectOrientation = observer(({}) => {
   return (
     <Listbox
       id="orientation"
-      label="Orientation"
+      label="触发方式"
       layout="horizontal"
       value={_localState!.formState.orientation.value}
       onChange={(value) =>
@@ -517,15 +516,15 @@ const SelectOrientation = observer(({}) => {
         })
       }
       size="small"
-      descriptionText="Identifies whether the trigger fires once for each processed row or once for each statement"
+      descriptionText="确定触发器是否为每行触发一次还是每语句触发一次"
     >
       <Listbox.Option value="ROW" label="Row">
         Row
-        <span className="block text-foreground-lighter">fires once for each processed row</span>
+        <span className="block text-foreground-lighter">每行触发一次</span>
       </Listbox.Option>
       <Listbox.Option value="STATEMENT" label="Statement">
         Statement
-        <span className="block text-foreground-lighter">fires once for each statement</span>
+        <span className="block text-foreground-lighter">每语句触发一次</span>
       </Listbox.Option>
     </Listbox>
   )
@@ -537,7 +536,7 @@ const ListboxTable = observer(({}) => {
   return (
     <Listbox
       id="table"
-      label="Table"
+      label="表"
       layout="horizontal"
       value={_localState!.formState.tableId.value}
       onChange={(id) => {
@@ -559,7 +558,7 @@ const ListboxTable = observer(({}) => {
       }}
       size="small"
       error={_localState!.formState.tableId.error}
-      descriptionText="This is the table the trigger will watch for changes. You can only select 1 table for a trigger."
+      descriptionText="这是触发器所监视的表。您只能为触发器选择一张表。"
     >
       {_localState!.tables.map((x) => {
         return (
@@ -597,11 +596,11 @@ const CheckboxEvents = observer(({}) => {
     // @ts-ignore
     <Checkbox.Group
       name="events"
-      label="Events"
+      label="事件"
       id="events"
-      labelOptional="The type of events that will trigger your trigger"
+      labelOptional="触发器触发的事件类型"
       layout="horizontal"
-      descriptionText="These are the events that are watched by the trigger, only the events selected above will fire the trigger on the table you've selected."
+      descriptionText="这些是触发器监听的事件，只有上面选择的事件才会触发触发器。"
       size="small"
       onChange={(e) => {
         const temp = _localState!.formState.events.value
@@ -617,20 +616,20 @@ const CheckboxEvents = observer(({}) => {
     >
       <Checkbox
         value="INSERT"
-        label="Insert"
-        description={'Any insert operation on the table'}
+        label="插入"
+        description="任何在表上的插入操作"
         checked={_localState!.formState.events.value.includes('INSERT')}
       />
       <Checkbox
         value="UPDATE"
-        label="Update"
-        description="Any update operation, of any column in the table"
+        label="更新"
+        description="任何在表上的更新操作"
         checked={_localState!.formState.events.value.includes('UPDATE')}
       />
       <Checkbox
         value="DELETE"
-        label="Delete"
-        description="Any deletion of a record"
+        label="删除"
+        description="任何对表的记录的删除操作"
         checked={_localState!.formState.events.value.includes('DELETE')}
       />
     </Checkbox.Group>
@@ -642,8 +641,8 @@ const ListboxActivation = observer(({}) => {
   return (
     <Listbox
       id="activation"
-      label="Trigger type"
-      descriptionText="This determines when your Hook fires"
+      label="触发类型"
+      descriptionText="这个决定了您的触发器何时触发"
       onChange={(_value) => {
         _localState!.onFormChange({
           key: 'activation',
@@ -658,7 +657,7 @@ const ListboxActivation = observer(({}) => {
       <Listbox.Option
         id={'before'}
         value={'BEFORE'}
-        label={'Before the event'}
+        label={'在事件之前触发'}
         addOnBefore={() => (
           <div className="flex items-center justify-center rounded bg-foreground p-1 text-background">
             <IconPauseCircle strokeWidth={2} size="small" />
@@ -668,14 +667,14 @@ const ListboxActivation = observer(({}) => {
         <div className="flex flex-col">
           <span>{'before'}</span>
           <span className="block text-foreground-lighter">
-            Trigger fires before the operation is attempted
+            触发器在操作开始之前触发
           </span>
         </div>
       </Listbox.Option>
       <Listbox.Option
         id={'after'}
         value={'AFTER'}
-        label={'After the event'}
+        label={'在事件之后触发'}
         addOnBefore={() => (
           <div className="flex items-center justify-center rounded bg-green-1200 p-1 text-background">
             <IconPlayCircle strokeWidth={2} size="small" />
@@ -685,7 +684,7 @@ const ListboxActivation = observer(({}) => {
         <div className="flex flex-col">
           <span>{'after'}</span>
           <span className="block text-foreground-lighter">
-            Trigger fires after the operation has completed
+            触发器在操作完成之后触发
           </span>
         </div>
       </Listbox.Option>
@@ -699,7 +698,7 @@ const FunctionForm = observer(({}) => {
   return (
     <div className="space-y-4">
       <div className="space-y-6 px-6">
-        <h5>Function to trigger</h5>
+        <h5>触发的函数</h5>
       </div>
       <div className="px-6">
         {isEmpty(_localState!.formState.functionName.value) ? (
@@ -729,7 +728,7 @@ const FunctionEmpty = observer(({}) => {
     >
       <FormEmptyBox
         icon={<IconTerminal size={14} strokeWidth={2} />}
-        text="Choose a function to trigger"
+        text="选择一个函数来触发"
       />
     </button>
   )
@@ -761,7 +760,7 @@ const FunctionWithArguments = observer(({}) => {
           </div>
         </div>
         <Button type="default" onClick={() => _localState!.setChooseFunctionFormVisible(true)}>
-          Change function
+          更改函数
         </Button>
       </div>
     </>

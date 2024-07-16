@@ -45,19 +45,19 @@ const EditEnumeratedTypeSidePanel = ({
   const { project } = useProjectContext()
   const { mutate: updateEnumeratedType, isLoading: isCreating } = useEnumeratedTypeUpdateMutation({
     onSuccess: (_, vars) => {
-      toast.success(`Successfully updated type "${vars.name.updated}"`)
+      toast.success(`成功更新了 "${vars.name.updated}"`)
       onClose()
     },
   })
 
   const FormSchema = z.object({
-    name: z.string().min(1, 'Please provide a name for your enumerated type').default(''),
+    name: z.string().min(1, '请为您的枚举类型提供一个名称').default(''),
     description: z.string().default('').optional(),
     values: z
       .object({
         isNew: z.boolean(),
         originalValue: z.string(),
-        updatedValue: z.string().min(1, 'Please provide a value'),
+        updatedValue: z.string().min(1, '请提供一个值'),
       })
       .array()
       .default([]),
@@ -90,11 +90,11 @@ const EditEnumeratedTypeSidePanel = ({
   }))
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    if (project?.ref === undefined) return console.error('Project ref required')
+    if (project?.ref === undefined) return console.error('未找到项目号')
     if (project?.connectionString === undefined)
-      return console.error('Project connectionString required')
+      return console.error('未找到项目连接字符串')
     if (selectedEnumeratedType === undefined)
-      return console.error('selectedEnumeratedType required')
+      return console.error('未找到枚举类型')
 
     const payload: {
       schema: string
@@ -145,8 +145,8 @@ const EditEnumeratedTypeSidePanel = ({
       loading={isCreating}
       visible={visible}
       onCancel={onClose}
-      header={`Update type "${selectedEnumeratedType?.name}"`}
-      confirmText="Update type"
+      header={`更新类型 "${selectedEnumeratedType?.name}"`}
+      confirmText="更新类型"
       onConfirm={() => {
         if (submitRef.current) submitRef.current.click()
       }}
@@ -159,7 +159,7 @@ const EditEnumeratedTypeSidePanel = ({
               name="name"
               render={({ field }) => (
                 <FormItem_Shadcn_>
-                  <FormLabel_Shadcn_>Name</FormLabel_Shadcn_>
+                  <FormLabel_Shadcn_>名称</FormLabel_Shadcn_>
                   <FormControl_Shadcn_>
                     <Input_Shadcn_ {...field} />
                   </FormControl_Shadcn_>
@@ -172,11 +172,11 @@ const EditEnumeratedTypeSidePanel = ({
               name="description"
               render={({ field }) => (
                 <FormItem_Shadcn_>
-                  <FormLabel_Shadcn_>Description</FormLabel_Shadcn_>
+                  <FormLabel_Shadcn_>描述</FormLabel_Shadcn_>
                   <FormControl_Shadcn_>
                     <Input_Shadcn_ {...field} />
                   </FormControl_Shadcn_>
-                  <FormDescription_Shadcn_>Optional</FormDescription_Shadcn_>
+                  <FormDescription_Shadcn_>可选的</FormDescription_Shadcn_>
                 </FormItem_Shadcn_>
               )}
             />
@@ -193,18 +193,17 @@ const EditEnumeratedTypeSidePanel = ({
                         render={({ field: inputField }) => (
                           <FormItem_Shadcn_>
                             <FormLabel_Shadcn_ className={cn(index !== 0 && 'sr-only')}>
-                              Values
+                              值列表
                             </FormLabel_Shadcn_>
                             {index === 0 && (
                               <Alert_Shadcn_>
                                 <IconAlertCircle strokeWidth={1.5} />
                                 <AlertTitle_Shadcn_>
-                                  Existing values cannot be deleted or sorted
+                                  已存在的值不能删除或者重排序
                                 </AlertTitle_Shadcn_>
                                 <AlertDescription_Shadcn_>
                                   <p className="!leading-normal track">
-                                    You will need to delete and recreate the enumerated type with
-                                    the updated values instead.
+                                    您需要删除并重新创建类型，然后才能使用更新后的值。
                                   </p>
                                   <Button
                                     asChild
@@ -217,7 +216,7 @@ const EditEnumeratedTypeSidePanel = ({
                                       target="_blank"
                                       rel="noreferrer"
                                     >
-                                      Learn more
+                                      了解更多
                                     </Link>
                                   </Button>
                                 </AlertDescription_Shadcn_>
@@ -248,11 +247,11 @@ const EditEnumeratedTypeSidePanel = ({
               icon={<IconPlus strokeWidth={1.5} />}
               onClick={() => append({ isNew: true, originalValue: '', updatedValue: '' })}
             >
-              Add value
+              添加值
             </Button>
 
             <Button ref={submitRef} htmlType="submit" type="default" className="hidden">
-              Update
+              更新
             </Button>
           </form>
         </Form_Shadcn_>

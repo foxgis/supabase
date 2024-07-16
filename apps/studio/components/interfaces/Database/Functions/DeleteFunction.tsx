@@ -17,14 +17,14 @@ const DeleteFunction = ({ func, visible, setVisible }: DeleteFunctionProps) => {
 
   const { mutate: deleteDatabaseFunction, isLoading } = useDatabaseFunctionDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully removed function ${name}`)
+      toast.success(`成功删除了函数 ${name}`)
       setVisible(false)
     },
   })
 
   async function handleDelete() {
-    if (!func) return console.error('Function is required')
-    if (!project) return console.error('Project is required')
+    if (!func) return console.error('未找到函数')
+    if (!project) return console.error('未找到项目')
 
     deleteDatabaseFunction({
       func,
@@ -40,19 +40,20 @@ const DeleteFunction = ({ func, visible, setVisible }: DeleteFunctionProps) => {
         visible={visible}
         onCancel={() => setVisible(!visible)}
         onConfirm={handleDelete}
-        title="Delete this function"
+        title="删除此函数"
         loading={isLoading}
-        confirmLabel={`Delete function ${name}`}
-        confirmPlaceholder="Type in name of function"
-        confirmString={name ?? 'Unknown'}
+        confirmLabel={`删除函数 ${name}`}
+        confirmPlaceholder="输入函数名称"
+        confirmString={name ?? '未知'}
         text={
           <>
-            <span>This will delete the function</span>{' '}
-            <span className="text-bold text-foreground">{name}</span> <span>from the schema</span>{' '}
-            <span className="text-bold text-foreground">{schema}</span>
+            <span>此操作将从模式</span>{' '}
+            <span className="text-bold text-foreground">{schema}</span>{' '}
+            <span>中删除函数</span>{' '}
+            <span className="text-bold text-foreground">{name}</span>
           </>
         }
-        alert={{ title: 'You cannot recover this function once deleted.' }}
+        alert={{ title: '一旦删除，此函数将不可恢复。' }}
       />
     </>
   )

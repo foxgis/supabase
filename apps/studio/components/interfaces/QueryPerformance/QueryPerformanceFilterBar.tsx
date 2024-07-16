@@ -74,9 +74,9 @@ export const QueryPerformanceFilterBar = ({
 
   function getSortButtonLabel() {
     if (defaultSortByValue?.order === 'desc') {
-      return 'Sorted by latency - high to low'
+      return '按延迟排序 - 由高到低'
     } else {
-      return 'Sorted by latency - low to high'
+      return '按延迟排序 - 由低到高'
     }
   }
 
@@ -89,16 +89,16 @@ export const QueryPerformanceFilterBar = ({
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-x-4">
         <div className="flex items-center gap-x-2">
-          <p className="text-xs prose">Filter by</p>
+          <p className="text-xs prose">筛选</p>
           <FilterPopover
-            name="Roles"
+            name="角色"
             options={roles}
             labelKey="name"
             valueKey="name"
             activeOptions={isLoadingRoles ? [] : filters.roles}
             onSaveFilters={onFilterRolesChange}
           />
-          <TextSearchPopover name="Query" value={searchInputVal} onSaveText={onSearchQueryChange} />
+          <TextSearchPopover name="查询" value={searchInputVal} onSaveText={onSearchQueryChange} />
 
           <div className="border-r border-strong h-6" />
           <DropdownMenu>
@@ -113,10 +113,10 @@ export const QueryPerformanceFilterBar = ({
                 onValueChange={(value: any) => onSortChange(value)}
               >
                 <DropdownMenuRadioItem value="desc" defaultChecked={sortByValue?.order === 'desc'}>
-                  Sort by latency - high to low
+                  按延迟排序 - 由高到低
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="asc" defaultChecked={sortByValue?.order === 'asc'}>
-                  Sort by latency - low to high
+                  按延迟排序 - 由低到高
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
@@ -132,7 +132,7 @@ export const QueryPerformanceFilterBar = ({
             }}
             type="default"
           >
-            Reset report
+            重置报告
           </Button>
         )}
         <Button
@@ -147,7 +147,7 @@ export const QueryPerformanceFilterBar = ({
             />
           }
         >
-          Refresh
+          刷新
         </Button>
       </div>
     </div>

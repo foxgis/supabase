@@ -73,8 +73,8 @@ export const QueryPerformance = ({
     return [
       {
         id: QUERY_PERFORMANCE_REPORT_TYPES.MOST_TIME_CONSUMING,
-        label: 'Most time consuming',
-        description: 'Lists queries ordered by their cumulative total execution time.',
+        label: '最消耗时间',
+        description: '按照累计执行时间对查询进行排序。',
         isLoading: isLoadingMTC,
         max:
           (mostTimeConsumingQueries ?? []).length > 0
@@ -83,8 +83,8 @@ export const QueryPerformance = ({
       },
       {
         id: QUERY_PERFORMANCE_REPORT_TYPES.MOST_FREQUENT,
-        label: 'Most frequent',
-        description: 'Lists queries in order of their execution count',
+        label: '最频繁',
+        description: '按照执行次数对查询进行排序',
         isLoading: isLoadingMFI,
         max:
           (mostFrequentlyInvoked ?? []).length > 0
@@ -93,8 +93,8 @@ export const QueryPerformance = ({
       },
       {
         id: QUERY_PERFORMANCE_REPORT_TYPES.SLOWEST_EXECUTION,
-        label: 'Slowest execution',
-        description: 'Lists queries ordered by their maximum execution time',
+        label: '最慢执行',
+        description: '按照最大执行事件对查询进行排序。',
         isLoading: isLoadingMMF,
         max:
           (slowestExecutionTime ?? []).length > 0
@@ -158,7 +158,7 @@ export const QueryPerformance = ({
                 <ShimmeringLoader className="w-32 pt-1" />
               ) : tab.max === undefined ? (
                 <span className="text-xs text-foreground-muted group-hover:text-foreground-lighter group-data-[state=active]:text-foreground-lighter transition">
-                  No data yet
+                  暂无数据
                 </span>
               ) : (
                 <span className="text-xs text-foreground-muted group-hover:text-foreground-lighter group-data-[state=active]:text-foreground-lighter transition">
@@ -202,33 +202,32 @@ export const QueryPerformance = ({
           <X size="14" />
         </Button>
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>Reset report</p>
+          <p>重置报告</p>
           <p className="text-xs text-foreground-light">
-            Consider resetting the analysis after optimizing any queries
+            考虑在优化查询后重置分析。
           </p>
           <Button
             type="default"
             className="!mt-3 w-min"
             onClick={() => setShowResetgPgStatStatements(true)}
           >
-            Reset report
+            重置报告
           </Button>
         </div>
 
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>How is this report generated?</p>
+          <p>报告是怎么生成的？</p>
           <Markdown
             className="text-xs"
-            content="This report uses the pg_stat_statements table, and pg_stat_statements extension. [Learn more here](https://supabase.com/docs/guides/platform/performance#examining-query-performance)."
+            content="此报告使用了 pg_stat_statements 表和 pg_stat_statements 扩展。[从这里了解更多](https://supabase.com/docs/guides/platform/performance#examining-query-performance)."
           />
         </div>
 
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>Inspect your database for potential issues</p>
+          <p>检查您的数据库是否有潜在问题</p>
           <Markdown
             className="text-xs"
-            content="The Supabase CLI comes with a range of tools to help inspect your Postgres instances for
-            potential issues. [Learn more here](https://supabase.com/docs/guides/database/inspect)."
+            content="Supabase CLI 附带了一系列工具，可帮助您检查您的 Postgres 实例是否存在潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
           />
         </div>
       </div>
@@ -236,12 +235,12 @@ export const QueryPerformance = ({
       <ConfirmModal
         danger
         visible={showResetgPgStatStatements}
-        title="Reset query performance analysis"
+        title="重置查询性能分析"
         description={
-          'This will reset the `extensions.pg_stat_statements` table that is used to calculate query performance. This data will repopulate immediately after.'
+          '此操作将重置用于计算查询性能的 `extensions.pg_stat_statements` 表。数据将在几分钟后重新填充。'
         }
-        buttonLabel="Clear table"
-        buttonLoadingLabel="Deleting"
+        buttonLabel="清除表"
+        buttonLoadingLabel="正在删除"
         onSelectCancel={() => setShowResetgPgStatStatements(false)}
         onSelectConfirm={async () => {
           try {
@@ -253,7 +252,7 @@ export const QueryPerformance = ({
             handleRefresh()
             setShowResetgPgStatStatements(false)
           } catch (error: any) {
-            toast.error(`Failed to reset analysis: ${error.message}`)
+            toast.error(`重置分析失败: ${error.message}`)
           }
         }}
       />

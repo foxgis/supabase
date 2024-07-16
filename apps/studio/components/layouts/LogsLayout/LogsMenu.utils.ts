@@ -33,10 +33,10 @@ export const generateLogsMenu = (
       })),
     },
     {
-      title: '基础组件',
+      title: '基础组件日志',
       items: [
         {
-          name: 'API Gateway',
+          name: 'API 网关',
           key: 'edge-logs',
           url: `/project/${ref}/logs/edge-logs`,
           items: [],
@@ -55,7 +55,7 @@ export const generateLogsMenu = (
         },
         IS_PLATFORM
           ? {
-              name: 'Pooler',
+              name: '连接池',
               key: 'pooler-logs',
               url: `/project/${ref}/logs/pooler-logs`,
               items: [],
@@ -64,7 +64,7 @@ export const generateLogsMenu = (
         ,
         authEnabled
           ? {
-              name: 'Auth',
+              name: '认证授权',
               key: 'auth-logs',
               url: `/project/${ref}/logs/auth-logs`,
               items: [],
@@ -72,7 +72,7 @@ export const generateLogsMenu = (
           : null,
         storageEnabled
           ? {
-              name: 'Storage',
+              name: '文件存储',
               key: 'storage-logs',
               url: `/project/${ref}/logs/storage-logs`,
               items: [],
@@ -80,7 +80,7 @@ export const generateLogsMenu = (
           : null,
         realtimeEnabled
           ? {
-              name: 'Realtime',
+              name: '实时通信',
               key: 'realtime-logs',
               url: `/project/${ref}/logs/realtime-logs`,
               items: [],

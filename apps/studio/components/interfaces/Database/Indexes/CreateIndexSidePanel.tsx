@@ -82,10 +82,10 @@ const CreateIndexSidePanel = ({ visible, onClose }: CreateIndexSidePanelProps) =
     onSuccess: async () => {
       await refetchIndexes()
       onClose()
-      toast.success(`Successfully created index`)
+      toast.success(`成功创建了索引`)
     },
     onError: (error) => {
-      toast.error(`Failed to create index: ${error.message}`)
+      toast.error(`创建索引失败：${error.message}`)
     },
   })
 
@@ -105,7 +105,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
 `.trim()
 
   const onSaveIndex = () => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
 
     execute({
       projectRef: project.ref,
@@ -139,16 +139,16 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
   return (
     <SidePanel
       size="large"
-      header="Create new index"
+      header="创建新索引"
       visible={visible}
       onCancel={onClose}
       onConfirm={() => onSaveIndex()}
       loading={isExecuting}
-      confirmText="Create index"
+      confirmText="创建索引"
     >
       <div className="py-6 space-y-6">
         <SidePanel.Content className="space-y-6">
-          <FormItemLayout label="Select a schema" name="select-schema" isReactForm={false}>
+          <FormItemLayout label="选择模式" name="select-schema" isReactForm={false}>
             <Popover_Shadcn_
               modal={false}
               open={schemaDropdownOpen}
@@ -165,7 +165,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                 >
                   {selectedSchema !== undefined && selectedSchema !== ''
                     ? selectedSchema
-                    : 'Choose a schema'}
+                    : '选择一个模式'}
                 </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_
@@ -175,9 +175,9 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                 sameWidthAsTrigger
               >
                 <Command_Shadcn_>
-                  <CommandInput_Shadcn_ placeholder="Find schema..." />
+                  <CommandInput_Shadcn_ placeholder="查找模式..." />
                   <CommandList_Shadcn_>
-                    <CommandEmpty_Shadcn_>No schemas found</CommandEmpty_Shadcn_>
+                    <CommandEmpty_Shadcn_>未找到模式</CommandEmpty_Shadcn_>
                     <CommandGroup_Shadcn_>
                       <ScrollArea className={(schemas || []).length > 7 ? 'h-[210px]' : ''}>
                         {(schemas ?? []).map((schema) => (
@@ -208,12 +208,12 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
           </FormItemLayout>
 
           <FormItemLayout
-            label="Select a table"
+            label="选择表"
             name="select-table"
             description={
               isSelectEntityDisabled &&
               !isLoading &&
-              'Create a table in this schema via the Table or SQL editor first'
+              '在这个模式下，先通过表编辑器或 SQL 编辑器创建一张表'
             }
             isReactForm={false}
           >
@@ -240,8 +240,8 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                     {selectedEntity !== undefined && selectedEntity !== ''
                       ? selectedEntity
                       : isSelectEntityDisabled
-                        ? 'No tables available in schema'
-                        : 'Choose a table'}
+                        ? '在这个模式下，没有可用的表'
+                        : '选择一张表'}
                   </Button>
                 )}
               </PopoverTrigger_Shadcn_>
@@ -252,7 +252,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                 sameWidthAsTrigger
               >
                 <Command_Shadcn_>
-                  <CommandInput_Shadcn_ placeholder="Find table..." />
+                  <CommandInput_Shadcn_ placeholder="查找表..." />
                   <CommandList_Shadcn_>
                     <CommandEmpty_Shadcn_>No tables found</CommandEmpty_Shadcn_>
                     <CommandGroup_Shadcn_>
@@ -285,13 +285,13 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
           </FormItemLayout>
 
           {selectedEntity && (
-            <FormItemLayout label="Select up to 32 columns" isReactForm={false}>
+            <FormItemLayout label="最多可选择 32 列" isReactForm={false}>
               {isLoadingTableColumns && <ShimmeringLoader className="py-4" />}
               {isSuccessTableColumns && (
                 <MultiSelectV2
                   options={columnOptions}
-                  placeholder="Choose which columns to create an index on"
-                  searchPlaceholder="Search for a column"
+                  placeholder="选择要在其上创建索引的列"
+                  searchPlaceholder="查找列"
                   value={selectedColumns}
                   onChange={setSelectedColumns}
                 />
@@ -305,7 +305,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
             <SidePanel.Separator />
             <SidePanel.Content className="space-y-6">
               <FormItemLayout
-                label="Select an index type"
+                label="选择索引类型"
                 name="selected-index-type"
                 isReactForm={false}
               >
@@ -345,7 +345,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
             <SidePanel.Separator />
             <SidePanel.Content>
               <div className="flex items-center justify-between">
-                <p className="text-sm">Preview of SQL statement</p>
+                <p className="text-sm">预览 SQL 语句</p>
                 <Button asChild type="default">
                   <Link
                     href={
@@ -354,7 +354,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                         : '/'
                     }
                   >
-                    Open in SQL Editor
+                    在 SQL 编辑器中打开
                   </Link>
                 </Button>
               </div>

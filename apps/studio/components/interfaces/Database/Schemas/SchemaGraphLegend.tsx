@@ -7,19 +7,19 @@ const SchemaGraphLegend = () => {
       <ul className="flex flex-wrap  items-center justify-center gap-4">
         <li className="flex items-center text-xs font-mono gap-1">
           <Key size={15} strokeWidth={1.5} className="flex-shrink-0 text-light" />
-          Primary key
+          主键
         </li>
         <li className="flex items-center text-xs font-mono gap-1">
           <Hash size={15} strokeWidth={1.5} className="flex-shrink-0 text-light" />
-          Identity
+          自增
         </li>
         <li className="flex items-center text-xs font-mono gap-1">
           <Fingerprint size={15} strokeWidth={1.5} className="flex-shrink-0 text-light" />
-          Unique
+          唯一
         </li>
         <li className="flex items-center text-xs font-mono gap-1">
           <DiamondIcon size={15} strokeWidth={1.5} className="flex-shrink-0 text-light" />
-          Nullable
+          可空
         </li>
         <li className="flex items-center text-xs font-mono gap-1">
           <DiamondIcon
@@ -28,7 +28,7 @@ const SchemaGraphLegend = () => {
             fill="currentColor"
             className="flex-shrink-0 text-light"
           />
-          Non-Nullable
+          非空
         </li>
       </ul>
     </div>

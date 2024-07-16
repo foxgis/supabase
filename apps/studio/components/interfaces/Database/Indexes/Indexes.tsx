@@ -54,10 +54,10 @@ const Indexes = () => {
     onSuccess() {
       refetchIndexes()
       setSelectedIndexToDelete(undefined)
-      toast.success('Successfully deleted index')
+      toast.success('成功删除了索引')
     },
     onError(error) {
-      toast.error(`Failed to delete index: ${error.message}`)
+      toast.error(`删除索引失败：${error.message}`)
     },
   })
 
@@ -74,7 +74,7 @@ const Indexes = () => {
       : sortedIndexes
 
   const onConfirmDeleteIndex = (index: DatabaseIndex) => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
     execute({
       projectRef: project.ref,
       connectionString: project.connectionString,
@@ -103,7 +103,7 @@ const Indexes = () => {
               {isErrorSchemas && (
                 <div className="w-[260px] text-foreground-light text-sm border px-3 py-1.5 rounded flex items-center space-x-2">
                   <IconAlertCircle strokeWidth={2} size={16} />
-                  <p>Failed to load schemas</p>
+                  <p>加载模式失败</p>
                 </div>
               )}
               {isSuccessSchemas && (
@@ -120,7 +120,7 @@ const Indexes = () => {
                 value={search}
                 className="w-64"
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search for an index"
+                placeholder="查找索引"
                 icon={<IconSearch size={14} />}
               />
             </div>
@@ -130,7 +130,7 @@ const Indexes = () => {
                 onClick={() => setShowCreateIndex(true)}
                 disabled={!isSuccessSchemas}
               >
-                Create index
+                创建索引
               </Button>
             )}
           </div>
@@ -140,15 +140,15 @@ const Indexes = () => {
           {isLoadingIndexes && <GenericSkeletonLoader />}
 
           {isErrorIndexes && (
-            <AlertError error={indexesError as any} subject="Failed to retrieve database indexes" />
+            <AlertError error={indexesError as any} subject="获取数据库索引失败" />
           )}
 
           {isSuccessIndexes && (
             <Table
               head={[
-                <Table.th key="schema">Schema</Table.th>,
-                <Table.th key="table">Table</Table.th>,
-                <Table.th key="name">Name</Table.th>,
+                <Table.th key="schema">模式</Table.th>,
+                <Table.th key="table">表</Table.th>,
+                <Table.th key="name">名称</Table.th>,
                 <Table.th key="buttons"></Table.th>,
               ]}
               body={
@@ -156,9 +156,9 @@ const Indexes = () => {
                   {sortedIndexes.length === 0 && search.length === 0 && (
                     <Table.tr>
                       <Table.td colSpan={4}>
-                        <p className="text-sm text-foreground">No indexes created yet</p>
+                        <p className="text-sm text-foreground">尚未创建索引</p>
                         <p className="text-sm text-foreground-light">
-                          There are no indexes found in the schema "{selectedSchema}"
+                          在模式 "{selectedSchema}" 中未找到索引
                         </p>
                       </Table.td>
                     </Table.tr>
@@ -166,9 +166,9 @@ const Indexes = () => {
                   {sortedIndexes.length === 0 && search.length > 0 && (
                     <Table.tr>
                       <Table.td colSpan={4}>
-                        <p className="text-sm text-foreground">No results found</p>
+                        <p className="text-sm text-foreground">未找到结果</p>
                         <p className="text-sm text-foreground-light">
-                          Your search for "{search}" did not return any results
+                          您搜索的 "{search}" 没有返回任何结果
                         </p>
                       </Table.td>
                     </Table.tr>
@@ -188,7 +188,7 @@ const Indexes = () => {
                         <Table.td>
                           <div className="flex justify-end items-center space-x-2">
                             <Button type="default" onClick={() => setSelectedIndex(index)}>
-                              View definition
+                              查看定义
                             </Button>
                             {!isLocked && (
                               <Button
@@ -214,7 +214,7 @@ const Indexes = () => {
         visible={selectedIndex !== undefined}
         header={
           <>
-            <span>Index:</span>
+            <span>索引：</span>
             <code className="text-sm ml-2">{selectedIndex?.name}</code>
           </>
         }
@@ -241,30 +241,29 @@ const Indexes = () => {
         visible={selectedIndexToDelete !== undefined}
         title={
           <>
-            Confirm to delete index <code className="text-sm">{selectedIndexToDelete?.name}</code>
+            确认删除索引 <code className="text-sm">{selectedIndexToDelete?.name}</code>
           </>
         }
-        confirmLabel="Confirm delete"
-        confirmLabelLoading="Deleting..."
+        confirmLabel="确认删除"
+        confirmLabelLoading="正在删除..."
         onConfirm={() =>
           selectedIndexToDelete !== undefined ? onConfirmDeleteIndex(selectedIndexToDelete) : {}
         }
         onCancel={() => setSelectedIndexToDelete(undefined)}
         alert={{
-          title: 'This action cannot be undone',
+          title: '此操作无法撤销',
           description:
-            'Deleting an index that is still in use will cause queries to slow down, and in some cases causing significant performance issues.',
+            '删除仍在使用的索引将会导致查询变慢，并且在某些情况下会导致显著的性能问题。',
         }}
       >
         <ul className="mt-4 space-y-5">
           <li className="flex gap-3">
             <div>
-              <strong className="text-sm">Before deleting this index, consider:</strong>
+              <strong className="text-sm">在删除此索引之前，请考虑：</strong>
               <ul className="space-y-2 mt-2 text-sm text-foreground-light">
-                <li className="list-disc ml-6">This index is no longer in use</li>
+                <li className="list-disc ml-6">此索引不再被使用</li>
                 <li className="list-disc ml-6">
-                  The table which the index is on is not currently in use, as dropping an index
-                  requires a short exclusive access lock on the table.
+                  此索引上的表当前未使用，因为删除索引需要在表上获取短暂的独占访问锁。
                 </li>
               </ul>
             </div>

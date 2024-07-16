@@ -39,7 +39,6 @@ import {
   SheetSection,
   Toggle,
   cn,
-  useWatch_Shadcn_,
 } from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
@@ -82,6 +81,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
+  const language = form.watch('language')
 
   const { mutate: createDatabaseFunction, isLoading: isCreating } =
     useDatabaseFunctionCreateMutation()
@@ -93,7 +93,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
   }
 
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
     const payload = {
       ...data,
       args: data.args.map((x) => `${x.name} ${x.type}`),
@@ -110,7 +110,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
         },
         {
           onSuccess: () => {
-            toast.success(`Successfully updated function ${data.name}`)
+            toast.success(`成功地更新了函数 ${data.name}`)
             setVisible(!visible)
           },
         }
@@ -124,7 +124,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
         },
         {
           onSuccess: () => {
-            toast.success(`Successfully created function ${data.name}`)
+            toast.success(`成功地创建了函数 ${data.name}`)
             setVisible(!visible)
           },
         }
@@ -178,8 +178,8 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                   name="name"
                   render={({ field }) => (
                     <FormItemLayout
-                      label="Name of function"
-                      description="Name will also be used for the function name in postgres"
+                      label="函数名称"
+                      description="该名称也会在 postgres 中用作函数名称"
                       layout="horizontal"
                     >
                       <FormControl_Shadcn_>
@@ -196,8 +196,8 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                   name="schema"
                   render={({ field }) => (
                     <FormItemLayout
-                      label="Schema"
-                      description="Tables made in the table editor will be in 'public'"
+                      label="模式"
+                      description="在表编辑器中创建的表将在 'public' 模式中"
                       layout="horizontal"
                     >
                       <FormControl_Shadcn_>
@@ -216,7 +216,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                     control={form.control}
                     name="return_type"
                     render={({ field }) => (
-                      <FormItemLayout label="Return type" layout="horizontal">
+                      <FormItemLayout label="返回类型" layout="horizontal">
                         {/* Form selects don't need form controls, otherwise the CSS gets weird */}
                         <Select_Shadcn_ onValueChange={field.onChange} defaultValue={field.value}>
                           <SelectTrigger_Shadcn_ className="col-span-8">
@@ -252,17 +252,15 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                     <FormItem_Shadcn_ className="space-y-4 flex flex-col h-full">
                       <div className="px-content">
                         <FormLabel_Shadcn_ className="text-base text-foreground">
-                          Definition
+                          定义函数体
                         </FormLabel_Shadcn_>
                         <FormDescription_Shadcn_ className="text-sm text-foreground-light">
                           <p>
-                            The language below should be written in{' '}
-                            <code>
-                              <FormLanguage />
-                            </code>
-                            .
+                            下面的代码应该用 <code>{language}</code> 编写。
                           </p>
-                          {!isEditing && <p>Change the language in the Advanced Settings below.</p>}
+                          {!isEditing && (
+                            <p>在高级设置中更改编程语言。</p>
+                          )}
                         </FormDescription_Shadcn_>
                       </div>
                       <div
@@ -273,6 +271,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                       >
                         <FunctionEditor
                           field={field}
+                          language={language}
                           focused={focusedEditor}
                           setFocused={setFocusedEditor}
                         />
@@ -292,9 +291,9 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                     <div className="space-y-8 rounded bg-studio py-4 px-6 border border-overlay">
                       <Toggle
                         onChange={() => setAdvancedSettingsShown(!advancedSettingsShown)}
-                        label="Show advanced settings"
+                        label="显示高级设置"
                         checked={advancedSettingsShown}
-                        labelOptional="These are settings that might be familiar for Postgres developers"
+                        labelOptional="这些是可能对 Postgres 开发者熟悉的设置"
                       />
                     </div>
                   </SheetSection>
@@ -306,7 +305,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                           control={form.control}
                           name="behavior"
                           render={({ field }) => (
-                            <FormItemLayout label="Behavior" layout="horizontal">
+                            <FormItemLayout label="行为" layout="horizontal">
                               {/* Form selects don't need form controls, otherwise the CSS gets weird */}
                               <Select_Shadcn_
                                 defaultValue={field.value}
@@ -337,7 +336,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                       </SheetSection>
                       <Separator className={focusedEditor ? 'hidden' : ''} />
                       <SheetSection className={focusedEditor ? 'hidden' : ''}>
-                        <h5 className="text-base text-foreground mb-4">Type of Security</h5>
+                        <h5 className="text-base text-foreground mb-4">安全类型</h5>
                         <FormField_Shadcn_
                           control={form.control}
                           name="security_definer"
@@ -360,8 +359,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                                     checked={!field.value}
                                     description={
                                       <>
-                                        Function is to be executed with the privileges of the user
-                                        that <span className="text-foreground">calls it</span>.
+                                        函数将以<span className="text-foreground">调用者</span>的权限执行。
                                       </>
                                     }
                                   />
@@ -372,8 +370,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                                     checked={field.value}
                                     description={
                                       <>
-                                        Function is to be executed with the privileges of the user
-                                        that <span className="text-foreground">created it</span>.
+                                        函数将以<span className="text-foreground">创建者</span>的权限执行。
                                       </>
                                     }
                                   />
@@ -392,7 +389,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
           </Form_Shadcn_>
           <SheetFooter>
             <Button disabled={isCreating || isUpdating} type="default" onClick={isClosingSidePanel}>
-              Cancel
+              取消
             </Button>
             <Button
               form={FORM_ID}
@@ -400,7 +397,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
               disabled={isCreating || isUpdating}
               loading={isCreating || isUpdating}
             >
-              Confirm
+              确认
             </Button>
           </SheetFooter>
         </div>
@@ -411,8 +408,8 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
         ) : null}
         <ConfirmationModal
           visible={isClosingPanel}
-          title="Discard changes"
-          confirmLabel="Discard"
+          title="舍弃更改"
+          confirmLabel="舍弃"
           onCancel={() => setIsClosingPanel(false)}
           onConfirm={() => {
             setIsClosingPanel(false)
@@ -420,8 +417,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
           }}
         >
           <p className="text-sm text-foreground-light">
-            There are unsaved changes. Are you sure you want to close the panel? Your changes will
-            be lost.
+            有未保存的更改。确定要关闭面板吗？您的更改将会丢失。
           </p>
         </ConfirmationModal>
       </SheetContent>
@@ -443,14 +439,14 @@ const FormFieldArgs = ({ readonly }: FormFieldConfigParamsProps) => {
   return (
     <>
       <div className="flex flex-col">
-        <h5 className="text-base text-foreground">Arguments</h5>
+        <h5 className="text-base text-foreground">参数</h5>
         <p className="text-sm text-foreground-light">
-          Arguments can be referenced in the function body using either names or numbers.
+          参数可在函数体中通过名称或者序号引用。
         </p>
       </div>
       <div className="space-y-2 pt-4">
         {readonly && isEmpty(fields) && (
-          <span className="text-foreground-lighter">No argument for this function</span>
+          <span className="text-foreground-lighter">此函数无参数</span>
         )}
         {fields.map((field, index) => {
           return (
@@ -520,7 +516,7 @@ const FormFieldArgs = ({ readonly }: FormFieldConfigParamsProps) => {
             onClick={() => append({ name: '', type: 'integer' })}
             disabled={readonly}
           >
-            Add a new argument
+            添加新参数
           </Button>
         )}
       </div>
@@ -539,10 +535,10 @@ const FormFieldConfigParams = ({ readonly }: FormFieldConfigParamsProps) => {
 
   return (
     <>
-      <h5 className="text-base text-foreground">Configuration Parameters</h5>
+      <h5 className="text-base text-foreground">配置参数</h5>
       <div className="space-y-2 pt-4">
         {readonly && isEmpty(fields) && (
-          <span className="text-foreground-lighter">No argument for this function</span>
+          <span className="text-foreground-lighter">此函数无配置参数</span>
         )}
         {fields.map((field, index) => {
           return (
@@ -552,7 +548,7 @@ const FormFieldConfigParams = ({ readonly }: FormFieldConfigParamsProps) => {
                 render={({ field }) => (
                   <FormItem_Shadcn_ className="flex-1">
                     <FormControl_Shadcn_>
-                      <Input_Shadcn_ {...field} placeholder="parameter_name" />
+                      <Input_Shadcn_ {...field} placeholder="参数名称" />
                     </FormControl_Shadcn_>
                     <FormMessage_Shadcn_ />
                   </FormItem_Shadcn_>
@@ -563,7 +559,7 @@ const FormFieldConfigParams = ({ readonly }: FormFieldConfigParamsProps) => {
                 render={({ field }) => (
                   <FormItem_Shadcn_ className="flex-1">
                     <FormControl_Shadcn_>
-                      <Input_Shadcn_ {...field} placeholder="parameter_value" />
+                      <Input_Shadcn_ {...field} placeholder="参数值" />
                     </FormControl_Shadcn_>
                     <FormMessage_Shadcn_ />
                   </FormItem_Shadcn_>
@@ -589,7 +585,7 @@ const FormFieldConfigParams = ({ readonly }: FormFieldConfigParamsProps) => {
             onClick={() => append({ name: '', type: '' })}
             disabled={readonly}
           >
-            Add a new config
+            添加新配置参数
           </Button>
         )}
       </div>
@@ -628,7 +624,7 @@ const FormFieldLanguage = () => {
     <FormField_Shadcn_
       name="language"
       render={({ field }) => (
-        <FormItemLayout label="Language" layout="horizontal">
+        <FormItemLayout label="编程语言" layout="horizontal">
           {/* Form selects don't need form controls, otherwise the CSS gets weird */}
           <Select_Shadcn_ onValueChange={field.onChange} defaultValue={field.value}>
             <SelectTrigger_Shadcn_ className="col-span-8">
@@ -646,10 +642,4 @@ const FormFieldLanguage = () => {
       )}
     />
   )
-}
-
-const FormLanguage = () => {
-  const language = useWatch_Shadcn_({ name: 'language' })
-
-  return language
 }

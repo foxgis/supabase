@@ -52,7 +52,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
       },
       {
         onSuccess: () => {
-          toast.success(`Successfully updated role "${role.name}"`)
+          toast.success(`成功更新了角色 "${role.name}"`)
           resetForm({ values: { ...values }, initialValues: { ...values } })
         },
       }
@@ -129,7 +129,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                       role.activeConnections > 0 ? 'text-foreground' : 'text-foreground-light'
                     }`}
                   >
-                    {role.activeConnections} connections
+                    {role.activeConnections} 个连接
                   </p>
                   {!disabled && (
                     <DropdownMenu>
@@ -147,7 +147,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                           }}
                         >
                           <IconTrash className="text-red-800" size="tiny" strokeWidth={2} />
-                          <p>Delete</p>
+                          <p>删除</p>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -191,7 +191,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                                     ].join(' ')}
                                   >
                                     <span className="text-xs">
-                                      This privilege cannot be updated via the dashboard
+                                      此权限无法通过仪表板更新
                                     </span>
                                   </div>
                                 </Tooltip.Content>
@@ -212,7 +212,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                       disabled={!hasChanges || isUpdating}
                       onClick={() => handleReset()}
                     >
-                      Cancel
+                      取消
                     </Button>
                     <Button
                       type="primary"
@@ -220,7 +220,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                       disabled={!hasChanges || isUpdating}
                       loading={isUpdating}
                     >
-                      Save
+                      保存
                     </Button>
                   </div>
                 )}

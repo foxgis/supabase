@@ -35,7 +35,7 @@ const FunctionsPage: NextPageWithLayout = () => {
   }
 
   if (isPermissionsLoaded && !canReadFunctions) {
-    return <NoPermission isFullPage resourceText="view database functions" />
+    return <NoPermission isFullPage resourceText="查看数据库函数" />
   }
 
   return (
@@ -43,7 +43,7 @@ const FunctionsPage: NextPageWithLayout = () => {
       <ScaffoldContainer>
         <ScaffoldSection>
           <div className="col-span-12">
-            <FormHeader title="Database Functions" />
+            <FormHeader title="数据库函数" />
             <FunctionsList
               createFunction={createFunction}
               editFunction={editFunction}

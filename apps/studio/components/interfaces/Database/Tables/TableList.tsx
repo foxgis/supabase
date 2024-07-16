@@ -255,7 +255,7 @@ const TableList = ({
           <Input
             size="small"
             className="w-64"
-            placeholder="Search for a table"
+            placeholder="查找表"
             value={filterString}
             onChange={(e: any) => setFilterString(e.target.value)}
             icon={<Search size={12} />}
@@ -298,7 +298,7 @@ const TableList = ({
                 大小（估计）
               </Table.th>,
               <Table.th key="realtime" className="hidden xl:table-cell text-center">
-                实时通信已启用
+                实时通信
               </Table.th>,
               <Table.th key="buttons"></Table.th>,
             ]}
@@ -322,7 +322,7 @@ const TableList = ({
                           <p className="text-sm text-foreground-light">
                             在模式 "{snap.selectedSchemaName}" 中未找到任何{' '}
                             {visibleTypes.length === 5
-                              ? 'tables'
+                              ? '表'
                               : visibleTypes.length === 1
                                 ? `${formatTooltipText(visibleTypes[0])}s`
                                 : `${visibleTypes
@@ -330,7 +330,7 @@ const TableList = ({
                                     .map((x) => `${formatTooltipText(x)}s`)
                                     .join(
                                       ', '
-                                    )}, 和 ${formatTooltipText(visibleTypes[visibleTypes.length - 1])}s`}{' '}
+                                    )} 和 ${formatTooltipText(visibleTypes[visibleTypes.length - 1])}s`}{' '}
                           </p>
                         </>
                       )}
@@ -422,7 +422,7 @@ const TableList = ({
                             {x.comment}
                           </span>
                         ) : (
-                          <p className="text-border-stronger">无描述</p>
+                          <p className="text-border-stronger">无描述信息</p>
                         )}
                       </Table.td>
                       <Table.td className="hidden text-right xl:table-cell">

@@ -44,7 +44,7 @@ export const TextSearchPopover = ({ name, value = '', onSaveText }: TextSearchPo
             onChange={(event) => setSearch(event.target.value)}
             rows={4}
             className="text-xs font-mono tracking-tight"
-            placeholder="Search for a query"
+            placeholder="搜索查询"
             onKeyDown={(event) => {
               if (event.metaKey && event.code === 'Enter') applySearch()
             }}
@@ -60,10 +60,10 @@ export const TextSearchPopover = ({ name, value = '', onSaveText }: TextSearchPo
               setOpen(false)
             }}
           >
-            Clear
+            清除
           </Button>
           <Button type="primary" onClick={() => applySearch()}>
-            Apply search
+            执行查询
           </Button>
         </div>
       </PopoverContent_Shadcn_>

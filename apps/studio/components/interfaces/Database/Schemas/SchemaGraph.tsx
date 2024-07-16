@@ -284,7 +284,7 @@ const SchemaGraph = ({ schema }: { schema: string }) => {
     return (
       <div className="flex h-full w-full items-center justify-center space-x-2">
         <IconLoader className="animate-spin" size={14} />
-        <p className="text-sm text-foreground-light">Loading table...</p>
+        <p className="text-sm text-foreground-light">正在加载表...</p>
       </div>
     )
   }
@@ -292,8 +292,8 @@ const SchemaGraph = ({ schema }: { schema: string }) => {
   if (isError) {
     return (
       <div className="px-6 py-4 text-foreground-light">
-        <p>Error connecting to API</p>
-        <p>{`${error?.message ?? 'Unknown error'}`}</p>
+        <p>连接 API 时出错</p>
+        <p>{`${error?.message ?? '未知错误'}`}</p>
       </div>
     )
   }

@@ -34,7 +34,7 @@ const TriggersPage: NextPageWithLayout = () => {
   }
 
   if (isPermissionsLoaded && !canReadTriggers) {
-    return <NoPermission isFullPage resourceText="view database triggers" />
+    return <NoPermission isFullPage resourceText="查看数据库触发器" />
   }
 
   return (
@@ -42,7 +42,7 @@ const TriggersPage: NextPageWithLayout = () => {
       <ScaffoldContainer>
         <ScaffoldSection>
           <div className="col-span-12">
-            <FormHeader title="Database Triggers" />
+            <FormHeader title="数据库触发器" />
             <TriggersList
               createTrigger={createTrigger}
               editTrigger={editTrigger}

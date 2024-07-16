@@ -63,7 +63,7 @@ const RolesList = () => {
         <div className="flex items-center space-x-4">
           <Input
             size="small"
-            placeholder="Search for a role"
+            placeholder="查找角色"
             icon={<Search size={12} />}
             value={filterString}
             onChange={(event: any) => setFilterString(event.target.value)}
@@ -90,7 +90,7 @@ const RolesList = () => {
               ].join(' ')}
               onClick={() => setFilterType('all')}
             >
-              All roles
+              所有角色
             </button>
             <div className="h-full w-[1px] border-r border-strong"></div>
             <button
@@ -102,7 +102,7 @@ const RolesList = () => {
               ].join(' ')}
               onClick={() => setFilterType('active')}
             >
-              Active roles
+              活跃的角色
             </button>
           </div>
         </div>
@@ -130,7 +130,7 @@ const RolesList = () => {
                       ? `${totalActiveConnections}/${maxConnectionLimit}`
                       : `${totalActiveConnections}`
                   }
-                  labelBottom="Active connections"
+                  labelBottom="活跃的连接"
                 />
               </div>
             </Tooltip.Trigger>
@@ -142,7 +142,9 @@ const RolesList = () => {
                   'border border-background space-y-1',
                 ].join(' ')}
               >
-                <p className="text-xs text-foreground-light pr-2">Connections by roles:</p>
+                <p className="text-xs text-foreground-light pr-2">
+                  按角色划分的连接数:
+                </p>
                 {rolesWithActiveConnections.map((role) => (
                   <div key={role.id} className="text-xs text-foreground">
                     {role.name}: {role.activeConnections}
@@ -159,7 +161,7 @@ const RolesList = () => {
                 icon={<Plus size={12} />}
                 onClick={() => setIsCreatingRole(true)}
               >
-                Add role
+                添加角色
               </Button>
             </Tooltip.Trigger>
             {!canUpdateRoles && (
@@ -171,7 +173,7 @@ const RolesList = () => {
                     'border border-background text-xs',
                   ].join(' ')}
                 >
-                  You need additional permissions to add a new role
+                  你需要额外的权限才能添加角色
                 </div>
               </Tooltip.Content>
             )}
@@ -183,8 +185,8 @@ const RolesList = () => {
         {supabaseRoles.length > 0 && (
           <div>
             <div className="bg-surface-100 border border-default px-6 py-3 rounded-t flex items-center space-x-4">
-              <p className="text-sm text-foreground-light">Roles managed by Supabase</p>
-              <Badge variant="brand">Protected</Badge>
+              <p className="text-sm text-foreground-light">由 Supabase 管理的角色</p>
+              <Badge variant="brand">受保护</Badge>
             </div>
 
             {isLoading
@@ -203,7 +205,7 @@ const RolesList = () => {
         {otherRoles.length > 0 && (
           <div>
             <div className="bg-surface-100 border border-default px-6 py-3 rounded-t">
-              <p className="text-sm text-foreground-light">Other database roles</p>
+              <p className="text-sm text-foreground-light">其他数据库角色</p>
             </div>
 
             {isLoading

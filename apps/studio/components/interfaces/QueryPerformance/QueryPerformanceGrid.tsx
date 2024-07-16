@@ -176,9 +176,9 @@ export const QueryPerformanceGrid = ({ queryPerformanceQuery }: QueryPerformance
               <div className="absolute top-20 px-6 flex flex-col items-center justify-center w-full gap-y-2">
                 <TextSearch className="text-foreground-muted" strokeWidth={1} />
                 <div className="text-center">
-                  <p className="text-foreground">No queries detected</p>
+                  <p className="text-foreground">未检测到查询</p>
                   <p className="text-foreground-light">
-                    There are no actively running queries that match the criteria
+                    当前没有符合条件的查询
                   </p>
                 </div>
               </div>
@@ -206,14 +206,14 @@ export const QueryPerformanceGrid = ({ queryPerformanceQuery }: QueryPerformance
                   value="details"
                   className="px-0 pb-0 h-full text-xs  data-[state=active]:bg-transparent !shadow-none"
                 >
-                  Query details
+                  查询详情
                 </TabsTrigger_Shadcn_>
                 {showIndexSuggestions && (
                   <TabsTrigger_Shadcn_
                     value="suggestion"
                     className="px-0 pb-0 h-full text-xs data-[state=active]:bg-transparent !shadow-none"
                   >
-                    Indexes
+                    索引
                   </TabsTrigger_Shadcn_>
                 )}
               </TabsList_Shadcn_>

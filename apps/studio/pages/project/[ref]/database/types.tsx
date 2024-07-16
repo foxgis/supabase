@@ -19,8 +19,8 @@ const DatabaseEnumeratedTypes: NextPageWithLayout = () => {
         <ScaffoldSectionContent>
           <FormHeader
             className="!mb-0"
-            title="Database Enumerated Types"
-            description="Custom data types that you can use in your database tables or functions."
+            title="数据库枚举类型"
+            description="您可以在数据库表或函数中使用的自定义数据类型。"
           />
         </ScaffoldSectionContent>
         <ScaffoldSectionDetail className="flex items-center justify-end">
@@ -31,7 +31,7 @@ const DatabaseEnumeratedTypes: NextPageWithLayout = () => {
               className="no-underline"
               href="https://www.postgresql.org/docs/current/datatype-enum.html"
             >
-              Documentation
+              文档
             </a>
           </Button>
         </ScaffoldSectionDetail>

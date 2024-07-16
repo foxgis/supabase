@@ -10,8 +10,8 @@ const DatabaseRoles: NextPageWithLayout = () => {
       <ScaffoldSection>
         <div className="col-span-12">
           <FormHeader
-            title="Database Roles"
-            description="Manage access control to your database through users, groups, and permissions"
+            title="数据库角色"
+            description="通过用户、组和权限管理数据库的访问控制"
           />
           <RolesList />
         </div>

@@ -39,11 +39,11 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
   })
   const { mutate: enableExtension, isLoading: isEnabling } = useDatabaseExtensionEnableMutation({
     onSuccess: () => {
-      toast.success(`${extension.name} is on.`)
+      toast.success(`${extension.name} 已启用。`)
       onCancel()
     },
     onError: (error) => {
-      toast.error(`Failed to enable ${extension.name}: ${error.message}`)
+      toast.error(`启用 ${extension.name} 失败：${error.message}`)
     },
   })
 
@@ -82,12 +82,12 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
 
   const validate = (values: any) => {
     const errors: any = {}
-    if (values.schema === 'custom' && !values.name) errors.name = 'Required field'
+    if (values.schema === 'custom' && !values.name) errors.name = '必须字段'
     return errors
   }
 
   const onSubmit = async (values: any) => {
-    if (project === undefined) return console.error('Project is required')
+    if (project === undefined) return console.error('未找到项目')
 
     const schema =
       defaultSchema !== undefined && defaultSchema !== null
@@ -115,7 +115,7 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
       size="small"
       header={
         <div className="flex items-baseline gap-2">
-          <h5 className="text-sm text-foreground">Confirm to enable</h5>
+          <h5 className="text-sm text-foreground">确认启用</h5>
           <code className="text-xs">{extension.name}</code>
         </div>
       }
@@ -145,23 +145,23 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
                     id="schema"
                     name="schema"
                     value={defaultSchema}
-                    label="Select a schema to enable the extension for"
-                    descriptionText={`Extension must be installed in ${defaultSchema}.`}
+                    label="选择一个启用该扩展的模式"
+                    descriptionText={`扩展必须已安装在 ${defaultSchema}.`}
                   />
                 ) : (
                   <Listbox
                     size="small"
                     name="schema"
-                    label="Select a schema to enable the extension for"
+                    label="选择一个启用该扩展的模式"
                   >
                     <Listbox.Option
                       key="custom"
                       id="custom"
-                      label={`Create a new schema "${extension.name}"`}
+                      label={`创建模式 "${extension.name}"`}
                       value="custom"
                       addOnBefore={() => <IconPlus size={16} strokeWidth={1.5} />}
                     >
-                      Create a new schema "{extension.name}"
+                      新建模式 "{extension.name}"
                     </Listbox.Option>
                     <Modal.Separator />
                     {schemas?.map((schema) => {
@@ -183,7 +183,7 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
 
               {values.schema === 'custom' && (
                 <Modal.Content>
-                  <Input id="name" name="name" label="Schema name" />
+                  <Input id="name" name="name" label="模式名" />
                 </Modal.Content>
               )}
 
@@ -192,12 +192,11 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
                   <Alert_Shadcn_ variant="warning">
                     <IconAlertTriangle strokeWidth={2} />
                     <AlertTitle_Shadcn_>
-                      The pg_cron extension is not fully supported for Fly projects
+                      pg_cron 扩展不支持 Fly 项目
                     </AlertTitle_Shadcn_>
 
                     <AlertDescription_Shadcn_>
-                      You can still enable the extension, but pg_cron jobs may not run due to the
-                      behavior of Fly projects.
+                      你仍然可以启用这个扩展，但由于 Fly 项目的行为，pg_cron 任务可能无法正常运行。
                     </AlertDescription_Shadcn_>
 
                     <AlertDescription_Shadcn_ className="mt-3">
@@ -211,7 +210,7 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <span>Learn more</span>
+                          <span>了解更多</span>
                         </a>
                       </Button>
                     </AlertDescription_Shadcn_>
@@ -221,10 +220,10 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
               <Modal.Separator />
               <Modal.Content className="flex items-center justify-end space-x-2">
                 <Button type="default" disabled={isEnabling} onClick={() => onCancel()}>
-                  Cancel
+                  取消
                 </Button>
                 <Button htmlType="submit" disabled={isEnabling} loading={isEnabling}>
-                  Enable extension
+                  启用扩展
                 </Button>
               </Modal.Content>
             </>

@@ -35,7 +35,7 @@ const ChooseFunctionForm = ({
   return (
     <SidePanel
       size="large"
-      header="Pick a function"
+      header="选择一个函数"
       visible={visible}
       onCancel={() => setVisible(!visible)}
       className="hooks-sidepanel"
@@ -70,11 +70,11 @@ const NoticeBox = () => {
     <div className="px-6">
       <InformationBox
         icon={<IconHelpCircle size="large" strokeWidth={1.5} />}
-        title="Only functions that return a trigger will be displayed below"
-        description={`You can make functions by using the Database Functions`}
+        title="只有返回触发器的函数才会显示在下方"
+        description={`您可以通过数据库函数模块来创建函数`}
         button={
           <Button asChild type="default">
-            <Link href={`/project/${ref}/database/functions`}>Go to Functions</Link>
+            <Link href={`/project/${ref}/database/functions`}>转到数据库函数模块</Link>
           </Button>
         }
       />
@@ -89,14 +89,14 @@ const NoFunctionsState = () => {
 
   return (
     <ProductEmptyState
-      title="No Trigger Functions found in database"
-      ctaButtonLabel="Create a trigger function"
+      title="在数据库中未找到触发器函数"
+      ctaButtonLabel="创建一个触发器函数"
       onClickCta={() => {
         router.push(`/project/${ref}/database/functions`)
       }}
     >
       <p className="text-sm text-foreground-light">
-        You will need to create a trigger based function before you can add it to your trigger.
+        您需要先创建一个触发器函数才能将其添加到触发器中。
       </p>
     </ProductEmptyState>
   )
@@ -112,7 +112,7 @@ const SchemaFunctionGroup = ({ schema, functions, selectFunction }: SchemaFuncti
   return (
     <div className="space-y-4">
       <div className="sticky top-0 flex items-center space-x-1 px-6 backdrop-blur backdrop-filter">
-        <h5 className="text-foreground-light">schema</h5>
+        <h5 className="text-foreground-light">模式</h5>
         <h5>{schema}</h5>
       </div>
       <div className="space-y-0 divide-y border-t border-b border-default">
@@ -158,7 +158,7 @@ const Function = ({ id, completeStatement, name, onClick }: FunctionProps) => {
             <IconChevronDown className={visible ? 'rotate-180 transform' : 'rotate-0 transform'} />
           }
         >
-          {visible ? 'Hide definition' : 'View definition'}
+          {visible ? '隐藏定义' : '查看定义'}
         </Button>
       </div>
       <Transition

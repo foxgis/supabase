@@ -52,7 +52,7 @@ export const useDatabaseFunctionCreateMutation = ({
       },
       async onError(data, variables, context) {
         if (onError === undefined) {
-          toast.error(`Failed to create database function: ${data.message}`)
+          toast.error(`创建数据库函数失败：${data.message}`)
         } else {
           onError(data, variables, context)
         }

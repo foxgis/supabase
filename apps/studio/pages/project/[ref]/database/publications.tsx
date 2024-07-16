@@ -34,14 +34,14 @@ const DatabasePublications: NextPageWithLayout = () => {
   const selectedPublication = publications.find((pub) => pub.id === selectedPublicationId)
 
   if (isPermissionsLoaded && !canViewPublications) {
-    return <NoPermission isFullPage resourceText="view database publications" />
+    return <NoPermission isFullPage resourceText="查看数据库订阅" />
   }
 
   return (
     <ScaffoldContainer>
       <ScaffoldSection>
         <div className="col-span-12">
-          <FormHeader title="Database Publications" />
+          <FormHeader title="数据库订阅" />
           {selectedPublication === undefined ? (
             <PublicationsList onSelectPublication={setSelectedPublicationId} />
           ) : (
@@ -56,6 +56,6 @@ const DatabasePublications: NextPageWithLayout = () => {
   )
 }
 
-DatabasePublications.getLayout = (page) => <DatabaseLayout title="Database">{page}</DatabaseLayout>
+DatabasePublications.getLayout = (page) => <DatabaseLayout title="数据库">{page}</DatabaseLayout>
 
 export default DatabasePublications

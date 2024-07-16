@@ -60,7 +60,7 @@ const TriggersList = ({
   }
 
   if (isError) {
-    return <AlertError error={error} subject="Failed to retrieve database triggers" />
+    return <AlertError error={error} subject="获取数据库触发器失败" />
   }
 
   return (
@@ -68,18 +68,16 @@ const TriggersList = ({
       {(triggers ?? []).length === 0 ? (
         <div className="flex h-full w-full items-center justify-center">
           <ProductEmptyState
-            title="Triggers"
-            ctaButtonLabel="Create a new trigger"
+            title="触发器"
+            ctaButtonLabel="创建新触发器"
             onClickCta={() => createTrigger()}
           >
             <AlphaPreview />
             <p className="text-sm text-foreground-light">
-              A PostgreSQL trigger is a function invoked automatically whenever an event associated
-              with a table occurs.
+              PostgreSQL 触发器是一个在表发生特定事件时自动调用的函数。
             </p>
             <p className="text-sm text-foreground-light">
-              An event could be any of the following: INSERT, UPDATE, DELETE. A trigger is a special
-              user-defined function associated with a table.
+              事件可以是 INSERT、UPDATE、DELETE。触发器是一个与表相关的特殊用户自定义函数。
             </p>
           </ProductEmptyState>
         </div>
@@ -95,7 +93,7 @@ const TriggersList = ({
                 onSelectSchema={setSelectedSchema}
               />
               <Input
-                placeholder="Search for a trigger"
+                placeholder="查找触发器"
                 size="small"
                 icon={<IconSearch size="tiny" />}
                 value={filterString}
@@ -108,7 +106,7 @@ const TriggersList = ({
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger asChild>
                   <Button disabled={!canCreateTriggers} onClick={() => createTrigger()}>
-                    Create a new trigger
+                    创建新触发器
                   </Button>
                 </Tooltip.Trigger>
                 {!canCreateTriggers && (
@@ -122,7 +120,7 @@ const TriggersList = ({
                         ].join(' ')}
                       >
                         <span className="text-xs text-foreground">
-                          You need additional permissions to create triggers
+                          您需要额外的权限才能创建触发器
                         </span>
                       </div>
                     </Tooltip.Content>
@@ -139,19 +137,22 @@ const TriggersList = ({
             head={
               <>
                 <Table.th key="name" className="space-x-4">
-                  Name
+                  名称
                 </Table.th>
                 <Table.th key="table" className="hidden lg:table-cell">
-                  Table
+                  表
                 </Table.th>
                 <Table.th key="function" className="hidden xl:table-cell">
-                  Function
+                  函数
                 </Table.th>
                 <Table.th key="events" className="hidden xl:table-cell">
-                  Events
+                  事件
                 </Table.th>
-                <Table.th key="enabled" className="hidden w-20 xl:table-cell">
-                  Enabled
+                <Table.th key="orientation" className="hidden xl:table-cell">
+                  触发方式
+                </Table.th>
+                <Table.th key="enabled" className="hidden w-24 xl:table-cell">
+                  是否启用
                 </Table.th>
                 <Table.th key="buttons" className="w-1/12"></Table.th>
               </>

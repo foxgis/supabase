@@ -82,45 +82,45 @@ export const generateDatabaseMenu = (
         },
       ],
     },
-    {
-      title: '平台功能',
-      items: [
-        ...(IS_PLATFORM
-          ? [
-              {
-                name: '备份',
-                key: 'backups',
-                url: pitrEnabled
-                  ? `/project/${ref}/database/backups/pitr`
-                  : `/project/${ref}/database/backups/scheduled`,
-                items: [],
-              },
-            ]
-          : []),
-        {
-          name: '包装器',
-          key: 'wrappers',
-          url: `/project/${ref}/database/wrappers`,
-          items: [],
-        },
-        {
-          name: '迁移',
-          key: 'migrations',
-          url: `/project/${ref}/database/migrations`,
-          items: [],
-        },
-        ...(!!pgNetExtensionExists
-          ? [
-              {
-                name: 'Webhooks',
-                key: 'hooks',
-                url: `/project/${ref}/database/hooks`,
-                items: [],
-              },
-            ]
-          : []),
-      ],
-    },
+    // {
+    //   title: '平台功能',
+    //   items: [
+    //     ...(IS_PLATFORM
+    //       ? [
+    //           {
+    //             name: '备份',
+    //             key: 'backups',
+    //             url: pitrEnabled
+    //               ? `/project/${ref}/database/backups/pitr`
+    //               : `/project/${ref}/database/backups/scheduled`,
+    //             items: [],
+    //           },
+    //         ]
+    //       : []),
+    //     {
+    //       name: '包装器',
+    //       key: 'wrappers',
+    //       url: `/project/${ref}/database/wrappers`,
+    //       items: [],
+    //     },
+    //     {
+    //       name: '迁移',
+    //       key: 'migrations',
+    //       url: `/project/${ref}/database/migrations`,
+    //       items: [],
+    //     },
+    //     ...(!!pgNetExtensionExists
+    //       ? [
+    //           {
+    //             name: 'Webhooks',
+    //             key: 'hooks',
+    //             url: `/project/${ref}/database/hooks`,
+    //             items: [],
+    //           },
+    //         ]
+    //       : []),
+    //   ],
+    // },
     {
       title: '工具',
       items: [
@@ -137,14 +137,14 @@ export const generateDatabaseMenu = (
           items: [],
         },
         {
-          name: '安全向导',
+          name: '安全助手',
           key: 'security-advisor',
           url: `/project/${ref}/advisors/security`,
           rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
           items: [],
         },
         {
-          name: '性能向导',
+          name: '性能助手',
           key: 'performance-advisor',
           url: `/project/${ref}/advisors/performance`,
           rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,

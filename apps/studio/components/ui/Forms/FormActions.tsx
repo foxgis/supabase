@@ -17,7 +17,7 @@ const FormActions = ({
   helper,
   disabled = false,
   isSubmitting,
-  submitText = 'Save',
+  submitText = '保存',
 }: Props) => {
   const isDisabled = isSubmitting || disabled || (!hasChanges && hasChanges !== undefined)
 
@@ -32,7 +32,7 @@ const FormActions = ({
       {helper && <span className="text-sm text-foreground-lighter">{helper}</span>}
       <div className="flex items-center gap-2">
         <Button disabled={isDisabled} type="default" htmlType="reset" onClick={() => handleReset()}>
-          Cancel
+          取消
         </Button>
         <Button
           form={form}
