@@ -13,7 +13,7 @@ interface NoDataPlaceholderProps {
 }
 const NoDataPlaceholder = ({
   attribute,
-  message = 'No data to show',
+  message = '无可展示的数据',
   description,
   format,
   className = '',

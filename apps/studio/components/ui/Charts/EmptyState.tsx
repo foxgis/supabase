@@ -6,8 +6,8 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({
-  title = 'No data to show',
-  message = 'May take 24 hours for data to show',
+  title = '无可展示的数据',
+  message = '可等待 24 小时后生成供展示的数据',
 }: EmptyStateProps) => (
   <div
     className="

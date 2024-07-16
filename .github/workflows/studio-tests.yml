@@ -23,7 +23,7 @@ concurrency:
 jobs:
   check:
     # Uses larger hosted runner as it significantly decreases build times
-    runs-on: [larger-runner-4cpu]
+    runs-on: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v4

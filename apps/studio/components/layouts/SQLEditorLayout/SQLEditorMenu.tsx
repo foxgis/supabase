@@ -351,7 +351,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
 
         <div className="p-4 border-t sticky bottom-0 bg-studio">
           <Button block type="default" onClick={onViewOngoingQueries}>
-            查询正在运行的查询
+            查看正在运行的查询
           </Button>
         </div>
       </div>

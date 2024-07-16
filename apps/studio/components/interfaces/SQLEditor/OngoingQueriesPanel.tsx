@@ -72,7 +72,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
         <SheetContent size="lg">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-x-2">
-              查询正在运行在
+              查询语句正在运行在
               {!database?.identifier || database?.identifier === project?.ref ? '数据库主节点上' : '数据库只读节点上'}
               <Button
                 type="default"
