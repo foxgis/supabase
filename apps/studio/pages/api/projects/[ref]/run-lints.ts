@@ -81,7 +81,7 @@ select
     array['PERFORMANCE'] as categories,
     '识别没有包含索引的外键约束，这可能会影响数据库性能。' as description,
     format(
-        '表\`%s.%s\`存在没有包含索引的外键 \`%s\`。这可能导致查询性能下降。'
+        '表\`%s.%s\`存在没有包含索引的外键 \`%s\`。这可能导致查询性能下降。',
         fk.schema_name,
         fk.table_name,
         fk.fkey_name
@@ -611,7 +611,7 @@ union all
 (
 select
     'security_definer_view' as name,
-    '定义者视图' as title,
+    'Security Definer 视图' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
@@ -703,7 +703,7 @@ union all
 (
 select
     'rls_disabled_in_public' as name,
-    '在 Public 中未启用 RLS' as title,
+    '在 public 模式中未启用 RLS' as title,
     'ERROR' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
@@ -746,14 +746,13 @@ union all
 (
 select
     'extension_in_public' as name,
-    'Public 中的扩展' as title,
+    'public 模式中的扩展' as title,
     'WARN' as level,
     'EXTERNAL' as facing,
     array['SECURITY'] as categories,
     '检测安装在\`public\`模式下的扩展。' as description,
     format(
         '\`%s\`扩展安装在 public 模式下，建议移到其他模式。',
-
         pe.extname
     ) as detail,
     'https://supabase.com/docs/guides/database/database-linter?lint=0014_extension_in_public' as remediation,

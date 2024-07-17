@@ -41,7 +41,7 @@ const StorageLayout = ({ title, children }: StorageLayoutProps) => {
       )
     } else {
       toast.error(
-        'Failed to fetch project configuration. Try refreshing your browser, or reach out to us at support@supabase.io'
+        '拉取项目配置信息失败，请尝试刷新浏览器或联系技术支持。'
       )
     }
   }

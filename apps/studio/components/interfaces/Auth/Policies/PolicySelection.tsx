@@ -37,8 +37,8 @@ const PolicySelection = ({
         <p className="text-sm text-foreground-light">{description}</p>
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-1">
           <CardButton
-            title="Get started quickly"
-            description="Create a policy from a template"
+            title="快速开始"
+            description="从模板创建策略"
             icon={
               <div className="flex">
                 <div
@@ -55,8 +55,8 @@ const PolicySelection = ({
             onClick={onViewTemplates}
           />
           <CardButton
-            title="For full customization"
-            description="Create a policy from scratch"
+            title="完全自定义"
+            description="从头开始创建策略"
             icon={
               <div className="flex">
                 <div
@@ -78,13 +78,15 @@ const PolicySelection = ({
       {showAssistantPreview && onToggleFeaturePreviewModal !== undefined && (
         <Alert_Shadcn_>
           <FlaskConical />
-          <AlertTitle_Shadcn_>Try the new Supabase Assistant for RLS policies</AlertTitle_Shadcn_>
+          <AlertTitle_Shadcn_>
+            尝试使用 Supabase Assistant 编写 RLS 策略
+          </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_>
-            Create RLS policies for your tables with the help of AI
+            使用 AI 帮助您为表创建 RLS 策略
           </AlertDescription_Shadcn_>
           <div className="flex items-center gap-x-2 mt-3">
             <Button type="default" onClick={onToggleFeaturePreviewModal}>
-              Toggle feature preview
+              切换功能预览
             </Button>
             <Button asChild type="default" icon={<IconExternalLink size={14} strokeWidth={1.5} />}>
               <a
@@ -92,7 +94,7 @@ const PolicySelection = ({
                 target="_blank"
                 rel="noreferrer"
               >
-                Learn more
+                了解更多
               </a>
             </Button>
           </div>

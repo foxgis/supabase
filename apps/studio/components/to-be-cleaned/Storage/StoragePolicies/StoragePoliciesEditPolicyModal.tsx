@@ -118,14 +118,14 @@ const StoragePoliciesEditPolicyModal = ({
   const validatePolicyEditorFormFields = () => {
     const { name, definition, allowedOperations } = policyFormFields
     if (name.length === 0) {
-      return toast.error('Please provide a name for your policy')
+      return toast.error('请提供策略的名称')
     }
     if (definition.length === 0) {
       // Will need to figure out how to strip away comments or something
-      return toast.error('Please provide a definition for your policy')
+      return toast.error('请定义您的策略')
     }
     if (allowedOperations.length === 0) {
-      return toast.error('Please allow at least one operation in your policy')
+      return toast.error('请至少允许一个操作')
     }
 
     const policySQLStatements = createSQLPolicies(bucketName, policyFormFields)
@@ -158,10 +158,10 @@ const StoragePoliciesEditPolicyModal = ({
   }: any) => {
     const getTitle = () => {
       if (view === POLICY_MODAL_VIEWS.EDITOR || view === POLICY_MODAL_VIEWS.SELECTION) {
-        return `Adding new policy to ${bucketName}`
+        return `向 ${bucketName} 添加新策略`
       }
       if (view === POLICY_MODAL_VIEWS.REVIEW) {
-        return `Reviewing policies to be created for ${bucketName}`
+        return `正在检查 ${bucketName} 上待创建的策略`
       }
     }
     if (view === POLICY_MODAL_VIEWS.TEMPLATES) {
@@ -174,7 +174,7 @@ const StoragePoliciesEditPolicyModal = ({
             >
               <IconChevronLeft strokeWidth={2} size={14} />
             </span>
-            <h4 className="textlg m-0">Select a template to use for your new policy</h4>
+            <h4 className="textlg m-0">为您的新策略选择一个模板</h4>
           </div>
         </div>
       )
@@ -189,7 +189,7 @@ const StoragePoliciesEditPolicyModal = ({
             rel="noreferrer"
           >
             {' '}
-            Documentation
+            文档
           </a>
         </Button>
       </div>
@@ -215,7 +215,7 @@ const StoragePoliciesEditPolicyModal = ({
       <div className="w-full">
         {view === POLICY_MODAL_VIEWS.SELECTION ? (
           <PolicySelection
-            description="PostgreSQL policies control access to your files and folders"
+            description="PostgreSQL 策略控制对您的文件和文件夹的访问权限"
             onViewTemplates={onViewTemplates}
             onViewEditor={() => onViewEditor('new')}
             showAssistantPreview={false}

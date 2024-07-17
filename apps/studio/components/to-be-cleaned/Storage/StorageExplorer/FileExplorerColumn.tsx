@@ -44,7 +44,7 @@ const DragOverOverlay = ({ isOpen, onDragLeave, onDrop, folderIsEmpty }: any) =>
           >
             <Upload className="text-white pointer-events-none" size={20} strokeWidth={2} />
             <p className="text-center text-sm  text-white mt-2 pointer-events-none">
-              Drop your files to upload to this folder
+              拖拽您的文件到此上传到本文件夹
             </p>
           </div>
         )}
@@ -173,10 +173,10 @@ const FileExplorerColumn = ({
           {columnFiles.length > 0 ? (
             <>
               <SelectAllCheckbox />
-              <p className="text-sm text-foreground-light">Select all {columnFiles.length} files</p>
+              <p className="text-sm text-foreground-light">选择所有的 {columnFiles.length} 个文件</p>
             </>
           ) : (
-            <p className="text-sm text-foreground-light">No files available for selection</p>
+            <p className="text-sm text-foreground-light">没有文件可供选择</p>
           )}
         </div>
       )}
@@ -192,12 +192,12 @@ const FileExplorerColumn = ({
         >
           <div className="flex w-[40%] min-w-[250px] items-center">
             <SelectAllCheckbox />
-            <p className="text-sm">Name</p>
+            <p className="text-sm">名称</p>
           </div>
-          <p className="w-[11%] min-w-[100px] text-sm">Size</p>
-          <p className="w-[14%] min-w-[100px] text-sm">Type</p>
-          <p className="w-[15%] min-w-[160px] text-sm">Created at</p>
-          <p className="w-[15%] min-w-[160px] text-sm">Last modified at</p>
+          <p className="w-[11%] min-w-[100px] text-sm">大小</p>
+          <p className="w-[14%] min-w-[100px] text-sm">类型</p>
+          <p className="w-[15%] min-w-[160px] text-sm">创建时间</p>
+          <p className="w-[15%] min-w-[160px] text-sm">修改时间</p>
         </div>
       )}
 
@@ -243,9 +243,9 @@ const FileExplorerColumn = ({
               src={`${BASE_PATH}/img/storage-placeholder.svg`}
               className="opacity-75 pointer-events-none"
             />
-            <p className="text-sm my-3 opacity-75">Drop your files here</p>
+            <p className="text-sm my-3 opacity-75">拖拽您的文件到此</p>
             <p className="w-40 text-center text-xs text-foreground-light">
-              Or upload them via the "Upload file" button above
+              或者通过上方的“上传文件”按钮上传
             </p>
           </div>
         )}
@@ -255,9 +255,9 @@ const FileExplorerColumn = ({
         isEmpty &&
         column.status !== STORAGE_ROW_STATUS.LOADING && (
           <div className="h-full w-full flex flex-col items-center justify-center">
-            <p className="text-sm my-3 text-foreground">No results found in this folder</p>
+            <p className="text-sm my-3 text-foreground">在这个文件夹中没有找到任何结果</p>
             <p className="w-40 text-center text-sm text-foreground-light">
-              Your search for "{itemSearchString}" did not return any results
+              您搜索的 "{itemSearchString}" 没有返回任何结果
             </p>
           </div>
         )}
@@ -279,7 +279,7 @@ const FileExplorerColumn = ({
         "
         >
           <p className="text-sm">
-            {formatBytes(columnItemsSize)} for {columnItems.length} items
+            {formatBytes(columnItemsSize)}，共 {columnItems.length} 个文件
           </p>
         </div>
       )}

@@ -36,7 +36,7 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
 
   const { mutate: updateBucket, isLoading: isUpdating } = useBucketUpdateMutation({
     onSuccess: () => {
-      toast.success(`Successfully updated bucket "${bucket?.name}"`)
+      toast.success(`成功更新了存储桶 "${bucket?.name}"`)
       onClose()
     },
   })
@@ -50,14 +50,14 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
   const validate = (values: any) => {
     const errors = {} as any
     if (values.has_file_size_limit && values.formatted_size_limit < 0) {
-      errors.formatted_size_limit = 'File size upload limit has to be at least 0'
+      errors.formatted_size_limit = '上传文件大小限制必须大于等于 0'
     }
     return errors
   }
 
   const onSubmit = async (values: any) => {
-    if (bucket === undefined) return console.error('Bucket is required')
-    if (ref === undefined) return console.error('Project ref is required')
+    if (bucket === undefined) return console.error('未找到存储桶')
+    if (ref === undefined) return console.error('未找到项目号')
 
     updateBucket({
       projectRef: ref,
@@ -86,7 +86,7 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
       hideFooter
       visible={visible}
       size="medium"
-      header={`Edit bucket "${bucket?.name}"`}
+      header={`编辑存储桶 "${bucket?.name}"`}
       onCancel={onClose}
     >
       <Form validateOnBlur={false} initialValues={{}} validate={validate} onSubmit={onSubmit}>
@@ -121,24 +121,24 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                   type="text"
                   className="w-full"
                   layout="vertical"
-                  label="Name of bucket"
-                  labelOptional="Buckets cannot be renamed once created."
+                  label="存储桶名称"
+                  labelOptional="存储桶一旦创建就不能再改名"
                 />
                 <div className="space-y-2 mt-6">
                   <Toggle
                     id="public"
                     name="public"
                     layout="flex"
-                    label="Public bucket"
-                    descriptionText="Anyone can read any object without any authorization"
+                    label="公开存储桶"
+                    descriptionText="任何人都可以读取存储桶中的任何对象，无需任何授权"
                   />
                   {bucket?.public !== values.public && (
                     <Alert
                       title={
                         !bucket?.public && values.public
-                          ? 'Warning: Making bucket public'
+                          ? '警告：将存储桶设为公开'
                           : bucket?.public && !values.public
-                            ? 'Warning: Making bucket private'
+                            ? '警告：将存储桶设为私有'
                             : ''
                       }
                       variant="warning"
@@ -146,9 +146,9 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                     >
                       <p className="mb-2">
                         {!bucket?.public && values.public
-                          ? `This will make all objects in the bucket "${bucket?.name}" public`
+                          ? `此操作将使存储桶 "${bucket?.name}" 中的所有对象公开`
                           : bucket?.public && !values.public
-                            ? `All objects in "${bucket?.name}" will be made private and will only be accessible via signed URLs or downloaded with the right authorisation headers`
+                            ? `存储桶 "${bucket?.name}" 中的所有对象都将设为私有，仅可通过签名 URL 或正确的授权头进行访问`
                             : ''}
                       </p>
                     </Alert>
@@ -161,7 +161,7 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
               >
                 <Collapsible.Trigger asChild>
                   <div className="w-full cursor-pointer py-3 px-5 flex items-center justify-between border-t border-default">
-                    <p className="text-sm">Additional configuration</p>
+                    <p className="text-sm">额外配置</p>
                     <IconChevronDown
                       size={18}
                       strokeWidth={2}
@@ -176,8 +176,8 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                         id="has_file_size_limit"
                         name="has_file_size_limit"
                         layout="flex"
-                        label="Restrict file upload size for bucket"
-                        descriptionText="Prevent uploading of file sizes greater than a specified limit"
+                        label="限制存储桶上传文件的大小"
+                        descriptionText="防止上传超过指定大小的文件"
                       />
                       {values.has_file_size_limit && (
                         <div className="grid grid-cols-12 col-span-12 gap-x-2 gap-y-1">
@@ -193,10 +193,10 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                                   event.preventDefault()
                                 }
                               }}
-                              descriptionText={`Equivalent to ${convertToBytes(
+                              descriptionText={`相当于 ${convertToBytes(
                                 values.formatted_size_limit,
                                 selectedUnit
-                              ).toLocaleString()} bytes.`}
+                              ).toLocaleString()} 字节。`}
                             />
                           </div>
                           <div className="col-span-4">
@@ -216,14 +216,14 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                           {IS_PLATFORM && (
                             <div className="col-span-12">
                               <p className="text-foreground-light text-sm">
-                                Note: The{' '}
+                                注意：{' '}
                                 <Link
                                   href={`/project/${ref}/settings/storage`}
                                   className="text-brand opacity-80 hover:opacity-100 transition"
                                 >
-                                  global upload limit
+                                  全局上传限制
                                 </Link>{' '}
-                                takes precedence over this value ({formattedGlobalUploadLimit})
+                                优先于此限制值（{formattedGlobalUploadLimit}）
                               </p>
                             </div>
                           )}
@@ -234,10 +234,10 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                       id="allowed_mime_types"
                       name="allowed_mime_types"
                       layout="vertical"
-                      label="Allowed MIME types"
-                      placeholder="e.g image/jpeg, image/png, audio/mpeg, video/mp4, etc"
-                      labelOptional="Comma separated values"
-                      descriptionText="Wildcards are allowed, e.g. image/*. Leave blank to allow any MIME type."
+                      label="允许的 MIME 类型"
+                      placeholder="例如 image/jpeg，image/png，audio/mpeg，video/mp4等"
+                      labelOptional="使用逗号分隔值"
+                      descriptionText="允许使用通配符，例如 image/*。留空表示允许任何 MIME 类型。"
                     />
                   </div>
                 </Collapsible.Content>
@@ -245,10 +245,10 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
               <Modal.Separator />
               <Modal.Content className="flex items-center space-x-2 justify-end">
                 <Button type="default" disabled={isUpdating} onClick={() => onClose()}>
-                  Cancel
+                  取消
                 </Button>
                 <Button type="primary" htmlType="submit" loading={isUpdating} disabled={isUpdating}>
-                  Save
+                  保存
                 </Button>
               </Modal.Content>
             </>

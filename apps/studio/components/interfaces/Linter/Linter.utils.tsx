@@ -95,7 +95,7 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'security_definer_view',
-    title: '定义者视图',
+    title: 'Security Definer 视图',
     icon: <Eye className="text-foreground-muted" size={15} strokeWidth={1.5} />,
     link: () =>
       'https://supabase.com/docs/guides/database/database-linter?queryGroups=lint&lint=0010_security_definer_view',
@@ -115,7 +115,7 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'rls_disabled_in_public',
-    title: '在 Public 中未启用 RLS',
+    title: '在 public 模式中未启用 RLS',
     icon: <Table2 className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/auth/policies?schema=${metadata?.schema}&search=${metadata?.name}`,
@@ -125,7 +125,7 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'extension_in_public',
-    title: 'Public 中的扩展',
+    title: 'public 模式中的扩展',
     icon: <Unlock className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef, metadata }) =>
       `/project/${projectRef}/database/extensions?filter=${metadata?.name}`,

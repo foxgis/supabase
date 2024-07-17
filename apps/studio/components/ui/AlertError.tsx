@@ -22,7 +22,7 @@ const AlertError = ({ projectRef, subject, error, className }: AlertErrorProps) 
   if (error) href += `&message=Error:%20${error.message}`
 
   const formattedErrorMessage = error?.message?.includes('503')
-    ? '503 Service Temporarily Unavailable'
+    ? '503 服务暂时不可用'
     : error?.message
 
   return (
@@ -31,17 +31,16 @@ const AlertError = ({ projectRef, subject, error, className }: AlertErrorProps) 
       <AlertTitle_Shadcn_>{subject}</AlertTitle_Shadcn_>
       <AlertDescription_Shadcn_ className="flex flex-col gap-3 break-words">
         <div>
-          {error?.message && <p className="text-left">Error: {formattedErrorMessage}</p>}
+          {error?.message && <p className="text-left">错误：{formattedErrorMessage}</p>}
           <p className="text-left">
-            Try refreshing your browser, but if the issue persists, please reach out to us via
-            support.
+            请尝试刷新浏览器，如果问题仍然存在，请联系技术支持。
           </p>
         </div>
-        <div>
+        {/* <div>
           <Button asChild type="warning">
-            <Link href={href}>Contact support</Link>
+            <Link href={href}>联系技术支持</Link>
           </Button>
-        </div>
+        </div> */}
       </AlertDescription_Shadcn_>
     </Alert_Shadcn_>
   )

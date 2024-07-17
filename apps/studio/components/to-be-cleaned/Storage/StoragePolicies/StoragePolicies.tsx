@@ -91,7 +91,7 @@ const StoragePolicies = () => {
   const onCancelPolicyDelete = () => setSelectedPolicyToDelete({})
 
   const onSavePolicySuccess = async () => {
-    toast.success('Successfully saved policy!')
+    toast.success('成功保存了策略！')
     await refetch()
     onCancelPolicyEdit()
   }
@@ -102,7 +102,7 @@ const StoragePolicies = () => {
   */
   const onCreatePolicies = async (payloads: any[]) => {
     if (!project) {
-      console.error('Project is required')
+      console.error('未找到项目')
       return true
     }
 
@@ -117,7 +117,7 @@ const StoragePolicies = () => {
             })
             return false
           } catch (error: any) {
-            toast.error(`Error adding policy: ${error.message}`)
+            toast.error(`添加策略失败：${error.message}`)
             return true
           }
         })
@@ -128,7 +128,7 @@ const StoragePolicies = () => {
 
   const onCreatePolicy = async (payload: any) => {
     if (!project) {
-      console.error('Project is required')
+      console.error('未找到项目')
       return true
     }
 
@@ -140,14 +140,14 @@ const StoragePolicies = () => {
       })
       return false
     } catch (error: any) {
-      toast.error(`Error adding policy: ${error.message}`)
+      toast.error(`添加策略失败：${error.message}`)
       return true
     }
   }
 
   const onUpdatePolicy = async (payload: any) => {
     if (!project) {
-      console.error('Project is required')
+      console.error('未找到项目')
       return true
     }
 
@@ -160,13 +160,13 @@ const StoragePolicies = () => {
       })
       return false
     } catch (error: any) {
-      toast.error(`Error updating policy: ${error.message}`)
+      toast.error(`更新策略失败：${error.message}`)
       return true
     }
   }
 
   const onDeletePolicy = async () => {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
     deleteDatabasePolicy({
       projectRef: project?.ref,
       connectionString: project?.connectionString,
@@ -176,10 +176,9 @@ const StoragePolicies = () => {
 
   return (
     <div className="flex min-h-full w-full flex-col">
-      <h3 className="text-xl">Storage policies</h3>
+      <h3 className="text-xl">文件存储策略</h3>
       <p className="mt-2 text-sm text-foreground-light">
-        Safeguard your files with policies that define the operations allowed for your users at the
-        bucket level.
+        通过策略定义存储桶级别所允许的操作来保护您的文件。
       </p>
 
       {isLoading ? (
@@ -214,14 +213,13 @@ const StoragePolicies = () => {
 
           <div className="!mb-4 w-full border-b border-muted" />
           <p className="text-sm text-foreground-light">
-            You may also write policies for the tables under the storage schema directly for greater
-            control
+            您也可以直接编写 storage 模式中表的访问策略，以实现更加精细的访问控制
           </p>
 
           {/* Section for policies under storage.objects that are not tied to any buckets */}
           <StoragePoliciesBucketRow
             table="objects"
-            label="Other policies under storage.objects"
+            label="storage.objects 上的其他策略"
             policies={ungroupedPolicies}
             onSelectPolicyAdd={onSelectPolicyAdd}
             onSelectPolicyEdit={onSelectPolicyEdit}
@@ -231,7 +229,7 @@ const StoragePolicies = () => {
           {/* Section for policies under storage.buckets */}
           <StoragePoliciesBucketRow
             table="buckets"
-            label="Policies under storage.buckets"
+            label="storage.buckets 上的策略"
             policies={storageBucketPolicies}
             onSelectPolicyAdd={onSelectPolicyAdd}
             onSelectPolicyEdit={onSelectPolicyEdit}
@@ -264,10 +262,10 @@ const StoragePolicies = () => {
       <ConfirmModal
         danger
         visible={!isEmpty(selectedPolicyToDelete)}
-        title="Confirm to delete policy"
-        description={`This is permanent! Are you sure you want to delete the policy "${selectedPolicyToDelete.name}"`}
-        buttonLabel="Delete"
-        buttonLoadingLabel="Deleting"
+        title="确定要删除策略"
+        description={`此操作是永久性的！您确定要删除策略 "${selectedPolicyToDelete.name}" 吗？`}
+        buttonLabel="删除"
+        buttonLoadingLabel="正在删除"
         onSelectCancel={onCancelPolicyDelete}
         onSelectConfirm={onDeletePolicy}
       />

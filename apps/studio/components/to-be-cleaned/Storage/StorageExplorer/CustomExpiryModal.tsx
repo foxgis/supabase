@@ -27,15 +27,15 @@ const CustomExpiryModal = ({ onCopyUrl }: CustomExpiryModalProps) => {
     <Modal
       hideFooter
       size="small"
-      header="Custom expiry for signed URL"
+      header="自定义签名 URL 的过期时间"
       visible={visible}
       alignFooter="right"
-      confirmText="Get URL"
+      confirmText="获取 URL"
       onCancel={() => onClose()}
     >
       <Form
         validateOnBlur
-        initialValues={{ expiresIn: '', units: 'days' }}
+        initialValues={{ expiresIn: '', units: '天' }}
         onSubmit={async (values: any, { setSubmitting }: any) => {
           setSubmitting(true)
           onCopyUrl(
@@ -51,7 +51,7 @@ const CustomExpiryModal = ({ onCopyUrl }: CustomExpiryModalProps) => {
         validate={(values: any) => {
           const errors: any = {}
           if (values.expiresIn !== '' && values.expiresIn <= 0) {
-            errors.expiresIn = 'Expiry duration cannot be less than 0'
+            errors.expiresIn = '过期时间不能小于 0'
           }
           return errors
         }}
@@ -60,36 +60,36 @@ const CustomExpiryModal = ({ onCopyUrl }: CustomExpiryModalProps) => {
           <>
             <Modal.Content>
               <p className="text-sm text-foreground-light mb-2">
-                Enter the duration for which the URL will be valid for:
+                输入 URL 有效的时长：
               </p>
               <div className="flex items-center space-x-2">
                 <Input disabled={isSubmitting} type="number" id="expiresIn" className="w-full" />
                 <Listbox id="units" className="w-[150px]">
                   <Listbox.Option id="days" label="days" value="days">
-                    days
+                    天
                   </Listbox.Option>
                   <Listbox.Option id="weeks" label="weeks" value="weeks">
-                    weeks
+                    周
                   </Listbox.Option>
                   <Listbox.Option id="months" label="months" value="months">
-                    months
+                    月
                   </Listbox.Option>
                   <Listbox.Option id="years" label="years" value="years">
-                    years
+                    年
                   </Listbox.Option>
                 </Listbox>
               </div>
               {values.expiresIn !== '' && (
                 <p className="text-sm text-foreground-light mt-2">
-                  URL will expire on{' '}
-                  {dayjs().add(values.expiresIn, values.units).format(DATETIME_FORMAT)}
+                  URL 将在{' '}
+                  {dayjs().add(values.expiresIn, values.units).format(DATETIME_FORMAT)} 过期
                 </p>
               )}
             </Modal.Content>
             <Modal.Separator />
             <Modal.Content className="flex items-center justify-end space-x-2">
               <Button type="default" onClick={() => onClose()}>
-                Cancel
+                取消
               </Button>
               <Button
                 disabled={values.expiresIn === '' || isSubmitting}
@@ -97,7 +97,7 @@ const CustomExpiryModal = ({ onCopyUrl }: CustomExpiryModalProps) => {
                 htmlType="submit"
                 type="primary"
               >
-                Get signed URL
+                获取签名 URL
               </Button>
             </Modal.Content>
           </>

@@ -21,8 +21,8 @@ export async function createBucket({
   file_size_limit,
   allowed_mime_types,
 }: BucketCreateVariables) {
-  if (!projectRef) throw new Error('projectRef is required')
-  if (!id) throw new Error('Bucket name is requried')
+  if (!projectRef) throw new Error('未找到项目号')
+  if (!id) throw new Error('未找到存储桶名称')
 
   const response = await post(`${API_URL}/storage/${projectRef}/buckets`, {
     id,
@@ -56,7 +56,7 @@ export const useBucketCreateMutation = ({
       },
       async onError(data, variables, context) {
         if (onError === undefined) {
-          toast.error(`Failed to create bucket: ${data.message}`)
+          toast.error(`创建存储桶失败：${data.message}`)
         } else {
           onError(data, variables, context)
         }

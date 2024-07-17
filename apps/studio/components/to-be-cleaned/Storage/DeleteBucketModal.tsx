@@ -32,7 +32,7 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
 
   const { mutate: deleteBucket, isLoading: isDeleting } = useBucketDeleteMutation({
     onSuccess: async () => {
-      if (!project) return console.error('Project is required')
+      if (!project) return console.error('未找到项目')
 
       // Clean up policies from the corresponding bucket that was deleted
       const storageObjectsPolicies = (policies ?? []).filter((policy) => policy.table === 'objects')
@@ -57,12 +57,12 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
           )
         )
 
-        toast.success(`Successfully deleted bucket ${bucket?.name}`)
+        toast.success(`成功删除了存储桶 ${bucket?.name}`)
         router.push(`/project/${projectRef}/storage/buckets`)
         onClose()
       } catch (error) {
-        toast.success(
-          `Successfully deleted bucket ${bucket?.name}. However, there was a problem deleting the policies tied to the bucket. Please review them in the storage policies section`
+        toast.error(
+          `成功删除了存储桶 ${bucket?.name}。然而，删除存储桶所关联的策略时出现了问题。请在存储策略模块中查看它们。`
         )
       }
     },
@@ -71,8 +71,8 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
   const buckets = data ?? []
 
   const onDeleteBucket = async () => {
-    if (!projectRef) return console.error('Project ref is required')
-    if (!bucket) return console.error('No bucket is selected')
+    if (!projectRef) return console.error('未找到项目号')
+    if (!bucket) return console.error('未选中存储桶')
     deleteBucket({ projectRef, id: bucket.id })
   }
 
@@ -80,23 +80,22 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
     <TextConfirmModal
       variant={'destructive'}
       visible={visible}
-      title={`Confirm deletion of ${bucket?.name}`}
-      confirmPlaceholder="Type in name of bucket"
+      title={`确认删除 ${bucket?.name}`}
+      confirmPlaceholder="输入存储桶名称"
       onConfirm={onDeleteBucket}
       onCancel={onClose}
       confirmString={bucket?.name ?? ''}
       loading={isDeleting}
       text={
         <>
-          Your bucket <span className="font-bold text-foreground">{bucket?.name}</span> and all its
-          contents will be permanently deleted.
+          您将永久删除存储桶 <span className="font-bold text-foreground">{bucket?.name}</span> 及其所有内容。
         </>
       }
       alert={{
-        title: 'You cannot recover this bucket once deleted.',
-        description: 'All bucket data will be lost.',
+        title: '一旦删除，您将无法恢复此存储桶。',
+        description: '所有存储桶数据都会丢失。',
       }}
-      confirmLabel="Delete bucket"
+      confirmLabel="删除存储桶"
     />
   )
 }

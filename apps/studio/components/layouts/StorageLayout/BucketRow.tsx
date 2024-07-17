@@ -61,7 +61,7 @@ const BucketRow = ({
           >
             {bucket.name}
           </p>
-          {bucket.public && <Badge variant="warning">Public</Badge>}
+          {bucket.public && <Badge variant="warning">公开</Badge>}
         </div>
       </Link>
       {canUpdateBuckets && isSelected ? (

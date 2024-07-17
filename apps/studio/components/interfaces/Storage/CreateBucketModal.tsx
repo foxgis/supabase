@@ -36,7 +36,7 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
 
   const { mutate: createBucket, isLoading: isCreating } = useBucketCreateMutation({
     onSuccess: (res) => {
-      toast.success(`Successfully created bucket ${res.name}`)
+      toast.success(`成功创建了存储桶：${res.name}`)
       router.push(`/project/${ref}/storage/buckets/${res.name}`)
       onClose()
     },
@@ -61,23 +61,23 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
   const validate = (values: any) => {
     const errors = {} as any
     if (!values.name) {
-      errors.name = 'Please provide a name for your bucket'
+      errors.name = '请为您的存储桶提供一个名称'
     }
     if (values.name && values.name.endsWith(' ')) {
-      errors.name = 'The name of the bucket cannot end with a whitespace'
+      errors.name = '存储桶名称不能以空格结尾'
     }
 
     if (values.has_file_size_limit && values.formatted_size_limit < 0) {
-      errors.formatted_size_limit = 'File size upload limit has to be at least 0'
+      errors.formatted_size_limit = '上传的文件大小限制必须大于0'
     }
     if (values.name === 'public') {
-      errors.name = '"public" is a reserved name. Please choose another name'
+      errors.name = '“public”是一个保留名称。请选择另一个名称'
     }
     return errors
   }
 
   const onSubmit = async (values: any) => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
 
     createBucket({
       projectRef: ref,
@@ -105,7 +105,7 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
       hideFooter
       visible={visible}
       size="medium"
-      header="Create storage bucket"
+      header="创建存储桶"
       onCancel={() => onClose()}
     >
       <Form
@@ -124,26 +124,25 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                   type="text"
                   className="w-full"
                   layout="vertical"
-                  label="Name of bucket"
-                  labelOptional="Buckets cannot be renamed once created."
-                  descriptionText="Only lowercase letters, numbers, dots, and hyphens"
+                  label="存储桶名称"
+                  labelOptional="存储桶名称创建后不能更改。"
+                  descriptionText="仅限使用小写字母、数字、点和连字符"
                 />
                 <div className="space-y-2 mt-6">
                   <Toggle
                     id="public"
                     name="public"
                     layout="flex"
-                    label="Public bucket"
-                    descriptionText="Anyone can read any object without any authorization"
+                    label="公开的存储桶"
+                    descriptionText="任何人都可以读取任何对象，无需任何授权"
                   />
                   {values.public && (
-                    <Alert title="Public buckets are not protected" variant="warning" withIcon>
+                    <Alert title="公开的存储桶不受保护" variant="warning" withIcon>
                       <p className="mb-2">
-                        Users can read objects in public buckets without any authorization.
+                        用户可以读取公开存储桶中的对象，无需任何授权。
                       </p>
                       <p>
-                        Row level security (RLS) policies are still required for other operations
-                        such as object uploads and deletes.
+                        其他操作需要仍需遵守行级安全（RLS）策略，例如上传和删除对象。
                       </p>
                     </Alert>
                   )}
@@ -155,7 +154,7 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
               >
                 <Collapsible.Trigger asChild>
                   <div className="w-full cursor-pointer py-3 px-5 flex items-center justify-between border-t border-default">
-                    <p className="text-sm">Additional configuration</p>
+                    <p className="text-sm">额外配置</p>
                     <IconChevronDown
                       size={18}
                       strokeWidth={2}
@@ -170,8 +169,8 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                         id="has_file_size_limit"
                         name="has_file_size_limit"
                         layout="flex"
-                        label="Restrict file upload size for bucket"
-                        descriptionText="Prevent uploading of file sizes greater than a specified limit"
+                        label="限制存储桶中上传文件的大小"
+                        descriptionText="防止上传文件的大小超过指定限制"
                       />
                       {values.has_file_size_limit && (
                         <div className="grid grid-cols-12 col-span-12 gap-x-2 gap-y-1">
@@ -187,10 +186,10 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                                   event.preventDefault()
                                 }
                               }}
-                              descriptionText={`Equivalent to ${convertToBytes(
+                              descriptionText={`相当于 ${convertToBytes(
                                 values.formatted_size_limit,
                                 selectedUnit
-                              ).toLocaleString()} bytes.`}
+                              ).toLocaleString()} 字节。`}
                             />
                           </div>
                           <div className="col-span-4">
@@ -210,14 +209,14 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                           {IS_PLATFORM && (
                             <div className="col-span-12">
                               <p className="text-foreground-light text-sm">
-                                Note: The{' '}
+                                注意：{' '}
                                 <Link
                                   href={`/project/${ref}/settings/storage`}
                                   className="text-brand opacity-80 hover:opacity-100 transition"
                                 >
-                                  global upload limit
+                                  全局上传限制
                                 </Link>{' '}
-                                takes precedence over this value ({formattedGlobalUploadLimit})
+                                优先于此限制值（{formattedGlobalUploadLimit}）
                               </p>
                             </div>
                           )}
@@ -228,10 +227,10 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                       id="allowed_mime_types"
                       name="allowed_mime_types"
                       layout="vertical"
-                      label="Allowed MIME types"
-                      placeholder="e.g image/jpeg, image/png, audio/mpeg, video/mp4, etc"
-                      labelOptional="Comma separated values"
-                      descriptionText="Wildcards are allowed, e.g. image/*. Leave blank to allow any MIME type."
+                      label="允许的 MIME 类型"
+                      placeholder="例如 image/jpeg，image/png，audio/mpeg，video/mp4等"
+                      labelOptional="使用逗号分隔值"
+                      descriptionText="允许使用通配符，例如 image/*。留空表示允许任何 MIME 类型。"
                     />
                   </div>
                 </Collapsible.Content>
@@ -244,10 +243,10 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                   disabled={isCreating}
                   onClick={() => onClose()}
                 >
-                  Cancel
+                  取消
                 </Button>
                 <Button type="primary" htmlType="submit" loading={isCreating} disabled={isCreating}>
-                  Save
+                  保存
                 </Button>
               </Modal.Content>
             </>

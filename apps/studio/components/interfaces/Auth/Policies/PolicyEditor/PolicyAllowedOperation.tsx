@@ -14,9 +14,9 @@ const PolicyAllowedOperation = ({
     <div className="flex justify-between space-x-12">
       <div className="flex w-1/3 flex-col space-y-2">
         <label className="text-base text-foreground-light" htmlFor="allowed-operation">
-          Allowed operation
+          允许的操作
         </label>
-        <p className="text-sm text-foreground-lighter">Select an operation for this policy</p>
+        <p className="text-sm text-foreground-lighter">为此策略选择一个操作</p>
       </div>
       <div className="w-2/3">
         <div className="flex items-center space-x-8">

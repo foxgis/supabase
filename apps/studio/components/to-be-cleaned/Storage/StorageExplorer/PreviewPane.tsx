@@ -52,7 +52,7 @@ const PreviewFile = ({ mimeType, previewUrl }: { mimeType?: string; previewUrl?:
           }
         />
         <p className="mt-2 w-2/5 text-center text-sm">
-          File size is too large to preview in the explorer
+          文件太大，不能在浏览器中预览
         </p>
       </div>
     )
@@ -71,7 +71,7 @@ const PreviewFile = ({ mimeType, previewUrl }: { mimeType?: string; previewUrl?:
         <audio key={previewUrl} controls style={{ width: 'inherit' }}>
           <source src={previewUrl} type="audio/mpeg" />
           <p className="text-sm text-foreground-light">
-            Your browser does not support the audio element.
+            您的浏览器不支持此音频文件。
           </p>
         </audio>
       </div>
@@ -83,7 +83,7 @@ const PreviewFile = ({ mimeType, previewUrl }: { mimeType?: string; previewUrl?:
         <video key={previewUrl} controls style={{ maxHeight: '100%' }}>
           <source src={previewUrl} type="video/mp4" />
           <p className="text-sm text-foreground-light">
-            Your browser does not support the video tag.
+            您的浏览器不支持视频文件。
           </p>
         </video>
       </div>
@@ -125,8 +125,8 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
   const isOpen = !isEmpty(file)
   const size = file.metadata ? formatBytes(file.metadata.size) : null
   const mimeType = file.metadata ? file.metadata.mimetype : undefined
-  const createdAt = file.created_at ? new Date(file.created_at).toLocaleString() : 'Unknown'
-  const updatedAt = file.updated_at ? new Date(file.updated_at).toLocaleString() : 'Unknown'
+  const createdAt = file.created_at ? new Date(file.created_at).toLocaleString() : '未知'
+  const updatedAt = file.updated_at ? new Date(file.updated_at).toLocaleString() : '未知'
 
   return (
     <>
@@ -170,7 +170,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                 <div className="flex items-center space-x-2">
                   <IconAlertCircle size={14} strokeWidth={2} className="text-foreground-light" />
                   <p className="text-sm text-foreground-light">
-                    File is corrupted, please delete and reupload this file again
+                    文件已损坏，请删除后重新上传
                   </p>
                 </div>
               )}
@@ -185,11 +185,11 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
             {/* Preview Metadata */}
             <div className="space-y-2">
               <div>
-                <label className="mb-1 text-xs text-foreground-lighter">Added on</label>
+                <label className="mb-1 text-xs text-foreground-lighter">创建时间：</label>
                 <p className="text-sm text-foreground-light">{createdAt}</p>
               </div>
               <div>
-                <label className="mb-1 text-xs text-foreground-lighter">Last modified</label>
+                <label className="mb-1 text-xs text-foreground-lighter">最近修改时间：</label>
                 <p className="text-sm text-foreground-light">{updatedAt}</p>
               </div>
             </div>
@@ -202,7 +202,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                 disabled={file.isCorrupted}
                 onClick={async () => await downloadFile(file)}
               >
-                Download
+                下载
               </Button>
               {selectedBucket.public ? (
                 <Button
@@ -211,7 +211,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                   onClick={async () => onCopyUrl(file.name, await getFileUrl(file))}
                   disabled={file.isCorrupted}
                 >
-                  Get URL
+                  获取 URL
                 </Button>
               ) : (
                 <DropdownMenu>
@@ -222,7 +222,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                       iconRight={<IconChevronDown />}
                       disabled={file.isCorrupted}
                     >
-                      Get URL
+                      获取 URL
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="bottom" align="center">
@@ -232,7 +232,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                         onCopyUrl(file.name, await getFileUrl(file, URL_EXPIRY_DURATION.WEEK))
                       }
                     >
-                      Expire in 1 week
+                      1 周后过期
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       key="expires-one-month"
@@ -240,7 +240,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                         onCopyUrl(file.name, await getFileUrl(file, URL_EXPIRY_DURATION.MONTH))
                       }
                     >
-                      Expire in 1 month
+                      1 月后过期
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       key="expires-one-year"
@@ -248,13 +248,13 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                         onCopyUrl(file.name, await getFileUrl(file, URL_EXPIRY_DURATION.YEAR))
                       }
                     >
-                      Expire in 1 year
+                      1 年后过期
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       key="custom-expiry"
                       onClick={() => setSelectedFileCustomExpiry(file)}
                     >
-                      Custom expiry
+                      自定义过期时间
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -269,7 +269,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                   icon={<IconTrash2 size={16} strokeWidth={2} />}
                   onClick={() => setSelectedItemsToDelete([file])}
                 >
-                  Delete file
+                  删除文件
                 </Button>
               </Tooltip.Trigger>
               {!canUpdateFiles && (
@@ -283,7 +283,7 @@ const PreviewPane = ({ onCopyUrl }: PreviewPaneProps) => {
                       ].join(' ')}
                     >
                       <span className="text-xs text-foreground">
-                        You need additional permissions to delete this file
+                        您需要额外的权限才能删除此文件
                       </span>
                     </div>
                   </Tooltip.Content>

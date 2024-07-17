@@ -119,13 +119,13 @@ export const propsAreEqual = (prevProps: any, nextProps: any) => {
 export const formatBytes = (
   bytes: any,
   decimals = 2,
-  size?: 'bytes' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB'
+  size?: '字节' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB'
 ) => {
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const sizes = ['字节', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 
-  if (bytes === 0 || bytes === undefined) return size !== undefined ? `0 ${size}` : '0 bytes'
+  if (bytes === 0 || bytes === undefined) return size !== undefined ? `0 ${size}` : '0 字节'
   const i = size !== undefined ? sizes.indexOf(size) : Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }

@@ -53,12 +53,12 @@ const PolicyRow = ({
               onClick={() => onSelectPolicyEdit(policy, bucketName, table)}
             >
               <IconEdit size={14} />
-              <p>Edit</p>
+              <p>编辑</p>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="space-x-2" onClick={() => onSelectPolicyDelete(policy)}>
               <IconTrash size={14} />
-              <p>Delete</p>
+              <p>删除</p>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -79,11 +79,11 @@ const StoragePoliciesBucketRow = ({
   const getFooterLabel = () => {
     if (isEmpty(bucket))
       return table === 'objects'
-        ? `${policies.length} polic${
-            policies.length > 1 ? 'ies' : 'y'
-          } that are not tied to any buckets`
-        : `${policies.length} polic${policies.length > 1 ? 'ies' : 'y'} that target your buckets`
-    return `${policies.length} polic${policies.length > 1 ? 'ies' : 'y'} in ${bucket.name}`
+        ? `有${policies.length} 条策略${
+            policies.length > 1 ? '' : ''
+          }未绑定任何存储桶`
+        : `有${policies.length} 条策略${policies.length > 1 ? '' : ''}关联到您的存储桶`
+    return `在 ${bucket.name} 中有 ${policies.length} 条策略${policies.length > 1 ? '' : ''}`
   }
 
   return (
@@ -95,17 +95,17 @@ const StoragePoliciesBucketRow = ({
             <h4 className="m-0 text-lg">
               <span>{label}</span>
             </h4>
-            {bucket.public && <Badge variant="warning">Public</Badge>}
+            {bucket.public && <Badge variant="warning">公开</Badge>}
           </div>
           <Button type="outline" onClick={() => onSelectPolicyAdd(bucket.name, table)}>
-            New policy
+            新建策略
           </Button>
         </div>,
       ]}
     >
       {policies.length === 0 ? (
         <div className="p-4 px-6">
-          <p className="text-sm text-foreground-lighter">No policies created yet</p>
+          <p className="text-sm text-foreground-lighter">还未创建策略</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 divide-y [[data-theme*=dark]_&]:divide-dark">

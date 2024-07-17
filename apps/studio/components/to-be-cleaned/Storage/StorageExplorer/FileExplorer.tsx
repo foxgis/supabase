@@ -95,7 +95,7 @@ const FileExplorer = ({
           )}
         </>
       ) : (
-        <div>Unknown view: {view}</div>
+        <div>未知视图：{view}</div>
       )}
     </div>
   )

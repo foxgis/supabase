@@ -145,7 +145,7 @@ const Pagination = () => {
 
   return (
     <div className="flex items-center gap-x-4">
-      {isLoading && <p className="text-sm text-foreground-light">正在加载记录数量...</p>}
+      {isLoading && <p className="text-sm text-foreground-light">正在加载记录...</p>}
 
       {isSuccess && (
         <>
@@ -231,7 +231,7 @@ const Pagination = () => {
 
       {isError && (
         <p className="text-sm text-foreground-light">
-          加载记录数量失败，请刷新页面重试。
+          加载记录失败，请刷新页面重试。
         </p>
       )}
 

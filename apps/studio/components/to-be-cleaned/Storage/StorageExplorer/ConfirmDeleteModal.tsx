@@ -25,15 +25,15 @@ const ConfirmDeleteModal = ({
   const multipleFiles = selectedItemsToDelete.length > 1
 
   const title = multipleFiles
-    ? `Confirm deletion of ${selectedItemsToDelete.length} items`
+    ? `确认删除 ${selectedItemsToDelete.length} 个文件`
     : selectedItemsToDelete.length === 1
-      ? `Confirm deletion of ${selectedItemsToDelete[0].name}`
+      ? `确认删除 ${selectedItemsToDelete[0].name}`
       : ``
 
   const description = multipleFiles
-    ? `Are you sure you want to delete the selected ${selectedItemsToDelete.length} items?`
+    ? `确认删除选中的 ${selectedItemsToDelete.length} 个文件吗？`
     : selectedItemsToDelete.length === 1
-      ? `Are you sure you want to delete the selected ${selectedItemsToDelete[0].type.toLowerCase()}?`
+      ? `确认删除选中的 ${selectedItemsToDelete[0].type.toLowerCase()} 吗？`
       : ``
 
   const onConfirmDelete = () => {
@@ -50,16 +50,16 @@ const ConfirmDeleteModal = ({
       customFooter={
         <div className="flex items-center gap-2">
           <Button type="default" disabled={deleting} onClick={onSelectCancel}>
-            Cancel
+            取消
           </Button>
           <Button type="danger" disabled={deleting} loading={deleting} onClick={onConfirmDelete}>
-            {deleting ? 'Deleting' : 'Delete'}
+            {deleting ? '正在删除' : '删除'}
           </Button>
         </div>
       }
     >
       <Modal.Content>
-        <Alert withIcon variant="danger" title={`This action cannot be undone.`}>
+        <Alert withIcon variant="danger" title={`此操作不能被撤销。`}>
           {description}
         </Alert>
       </Modal.Content>

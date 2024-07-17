@@ -22,22 +22,22 @@ const FolderContextMenu = ({ id = '' }: FolderContextMenuProps) => {
       {canUpdateFiles && (
         <Item onClick={({ props }) => setSelectedItemToRename(props.item)}>
           <IconEdit size="tiny" />
-          <span className="ml-2 text-xs">Rename</span>
+          <span className="ml-2 text-xs">重命名</span>
         </Item>
       )}
       <Item onClick={({ props }) => downloadFolder(props.item)}>
         <IconDownload size="tiny" />
-        <span className="ml-2 text-xs">Download</span>
+        <span className="ml-2 text-xs">下载</span>
       </Item>
       <Item onClick={({ props }) => copyPathToFolder(openedFolders, props.item)}>
         <IconClipboard size="tiny" />
-        <span className="ml-2 text-xs">Copy path to folder</span>
+        <span className="ml-2 text-xs">复制到文件夹</span>
       </Item>
       {canUpdateFiles && [
         <Separator key="separator" />,
         <Item key="delete" onClick={({ props }) => setSelectedItemsToDelete([props.item])}>
           <IconTrash2 size="tiny" stroke="red" />
-          <span className="ml-2 text-xs">Delete</span>
+          <span className="ml-2 text-xs">删除</span>
         </Item>,
       ]}
     </Menu>

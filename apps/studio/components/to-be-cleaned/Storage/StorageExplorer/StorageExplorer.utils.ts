@@ -6,5 +6,5 @@ export const copyPathToFolder = (openedFolders: StorageItem[], item: StorageItem
   const folders = openedFolders.slice(0, item.columnIndex).map((folder) => folder.name)
   const path = folders.length > 0 ? `${folders.join('/')}/${item.name}` : item.name
   copyToClipboard(path)
-  toast.success(`Copied path to folder "${item.name}"`)
+  toast.success(`已将路径复制到文件夹 "${item.name}"`)
 }

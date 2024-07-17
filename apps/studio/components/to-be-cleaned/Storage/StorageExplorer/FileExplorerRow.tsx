@@ -178,19 +178,19 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
           ...(canUpdateFiles
             ? [
                 {
-                  name: 'Rename',
+                  name: '重命名',
                   icon: <IconEdit size="tiny" />,
                   onClick: () => setSelectedItemToRename(itemWithColumnIndex),
                 },
               ]
             : []),
           {
-            name: 'Download',
+            name: '下载',
             icon: <IconDownload size="tiny" />,
             onClick: () => downloadFolder(itemWithColumnIndex),
           },
           {
-            name: 'Copy path to folder',
+            name: '复制到文件夹',
             icon: <IconClipboard size="tiny" />,
             onClick: () => copyPathToFolder(openedFolders, itemWithColumnIndex),
           },
@@ -198,7 +198,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
             ? [
                 { name: 'Separator', icon: undefined, onClick: undefined },
                 {
-                  name: 'Delete',
+                  name: '删除',
                   icon: <IconTrash2 size="tiny" />,
                   onClick: () => setSelectedItemsToDelete([itemWithColumnIndex]),
                 },
@@ -211,7 +211,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                 ...(isPublic
                   ? [
                       {
-                        name: 'Get URL',
+                        name: '获取 URL',
                         icon: <IconClipboard size="tiny" />,
                         onClick: async () =>
                           onCopyUrl(
@@ -222,11 +222,11 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                     ]
                   : [
                       {
-                        name: 'Get URL',
+                        name: '获取 URL',
                         icon: <IconClipboard size="tiny" />,
                         children: [
                           {
-                            name: 'Expire in 1 week',
+                            name: '1 周后过期',
                             onClick: async () =>
                               onCopyUrl(
                                 itemWithColumnIndex.name,
@@ -234,7 +234,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                               ),
                           },
                           {
-                            name: 'Expire in 1 month',
+                            name: '1 月后过期',
                             onClick: async () =>
                               onCopyUrl(
                                 itemWithColumnIndex.name,
@@ -242,7 +242,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                               ),
                           },
                           {
-                            name: 'Expire in 1 year',
+                            name: '1 年后过期',
                             onClick: async () =>
                               onCopyUrl(
                                 itemWithColumnIndex.name,
@@ -250,7 +250,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                               ),
                           },
                           {
-                            name: 'Custom expiry',
+                            name: '自定义过期时间',
                             onClick: async () => setSelectedFileCustomExpiry(itemWithColumnIndex),
                           },
                         ],
@@ -259,17 +259,17 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                 ...(canUpdateFiles
                   ? [
                       {
-                        name: 'Rename',
+                        name: '重命名',
                         icon: <IconEdit size="tiny" />,
                         onClick: () => setSelectedItemToRename(itemWithColumnIndex),
                       },
                       {
-                        name: 'Move',
+                        name: '移动',
                         icon: <IconMove size="tiny" />,
                         onClick: () => setSelectedItemsToMove([itemWithColumnIndex]),
                       },
                       {
-                        name: 'Download',
+                        name: '下载',
                         icon: <IconDownload size="tiny" />,
                         onClick: async () => await downloadFile(itemWithColumnIndex),
                       },
@@ -281,7 +281,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
           ...(canUpdateFiles
             ? [
                 {
-                  name: 'Delete',
+                  name: '删除',
                   icon: <IconTrash2 size="tiny" />,
                   onClick: () => setSelectedItemsToDelete([itemWithColumnIndex]),
                 },
@@ -397,7 +397,7 @@ const FileExplorerRow: ItemRenderer<StorageItem, FileExplorerRowProps> = ({
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      File is corrupted, please delete and reupload again.
+                      文件已损坏，请删除后重新上传。
                     </span>
                   </div>
                 </Tooltip.Content>

@@ -196,7 +196,7 @@ const StorageExplorer = ({ bucket }: StorageExplorerProps) => {
         ? url.replace(apiUrl, `https://${customDomainData.customDomain.hostname}`)
         : url
     copyToClipboard(formattedUrl, () => {
-      toast.success(`Copied URL for ${name} to clipboard.`)
+      toast.success(`已将 ${name} 的 URL 复制到剪贴板中。`)
     })
   }
 
@@ -253,5 +253,5 @@ const StorageExplorer = ({ bucket }: StorageExplorerProps) => {
   )
 }
 
-StorageExplorer.displayName = 'StorageExplorer'
+StorageExplorer.displayName = '文件存储查看器'
 export default observer(StorageExplorer)

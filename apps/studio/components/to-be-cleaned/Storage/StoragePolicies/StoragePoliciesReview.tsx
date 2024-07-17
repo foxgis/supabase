@@ -5,7 +5,7 @@ import { Button, Modal } from 'ui'
 const ReviewEmptyState = () => {
   return (
     <div className="my-10 flex items-center justify-center space-x-2 opacity-50">
-      <p>There are no changes made to this policy</p>
+      <p>对此策略没有任何更改</p>
     </div>
   )
 }
@@ -33,9 +33,8 @@ const StoragePoliciesReview = ({
         <div className="flex items-center justify-between space-y-8 space-x-4">
           <div className="flex flex-col">
             <p className="text-sm text-foreground-light">
-              These are the SQL statements that will be used to create your policies. The suffix
-              appended to the end of your policy name (<code>[hashString]_[number]</code>) just
-              functions as a unique identifier for each of your policies.
+              这些是将用于创建您的策略的 SQL 语句。在您的策略名称末尾附加的后缀（<code>[哈希字符串]_[数字]</code>），
+              只是用于为您的每条策略生成一个唯一标识符。
             </p>
           </div>
         </div>
@@ -57,11 +56,11 @@ const StoragePoliciesReview = ({
       <Modal.Separator />
       <Modal.Content className="flex w-full items-center justify-end gap-2">
         <Button type="default" onClick={onSelectBack}>
-          Back to edit
+          返回编辑
         </Button>
         {policyStatements.length > 0 && (
           <Button type="primary" onClick={onSavePolicy} loading={isSaving}>
-            Save policy
+            保存策略
           </Button>
         )}
       </Modal.Content>

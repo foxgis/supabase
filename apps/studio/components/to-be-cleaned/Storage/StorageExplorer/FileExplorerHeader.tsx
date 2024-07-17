@@ -35,20 +35,20 @@ import {
 import { STORAGE_SORT_BY, STORAGE_SORT_BY_ORDER, STORAGE_VIEWS } from '../Storage.constants'
 
 const VIEW_OPTIONS = [
-  { key: STORAGE_VIEWS.COLUMNS, name: 'As columns' },
-  { key: STORAGE_VIEWS.LIST, name: 'As list' },
+  { key: STORAGE_VIEWS.COLUMNS, name: '分栏模式' },
+  { key: STORAGE_VIEWS.LIST, name: '列表模式' },
 ]
 
 const SORT_BY_OPTIONS = [
-  { key: STORAGE_SORT_BY.NAME, name: 'Name' },
-  { key: STORAGE_SORT_BY.CREATED_AT, name: 'Time created' },
-  { key: STORAGE_SORT_BY.UPDATED_AT, name: 'Time modified' },
-  { key: STORAGE_SORT_BY.LAST_ACCESSED_AT, name: 'Time last accessed' },
+  { key: STORAGE_SORT_BY.NAME, name: '名称' },
+  { key: STORAGE_SORT_BY.CREATED_AT, name: '创建时间' },
+  { key: STORAGE_SORT_BY.UPDATED_AT, name: '修改时间' },
+  { key: STORAGE_SORT_BY.LAST_ACCESSED_AT, name: '最近访问时间' },
 ]
 
 const SORT_ORDER_OPTIONS = [
-  { key: STORAGE_SORT_BY_ORDER.ASC, name: 'Ascending' },
-  { key: STORAGE_SORT_BY_ORDER.DESC, name: 'Descending' },
+  { key: STORAGE_SORT_BY_ORDER.ASC, name: '升序' },
+  { key: STORAGE_SORT_BY_ORDER.DESC, name: '降序' },
 ]
 
 const HeaderPathEdit = ({ loading, isSearching, breadcrumbs, togglePathEdit }: any) => {
@@ -68,7 +68,7 @@ const HeaderPathEdit = ({ loading, isSearching, breadcrumbs, togglePathEdit }: a
           {!isSearching && (
             <div className="ml-3 flex items-center space-x-2 opacity-0 transition group-hover:opacity-100">
               <Button type="text" icon={<IconEdit2 />}>
-                Navigate
+                导航
               </Button>
             </div>
           )}
@@ -242,7 +242,7 @@ const FileExplorerHeader = ({
       closeFilePreview()
     } else {
       const pathString = paths.join('/')
-      setLoading({ isLoading: true, message: `Navigating to ${pathString}...` })
+      setLoading({ isLoading: true, message: `导航到 ${pathString}...` })
       await fetchFoldersByPath(paths)
       setLoading({ isLoading: false, message: '' })
     }
@@ -310,7 +310,7 @@ const FileExplorerHeader = ({
               size="small"
               value={pathString}
               onChange={onUpdatePathString}
-              placeholder="e.g Parent Folder/Child Folder"
+              placeholder="例如  Folder/Child 父文件夹"
               actions={[
                 <Button
                   key="cancelPath"
@@ -318,7 +318,7 @@ const FileExplorerHeader = ({
                   htmlType="button"
                   onClick={cancelSetPathString}
                 >
-                  Cancel
+                  取消
                 </Button>,
                 <Button
                   key="setPath"
@@ -326,7 +326,7 @@ const FileExplorerHeader = ({
                   htmlType="submit"
                   onClick={navigateByPathString}
                 >
-                  Go to folder
+                  前往文件夹
                 </Button>,
               ]}
             />
@@ -358,7 +358,7 @@ const FileExplorerHeader = ({
             loading={isRefreshing}
             onClick={refreshData}
           >
-            Reload
+            刷新
           </Button>
 
           <DropdownMenu>
@@ -373,7 +373,7 @@ const FileExplorerHeader = ({
                   )
                 }
               >
-                View
+                查看
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40 min-w-0">
@@ -387,7 +387,7 @@ const FileExplorerHeader = ({
               ))}
               <DropdownMenuSeparator />
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>Sort by</DropdownMenuSubTrigger>
+                <DropdownMenuSubTrigger>排序方式</DropdownMenuSubTrigger>
                 <DropdownMenuSubContent className="w-44">
                   {SORT_BY_OPTIONS.map((option) => (
                     <DropdownMenuItem key={option.key} onClick={() => setSortBy(option.key)}>
@@ -402,7 +402,7 @@ const FileExplorerHeader = ({
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>Sort order</DropdownMenuSubTrigger>
+                <DropdownMenuSubTrigger>排序顺序</DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                   {SORT_ORDER_OPTIONS.map((option) => (
                     <DropdownMenuItem key={option.key} onClick={() => setSortByOrder(option.key)}>
@@ -434,7 +434,7 @@ const FileExplorerHeader = ({
                 disabled={!canUpdateStorage || breadcrumbs.length === 0}
                 onClick={onSelectUpload}
               >
-                Upload files
+                上传文件
               </Button>
             </Tooltip.Trigger>
             {!canUpdateStorage && (
@@ -448,7 +448,7 @@ const FileExplorerHeader = ({
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      You need additional permissions to upload files
+                      您需要额外的权限才能上传文件
                     </span>
                   </div>
                 </Tooltip.Content>
@@ -463,7 +463,7 @@ const FileExplorerHeader = ({
                 disabled={!canUpdateStorage || breadcrumbs.length === 0}
                 onClick={() => addNewFolderPlaceholder(-1)}
               >
-                Create folder
+                创建文件夹
               </Button>
             </Tooltip.Trigger>
             {!canUpdateStorage && (
@@ -477,7 +477,7 @@ const FileExplorerHeader = ({
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      You need additional permissions to create folders
+                    您需要额外的权限才能创建文件夹
                     </span>
                   </div>
                 </Tooltip.Content>
@@ -503,7 +503,7 @@ const FileExplorerHeader = ({
                   onClick={onCancelSearch}
                 />,
               ]}
-              placeholder="Search for a file or folder"
+              placeholder="查找文件或文件夹"
               type="text"
               value={searchString}
               onChange={onSearchInputUpdate}

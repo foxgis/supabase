@@ -11,9 +11,9 @@ const PolicyName = ({ name = '', limit = 100, onUpdatePolicyName }: PolicyNamePr
     <div className="flex space-x-12">
       <div className="flex w-1/3 flex-col space-y-2">
         <label className="text-base text-foreground-light" htmlFor="policy-name">
-          Policy name
+          策略名称
         </label>
-        <p className="text-sm text-foreground-lighter">A descriptive name for your policy</p>
+        <p className="text-sm text-foreground-lighter">对策略进行描述的名称</p>
       </div>
       <div className="relative w-2/3">
         <Input

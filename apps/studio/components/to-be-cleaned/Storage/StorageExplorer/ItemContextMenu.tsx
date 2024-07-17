@@ -51,14 +51,14 @@ const ItemContextMenu = ({ id = '', onCopyUrl = noop }: ItemContextMenuProps) =>
       {isPublic ? (
         <Item onClick={({ props }) => onHandleClick('copy', props.item)}>
           <IconClipboard size="tiny" />
-          <span className="ml-2 text-xs">Get URL</span>
+          <span className="ml-2 text-xs">获取 URL</span>
         </Item>
       ) : (
         <Submenu
           label={
             <div className="flex items-center space-x-2">
               <IconClipboard size="tiny" />
-              <span className="text-xs">Get URL</span>
+              <span className="text-xs">获取 URL</span>
             </div>
           }
           arrow={<IconChevronRight size="tiny" />}
@@ -66,40 +66,40 @@ const ItemContextMenu = ({ id = '', onCopyUrl = noop }: ItemContextMenuProps) =>
           <Item
             onClick={({ props }) => onHandleClick('copy', props.item, URL_EXPIRY_DURATION.WEEK)}
           >
-            <span className="ml-2 text-xs">Expire in 1 week</span>
+            <span className="ml-2 text-xs">1 周后过期</span>
           </Item>
           <Item
             onClick={({ props }) => onHandleClick('copy', props.item, URL_EXPIRY_DURATION.MONTH)}
           >
-            <span className="ml-2 text-xs">Expire in 1 month</span>
+            <span className="ml-2 text-xs">1 月后过期</span>
           </Item>
           <Item
             onClick={({ props }) => onHandleClick('copy', props.item, URL_EXPIRY_DURATION.YEAR)}
           >
-            <span className="ml-2 text-xs">Expire in 1 year</span>
+            <span className="ml-2 text-xs">1 年后过期</span>
           </Item>
           <Item onClick={({ props }) => onHandleClick('copy', props.item, -1)}>
-            <span className="ml-2 text-xs">Custom expiry</span>
+            <span className="ml-2 text-xs">自定义过期时间</span>
           </Item>
         </Submenu>
       )}
       {canUpdateFiles && [
         <Item key="rename-file" onClick={({ props }) => onHandleClick('rename', props.item)}>
           <IconEdit size="tiny" />
-          <span className="ml-2 text-xs">Rename</span>
+          <span className="ml-2 text-xs">重命名</span>
         </Item>,
         <Item key="move-file" onClick={({ props }) => onHandleClick('move', props.item)}>
           <IconMove size="tiny" />
-          <span className="ml-2 text-xs">Move</span>
+          <span className="ml-2 text-xs">移动</span>
         </Item>,
         <Item key="download-file" onClick={({ props }) => onHandleClick('download', props.item)}>
           <IconDownload size="tiny" />
-          <span className="ml-2 text-xs">Download</span>
+          <span className="ml-2 text-xs">下载</span>
         </Item>,
         <Separator key="file-separator" />,
         <Item key="delete-file" onClick={({ props }) => setSelectedItemsToDelete([props.item])}>
           <IconTrash2 size="tiny" stroke="red" />
-          <span className="ml-2 text-xs">Delete</span>
+          <span className="ml-2 text-xs">删除</span>
         </Item>,
       ]}
     </Menu>

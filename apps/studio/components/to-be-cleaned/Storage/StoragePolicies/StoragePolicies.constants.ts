@@ -15,20 +15,20 @@
 export const STORAGE_POLICY_TEMPLATES = [
   {
     id: 'policy-1',
-    templateName: 'Allow access to JPG images in a public folder to anonymous users',
+    templateName: '允许匿名用户访问 public 文件夹中的 JPG 图像',
     description:
-      'This policy uses native postgres functions, functions from auth and storage schema',
-    name: 'Give anon users access to JPG images in folder',
+      '此策略使用了原生 PostgreSQL 函数、auth 和 storage 模式中的函数',
+    name: '授予匿名用户对特定文件夹中 JPG 图像的访问权限',
     statement: `
 CREATE POLICY "policy_name"
 ON storage.objects FOR {operation} {USING | WITH CHECK} (
-  -- restrict bucket
+  -- 限制 bucket
   bucket_id = {bucket_name}
-  -- allow access to only jpg file
+  -- 只允许访问 jpg 文件
   AND storage."extension"(name) = 'jpg'
-  -- in the public folder
+  -- 在 public 文件夹中
   AND LOWER((storage.foldername(name))[1]) = 'public'
-  -- to anonymous users
+  -- 匿名用户
   AND auth.role() = 'anon'
 );
     `.trim(),
@@ -37,14 +37,14 @@ ON storage.objects FOR {operation} {USING | WITH CHECK} (
   },
   {
     id: 'policy-2',
-    templateName: 'Give users access to only their own top level folder named as uid',
+    templateName: '允许用户仅可访问以自己的 uid 命名的顶层文件夹',
     description:
-      'For example a user with id d7bed83c-44a0-4a4f-925f-efc384ea1e50 will be able to access anything under the folder d7bed83c-44a0-4a4f-925f-efc384ea1e50/',
-    name: 'Give users access to own folder',
+      '例如，uid 为 d7bed83c-44a0-4a4f-925f-efc384ea1e50 的用户可以访问位于 d7bed83c-44a0-4a4f-925f-efc384ea1e50 文件夹下的任何内容',
+    name: '授予用户对自己的文件夹的访问权限',
     statement: `
 CREATE POLICY "policy_name"
 ON storage.objects FOR {operation} {USING | WITH CHECK} (
-    -- restrict bucket
+    -- 限制存储桶
     bucket_id = {bucket_name}
     and (select auth.uid()::text) = (storage.foldername(name))[1]
 );
@@ -54,14 +54,14 @@ ON storage.objects FOR {operation} {USING | WITH CHECK} (
   },
   {
     id: 'policy-3',
-    templateName: 'Give users access to a folder only to authenticated users',
+    templateName: '仅允许认证的用户访问一个文件夹',
     description:
-      'This policy gives users access to a folder (e.g private) only if they are authenticated',
-    name: 'Give users authenticated access to folder',
+      '此策略仅允许认证的用户访问一个文件夹（如private）',
+    name: '授予认证的用户对文件夹的访问权限',
     statement: `
 CREATE POLICY "policy_name"
 ON storage.objects FOR {operation} {USING | WITH CHECK} (
-    -- restrict bucket
+    -- 限制存储桶
     bucket_id = {bucket_name}
     AND (storage.foldername(name))[1] = 'private'
     AND (select auth.role()) = 'authenticated'
@@ -72,14 +72,14 @@ ON storage.objects FOR {operation} {USING | WITH CHECK} (
   },
   {
     id: 'policy-4',
-    templateName: 'Give access to a nested folder called admin/assets only to a specific user',
+    templateName: '仅给特定用户授予对嵌套文件夹 admin/assets 的访问权限',
     description:
-      'This policy gives read access to all authenticated users for your project to the folder "public"',
-    name: 'Give access to a folder',
+      '此策略仅允许特定的用户访问嵌套文件夹 admin/assets',
+    name: '授予特定用户对特定文件夹的访问权限',
     statement: `
 CREATE POLICY "policy_name"
 ON storage.objects FOR {operation} {USING | WITH CHECK} (
-	  -- restrict bucket
+    -- 限制存储桶
     bucket_id = {bucket_name}
     AND (storage.foldername(name))[1] = 'admin' AND (storage.foldername(name))[2] = 'assets'
     AND (select auth.uid()::text) = 'd7bed83c-44a0-4a4f-925f-efc384ea1e50'
@@ -90,13 +90,13 @@ ON storage.objects FOR {operation} {USING | WITH CHECK} (
   },
   {
     id: 'policy-5',
-    templateName: 'Give access to a file to a user',
-    description: 'This policy gives access to a specific file to a specific user',
-    name: 'Give access to a file to user',
+    templateName: '授予特定用户对特定文件的访问权限',
+    description: '此策略授予特定用户对特定文件的访问权限',
+    name: '授予特定用户对特定文件的访问权限',
     statement: `
 CREATE POLICY "policy_name"
 ON storage.objects FOR {operation} {USING | WITH CHECK} (
-	  -- restrict bucket
+	  -- 限制存储桶
     bucket_id = {bucket_name}
     AND name = 'admin/assets/Costa Rican Frog.jpg'
     AND (select auth.uid()::text) = 'd7bed83c-44a0-4a4f-925f-efc384ea1e50'

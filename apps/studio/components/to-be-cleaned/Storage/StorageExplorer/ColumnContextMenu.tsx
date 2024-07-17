@@ -66,65 +66,65 @@ const ColumnContextMenu = ({ id = '' }: ColumnContextMenuProps) => {
     <Menu id={id} animation="fade">
       <Item onClick={({ props }) => onSelectCreateFolder(props.index)}>
         <IconFolderPlus size="tiny" />
-        <span className="ml-2 text-xs">New folder</span>
+        <span className="ml-2 text-xs">新建文件夹</span>
       </Item>
       <Separator />
       <Item onClick={({ props }) => onSelectAllItemsInColumn(props.index)}>
         <IconClipboard size="tiny" />
-        <span className="ml-2 text-xs">Select all items</span>
+        <span className="ml-2 text-xs">选中所有文件</span>
       </Item>
       <Submenu
         label={
           <div className="flex items-center space-x-2">
             <IconEye size="tiny" />
-            <span className="text-xs">View</span>
+            <span className="text-xs">查看</span>
           </div>
         }
         arrow={<IconChevronRight size="tiny" />}
       >
         <Item onClick={() => setView(STORAGE_VIEWS.COLUMNS)}>
-          <span className="ml-2 text-xs">As columns</span>
+          <span className="ml-2 text-xs">分栏模式</span>
         </Item>
         <Item onClick={() => setView(STORAGE_VIEWS.LIST)}>
-          <span className="ml-2 text-xs">As list</span>
+          <span className="ml-2 text-xs">列表模式</span>
         </Item>
       </Submenu>
       <Submenu
         label={
           <div className="flex items-center space-x-2">
             <IconChevronsDown size="tiny" />
-            <span className="ml-2 text-xs">Sort by</span>
+            <span className="ml-2 text-xs">排序方式</span>
           </div>
         }
         arrow={<IconChevronRight size="tiny" />}
       >
         <Item onClick={() => setSortBy(STORAGE_SORT_BY.NAME)}>
-          <span className="ml-2 text-xs">Name</span>
+          <span className="ml-2 text-xs">名称</span>
         </Item>
         <Item onClick={() => setSortBy(STORAGE_SORT_BY.CREATED_AT)}>
-          <span className="ml-2 text-xs">Last created</span>
+          <span className="ml-2 text-xs">最近创建</span>
         </Item>
         <Item onClick={() => setSortBy(STORAGE_SORT_BY.UPDATED_AT)}>
-          <span className="ml-2 text-xs">Last modified</span>
+          <span className="ml-2 text-xs">最近修改</span>
         </Item>
         <Item onClick={() => setSortBy(STORAGE_SORT_BY.LAST_ACCESSED_AT)}>
-          <span className="ml-2 text-xs">Last accessed</span>
+          <span className="ml-2 text-xs">最近访问</span>
         </Item>
       </Submenu>
       <Submenu
         label={
           <div className="flex items-center space-x-2">
             <IconChevronsUp size="tiny" />
-            <span className="ml-2 text-xs">Sort by order</span>
+            <span className="ml-2 text-xs">排序顺序</span>
           </div>
         }
         arrow={<IconChevronRight size="tiny" />}
       >
         <Item onClick={() => setSortByOrder(STORAGE_SORT_BY_ORDER.ASC)}>
-          <span className="ml-2 text-xs">Ascending</span>
+          <span className="ml-2 text-xs">升序</span>
         </Item>
         <Item onClick={() => setSortByOrder(STORAGE_SORT_BY_ORDER.DESC)}>
-          <span className="ml-2 text-xs">Descending</span>
+          <span className="ml-2 text-xs">降序</span>
         </Item>
       </Submenu>
     </Menu>

@@ -150,7 +150,7 @@ const createSQLStatementForCreatePolicy = (
   const formattedPolicyName = addSuffixToPolicyName
     ? `${policyName} ${hashedBucketName}_${idx}`
     : policyName
-  const description = `Add policy for the ${operation} operation under the policy "${policyName}"`
+  const description = `向策略 "${policyName}" 添加 ${operation} 操作`
   const roles = selectedRoles.length === 0 ? ['public'] : selectedRoles
 
   const statement = `

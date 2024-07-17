@@ -59,7 +59,7 @@ const StorageMenu = () => {
               },
             }}
           >
-            New bucket
+            新建存储桶
           </ButtonTooltip>
         </div>
 
@@ -80,13 +80,13 @@ const StorageMenu = () => {
                 <Alert_Shadcn_ variant={tempNotSupported ? 'default' : 'warning'}>
                   <AlertTitle_Shadcn_ className="text-xs tracking-normal">
                     {tempNotSupported
-                      ? 'Storage is not available on preview branches for now'
-                      : 'Failed to fetch buckets'}
+                      ? '文件存储功能目前不支持预览分支'
+                      : '拉取存储桶失败'}
                   </AlertTitle_Shadcn_>
                   <AlertDescription_Shadcn_ className="text-xs">
                     {tempNotSupported
-                      ? "We're actively looking into making this available on preview branches"
-                      : 'Please refresh to try again'}
+                      ? '我们正在积极调查如何在预览分支中启用此功能'
+                      : '请刷新重试'}
                   </AlertDescription_Shadcn_>
                 </Alert_Shadcn_>
               </div>
@@ -131,14 +131,14 @@ const StorageMenu = () => {
                 <p className="truncate">策略</p>
               </Menu.Item>
             </Link>
-            <Link href={`/project/${ref}/settings/storage`}>
+            {/* <Link href={`/project/${ref}/settings/storage`}>
               <Menu.Item rounded>
                 <div className="flex items-center justify-between">
                   <p className="truncate">设置</p>
                   <ArrowUpRight strokeWidth={1} className="h-4 w-4" />
                 </div>
               </Menu.Item>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </Menu>

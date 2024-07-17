@@ -29,14 +29,14 @@ const MoveItemsModal = ({
   const multipleFiles = selectedItemsToMove.length > 1
 
   const title = multipleFiles
-    ? `Moving ${selectedItemsToMove.length} items within ${bucketName}`
+    ? `正在移动 ${bucketName} 中的 ${selectedItemsToMove.length} 个文件`
     : selectedItemsToMove.length === 1
-      ? `Moving ${selectedItemsToMove[0]?.name} within ${bucketName}`
+      ? `正在移动 ${bucketName} 中的 ${selectedItemsToMove[0]?.name}`
       : ``
 
-  const description = `Enter the path to where you'd like to move the file${
-    multipleFiles ? 's' : ''
-  } to.`
+  const description = `请输入您想要将文件移动到的位置${
+    multipleFiles ? '' : ''
+  }。`
 
   const onConfirmMove = (event: any) => {
     if (event) {
@@ -57,10 +57,10 @@ const MoveItemsModal = ({
       customFooter={
         <div className="flex items-center gap-2">
           <Button type="default" onClick={onSelectCancel}>
-            Cancel
+            取消
           </Button>
           <Button type="primary" loading={moving} onClick={onConfirmMove}>
-            {moving ? 'Moving files' : 'Move files'}
+            {moving ? '正在移动文件' : '移动文件'}
           </Button>
         </div>
       }
@@ -70,12 +70,12 @@ const MoveItemsModal = ({
           <div className="relative flex items-center">
             <Input
               autoFocus
-              label={`Path to new directory in ${bucketName}`}
+              label={`在 ${bucketName} 中新目录的位置`}
               type="text"
               className="w-full"
               placeholder="e.g folder1/subfolder2"
               value={newPath}
-              descriptionText="Leave blank to move items to the root of the bucket"
+              descriptionText="留空会将文件移动到存储桶的根目录下"
               onChange={(event) => setNewPath(event.target.value)}
             />
           </div>

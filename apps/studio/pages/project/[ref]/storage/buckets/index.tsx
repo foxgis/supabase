@@ -37,6 +37,6 @@ const PageLayout: NextPageWithLayout = () => {
   )
 }
 
-PageLayout.getLayout = (page) => <StorageLayout title="Buckets">{page}</StorageLayout>
+PageLayout.getLayout = (page) => <StorageLayout title="存储桶">{page}</StorageLayout>
 
 export default PageLayout

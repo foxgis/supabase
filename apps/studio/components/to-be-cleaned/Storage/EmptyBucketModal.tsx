@@ -27,14 +27,14 @@ export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBuck
     onSuccess: async () => {
       if (bucket === undefined) return
       await fetchFolderContents(bucket.id, bucket.name, -1)
-      toast.success(`Successfully deleted bucket ${bucket!.name}`)
+      toast.success(`成功清空了存储桶 "${bucket!.name}"`)
       onClose()
     },
   })
 
   const onEmptyBucket = async () => {
-    if (!projectRef) return console.error('Project ref is required')
-    if (!bucket) return console.error('No bucket is selected')
+    if (!projectRef) return console.error('未找到项目号')
+    if (!bucket) return console.error('未选中存储桶')
     emptyBucket({ projectRef, id: bucket.id })
   }
 
@@ -42,17 +42,17 @@ export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBuck
     <ConfirmationModal
       variant={'destructive'}
       size="small"
-      title={`Confirm to delete all contents from ${bucket?.name}`}
-      confirmLabel="Empty bucket"
+      title={`确认要清空存储桶 "${bucket?.name}" 中的所有内容？`}
+      confirmLabel="清空存储桶"
       visible={visible}
       onCancel={() => onClose()}
       onConfirm={onEmptyBucket}
       alert={{
-        title: 'This action cannot be undone',
-        description: 'The contents of your bucket cannot be recovered once deleted',
+        title: '此操作无法撤销',
+        description: '存储桶中的内容一旦删除，无法恢复',
       }}
     >
-      <p className="text-sm">Are you sure you want to empty the bucket "{bucket?.name}"?</p>
+      <p className="text-sm">您确定要清空存储桶 "{bucket?.name}" ？</p>
     </ConfirmationModal>
   )
 }
