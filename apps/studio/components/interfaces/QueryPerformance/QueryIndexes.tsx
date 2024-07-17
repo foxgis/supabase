@@ -94,10 +94,10 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
   const { mutate: execute, isLoading: isExecuting } = useExecuteSqlMutation({
     onSuccess: async () => {
       await refetch()
-      toast.success(`Successfully created index`)
+      toast.success(`成功创建了索引`)
     },
     onError: (error) => {
-      toast.error(`Failed to create index: ${error.message}`)
+      toast.error(`创建索引失败：${error.message}`)
     },
   })
 
@@ -115,9 +115,9 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
     <QueryPanelContainer className="h-full">
       <QueryPanelSection>
         <div>
-          <p className="text-sm">Indexes in use</p>
+          <p className="text-sm">正在使用的索引</p>
           <p className="text-sm text-foreground-light">
-            This query is using the following index{(usedIndexes ?? []).length > 1 ? 's' : ''}:
+            此查询正在使用以下索引{(usedIndexes ?? []).length > 1 ? '' : ''}：
           </p>
         </div>
         {isLoading && <GenericSkeletonLoader />}
@@ -126,11 +126,10 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
             {usedIndexes.length === 0 && (
               <div className="border rounded border-dashed flex flex-col items-center justify-center py-4 px-20 gap-y-1">
                 <p className="text-sm text-foreground-light">
-                  No indexes are involved in this query
+                  此查询没有涉及索引
                 </p>
                 <p className="text-center text-xs text-foreground-lighter">
-                  Indexes may not necessarily be used if they incur a higher cost when executing the
-                  query
+                  索引可能在执行查询时会产生更高的时间成本，因此不一定会被使用
                 </p>
               </div>
             )}
@@ -158,7 +157,7 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
 
       <QueryPanelSection className="flex flex-col gap-y-6">
         <div className="flex flex-col gap-y-2">
-          <p className="text-sm">New index recommendations</p>
+          <p className="text-sm">新的索引建议</p>
           {isLoadingExtensions ? (
             <GenericSkeletonLoader />
           ) : !isIndexAdvisorAvailable ? (
@@ -170,7 +169,7 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
                 <AlertError
                   projectRef={project?.ref}
                   error={indexAdvisorError}
-                  subject="Failed to retrieve result from index advisor"
+                  subject="无法从索引助手中获取结果"
                 />
               )}
               {isSuccessIndexAdvisorResult && (
@@ -178,9 +177,9 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
                   {(index_statements ?? []).length === 0 ? (
                     <Alert_Shadcn_ className="[&>svg]:rounded-full">
                       <Check />
-                      <AlertTitle_Shadcn_>This query is optimized</AlertTitle_Shadcn_>
+                      <AlertTitle_Shadcn_>此查询已经优化</AlertTitle_Shadcn_>
                       <AlertDescription_Shadcn_>
-                        Recommendations for indexes will show here
+                        索引建议会在这里显示
                       </AlertDescription_Shadcn_>
                     </Alert_Shadcn_>
                   ) : (
@@ -192,22 +191,22 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
                         >
                           <Lightbulb />
                           <AlertTitle_Shadcn_>
-                            We have {index_statements.length} index recommendation
-                            {index_statements.length > 1 ? 's' : ''}
+                            我们有 {index_statements.length} 条索引建议
+                            {index_statements.length > 1 ? '' : ''}
                           </AlertTitle_Shadcn_>
                           <AlertDescription_Shadcn_>
-                            You can improve this query's performance by{' '}
-                            <span className="text-brand">{totalImprovement.toFixed(2)}%</span> by
-                            adding the following suggested{' '}
-                            {index_statements.length > 1 ? 'indexes' : 'index'}
+                            通过添加以下
+                            {index_statements.length > 1 ? '索引' : '索引'}，
+                            此查询的性能可以提高{' '}
+                            <span className="text-brand">{totalImprovement.toFixed(2)}%</span>
                           </AlertDescription_Shadcn_>
                         </Alert_Shadcn_>
                       ) : (
                         <p className="text-sm text-foreground-light">
-                          Creating the following {index_statements.length > 1 ? 'indexes' : 'index'}{' '}
-                          on <code className="text-xs">public.files</code> can improve this query's
-                          performance by{' '}
-                          <span className="text-brand">{totalImprovement.toFixed(2)}%</span>:
+                          在 <code className="text-xs">public.files</code> 上
+                          创建以下{index_statements.length > 1 ? '索引' : '索引'}，
+                          可以提高此查询的性能{' '}
+                          <span className="text-brand">{totalImprovement.toFixed(2)}%</span>：
                         </p>
                       )}
                       <CodeBlock
@@ -221,9 +220,8 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
                         )}
                       />
                       <p className="text-sm text-foreground-light">
-                        This recommendation serves to prevent your queries from slowing down as your
-                        application grows, and hence the index may not be used immediately after
-                        it's created. (e.g If your table is still small at this time)
+                        此建议旨在防止查询随着表数据增加而变慢，因此创建的索引可能不会被立即使用
+                        （例如，如果您的表在此时仍很小）
                       </p>
                     </>
                   )}
@@ -235,11 +233,11 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
         {isIndexAdvisorAvailable && hasIndexRecommendation && (
           <>
             <div className="flex flex-col gap-y-2">
-              <p className="text-sm">Query costs</p>
+              <p className="text-sm">查询成本</p>
               <div className="border rounded-md flex flex-col bg-surface-100">
                 <QueryPanelScoreSection
-                  name="Total cost of query"
-                  description="An estimate of how long it will take to return all the rows (Includes start up cost)"
+                  name="查询的总成本"
+                  description="一个用于衡量查询返回所有行所需时长（包括启动成本）的估算值"
                   before={total_cost_before}
                   after={total_cost_after}
                 />
@@ -248,46 +246,43 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
                     <QueryPanelScoreSection
                       hideArrowMarkers
                       className="border-t"
-                      name="Start up cost"
-                      description="An estimate of how long it will take to fetch the first row"
+                      name="启动成本"
+                      description="一个用于衡量开始拉取第一行数据所需时长的估算值"
                       before={startup_cost_before}
                       after={startup_cost_after}
                     />
                   </CollapsibleContent_Shadcn_>
                   <CollapsibleTrigger_Shadcn_ className="text-xs py-1.5 border-t text-foreground-light bg-studio w-full rounded-b-md">
-                    View {showStartupCosts ? 'less' : 'more'}
+                    查看{showStartupCosts ? '更少' : '更多'}
                   </CollapsibleTrigger_Shadcn_>
                 </Collapsible_Shadcn_>
               </div>
             </div>
             <div className="flex flex-col gap-y-2">
-              <p className="text-sm">FAQ</p>
+              <p className="text-sm">常见问题解答</p>
               <Accordion_Shadcn_ collapsible type="single" className="border rounded-md">
                 <AccordionItem_Shadcn_ value="1">
                   <AccordionTrigger className="px-4 py-3 text-sm font-normal text-foreground-light hover:text-foreground transition [&[data-state=open]]:text-foreground">
-                    What units are cost in?
+                    成本的单位是什么？
                   </AccordionTrigger>
                   <AccordionContent_Shadcn_ className="px-4 text-foreground-light">
-                    Costs are in an arbitrary unit, and do not represent a unit of time. The units
-                    are anchored (by default) to a single sequential page read costing 1.0 units.
-                    They do, however, serve as a predictor of higher execution times.
+                    成本是一个相对单位，并不代表时间单位。单位（默认情况下）是以单个连续的页面读取成本为1.0单位。
+                    即使如此，它们仍然可以作为预测查询执行时间长短的指标。
                   </AccordionContent_Shadcn_>
                 </AccordionItem_Shadcn_>
                 <AccordionItem_Shadcn_ value="2" className="border-b-0">
                   <AccordionTrigger className="px-4 py-3 text-sm font-normal text-foreground-light hover:text-foreground transition [&[data-state=open]]:text-foreground">
-                    How should I prioritize start up and total cost?
+                    如何优先考虑启动成本和总成本？
                   </AccordionTrigger>
                   <AccordionContent_Shadcn_ className="px-4 text-foreground-light [&>div]:space-y-2">
-                    <p>This depends on the expected size of the result set from the query.</p>
+                    <p>这取决于查询返回的结果集的大小。</p>
                     <p>
-                      For queries that return a small number or rows, the startup cost is more
-                      critical and minimizing startup cost can lead to faster response times,
-                      especially in interactive applications.
+                      对于返回少量行的查询，启动成本更为关键，最小化启动成本可以导致更快的响应时间，
+                      尤其对于交互式应用程序。
                     </p>
                     <p>
-                      For queries that return a large number of rows, the total cost becomes more
-                      important, and optimizing it will help in efficiently using resources and
-                      reducing overall query execution time.
+                      对于返回大量行的查询，总成本变得更加重要，优化它可以帮助资源的高效利用和
+                      减少整体查询执行时间。
                     </p>
                   </AccordionContent_Shadcn_>
                 </AccordionItem_Shadcn_>
@@ -300,9 +295,9 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
       {isIndexAdvisorAvailable && hasIndexRecommendation && (
         <div className="bg-studio sticky bottom-0 border-t py-3 flex items-center justify-between px-5">
           <div className="flex flex-col gap-y-1 text-sm">
-            <span>Apply index to database</span>
+            <span>为数据库应用索引</span>
             <span className="text-xs text-foreground-light">
-              This will run the SQL that is shown above
+              这将执行上面显示的 SQL
             </span>
           </div>
           <Button
@@ -311,7 +306,7 @@ export const QueryIndexes = ({ selectedRow }: QueryIndexesProps) => {
             type="primary"
             onClick={() => createIndex()}
           >
-            Create index
+            创建索引
           </Button>
         </div>
       )}

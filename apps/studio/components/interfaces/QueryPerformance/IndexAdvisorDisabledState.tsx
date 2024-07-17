@@ -44,9 +44,9 @@ export const IndexAdvisorDisabledState = () => {
           version: indexAdvisorExtension.default_version,
         })
       }
-      toast.success('Successfully enabled index advisor!')
+      toast.success('成功启用了索引向导！')
     } catch (error: any) {
-      toast.error(`Failed to enable index advisor: ${error.message}`)
+      toast.error(`启用索引向导失败: ${error.message}`)
     }
   }
 
@@ -57,8 +57,8 @@ export const IndexAdvisorDisabledState = () => {
           className="text-foreground"
           content={
             indexAdvisorExtension === undefined
-              ? 'Newer version of Postgres required'
-              : 'Postgres extensions `index_advisor` and `hypopg` required'
+              ? '需要更新的 Postgres 版本'
+              : '需要安装 Postgres 扩展 `index_advisor` 和 `hypopg`'
           }
         />
       </AlertTitle_Shadcn_>
@@ -66,8 +66,8 @@ export const IndexAdvisorDisabledState = () => {
         <Markdown
           content={
             indexAdvisorExtension === undefined
-              ? 'Upgrade to the latest version of Postgres to get recommendations on indexes for your queries'
-              : 'These extensions can help in recommending database indexes to reduce the costs of your query.'
+              ? '升级到最新版本的 Postgres 可以获取对您查询的索引建议'
+              : '这些扩展可以通过提出数据库索引建议来降低查询的成本。'
           }
         />
       </AlertDescription_Shadcn_>
@@ -76,7 +76,7 @@ export const IndexAdvisorDisabledState = () => {
         <div className="flex items-center gap-x-2">
           {indexAdvisorExtension === undefined ? (
             <Button asChild type="default">
-              <Link href={`/project/${ref}/settings/infrastructure`}>Upgrade Postgres version</Link>
+              <Link href={`/project/${ref}/settings/infrastructure`}>升级 Postgres 版本</Link>
             </Button>
           ) : (
             <Button
@@ -85,7 +85,7 @@ export const IndexAdvisorDisabledState = () => {
               loading={isEnablingExtension}
               onClick={() => onEnableIndexAdvisor()}
             >
-              Enable extensions
+              启用扩展
             </Button>
           )}
           <Button asChild type="outline" icon={<ExternalLink />}>
@@ -94,7 +94,7 @@ export const IndexAdvisorDisabledState = () => {
               rel="noreferrer"
               href="https://supabase.com/docs/guides/database/extensions/index_advisor"
             >
-              Documentation
+              文档
             </a>
           </Button>
         </div>

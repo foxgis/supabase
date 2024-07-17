@@ -48,7 +48,7 @@ export const QueryDetail = ({
   return (
     <QueryPanelContainer>
       <QueryPanelSection>
-        <p className="text-sm">Query pattern</p>
+        <p className="text-sm">查询语句</p>
         <CodeBlock
           hideLineNumbers
           value={query}
@@ -65,13 +65,13 @@ export const QueryDetail = ({
             className="mt-2 border-brand-400 bg-alternative [&>svg]:p-0.5 [&>svg]:bg-transparent [&>svg]:text-brand"
           >
             <Lightbulb />
-            <AlertTitle_Shadcn_>Suggested optimization: Add an index</AlertTitle_Shadcn_>
+            <AlertTitle_Shadcn_>优化建议：添加索引</AlertTitle_Shadcn_>
             <AlertDescription_Shadcn_>
-              Adding an index will help this query execute faster
+              添加索引可以帮助此查询更快地执行
             </AlertDescription_Shadcn_>
             <AlertDescription_Shadcn_>
               <Button className="mt-3" onClick={() => onClickViewSuggestion()}>
-                View suggestion
+                查看建议
               </Button>
             </AlertDescription_Shadcn_>
           </Alert_Shadcn_>
@@ -82,9 +82,9 @@ export const QueryDetail = ({
         {report
           .filter((x) => x.id !== 'query')
           .map((x) => {
-            const isTime = x.name.includes('time')
+            const isTime = x.name.includes('时间')
             const formattedValue = isTime
-              ? `${selectedRow?.[x.id].toFixed(2)}ms`
+              ? `${selectedRow?.[x.id].toFixed(2)} 毫秒`
               : String(selectedRow?.[x.id])
             return (
               <div key={x.id} className="flex gap-x-2">

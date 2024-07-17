@@ -83,7 +83,7 @@ export const QueryPerformance = ({
       },
       {
         id: QUERY_PERFORMANCE_REPORT_TYPES.MOST_FREQUENT,
-        label: '最频繁',
+        label: '最频繁调用',
         description: '按照执行次数对查询进行排序',
         isLoading: isLoadingMFI,
         max:
@@ -163,7 +163,7 @@ export const QueryPerformance = ({
               ) : (
                 <span className="text-xs text-foreground-muted group-hover:text-foreground-lighter group-data-[state=active]:text-foreground-lighter transition">
                   {Number(tab.max).toLocaleString()}
-                  {tab.id !== QUERY_PERFORMANCE_REPORT_TYPES.MOST_FREQUENT ? 'ms' : ' calls'}
+                  {tab.id !== QUERY_PERFORMANCE_REPORT_TYPES.MOST_FREQUENT ? ' 毫秒' : ' 次调用'}
                 </span>
               )}
 
