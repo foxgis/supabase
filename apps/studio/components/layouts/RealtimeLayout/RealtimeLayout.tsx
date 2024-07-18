@@ -23,7 +23,7 @@ const RealtimeLayout = ({ title, children }: PropsWithChildren<RealtimeLayoutPro
   return (
     <ProjectLayout
       title={title}
-      product="实时通信"
+      product="实时消息"
       productMenu={
         <ProductMenu page={page} menu={generateRealtimeMenu(project!, { authzEnabled })} />
       }

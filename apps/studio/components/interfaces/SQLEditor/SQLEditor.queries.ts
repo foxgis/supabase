@@ -577,14 +577,14 @@ create trigger on_auth_user_created
 
 /**
  * REALTIME SUBSCRIPTIONS
- * 只允许实时通信监听 public 模式下的表。
+ * 只允许实时消息监听 public 模式下的表。
  */
 
 begin;
-  -- 删除实时通信的订阅
+  -- 删除实时消息的订阅
   drop publication if exists supabase_realtime;
 
-  -- 重新创建实时通信的订阅，暂时不在任何表上启用
+  -- 重新创建实时消息的订阅，暂时不在任何表上启用
   create publication supabase_realtime;
 commit;
 
@@ -804,8 +804,8 @@ create policy "Can only view own subs data." on subscriptions
   for select using ((select auth.uid()) = user_id);
 
 /**
- * 实时通信订阅表
- * 只允许实时通信订阅 public 模式下的表。
+ * 实时消息订阅表
+ * 只允许实时消息订阅 public 模式下的表。
  */
 drop publication if exists supabase_realtime;
 create publication supabase_realtime
@@ -1170,9 +1170,9 @@ $$;
   {
     id: 22,
     type: 'template',
-    title: '副本状态报告',
-    description: '查看你的复制槽和副本滞后的状态。',
-    sql: `-- 副本状态报告
+    title: '复制同步状态报告',
+    description: '查看你的复制槽和复制同步滞后的状态。',
+    sql: `-- 复制同步状态报告
 
 SELECT
   s.slot_name,

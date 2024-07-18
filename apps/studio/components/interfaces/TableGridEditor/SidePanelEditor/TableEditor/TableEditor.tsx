@@ -340,8 +340,8 @@ const TableEditor = ({
         {realtimeEnabled && (
           <Checkbox
             id="enable-realtime"
-            label="启用实时通信"
-            description="向授权的订阅方播送这张表的更新"
+            label="启用实时消息"
+            description="向授权的订阅方广播这张表的更新"
             checked={tableFields.isRealtimeEnabled}
             onChange={() => onUpdateField({ isRealtimeEnabled: !tableFields.isRealtimeEnabled })}
             size="medium"

@@ -45,13 +45,13 @@ const DatabaseProductMenu = () => {
       <div className="px-3">
         <Alert_Shadcn_>
           <AlertTitle_Shadcn_ className="text-sm">
-            副本模块已更名
+            复制同步模块已更名
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="text-xs">
             <p className="mb-2">
               该功能可在{' '}
               <Link href={`/project/${project?.ref}/database/publications`} className="underline">
-                订阅
+                事件发布
               </Link>{' '}
               处找到。
             </p>

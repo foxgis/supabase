@@ -357,7 +357,7 @@ const SidePanelEditor = ({
         })
       }
     } catch (error: any) {
-      toast.error(`更新 ${table.name} 的实时通信失败：${error.message}`)
+      toast.error(`更新 ${table.name} 的实时消息失败：${error.message}`)
     }
   }
 

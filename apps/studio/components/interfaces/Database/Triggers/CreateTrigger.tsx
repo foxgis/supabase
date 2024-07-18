@@ -464,7 +464,7 @@ const SelectEnabledMode = observer(({}) => {
           )
         }}
         value="REPLICA"
-        label="副本"
+        label="复制同步"
       >
         Replica
         <span className="block text-foreground-lighter">
@@ -482,7 +482,7 @@ const SelectEnabledMode = observer(({}) => {
       >
         Always
         <span className="block text-foreground-lighter">
-          无论当前的副本角色如何都会触发
+          无论当前的复制同步角色如何都会触发
         </span>
       </Listbox.Option>
       <Listbox.Option

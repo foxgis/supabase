@@ -80,7 +80,7 @@ export const generateLogsMenu = (
           : null,
         realtimeEnabled
           ? {
-              name: '实时通信',
+              name: '实时消息',
               key: 'realtime-logs',
               url: `/project/${ref}/logs/realtime-logs`,
               items: [],

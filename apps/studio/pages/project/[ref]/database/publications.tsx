@@ -34,14 +34,14 @@ const DatabasePublications: NextPageWithLayout = () => {
   const selectedPublication = publications.find((pub) => pub.id === selectedPublicationId)
 
   if (isPermissionsLoaded && !canViewPublications) {
-    return <NoPermission isFullPage resourceText="查看数据库订阅" />
+    return <NoPermission isFullPage resourceText="查看数据库事件发布" />
   }
 
   return (
     <ScaffoldContainer>
       <ScaffoldSection>
         <div className="col-span-12">
-          <FormHeader title="数据库订阅" />
+          <FormHeader title="数据库事件发布" />
           {selectedPublication === undefined ? (
             <PublicationsList onSelectPublication={setSelectedPublicationId} />
           ) : (

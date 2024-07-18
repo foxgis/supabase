@@ -54,7 +54,7 @@ export const EXAMPLE_PROJECTS = [
   {
     framework: 'nextjs',
     title: 'Next.js 实时聊天应用',
-    description: '使用 Supabase 实时通信的 Next.js Slack 克隆应用。',
+    description: '使用 Supabase 实时消息的 Next.js Slack 克隆应用。',
     url: 'https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-slack-clone',
   },
   {

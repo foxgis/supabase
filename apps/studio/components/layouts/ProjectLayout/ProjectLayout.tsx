@@ -101,12 +101,12 @@ const ProjectLayout = ({
             {title
               ? `${title}`
               : selectedTable
-                ? `${selectedTable} | ${projectName} | ${organizationName}`
+                ? `${selectedTable}`
                 : projectName
-                  ? `${projectName} | ${organizationName}`
+                  ? `数据中间件`
                   : organizationName
-                    ? `${organizationName}`
-                    : 'FoxGIS'}
+                    ? `数据中间件`
+                    : '数据中间件'}
           </title>
           <meta name="description" content="FoxGIS Studio" />
         </Head>

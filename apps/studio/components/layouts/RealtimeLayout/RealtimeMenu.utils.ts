@@ -25,7 +25,7 @@ export const generateRealtimeMenu = (
             title: '配置',
             items: [
               {
-                name: '策略',
+                name: '实时消息策略',
                 key: 'policies',
                 url: `/project/${ref}/realtime/policies`,
                 items: [],

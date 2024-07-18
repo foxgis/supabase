@@ -160,7 +160,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             <ProfileProvider>
               <FlagProvider>
                 <Head>
-                  <title>FoxGIS</title>
+                  <title>数据中间件</title>
                   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 </Head>
                 <MetaFaviconsPagesRouter applicationName="FoxGIS Studio" />

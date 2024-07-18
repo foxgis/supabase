@@ -298,7 +298,7 @@ const TableList = ({
                 大小（估计）
               </Table.th>,
               <Table.th key="realtime" className="hidden xl:table-cell text-center">
-                实时通信
+                实时消息
               </Table.th>,
               <Table.th key="buttons"></Table.th>,
             ]}

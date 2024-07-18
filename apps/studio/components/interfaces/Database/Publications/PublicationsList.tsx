@@ -91,7 +91,7 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
             <div className="w-[500px]">
               <InformationBox
                 icon={<IconAlertCircle className="text-foreground-light" strokeWidth={2} />}
-                title="您需要额外的权限才能更新数据库订阅"
+                title="您需要额外的权限才能更新数据库事件发布"
               />
             </div>
           )}
