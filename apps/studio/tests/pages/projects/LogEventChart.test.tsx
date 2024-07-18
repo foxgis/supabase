@@ -31,5 +31,5 @@ test('renders chart', async () => {
       onBarClick={mockFn}
     />
   )
-  await screen.findByText(/Logs \/ Time/)
+  await screen.findByText(/日志 \/ 时间/)
 })

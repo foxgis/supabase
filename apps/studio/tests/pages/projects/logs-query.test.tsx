@@ -42,7 +42,7 @@ test.skip('can display log data', async () => {
   }
 
   userEvent.type(editor, 'select \ncount(*) as my_count \nfrom edge_logs')
-  await screen.findByText(/Save query/)
+  await screen.findByText(/保存查询/)
   const button = await screen.findByTitle('run-logs-query')
   userEvent.click(button)
   const row = await screen.findByText(/timestamp/)
@@ -93,10 +93,10 @@ test.skip('custom sql querying', async () => {
 
   // clicking on the row value should not show log selection panel
   userEvent.click(rowValue)
-  await expect(screen.findByText(/Metadata/)).rejects.toThrow()
+  await expect(screen.findByText(/元数据/)).rejects.toThrow()
 
   // should not see chronological features
-  await expect(screen.findByText(/Load older/)).rejects.toThrow()
+  await expect(screen.findByText(/载入旧的/)).rejects.toThrow()
 })
 
 test.skip('bug: can edit query after selecting a log', async () => {
@@ -106,7 +106,7 @@ test.skip('bug: can edit query after selecting a log', async () => {
   const rowValue = await screen.findByText(/12345/) // row value
   // open up an show selection panel
   await userEvent.click(rowValue)
-  await screen.findByText('Copy')
+  await screen.findByText('复制')
 
   // change the query
   let editor = container.querySelector('.monaco-editor')
@@ -119,10 +119,10 @@ test.skip('bug: can edit query after selecting a log', async () => {
   userEvent.click(editor)
   userEvent.type(editor, ' something')
   userEvent.type(editor, '\nsomething{ctrl}{enter}')
-  userEvent.click(await screen.findByText('Run'))
+  userEvent.click(await screen.findByText('执行'))
 
   // closes the selection panel
-  await expect(screen.findByText('Copy')).rejects.toThrow()
+  await expect(screen.findByText('复制')).rejects.toThrow()
 })
 
 test('query warnings', async () => {
@@ -139,7 +139,7 @@ test('query warnings', async () => {
 
 test('field reference', async () => {
   render(<LogsExplorerPage dehydratedState={{}} />)
-  userEvent.click(await screen.findByText('Field Reference'))
+  userEvent.click(await screen.findByText('字段参考'))
   await screen.findByText('metadata.request.cf.asOrganization')
 })
 
@@ -159,7 +159,7 @@ describe.each(['free', 'pro', 'team', 'enterprise'])('upgrade modal for %s', (ke
     render(<LogsExplorerPage dehydratedState={{}} />)
     clickDropdown(screen.getByText('Last hour'))
     await waitFor(async () => {
-      const option = await screen.findByText('Last 3 days')
+      const option = await screen.findByText('最近 3 天')
       fireEvent.click(option)
     })
     // only free plan will show modal

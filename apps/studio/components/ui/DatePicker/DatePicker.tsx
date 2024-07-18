@@ -162,8 +162,8 @@ function _DatePicker({
               appliedEndDate &&
               appliedStartDate !== appliedEndDate ? (
                 <>
-                  {format(new Date(appliedStartDate), 'MM-DD')} -{' '}
-                  {format(new Date(appliedEndDate), 'MM-DD')}
+                  {format(new Date(appliedStartDate), 'MM-dd')} -{' '}
+                  {format(new Date(appliedEndDate), 'MM-dd')}
                 </>
               ) : appliedStartDate || appliedEndDate ? (
                 format(new Date((appliedStartDate || appliedEndDate)!), 'MM-dd')
