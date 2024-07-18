@@ -145,8 +145,8 @@ export const genDefaultQuery = (table: LogsTableName, filters: Filters) => {
       if (IS_PLATFORM === false) {
         return `
 -- local dev edge_logs query
-select id, edge_logs.timestamp, event_message, request.method, request.path, response.status_code 
-from edge_logs 
+select id, edge_logs.timestamp, event_message, request.method, request.path, response.status_code
+from edge_logs
 ${joins}
 ${where}
 ${orderBy}
@@ -465,9 +465,7 @@ export const fillTimeseries = (
   const diff = maxDate.diff(minDate, truncation as dayjs.UnitType)
   // Intentional throwing of error here to be caught by Sentry, as this would indicate a bug since charts shouldn't be rendering more than 10k data points
   if (diff > 10000) {
-    throw new Error(
-      'Data error, filling timeseries dynamically with more than 10k data points degrades performance.'
-    )
+    throw new Error('数据错误，超过10k数据点会导致性能下降。')
   }
 
   for (let i = 0; i <= diff; i++) {

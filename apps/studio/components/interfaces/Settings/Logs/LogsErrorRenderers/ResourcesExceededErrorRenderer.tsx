@@ -4,13 +4,13 @@ import { ErrorRendererProps } from './DefaultErrorRenderer'
 const ResourcesExceededErrorRenderer: React.FC<ErrorRendererProps> = ({ error, isCustomQuery }) => (
   <div className="flex flex-col gap-2 text-foreground-light">
     <div className="flex flex-col gap-1 text-sm">
-      <p>This query requires too much memory to be executed.</p>
+      <p>此查询需要太多内存才能执行。</p>
       <p>
         {isCustomQuery
-          ? 'Avoid selecting entire objects and instead select specific keys using dot notation.'
-          : 'Avoid querying across a large datetime range.'}
+          ? '避免选择整个对象，而是使用点表示法选择特定的键。'
+          : '避免跨大时间范围的查询。'}
       </p>
-      {!isCustomQuery && <p>Please contact support if this error persists.</p>}
+      {!isCustomQuery && <p>如果此错误持续存在，请联系支持。</p>}
     </div>
     <Accordion
       className="text-sm"
@@ -21,7 +21,7 @@ const ResourcesExceededErrorRenderer: React.FC<ErrorRendererProps> = ({ error, i
       size="small"
       iconPosition="left"
     >
-      <Accordion.Item id="1" header="Full error message">
+      <Accordion.Item id="1" header="完整的错误消息">
         <Input.TextArea
           size="tiny"
           value={JSON.stringify(error, null, 2)}

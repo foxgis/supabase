@@ -210,7 +210,7 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
 }
 
 AuthPoliciesPage.getLayout = (page) => (
-  <AuthLayout title="Auth">
+  <AuthLayout title="认证授权">
     <div className="h-full p-4">{page}</div>
   </AuthLayout>
 )

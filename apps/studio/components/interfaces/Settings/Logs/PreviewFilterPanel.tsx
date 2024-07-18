@@ -109,7 +109,7 @@ const PreviewFilterPanel = ({
         />
       </TooltipTrigger_Shadcn_>
       <TooltipContent_Shadcn_ side="bottom" className="text-xs">
-        Refresh logs
+        刷新日志
       </TooltipContent_Shadcn_>
     </Tooltip_Shadcn_>
   )
@@ -136,7 +136,7 @@ const PreviewFilterPanel = ({
           <Input
             className="w-60"
             size="tiny"
-            placeholder="Search events"
+            placeholder="搜索事件"
             onChange={(e) => setSearch(e.target.value)}
             onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
               setSearch(e.target.value)
@@ -204,7 +204,7 @@ const PreviewFilterPanel = ({
             onClick={() => onToggleEventChart()}
             icon={isShowingEventChart ? <Eye /> : <EyeOff />}
           >
-            Chart
+            图表
           </Button>
         </div>
         <CSVButton data={csvData} disabled={!Boolean(csvData)} title="Download data" />
@@ -219,7 +219,7 @@ const PreviewFilterPanel = ({
               </Button>
             </TooltipTrigger_Shadcn_>
             <TooltipContent_Shadcn_ side="bottom" className="text-xs">
-              Open query in Logs Explorer
+              在日志查看器中打开查询
             </TooltipContent_Shadcn_>
           </Tooltip_Shadcn_>
           <DatabaseSelector
@@ -227,7 +227,7 @@ const PreviewFilterPanel = ({
             additionalOptions={
               table === LogsTableName.EDGE
                 ? (loadBalancers ?? []).length > 0
-                  ? [{ id: `${ref}-all`, name: 'API Load Balancer' }]
+                  ? [{ id: `${ref}-all`, name: 'API 负载均衡' }]
                   : []
                 : []
             }
@@ -235,7 +235,7 @@ const PreviewFilterPanel = ({
         </div>
       ) : (
         <Button asChild type="default" onClick={onExploreClick}>
-          <Link href={queryUrl}>Explore via query</Link>
+          <Link href={queryUrl}>通过查询查看</Link>
         </Button>
       )}
     </div>

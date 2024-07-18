@@ -36,19 +36,19 @@ const LogsExplorerHeader = ({ subtitle }: LogsExplorerHeaderProps) => {
           <IconList size={14} strokeWidth={3} />
         </div>
 
-        <h1 className="text-2xl text-foreground">Logs Explorer</h1>
+        <h1 className="text-2xl text-foreground">日志查看器</h1>
         {subtitle && <span className="text-2xl text-foreground-light">{subtitle}</span>}
       </div>
       <div className="flex flex-row gap-2">
         <Button asChild type="default" icon={<IconExternalLink strokeWidth={1.5} />}>
-          <Link href={LOGS_EXPLORER_DOCS_URL}>Documentation</Link>
+          <Link href={LOGS_EXPLORER_DOCS_URL}>文档</Link>
         </Button>
 
         <SidePanel
           size="large"
           header={
             <div className="flex flex-row justify-between items-center">
-              <h3>Field Reference</h3>
+              <h3>字段参考</h3>
               <Button
                 type="text"
                 className="px-1"
@@ -58,7 +58,7 @@ const LogsExplorerHeader = ({ subtitle }: LogsExplorerHeaderProps) => {
             </div>
           }
           visible={showReference}
-          cancelText="Close"
+          cancelText="关闭"
           onCancel={() => setShowReference(false)}
           hideFooter
           triggerElement={
@@ -67,23 +67,21 @@ const LogsExplorerHeader = ({ subtitle }: LogsExplorerHeaderProps) => {
               onClick={() => setShowReference(true)}
               icon={<IconBookOpen strokeWidth={1.5} />}
             >
-              Field Reference
+              字段参考
             </Button>
           }
         >
           <SidePanel.Content>
             <div className="pt-4 pb-2 space-y-1">
               <p className="text-sm">
-                The following table shows all the available paths that can be queried from each
-                respective source. Do note that to access nested keys, you would need to perform the
-                necessary{' '}
+                下面的表显示了每种数据源所有可查询的字段。请注意，要访问嵌套的键，您需要使用必要的{' '}
                 <Link
                   href="https://supabase.com/docs/guides/platform/logs#unnesting-arrays"
                   target="_blank"
                   rel="noreferrer"
                   className="text-brand"
                 >
-                  unnesting joins
+                  解嵌连接
                   <IconExternalLink
                     size="tiny"
                     className="ml-1 inline -translate-y-[2px]"
@@ -111,10 +109,10 @@ const LogsExplorerHeader = ({ subtitle }: LogsExplorerHeaderProps) => {
                 <Table
                   head={[
                     <Table.th className="text-xs !p-2" key="path">
-                      Path
+                      字段
                     </Table.th>,
                     <Table.th key="type" className="text-xs !p-2">
-                      Type
+                      类型
                     </Table.th>,
                   ]}
                   body={schema.fields
@@ -170,7 +168,7 @@ const Field = ({
                     'border border-background',
                   ].join(' ')}
                 >
-                  <span className="text-xs text-foreground">Copied</span>
+                  <span className="text-xs text-foreground">已复制</span>
                 </div>
               </Tooltip.Content>
             </Tooltip.Portal>
@@ -189,7 +187,7 @@ const Field = ({
                     'border border-background',
                   ].join(' ')}
                 >
-                  <span className="text-xs text-foreground">Copy value</span>
+                  <span className="text-xs text-foreground">复制值</span>
                 </div>
               </Tooltip.Content>
             </Tooltip.Portal>

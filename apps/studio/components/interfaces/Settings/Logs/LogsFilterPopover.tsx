@@ -68,10 +68,10 @@ const LogsFilterPopover = ({
               </div>
               <div className="flex items-center justify-end gap-2 border-t border-default bg-studio py-2 px-3">
                 <Button size="tiny" type="default" onClick={handleReset} htmlType="button">
-                  Clear
+                  清除
                 </Button>
                 <Button loading={isSubmitting} type="primary" htmlType="submit">
-                  Apply
+                  应用
                 </Button>
               </div>
             </>

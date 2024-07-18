@@ -5,7 +5,7 @@ import ResourcesExceededErrorRenderer from './ResourcesExceededErrorRenderer'
 import { Alert } from 'ui'
 
 export default {
-  title: 'Logs',
+  title: '日志',
 }
 
 export const ErrorRenderers = () => (
@@ -58,7 +58,7 @@ export const ErrorRenderers = () => (
       <Alert
         key={i}
         variant="danger"
-        title="Sorry! An error occurred when fetching data."
+        title="抱歉！拉取数据时发生了错误。"
         withIcon
         className="w-1/2"
       >

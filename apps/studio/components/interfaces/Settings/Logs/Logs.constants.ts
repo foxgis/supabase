@@ -9,20 +9,20 @@ export const LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD = 4
 
 export const TEMPLATES: LogTemplate[] = [
   {
-    label: 'Recent Errors',
+    label: '最近的错误',
     mode: 'simple',
     searchString: '[Ee]rror|\\s[45][0-9][0-9]\\s',
     for: ['api'],
   },
   {
-    label: 'Commits',
+    label: '提交',
     mode: 'simple',
     searchString: 'COMMIT',
     for: ['database'],
   },
   {
-    label: 'Commits By User',
-    description: 'Count of commits made by users on the database',
+    label: '用户的提交',
+    description: '数据库上用户的提交数量',
     mode: 'custom',
     searchString: `select
   p.user_name,
@@ -38,8 +38,8 @@ group by
     for: ['database'],
   },
   {
-    label: 'Metadata IP',
-    description: 'List all IP addresses that used the Supabase API',
+    label: 'IP 元数据',
+    description: '列出使用 Supabase API 的所有 IP 地址',
     mode: 'custom',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
@@ -53,8 +53,8 @@ where h.x_real_ip is not null
     for: ['api'],
   },
   {
-    label: 'Requests by Country',
-    description: 'List all ISO 3166-1 alpha-2 country codes that used the Supabase API',
+    label: '国家/地区的请求',
+    description: '列出使用 Supabase API 的所有 ISO 3166-1 alpha-2 国家/地区代码',
     mode: 'custom',
     searchString: `select
   cf.country,
@@ -71,9 +71,9 @@ order by
     for: ['api'],
   },
   {
-    label: 'Slow Response Time',
+    label: '缓慢的响应时间',
     mode: 'custom',
-    description: 'List all Supabase API requests that are slow',
+    description: '列出缓慢的 Supabase API 请求',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
   event_message,
@@ -90,8 +90,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: '500 Request Codes',
-    description: 'List all Supabase API requests that responded witha 5XX status code',
+    label: '500 请求代码',
+    description: '列出响应 5XX 状态码的所有 Supabase API 请求',
     mode: 'custom',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
@@ -109,8 +109,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: 'Top Paths',
-    description: 'List the most requested Supabase API paths',
+    label: '最多请求的路径',
+    description: '列出最多请求的 Supabase API 路径',
     mode: 'custom',
     searchString: `select
   r.path as path,
@@ -129,8 +129,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: 'REST Requests',
-    description: 'List all PostgREST requests',
+    label: 'REST 请求',
+    description: '列出所有 PostgREST 请求',
     mode: 'custom',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
@@ -147,8 +147,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: 'Errors',
-    description: 'List all Postgres error messages with ERROR, FATAL, or PANIC severity',
+    label: '错误',
+    description: '列出所有 Postgres 错误消息，包括 ERROR、FATAL 或 PANIC 日志级别',
     mode: 'custom',
     searchString: `select
   cast(t.timestamp as datetime) as timestamp,
@@ -166,8 +166,8 @@ limit 100
     for: ['database'],
   },
   {
-    label: 'Error Count by User',
-    description: 'Count of errors by users',
+    label: '按用户统计错误数',
+    description: '按用户统计错误数',
     mode: 'custom',
     searchString: `select
   count(t.timestamp) as count,
@@ -188,8 +188,8 @@ limit 100
     for: ['database'],
   },
   {
-    label: 'Auth Endpoint Events',
-    description: 'Endpoint events filtered by path',
+    label: 'Auth 接口事件',
+    description: '根据路径过滤接口事件',
     mode: 'custom',
     searchString: `select
   t.timestamp,
@@ -203,8 +203,8 @@ limit 100
     for: ['database'],
   },
   {
-    label: 'Storage Object Requests',
-    description: 'Number of requests done on Storage Objects',
+    label: '文件对象的请求数',
+    description: '对文件对象执行的请求数',
     mode: 'custom',
     searchString: `select
   r.method as http_verb,
@@ -225,8 +225,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: 'Storage Egress Requests',
-    description: 'Check the number of requests done on Storage Affecting Egress',
+    label: 'Storage Egress 请求数',
+    description: '检查在 Storage Affecting Egress 上的请求数',
     mode: 'custom',
     searchString: `select
     r.method as http_verb,
@@ -248,8 +248,8 @@ limit 100
     for: ['api'],
   },
   {
-    label: 'Storage Top Cache Misses',
-    description: 'The top Storage requests that miss caching',
+    label: '未命中缓存的文件存储',
+    description: '未命中缓存次数最多的文件存储请求',
     mode: 'custom',
     searchString: `select
   r.path as path,
@@ -260,7 +260,7 @@ from edge_logs f
   cross join unnest(m.request) as r
   cross join unnest(m.response) as res
   cross join unnest(res.headers) as h
-where starts_with(r.path, '/storage/v1/object') 
+where starts_with(r.path, '/storage/v1/object')
   and r.method = 'GET'
   and h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
 group by path, search
@@ -379,16 +379,16 @@ export const LOGS_TABLES = {
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
-  [LogsTableName.EDGE]: 'Logs obtained from the network edge, containing all API requests',
-  [LogsTableName.POSTGRES]: 'Database logs obtained directly from Postgres',
-  [LogsTableName.FUNCTIONS]: 'Function logs generated from runtime execution',
-  [LogsTableName.FN_EDGE]: 'Function call logs, containing the request and response',
-  [LogsTableName.AUTH]: 'Authentication logs from GoTrue',
-  [LogsTableName.REALTIME]: 'Realtime server for Postgres logical replication broadcasting',
-  [LogsTableName.STORAGE]: 'Object storage logs',
-  [LogsTableName.POSTGREST]: 'RESTful API web server logs',
-  [LogsTableName.SUPAVISOR]: 'Cloud-native Postgres connection pooler logs',
-  [LogsTableName.WAREHOUSE]: 'Logs obtained from a data warehouse collection',
+  [LogsTableName.EDGE]: '从网络端获得的日志，包含所有 API 请求',
+  [LogsTableName.POSTGRES]: '直接从 Postgres 获得的数据库日志',
+  [LogsTableName.FUNCTIONS]: '从运行时生成的函数日志',
+  [LogsTableName.FN_EDGE]: '包含请求和响应的函数调用日志',
+  [LogsTableName.AUTH]: '来自 GoTrue 的身份验证日志',
+  [LogsTableName.REALTIME]: 'Postgres 逻辑复制时的实时消息日志',
+  [LogsTableName.STORAGE]: '文件存储日志',
+  [LogsTableName.POSTGREST]: 'RESTful API 服务器日志',
+  [LogsTableName.SUPAVISOR]: '云原生 Postgres 连接池日志',
+  [LogsTableName.WAREHOUSE]: '从数据仓库集合获得的日志',
 }
 
 export const genQueryParams = (params: { [k: string]: string }) => {
@@ -406,23 +406,23 @@ export const FILTER_OPTIONS: FilterTableSet = {
   // Postgres logs
   postgres_logs: {
     severity: {
-      label: 'Severity',
+      label: '日志级别',
       key: 'severity',
       options: [
         {
           key: 'error',
-          label: 'Error',
-          description: 'Show all events with ERROR, PANIC, or FATAL',
+          label: '错误',
+          description: '显示所有 ERROR、PANIC 或 FATAL 级别的事件',
         },
         {
           key: 'noError',
-          label: 'No Error',
-          description: 'Show all non-error events',
+          label: '无错误',
+          description: '显示所有非错误级别的事件',
         },
         {
           key: 'log',
-          label: 'Log',
-          description: 'Show all events that are log severity',
+          label: '日志',
+          description: '显示所有日志级别的事件',
         },
       ],
     },
@@ -431,54 +431,54 @@ export const FILTER_OPTIONS: FilterTableSet = {
   // Edge logs
   edge_logs: {
     status_code: {
-      label: 'Status',
+      label: '状态',
       key: 'status_code',
       options: [
         {
           key: 'error',
-          label: 'Error',
+          label: '错误',
           description: '500 error codes',
         },
         {
           key: 'success',
-          label: 'Success',
+          label: '成功',
           description: '200 codes',
         },
         {
           key: 'warning',
-          label: 'Warning',
+          label: '警告',
           description: '400 codes',
         },
       ],
     },
     product: {
-      label: 'Product',
+      label: '产品',
       key: 'product',
       options: [
         {
           key: 'database',
-          label: 'Database',
+          label: '数据库',
           description: '',
         },
         {
           key: 'auth',
-          label: 'Auth',
+          label: '认证授权',
           description: '',
         },
         {
           key: 'storage',
-          label: 'Storage',
+          label: '文件存储',
           description: '',
         },
         {
           key: 'realtime',
-          label: 'Realtime',
+          label: '实时消息',
           description: '',
         },
       ],
     },
     method: {
-      label: 'Method',
+      label: '方法',
       key: 'method',
       options: [
         {
@@ -517,7 +517,7 @@ export const FILTER_OPTIONS: FilterTableSet = {
   // function_edge_logs
   function_edge_logs: {
     status_code: {
-      label: 'Status',
+      label: '状态码',
       key: 'status_code',
       options: [
         {
@@ -541,33 +541,33 @@ export const FILTER_OPTIONS: FilterTableSet = {
   // function_logs
   function_logs: {
     severity: {
-      label: 'Severity',
+      label: '日志级别',
       key: 'severity',
       options: [
         {
           key: 'error',
-          label: 'Error',
-          description: 'Show all events that are "error" severity',
+          label: '错误',
+          description: '显示所有 "error" 级别的事件',
         },
         {
           key: 'warn',
-          label: 'Warning',
-          description: 'Show all events that are "warn" severity',
+          label: '警告',
+          description: '显示所有 "warn" 级别的事件',
         },
         {
           key: 'info',
-          label: 'Info',
-          description: 'Show all events that are "info" severity',
+          label: '信息',
+          description: '显示所有 "info" 级别的事件',
         },
         {
           key: 'debug',
-          label: 'Debug',
-          description: 'Show all events that are "debug" severity',
+          label: '调试',
+          description: '显示所有 "debug" 级别的事件',
         },
         {
           key: 'log',
-          label: 'Log',
-          description: 'Show all events that are "log" severity',
+          label: '日志',
+          description: '显示所有 "log" 级别的事件',
         },
       ],
     },
@@ -576,85 +576,85 @@ export const FILTER_OPTIONS: FilterTableSet = {
   // auth logs
   auth_logs: {
     severity: {
-      label: 'Severity',
+      label: '日志级别',
       key: 'severity',
       options: [
         {
           key: 'error',
-          label: 'Error',
-          description: 'Show all events that have error or fatal severity',
+          label: '错误',
+          description: '显示所有 "error" 级别的事件',
         },
         {
           key: 'warning',
-          label: 'Warning',
-          description: 'Show all events that have warning severity',
+          label: '警告',
+          description: '显示所有 "warning" 级别的事件',
         },
         {
           key: 'info',
-          label: 'Info',
-          description: 'Show all events that have info severity',
+          label: '信息',
+          description: '显示所有 "info" 级别的事件',
         },
       ],
     },
     status_code: {
-      label: 'Status Code',
+      label: '状态码',
       key: 'status_code',
       options: [
         {
           key: 'server_error',
-          label: 'Server Error',
-          description: 'Show all requests with 5XX status code',
+          label: '服务器错误',
+          description: '显示所有 "server_error" 级别的事件',
         },
         {
           key: 'client_error',
-          label: 'Client Error',
-          description: 'Show all requests with 4XX status code',
+          label: '客户端错误',
+          description: '显示所有 "client_error" 级别的事件',
         },
         {
           key: 'redirection',
-          label: 'Redirection',
-          description: 'Show all requests that have 3XX status code',
+          label: '重定向',
+          description: '显示所有 "redirection" 级别的事件',
         },
         {
           key: 'success',
-          label: 'Success',
-          description: 'Show all requests that have 2XX status code',
+          label: '成功',
+          description: '显示所有 "success" 级别的事件',
         },
       ],
     },
     endpoints: {
-      label: 'Endpoints',
+      label: '接口',
       key: 'endpoints',
       options: [
         {
           key: 'admin',
-          label: 'Admin',
-          description: 'Show all admin requests',
+          label: '管理员',
+          description: '显示 admin 的所有请求',
         },
         {
           key: 'signup',
-          label: 'Sign up',
-          description: 'Show all signup and authorization requests',
+          label: '注册',
+          description: '显示所有注册和授权请求',
         },
         {
           key: 'recover',
-          label: 'Password Recovery',
-          description: 'Show all password recovery requests',
+          label: '密码找回',
+          description: '显示所有密码找回请求',
         },
         {
           key: 'authentication',
-          label: 'Authentication',
-          description: 'Show all authentication flow requests (login, otp, and Oauth2)',
+          label: '认证',
+          description: '显示所有认证流程请求（登录、OTP 和 OAuth2）',
         },
         {
           key: 'user',
-          label: 'User',
-          description: 'Show all user data requests',
+          label: '用户',
+          description: '显示所有用户数据请求',
         },
         {
           key: 'logout',
-          label: 'Logout',
-          description: 'Show all logout requests',
+          label: '登出',
+          description: '显示所有登出请求',
         },
       ],
     },
@@ -668,41 +668,41 @@ export const LOGS_TAILWIND_CLASSES = {
 
 export const PREVIEWER_DATEPICKER_HELPERS: DatetimeHelper[] = [
   {
-    text: 'Last hour',
+    text: '最近 1 小时',
     calcFrom: () => dayjs().subtract(1, 'hour').startOf('hour').toISOString(),
     calcTo: () => '',
     default: true,
   },
   {
-    text: 'Last 3 hours',
+    text: '最近 3 小时',
     calcFrom: () => dayjs().subtract(3, 'hour').startOf('hour').toISOString(),
     calcTo: () => '',
   },
   {
-    text: 'Last 24 hours',
+    text: '最近 24 小时',
     calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
     calcTo: () => '',
   },
 ]
 export const EXPLORER_DATEPICKER_HELPERS: DatetimeHelper[] = [
   {
-    text: 'Last hour',
+    text: '最近 1 小时',
     calcFrom: () => dayjs().subtract(1, 'hour').startOf('hour').toISOString(),
     calcTo: () => '',
     default: true,
   },
   {
-    text: 'Last 24 hours',
+    text: '最近 24 小时',
     calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
     calcTo: () => '',
   },
   {
-    text: 'Last 3 days',
+    text: '最近 3 天',
     calcFrom: () => dayjs().subtract(3, 'day').startOf('day').toISOString(),
     calcTo: () => '',
   },
   {
-    text: 'Last 7 days',
+    text: '最近 7 天',
     calcFrom: () => dayjs().subtract(7, 'day').startOf('day').toISOString(),
     calcTo: () => '',
   },
@@ -714,11 +714,11 @@ export const getDefaultHelper = (helpers: DatetimeHelper[]) =>
 export const TIER_QUERY_LIMITS: {
   [x: string]: { text: string; value: 1 | 7 | 28 | 90; unit: 'day'; promptUpgrade: boolean }
 } = {
-  FREE: { text: '1 day', value: 1, unit: 'day', promptUpgrade: true },
-  PRO: { text: '7 days', value: 7, unit: 'day', promptUpgrade: true },
-  PAYG: { text: '7 days', value: 7, unit: 'day', promptUpgrade: true },
-  TEAM: { text: '28 days', value: 28, unit: 'day', promptUpgrade: true },
-  ENTERPRISE: { text: '90 days', value: 90, unit: 'day', promptUpgrade: false },
+  FREE: { text: '1 天', value: 1, unit: 'day', promptUpgrade: true },
+  PRO: { text: '7 天', value: 7, unit: 'day', promptUpgrade: true },
+  PAYG: { text: '7 天', value: 7, unit: 'day', promptUpgrade: true },
+  TEAM: { text: '28 天', value: 28, unit: 'day', promptUpgrade: true },
+  ENTERPRISE: { text: '90 天', value: 90, unit: 'day', promptUpgrade: false },
 }
 
 export const LOG_ROUTES_WITH_REPLICA_SUPPORT = [

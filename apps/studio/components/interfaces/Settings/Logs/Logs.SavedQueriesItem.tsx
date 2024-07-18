@@ -37,24 +37,24 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
   const { mutate: deleteContent } = useContentDeleteMutation({
     onSuccess: () => {
       setShowConfirmModal(false)
-      toast.success('Successfully deleted query')
+      toast.success('成功删除了查询')
     },
     onError: (error) => {
-      toast.error(`Failed to delete saved query: ${error.message}`)
+      toast.error(`删除已保存的查询失败：${error.message}`)
     },
   })
   const { mutate: updateContent } = useContentUpsertMutation({
     onSuccess: () => {
       setShowUpdateModal(false)
-      toast.success('Successfully updated query')
+      toast.success('成功更新了查询')
     },
     onError: (error) => {
-      toast.error(`Failed to update query: ${error.message}`)
+      toast.error(`更新查询失败：${error.message}`)
     },
   })
 
   const onConfirmDelete = async () => {
-    if (!ref || typeof ref !== 'string') return console.error('Invalid project reference')
+    if (!ref || typeof ref !== 'string') return console.error('无效的项目号')
     deleteContent({ projectRef: ref, ids: [item.id] })
   }
 
@@ -65,7 +65,7 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
     name: string
     description: string | null
   }) => {
-    if (!ref || typeof ref !== 'string') return console.error('Invalid project reference')
+    if (!ref || typeof ref !== 'string') return console.error('无效的项目号')
     updateContent({ projectRef: ref, payload: { ...item, name, description } })
   }
 
@@ -102,7 +102,7 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
               router.push(`/project/${ref}/logs/explorer?q=${encodeURIComponent(item.content.sql)}`)
             }
           >
-            Run
+            执行
           </Button>
           <div>
             <DropdownMenu>
@@ -113,13 +113,13 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
                   className="space-x-0 h-7 px-1.5"
                   icon={<IconMoreVertical />}
                 >
-                  <div className="sr-only">Actions</div>
+                  <div className="sr-only">操作</div>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="max-w-[144px]">
                 <DropdownMenuItem onClick={() => setShowUpdateModal(true)}>
                   <IconEdit size={10} className="mr-2" />
-                  Edit
+                  编辑
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
@@ -127,7 +127,7 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
                   }}
                 >
                   <IconTrash size={10} className="mr-2" />
-                  Delete
+                  删除
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -135,14 +135,14 @@ const SavedQueriesItem = ({ item }: SavedQueriesItemProps) => {
               variant="destructive"
               visible={showConfirmModal}
               confirmLabel="Delete query"
-              title="Confirm to delete saved query"
+              title="确认删除已保存的查询"
               onCancel={() => {
                 setShowConfirmModal(false)
               }}
               onConfirm={onConfirmDelete}
             >
               <p className="text-sm text-foreground-light">
-                Are you sure you want to delete {item.name}?
+                确定要删除 {item.name} 吗？
               </p>
             </ConfirmationModal>
             <UpdateSavedQueryModal

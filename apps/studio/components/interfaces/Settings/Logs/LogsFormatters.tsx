@@ -45,7 +45,7 @@ export const SelectionDetailedRow = ({
         text={value}
         className="group-hover:opacity-100 opacity-0 p-0 h-6 w-6 col-span-1 absolute top-1 right-1"
         type="text"
-        title="Copy to clipboard"
+        title="复制到剪贴板"
       />
     </div>
   )
@@ -61,7 +61,7 @@ export const ResponseCodeFormatter = ({ value }: any) => {
   if (!value) {
     return (
       <div>
-        <label className="text-xs text-border-stronger">No data</label>
+        <label className="text-xs text-border-stronger">无数据</label>
       </div>
     )
   }
@@ -145,7 +145,7 @@ export const SeverityFormatter = ({
   if (!value) {
     return (
       <div>
-        <label className="text-xs text-border-stronger">No data</label>
+        <label className="text-xs text-border-stronger">无数据</label>
       </div>
     )
   }
@@ -242,7 +242,7 @@ export const TimestampLocalFormatter = ({
  */
 export const timestampLocalFormatter = (value: string | number) => {
   const timestamp = isUnixMicro(value) ? unixMicroToIsoTimestamp(value) : value
-  return dayjs(timestamp).format('DD MMM  HH:mm:ss')
+  return dayjs(timestamp).format('MM-DD HH:mm:ss')
 }
 
 /*

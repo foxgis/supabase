@@ -23,23 +23,23 @@ const DatabaseApiSelectionRender = ({ log }: any) => {
     <>
       <div className={`${LOGS_TAILWIND_CLASSES.log_selection_x_padding} space-y-2`}>
         <SelectionDetailedRow
-          label="Status"
+          label="状态"
           value={status}
           valueRender={<ResponseCodeFormatter value={status} />}
         />
-        <SelectionDetailedRow label="Method" value={method} />
+        <SelectionDetailedRow label="方法" value={method} />
         <SelectionDetailedTimestampRow value={log.timestamp} />
-        <SelectionDetailedRow label="IP Address" value={ipAddress} />
-        <SelectionDetailedRow label="Origin Country" value={countryOrigin} />
-        {clientInfo && <SelectionDetailedRow label="Client" value={clientInfo} />}
-        {referer && <SelectionDetailedRow label="Referer" value={referer} />}
+        <SelectionDetailedRow label="IP 地址" value={ipAddress} />
+        <SelectionDetailedRow label="国家/地区" value={countryOrigin} />
+        {clientInfo && <SelectionDetailedRow label="客户端" value={clientInfo} />}
+        {referer && <SelectionDetailedRow label="来源" value={referer} />}
         {redirectIdentifier && (
-          <SelectionDetailedRow label="Redirect Identifier" value={redirectIdentifier} />
+          <SelectionDetailedRow label="重定向标识符" value={redirectIdentifier} />
         )}
       </div>
       <LogsDivider />
       <div className={`${LOGS_TAILWIND_CLASSES.log_selection_x_padding}`}>
-        <h3 className="text-lg text-foreground mb-4">Request Metadata</h3>
+        <h3 className="text-lg text-foreground mb-4">请求元数据</h3>
         <pre className="text-sm syntax-highlight overflow-x-auto">
           <div
             className="text-wrap"
@@ -51,7 +51,7 @@ const DatabaseApiSelectionRender = ({ log }: any) => {
       </div>
       <LogsDivider />
       <div className={`${LOGS_TAILWIND_CLASSES.log_selection_x_padding}`}>
-        <h3 className="text-lg text-foreground mb-4">Response Metadata</h3>
+        <h3 className="text-lg text-foreground mb-4">响应元数据</h3>
         <pre className="text-sm syntax-highlight overflow-x-auto">
           <div
             dangerouslySetInnerHTML={{

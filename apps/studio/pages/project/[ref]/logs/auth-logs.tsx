@@ -13,12 +13,12 @@ const LogsPage: NextPageWithLayout = () => {
   const canReadAuthLogs = useCheckPermissions(PermissionAction.ANALYTICS_READ, 'logflare')
 
   return !canReadAuthLogs ? (
-    <NoPermission isFullPage resourceText="access your project's authentication logs" />
+    <NoPermission isFullPage resourceText="访问项目的认证日志" />
   ) : (
     <>{project && <LogsPreviewer condensedLayout projectRef={project!.ref} queryType="auth" />}</>
   )
 }
 
-LogsPage.getLayout = (page) => <LogsLayout title="Auth Logs">{page}</LogsLayout>
+LogsPage.getLayout = (page) => <LogsLayout title="认证日志">{page}</LogsLayout>
 
 export default LogsPage

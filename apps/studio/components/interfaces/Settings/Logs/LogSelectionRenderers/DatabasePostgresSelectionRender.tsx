@@ -17,7 +17,7 @@ const DatabasePostgresSelectionRender = ({ log }: any) => {
   return (
     <>
       <div className={LOGS_TAILWIND_CLASSES.log_selection_x_padding}>
-        <span className="col-span-4 text-sm text-foreground-lighter">Event message</span>
+        <span className="col-span-4 text-sm text-foreground-lighter">事件消息</span>
 
         <div className="text-wrap mt-2 overflow-x-auto whitespace-pre-wrap font-mono  text-xs text-foreground">
           {log.event_message}
@@ -26,13 +26,13 @@ const DatabasePostgresSelectionRender = ({ log }: any) => {
       <LogsDivider />
       <div className={`${LOGS_TAILWIND_CLASSES.log_selection_x_padding} space-y-2`}>
         <SelectionDetailedRow
-          label="Severity"
+          label="日志级别"
           value={errorSeverity}
           valueRender={<SeverityFormatter value={errorSeverity} />}
         />
         <SelectionDetailedTimestampRow value={log.timestamp} />
-        <SelectionDetailedRow label="Postgres Username" value={postgresUsername} />
-        <SelectionDetailedRow label="Session ID" value={sessionId} />
+        <SelectionDetailedRow label="Postgres 用户名" value={postgresUsername} />
+        <SelectionDetailedRow label="会话 ID" value={sessionId} />
       </div>
       {hint && (
         <div className={`mt-4 ${LOGS_TAILWIND_CLASSES.log_selection_x_padding}`}>
@@ -41,7 +41,7 @@ const DatabasePostgresSelectionRender = ({ log }: any) => {
       )}
       <LogsDivider />
       <div className={LOGS_TAILWIND_CLASSES.log_selection_x_padding}>
-        <h3 className="mb-4 text-lg text-foreground">Metadata</h3>
+        <h3 className="mb-4 text-lg text-foreground">元数据</h3>
         <pre className="syntax-highlight overflow-x-auto text-sm">
           <div
             className="text-wrap"

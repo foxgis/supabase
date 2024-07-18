@@ -156,7 +156,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       !editorValue.includes('limit') &&
       daysDiff > LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD
     ) {
-      newWarnings.push({ text: 'When querying large date ranges, include a LIMIT clause.' })
+      newWarnings.push({ text: '当查询大时间跨度时，请包含 LIMIT 子句。' })
     }
     setWarnings(newWarnings)
   }, [editorValue, params.iso_timestamp_start, params.iso_timestamp_end])
@@ -193,7 +193,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       const whQuery = warehouseEditorValue
 
       if (!warehouseCollections?.length) {
-        toast.error('You do not have any collections in your warehouse yet.')
+        toast.error('您的仓库中没有任何集合。')
         return
       }
 
@@ -204,7 +204,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       )
 
       if (!collectionExists) {
-        toast.error('Please specify a collection name in the query')
+        toast.error('请在查询中指定集合名称。')
         return
       }
 
@@ -214,7 +214,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
 
       if (logsSourceExists) {
         toast.error(
-          'Cannot query logs tables from a warehouse query. Please remove the logs table from the query.'
+          '不能在数据仓库查询中查询日志表。请从查询中移除日志表。'
         )
         return
       }
@@ -287,11 +287,11 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       const error = e as { message: string }
       console.error(error)
       setSaveModalOpen(false)
-      toast.error(`Failed to save query: ${error.message}`)
+      toast.error(`保存查询失败：${error.message}`)
     },
     onSuccess: (values) => {
       setSaveModalOpen(false)
-      toast.success(`Saved "${values[0].name}" log query`)
+      toast.success(`“${values[0].name}”日志查询已保存`)
     },
   })
 
@@ -373,7 +373,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       <Modal
         size="medium"
         onCancel={() => setSaveModalOpen(!saveModalOpen)}
-        header="Save log query"
+        header="保存日志查询"
         visible={saveModalOpen}
         hideFooter
       >
@@ -409,8 +409,8 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
                 <div className="text-area-text-sm">
                   <Input.TextArea
                     layout="horizontal"
-                    labelOptional="Optional"
-                    label="Description"
+                    labelOptional="可选的"
+                    label="描述"
                     id="description"
                     rows={2}
                   />
@@ -419,7 +419,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
               <Modal.Separator />
               <Modal.Content className="flex items-center justify-end gap-2">
                 <Button size="tiny" type="default" onClick={() => setSaveModalOpen(!saveModalOpen)}>
-                  Cancel
+                  取消
                 </Button>
                 <Button
                   size="tiny"
@@ -427,7 +427,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
                   disabled={isSubmitting}
                   htmlType="submit"
                 >
-                  Save
+                  保存
                 </Button>
               </Modal.Content>
             </>

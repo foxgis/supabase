@@ -129,7 +129,7 @@ export const PolicyDetailsV2 = ({
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
                   <p className="text-foreground-light text-sm">表</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">on</code> 从句
+                    <code className="text-xs">on</code> 子句
                   </p>
                 </FormLabel_Shadcn_>
                 {authContext === 'database' && (
@@ -217,7 +217,7 @@ export const PolicyDetailsV2 = ({
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
                   <p className="text-foreground-light text-sm">策略行为</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">as</code> 从句
+                    <code className="text-xs">as</code> 子句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
@@ -259,7 +259,7 @@ export const PolicyDetailsV2 = ({
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
                   <p className="text-foreground-light text-sm">策略命令</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">for</code> 从句
+                    <code className="text-xs">for</code> 子句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
@@ -300,7 +300,7 @@ export const PolicyDetailsV2 = ({
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
                   <p className="text-foreground-light text-sm">目标角色</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">to</code> 从句
+                    <code className="text-xs">to</code> 子句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>

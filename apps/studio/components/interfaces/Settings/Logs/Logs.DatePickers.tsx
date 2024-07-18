@@ -88,7 +88,7 @@ const DatePickers: React.FC<Props> = ({ to, from, onChange, helpers }) => {
       <DatePicker
         triggerButtonClassName="rounded-l-none"
         triggerButtonType={selectedHelper ? 'default' : 'secondary'}
-        triggerButtonTitle="Custom"
+        triggerButtonTitle="自定义"
         onChange={(value) => {
           setHelperValue('')
           if (onChange) onChange(value)
@@ -103,7 +103,7 @@ const DatePickers: React.FC<Props> = ({ to, from, onChange, helpers }) => {
           ) {
             return (
               <Alert title={''} variant="warning" className="mx-3 pl-2 pr-2 pt-1 pb-2">
-                Large ranges may result in memory errors for big projects.
+                对于大项目，大的时间范围查询可能会导致内存错误。
               </Alert>
             )
           }

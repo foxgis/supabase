@@ -214,7 +214,7 @@ const LogTable = ({
 
   const copyResultsToClipboard = () => {
     copyToClipboard(stringData, () => {
-      toast.success('Results copied to clipboard')
+      toast.success('已将结果复制到剪贴板')
     })
   }
 
@@ -235,17 +235,17 @@ const LogTable = ({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button type="text" iconRight={<IconChevronDown />}>
-              Results {data && data.length ? `(${data.length})` : ''}
+              结果 {data && data.length ? `(${data.length})` : ''}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuItem onClick={downloadCSV} className="space-x-2">
               <IconDownload size="tiny" />
-              <div>Download CSV</div>
+              <div>下载 CSV</div>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={copyResultsToClipboard} className="space-x-2">
               <IconClipboard size="tiny" />
-              <div>Copy to clipboard</div>
+              <div>复制到剪贴板</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -254,7 +254,7 @@ const LogTable = ({
       {/* Using .hidden with a ref so I don't have to duplicate the code to download the CSV - Jordi */}
       <div className="hidden">
         <CSVButton buttonType={'text'} data={data}>
-          <div ref={downloadCsvRef}>Download CSV</div>
+          <div ref={downloadCsvRef}>下载 CSV</div>
         </CSVButton>
       </div>
 
@@ -265,7 +265,7 @@ const LogTable = ({
             icon={isHistogramShowing ? <IconEye /> : <IconEyeOff />}
             onClick={onHistogramToggle}
           >
-            Histogram
+            直方图
           </Button>
         </div>
       )}
@@ -279,7 +279,7 @@ const LogTable = ({
                 onClick={onSave}
                 disabled={!canCreateLogQuery || !hasEditorValue}
               >
-                Save query
+                保存查询
               </Button>
             </Tooltip.Trigger>
             {!canCreateLogQuery && (
@@ -293,7 +293,7 @@ const LogTable = ({
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      You need additional permissions to save your query
+                      您需要额外的权限才能保存查询
                     </span>
                   </div>
                 </Tooltip.Content>
@@ -309,7 +309,7 @@ const LogTable = ({
           iconRight={<Play size={12} />}
           loading={isLoading}
         >
-          Run
+          执行
         </Button>
       </div>
     </div>
@@ -331,7 +331,7 @@ const LogTable = ({
 
     return (
       <div className="flex w-1/2 justify-center px-5">
-        <Alert variant="danger" title="Sorry! An error occurred when fetching data." withIcon>
+        <Alert variant="danger" title="抱歉！拉取数据时出现了错误。" withIcon>
           <Renderer {...childProps} />
         </Alert>
       </div>
@@ -348,9 +348,9 @@ const LogTable = ({
             <div className="relative flex h-4 w-32 items-center rounded border border-dashed border-stronger px-2" />
           </div>
           <div className="flex flex-col gap-1 px-5">
-            <h3 className="text-lg text-foreground">No results found</h3>
+            <h3 className="text-lg text-foreground">没有找到结果</h3>
             <p className="text-sm text-foreground-lighter">
-              Try another search or adjust the filters
+              尝试使用其他搜索条件或调整过滤条件
             </p>
           </div>
         </div>

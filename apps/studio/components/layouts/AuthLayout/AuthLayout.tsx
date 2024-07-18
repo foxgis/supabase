@@ -31,13 +31,13 @@ const AuthProductMenu = () => {
         <div className="px-3">
           <Alert_Shadcn_>
             <AlertTitle_Shadcn_ className="text-sm">
-              Column Privileges has been shifted
+              列权限已经被移出
             </AlertTitle_Shadcn_>
             <AlertDescription_Shadcn_ className="text-xs">
-              <p className="mb-2">It can now be found in the menu under the database section.</p>
+              <p className="mb-2">现在可以在数据库选项卡的菜单中找到它。</p>
               <Button asChild type="default" size="tiny">
                 <Link href={`/project/${projectRef}/database/column-privileges`}>
-                  Head over to Database
+                  前往数据库
                 </Link>
               </Button>
             </AlertDescription_Shadcn_>

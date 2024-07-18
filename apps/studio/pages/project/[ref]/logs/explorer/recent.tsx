@@ -20,15 +20,15 @@ export const LogsSavedPage: NextPageWithLayout = () => {
 
   return (
     <div className="mx-auto w-full px-5 py-6 h-full">
-      <LogsExplorerHeader subtitle="Recent Queries" />
+      <LogsExplorerHeader subtitle="最近的查询" />
       {recent.length > 0 && (
         <Table
           head={
             <>
-              <Table.th>Snippets</Table.th>
+              <Table.th>代码片段</Table.th>
               <Table.th className="w-24">
                 <Button size="tiny" type="default" onClick={() => setRecentLogSnippets([])}>
-                  Clear history
+                  清除历史
                 </Button>
               </Table.th>
             </>
@@ -42,13 +42,13 @@ export const LogsSavedPage: NextPageWithLayout = () => {
         <>
           <div className="my-auto flex h-full flex-grow flex-col items-center justify-center gap-1">
             <IconClock className="animate-bounce" />
-            <h3 className="text-lg text-foreground">No Recent Queries Yet</h3>
+            <h3 className="text-lg text-foreground">暂无历史查询</h3>
             <p className="text-sm text-foreground-lighter">
-              Your recent queries run from the{' '}
+              在{' '}
               <Link href={`/project/${ref}/logs/explorer`}>
-                <span className="cursor-pointer font-bold underline">Query</span>
+                <span className="cursor-pointer font-bold underline">查询</span>
               </Link>{' '}
-              tab will show here.
+              标签下最近执行的查询将会显示在这里。
             </p>
           </div>
         </>

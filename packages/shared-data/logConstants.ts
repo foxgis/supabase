@@ -1,6 +1,6 @@
 const schemas = [
   {
-    name: 'API Edge',
+    name: 'API 端',
     reference: 'edge_logs',
     fields: [
       { path: 'id', type: 'string' },
@@ -67,7 +67,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Auth',
+    name: '认证',
     reference: 'auth_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -95,7 +95,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Storage',
+    name: '文件存储',
     reference: 'storage_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -130,7 +130,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Function Edge',
+    name: '边缘函数',
     reference: 'function_edge_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -159,7 +159,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Function Runtime',
+    name: '边缘函数运行时',
     reference: 'function_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -203,7 +203,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Realtime',
+    name: '实时消息',
     reference: 'realtime_logs',
     fields: [
       { path: 'event_message', type: 'string' },

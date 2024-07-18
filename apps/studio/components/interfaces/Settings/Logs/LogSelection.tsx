@@ -183,7 +183,7 @@ const LogSelection = ({
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <h3 className="text-sm text-foreground">Select an Event</h3>
+            <h3 className="text-sm text-foreground">选择一个事件</h3>
             <p className="text-xs text-foreground-lighter">
               {queryType === 'warehouse'
                 ? 'Select an Event to view the complete JSON payload'
@@ -196,10 +196,10 @@ const LogSelection = ({
         <Tabs_Shadcn_ defaultValue="details" className="flex flex-col">
           <TabsList_Shadcn_ className="px-2 pt-2">
             <TabsTrigger_Shadcn_ className="px-3" value="details">
-              Details
+              详情
             </TabsTrigger_Shadcn_>
             <TabsTrigger_Shadcn_ className="px-3" value="raw">
-              Raw
+              原始
             </TabsTrigger_Shadcn_>
             <Button
               type="text"

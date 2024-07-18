@@ -6,7 +6,7 @@ const DefaultPreviewSelectionRenderer = ({ log }: { log: PreviewLogData }) => (
   <div className={`space-y-6 py-4 px-5`}>
     {log?.timestamp && <SelectionDetailedTimestampRow value={log.timestamp} />}
     <div className="flex flex-col gap-3">
-      <h3 className="text-foreground-lighter text-sm">Event Message</h3>
+      <h3 className="text-foreground-lighter text-sm">事件消息</h3>
       {log?.event_message && (
         <CodeBlock
           className="prose dark:prose-dark max-w-full"
@@ -16,7 +16,7 @@ const DefaultPreviewSelectionRenderer = ({ log }: { log: PreviewLogData }) => (
       )}
     </div>
     <div className="flex flex-col gap-3">
-      <h3 className="text-foreground-lighter text-sm">Metadata</h3>
+      <h3 className="text-foreground-lighter text-sm">元数据</h3>
       <CodeBlock
         hideLineNumbers
         value={JSON.stringify(log?.metadata, null, 2) || ''}

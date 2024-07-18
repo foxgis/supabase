@@ -162,13 +162,13 @@ function _DatePicker({
               appliedEndDate &&
               appliedStartDate !== appliedEndDate ? (
                 <>
-                  {format(new Date(appliedStartDate), 'dd MMM')} -{' '}
-                  {format(new Date(appliedEndDate), 'dd MMM')}
+                  {format(new Date(appliedStartDate), 'MM-DD')} -{' '}
+                  {format(new Date(appliedEndDate), 'MM-DD')}
                 </>
               ) : appliedStartDate || appliedEndDate ? (
-                format(new Date((appliedStartDate || appliedEndDate)!), 'dd MMM')
+                format(new Date((appliedStartDate || appliedEndDate)!), 'MM-dd')
               ) : (
-                'Custom'
+                '自定义'
               )}
             </>
           )}
@@ -196,9 +196,9 @@ function _DatePicker({
                     </div>
                     <div
                       className={`
-                      flex 
-                      w-12 
-                      items-center 
+                      flex
+                      w-12
+                      items-center
                       justify-center
                       text-foreground-lighter
                     `}
@@ -231,7 +231,7 @@ function _DatePicker({
               onChange={(dates) => {
                 handleDatePickerChange(dates)
               }}
-              dateFormat="MMMM d, yyyy h:mm aa"
+              dateFormat="YYYY-MM-DD h:mm aa"
               startDate={startDate}
               endDate={endDate}
               minDate={minDate}
@@ -258,7 +258,7 @@ function _DatePicker({
                       <IconChevronLeft size={16} strokeWidth={2} />
                     </button>
                     <span className="text-sm text-foreground-light">
-                      {format(date, 'MMMM yyyy')}
+                      {format(date, 'yyyy-MM')}
                     </span>
                     <button
                       onClick={increaseMonth}
@@ -284,10 +284,10 @@ function _DatePicker({
           <div className="flex items-center justify-end gap-2 py-2 px-3 pb-4">
             {!hideClear && (
               <Button type="default" onClick={() => handleClear()}>
-                Clear
+                清除
               </Button>
             )}
-            <Button onClick={() => handleSubmit()}>Apply</Button>
+            <Button onClick={() => handleSubmit()}>应用</Button>
           </div>
         </>
       </PopoverContent_Shadcn_>

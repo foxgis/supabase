@@ -107,7 +107,7 @@ const LogsQueryPanel = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button type="default" iconRight={<ChevronDown />}>
-                    Data source <span className="ml-2 font-mono opacity-50">{dataSource}</span>
+                    数据源 <span className="ml-2 font-mono opacity-50">{dataSource}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">
@@ -118,10 +118,10 @@ const LogsQueryPanel = ({
                     <DropdownMenuItemContent
                       name={
                         <span>
-                          Warehouse <Badge variant="warning">NEW</Badge>
+                          数据仓库 <Badge variant="warning">新</Badge>
                         </span>
                       }
-                      desc="Query your data warehouse collections"
+                      desc="查询你的数据仓库集合"
                     />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -132,7 +132,7 @@ const LogsQueryPanel = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button type="default" iconRight={<ChevronDown />}>
-                    Templates
+                    模版
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="max-h-96 overflow-auto" side="bottom" align="start">
@@ -147,8 +147,8 @@ const LogsQueryPanel = ({
                   {warehouseCollections.length === 0 && (
                     <DropdownMenuItem className="hover:bg-transparent cursor-default">
                       <DropdownMenuItemContent
-                        name="No collections found"
-                        desc="You can create collections in the left sidebar."
+                        name="没有找到集合"
+                        desc="你可以在左侧边栏创建集合。"
                       />
                     </DropdownMenuItem>
                   )}
@@ -160,7 +160,7 @@ const LogsQueryPanel = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button type="default" iconRight={<ChevronDown />}>
-                    Insert source
+                    插入数据源
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -187,7 +187,7 @@ const LogsQueryPanel = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button type="default" iconRight={<ChevronDown />}>
-                    Templates
+                    模版
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">
@@ -250,7 +250,7 @@ const LogsQueryPanel = ({
                   size="large"
                   header={
                     <div className="flex flex-row justify-between items-center">
-                      <h3>Field Reference</h3>
+                      <h3>字段参考</h3>
                       <Button
                         type="text"
                         className="px-1"
@@ -271,23 +271,21 @@ const LogsQueryPanel = ({
                       icon={<BookOpen />}
                       className="px-2"
                     >
-                      <span>Field Reference</span>
+                      <span>字段参考</span>
                     </Button>
                   }
                 >
                   <SidePanel.Content>
                     <div className="pt-4 pb-2 space-y-1">
                       <p className="text-sm">
-                        The following table shows all the available paths that can be queried from
-                        each respective source. Do note that to access nested keys, you would need
-                        to perform the necessary{' '}
+                        下面的表显示了每种数据源所有可查询的字段。请注意，要访问嵌套的键，您需要使用必要的{' '}{' '}
                         <Link
                           href="https://supabase.com/docs/guides/platform/logs#unnesting-arrays"
                           target="_blank"
                           rel="noreferrer"
                           className="text-brand"
                         >
-                          unnesting joins
+                          解嵌连接
                           <IconExternalLink
                             size="tiny"
                             className="ml-1 inline -translate-y-[2px]"

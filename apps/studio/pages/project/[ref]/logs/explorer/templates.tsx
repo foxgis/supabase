@@ -76,7 +76,7 @@ const Template = ({ projectRef, template }: { projectRef?: string; template: Log
                 setShowPreview(!showPreview)
               }}
             >
-              <span>Preview</span>
+              <span>预览</span>
             </Button>
           </Popover>
         </div>

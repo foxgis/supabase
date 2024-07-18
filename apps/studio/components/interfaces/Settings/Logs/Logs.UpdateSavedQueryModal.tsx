@@ -30,7 +30,7 @@ export const UpdateSavedQueryModal = ({
       visible={visible}
       onCancel={onCancel}
       hideFooter
-      header="Update saved query"
+      header="更新已保存的查询"
       size="small"
     >
       <Form
@@ -43,13 +43,13 @@ export const UpdateSavedQueryModal = ({
         {({ isSubmitting }: { isSubmitting: boolean }) => (
           <>
             <Modal.Content>
-              <Input label="Name" id="name" name="name" />
+              <Input label="名称" id="name" name="name" />
             </Modal.Content>
             <Modal.Content>
               <Input.TextArea
-                label="Description"
+                label="描述"
                 id="description"
-                placeholder="Describe query"
+                placeholder="描述查询"
                 size="medium"
                 textAreaClassName="resize-none"
               />
@@ -57,10 +57,10 @@ export const UpdateSavedQueryModal = ({
             <Modal.Separator />
             <Modal.Content className="flex items-center justify-end gap-2">
               <Button htmlType="reset" type="default" onClick={onCancel} disabled={isSubmitting}>
-                Cancel
+                取消
               </Button>
               <Button htmlType="submit" loading={isSubmitting} disabled={isSubmitting}>
-                Save query
+                保存查询
               </Button>
             </Modal.Content>
           </>

@@ -23,17 +23,17 @@ export const LogsSavedPage: NextPageWithLayout = () => {
 
   return (
     <div className="mx-auto w-full px-5 py-6 h-full">
-      <LogsExplorerHeader subtitle="Saved Queries" />
+      <LogsExplorerHeader subtitle="保存的查询" />
       {saved.length > 0 && (
         <div className="flex flex-col gap-3 py-6">
           <Table
             headTrClasses="expandable-tr"
             head={
               <>
-                <Table.th>Name</Table.th>
-                <Table.th>Description</Table.th>
-                <Table.th>Created</Table.th>
-                <Table.th>Last updated</Table.th>
+                <Table.th>名称</Table.th>
+                <Table.th>描述</Table.th>
+                <Table.th>创建时间</Table.th>
+                <Table.th>更新时间</Table.th>
                 <Table.th></Table.th>
               </>
             }
@@ -46,13 +46,13 @@ export const LogsSavedPage: NextPageWithLayout = () => {
       {saved.length === 0 && (
         <div className="my-auto flex h-full flex-grow flex-col items-center justify-center gap-1">
           <IconSave className="animate-bounce" />
-          <h3 className="text-lg text-foreground">No Saved Queries Yet</h3>
+          <h3 className="text-lg text-foreground">暂无保存的查询</h3>
           <p className="text-sm text-foreground-lighter">
-            Saved queries will appear here. Queries can be saved from the{' '}
+            保存的查询会在这里显示。您可以从{' '}
             <Link href={`/project/${ref}/logs/explorer`}>
               <span className="cursor-pointer font-bold underline">Query</span>
             </Link>{' '}
-            tab.
+            标签下保存查询。
           </p>
         </div>
       )}

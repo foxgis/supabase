@@ -19,6 +19,6 @@ export const LogPage: NextPageWithLayout = () => {
   )
 }
 
-LogPage.getLayout = (page) => <LogsLayout title="Storage">{page}</LogsLayout>
+LogPage.getLayout = (page) => <LogsLayout title="文件存储">{page}</LogsLayout>
 
 export default LogPage
