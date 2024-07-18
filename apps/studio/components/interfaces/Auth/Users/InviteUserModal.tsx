@@ -18,7 +18,7 @@ const InviteUserModal = ({ visible, setVisible }: InviteUserModalProps) => {
   const handleToggle = () => setVisible(!visible)
   const { mutate: inviteUser, isLoading: isInviting } = useUserInviteMutation({
     onSuccess: (_, variables) => {
-      toast.success(`Sent invite email to ${variables.email}`)
+      toast.success(`向 ${variables.email} 发送确认邮件`)
       setVisible(false)
     },
   })
@@ -30,16 +30,16 @@ const InviteUserModal = ({ visible, setVisible }: InviteUserModalProps) => {
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
     if (values.email.length === 0) {
-      errors.email = 'Please enter a valid email'
+      errors.email = '请输入有效的电子邮件'
     } else if (!emailValidateRegex.test(values.email)) {
-      errors.email = `${values.email} is an invalid email`
+      errors.email = `${values.email} 不是有效的电子邮件`
     }
 
     return errors
   }
 
   const onInviteUser = async (values: any) => {
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     inviteUser({ projectRef, email: values.email })
   }
 
@@ -51,7 +51,7 @@ const InviteUserModal = ({ visible, setVisible }: InviteUserModalProps) => {
         size="small"
         key="invite-user-modal"
         visible={visible}
-        header="Invite a new user"
+        header="邀请新用户"
         onCancel={handleToggle}
       >
         <Form
@@ -66,11 +66,11 @@ const InviteUserModal = ({ visible, setVisible }: InviteUserModalProps) => {
                 <Input
                   id="email"
                   className="w-full"
-                  label="User email"
+                  label="用户的电子邮件"
                   icon={<Mail />}
                   type="email"
                   name="email"
-                  placeholder="User email"
+                  placeholder="用户的电子邮件"
                 />
               </Modal.Content>
 
@@ -82,7 +82,7 @@ const InviteUserModal = ({ visible, setVisible }: InviteUserModalProps) => {
                   loading={isInviting}
                   disabled={!canInviteUsers || isInviting}
                 >
-                  Invite user
+                  邀请用户
                 </Button>
               </Modal.Content>
             </>

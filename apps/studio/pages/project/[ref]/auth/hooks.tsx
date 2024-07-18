@@ -12,7 +12,7 @@ const Hooks: NextPageWithLayout = () => {
   const isPermissionsLoaded = usePermissionsLoaded()
 
   if (isPermissionsLoaded && !canReadAuthSettings) {
-    return <NoPermission isFullPage resourceText="access your project's auth hooks" />
+    return <NoPermission isFullPage resourceText="访问项目的认证授权功能" />
   } else {
     return (
       <FormsContainer>

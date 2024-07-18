@@ -30,7 +30,7 @@ const PolicyReview = ({
           <div className="flex items-center justify-between space-y-8">
             <div className="flex flex-col">
               <p className="text-sm text-foreground-light">
-                This is the SQL statement that will be used to create your policy.
+                这是用于创建策略的 SQL 语句。
               </p>
             </div>
           </div>
@@ -38,7 +38,7 @@ const PolicyReview = ({
             {isEmpty(policy) ? (
               <div className="my-10 flex items-center justify-center space-x-2 opacity-50">
                 <p className="text-base text-foreground-light">
-                  There are no changes made to this policy
+                  此策略尚未进行任何更改
                 </p>
               </div>
             ) : (
@@ -54,10 +54,10 @@ const PolicyReview = ({
       </Modal.Content>
       <div className="flex w-full items-center justify-end gap-2 border-t px-6 py-4 border-default">
         <Button type="default" onClick={onSelectBack}>
-          Back to edit
+          返回编辑
         </Button>
         <Button type="primary" disabled={isEmpty(policy)} onClick={onSavePolicy} loading={isSaving}>
-          Save policy
+          保存策略
         </Button>
       </div>
     </>

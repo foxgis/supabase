@@ -58,7 +58,7 @@ const QueryError = ({
           />
         </svg>
         <div className="flex flex-col gap-3">
-          <AlertTitle_Shadcn_ className="m-0">Error running SQL query</AlertTitle_Shadcn_>
+          <AlertTitle_Shadcn_ className="m-0">执行 SQL 查询时出错</AlertTitle_Shadcn_>
 
           <Collapsible_Shadcn_
             defaultOpen
@@ -73,7 +73,7 @@ const QueryError = ({
                   type="outline"
                   className={cn('group', styles['ai-icon__container--allow-hover-effect'])}
                 >
-                  {open ? 'Hide error details' : 'Show error details'}
+                  {open ? '隐藏错误详情' : '显示错误详情'}
                 </Button>
               </CollapsibleTrigger_Shadcn_>
               {!hasHipaaAddon && isAiAssistantEnabled && (
@@ -97,7 +97,7 @@ const QueryError = ({
                     )
                   }}
                 >
-                  Fix with Assistant
+                  使用助手修复
                 </Button>
               )}
             </div>

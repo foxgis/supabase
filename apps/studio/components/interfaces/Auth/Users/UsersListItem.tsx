@@ -49,15 +49,15 @@ const UserListItem = ({
         </span>
       </Table.td>
       <Table.td className="table-cell">
-        <span className="text-foreground">{createdAt?.format('DD MMM, YYYY HH:mm')}</span>
+        <span className="text-foreground">{createdAt?.format('YYYY-MM-DD HH:mm')}</span>
       </Table.td>
       <Table.td className="table-cell">
         {user?.last_sign_in_at ? (
-          lastSignedIn?.format('DD MMM, YYYY HH:mm')
+          lastSignedIn?.format('YYYY-MM-DD HH:mm')
         ) : !isUserConfirmed ? (
-          <Badge variant="warning">Waiting for verification..</Badge>
+          <Badge variant="warning">等待验证...</Badge>
         ) : (
-          'Never'
+          '从不'
         )}
       </Table.td>
       <Table.td className="table-cell">

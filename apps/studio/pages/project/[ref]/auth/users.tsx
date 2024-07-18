@@ -6,6 +6,6 @@ const UsersPage: NextPageWithLayout = () => {
   return <Users />
 }
 
-UsersPage.getLayout = (page) => <AuthLayout title="Auth">{page}</AuthLayout>
+UsersPage.getLayout = (page) => <AuthLayout title="认证授权">{page}</AuthLayout>
 
 export default UsersPage

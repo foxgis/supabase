@@ -96,7 +96,7 @@ export const AIPolicyPre = ({ onDiff, children, className }: AAIPolicyPreProps) 
                   'border border-background',
                 ].join(' ')}
               >
-                <span className="text-xs text-foreground">Apply changes</span>
+                <span className="text-xs text-foreground">应用变更</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Portal>
@@ -136,7 +136,7 @@ export const AIPolicyPre = ({ onDiff, children, className }: AAIPolicyPreProps) 
                   'border border-background',
                 ].join(' ')}
               >
-                <span className="text-xs text-foreground">Copy code</span>
+                <span className="text-xs text-foreground">复制代码</span>
               </div>
             </Tooltip.Content>
           </Tooltip.Portal>

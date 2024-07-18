@@ -43,12 +43,12 @@ const PolicyTableRowHeader = ({
           {isTableLocked && (
             <Badge>
               <span className="flex gap-2 items-center text-xs uppercase text-foreground-lighter">
-                <Lock size={12} /> Locked
+                <Lock size={12} /> 被锁定
               </span>
             </Badge>
           )}
           <Badge variant={table.rls_enabled ? 'brand' : 'warning'}>
-            {table.rls_enabled ? 'Row Level Security enabled' : 'Row Level Security disabled'}
+            {table.rls_enabled ? '行级安全性已启用' : '行级安全性已禁用'}
           </Badge>
         </div>
       </div>
@@ -63,7 +63,7 @@ const PolicyTableRowHeader = ({
                     disabled={!canToggleRLS}
                     onClick={() => onSelectToggleRLS(table)}
                   >
-                    {table.rls_enabled ? 'Disable RLS' : 'Enable RLS'}
+                    {table.rls_enabled ? '禁用 RLS' : '启用 RLS'}
                   </Button>
                 </TooltipTrigger_Shadcn_>
                 {!canToggleRLS && (
@@ -76,7 +76,7 @@ const PolicyTableRowHeader = ({
                       ].join(' ')}
                     >
                       <span className="text-xs text-foreground">
-                        You need additional permissions to toggle RLS
+                        您需要额外的权限才能启停 RLS
                       </span>
                     </div>
                   </TooltipContent_Shadcn_>
@@ -89,7 +89,7 @@ const PolicyTableRowHeader = ({
                 disabled={!canToggleRLS}
                 onClick={() => onSelectCreatePolicy()}
               >
-                Create policy
+                创建策略
               </Button>
             )}
           </div>

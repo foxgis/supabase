@@ -61,7 +61,7 @@ export const createSQLPolicy = (
 const createSQLStatementForCreatePolicy = (policyFormFields: PolicyFormField): PolicyForReview => {
   const { name, definition, check, command, schema, table } = policyFormFields
   const roles = policyFormFields.roles.length === 0 ? ['public'] : policyFormFields.roles
-  const description = `Add policy for the ${command} operation under the policy "${name}"`
+  const description = `为策略添加 ${command} 操作的权限`
   const statement = [
     `CREATE POLICY "${name}" ON "${schema}"."${table}"`,
     `AS PERMISSIVE FOR ${command}`,
@@ -85,10 +85,10 @@ export const createSQLStatementForUpdatePolicy = (
   const rolesChanged = has(fieldsToUpdate, ['roles'])
 
   const parameters = Object.keys(fieldsToUpdate)
-  const description = `Update policy's ${
+  const description = `更新策略的 ${
     parameters.length === 1
       ? parameters[0]
-      : `${parameters.slice(0, parameters.length - 1).join(', ')} and ${
+      : `${parameters.slice(0, parameters.length - 1).join(', ')} 和 ${
           parameters[parameters.length - 1]
         }`
   } `

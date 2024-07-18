@@ -24,19 +24,19 @@ const UsersPagination = ({ total, page, setPage, isFetchingNextPage }: UsersPagi
     <nav className="flex items-center justify-between overflow-hidden" aria-label="Pagination">
       <div className="hidden sm:block">
         <p className="text-xs text-foreground-lighter">
-          Showing
+          显示第
           <span className="px-1 font-medium text-foreground-light">{fromRow}</span>
-          to
+          -
           <span className="px-1 font-medium text-foreground-light">{toRow}</span>
-          of
+          条的结果，共计
           <span className="px-1 font-medium text-foreground-light">{total}</span>
-          results
+          条结果
         </p>
       </div>
       <div className="flex flex-1 justify-between sm:justify-end">
         {hasPrevious && !(isFetchingNextPage && page === 2) && (
           <Button type="default" onClick={() => setPage(page - 1)} disabled={isFetchingNextPage}>
-            Previous
+            上一页
           </Button>
         )}
         {(hasNext || isFetchingNextPage) && (
@@ -47,7 +47,7 @@ const UsersPagination = ({ total, page, setPage, isFetchingNextPage }: UsersPagi
             disabled={isFetchingNextPage}
             loading={isFetchingNextPage}
           >
-            Next
+            下一页
           </Button>
         )}
       </div>

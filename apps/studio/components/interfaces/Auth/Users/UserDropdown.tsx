@@ -51,29 +51,29 @@ const UserDropdown = ({
 
   const { mutate: resetPassword, isLoading: isResetting } = useUserResetPasswordMutation({
     onSuccess: () => {
-      toast.success(`Sent password recovery to ${user.email}`)
+      toast.success(`向 ${user.email} 发送密码重置邮件`)
     },
   })
   const { mutate: sendMagicLink, isLoading: isSendingLink } = useUserSendMagicLinkMutation({
     onSuccess: () => {
-      toast.success(`Sent magic link to ${user.email}`)
+      toast.success(`向 ${user.email} 发送 magic link`)
     },
   })
   const { mutate: sendOTP, isLoading: isSendingOTP } = useUserSendOTPMutation({
     onSuccess: () => {
-      toast.success(`Sent OTP to ${user.phone}`)
+      toast.success(`向 ${user.phone} 发送一次性密码`)
     },
   })
   const { mutate: deleteUser, isLoading: isDeleting } = useUserDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully deleted ${user.email}`)
+      toast.success(`成功删除了 ${user.email}`)
       setIsDeleteModalOpen(false)
     },
   })
   const { mutate: deleteUserMFAFactors, isLoading: isDeletingFactors } =
     useUserDeleteMFAFactorsMutation({
       onSuccess: () => {
-        toast.success("Successfully deleted the user's factors")
+        toast.success("成功删除了用户的认证方式")
         setIsDeleteFactorsModalOpen(false)
       },
     })
@@ -81,30 +81,30 @@ const UserDropdown = ({
   const isLoading = isResetting || isSendingLink || isSendingOTP || isDeleting || isDeletingFactors
 
   const handleResetPassword = async () => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
     resetPassword({ projectRef: ref, user })
   }
 
   async function handleSendMagicLink() {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
     sendMagicLink({ projectRef: ref, user })
   }
 
   async function handleSendOtp() {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
     sendOTP({ projectRef: ref, user })
   }
 
   async function handleDelete() {
     await timeout(200)
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
     deleteUser({ projectRef: ref, user })
   }
 
   async function handleDeleteFactors() {
     await timeout(200)
-    if (!ref) return console.error('Project ref is required')
-    if (!user.id) return console.error('User id is required')
+    if (!ref) return console.error('未找到项目号')
+    if (!user.id) return console.error('未找到用户 ID')
     deleteUserMFAFactors({ projectRef: ref, userId: user.id })
   }
 
@@ -123,7 +123,7 @@ const UserDropdown = ({
           <>
             <DropdownMenuItem className="space-x-2" onClick={handleViewUserInfo}>
               <UserIcon size={14} />
-              <p>View user info</p>
+              <p>查看用户信息</p>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {user.email !== null ? (
@@ -138,12 +138,12 @@ const UserDropdown = ({
                       }}
                     >
                       <Mail size={14} />
-                      <p>Send password recovery</p>
+                      <p>发送密码重置</p>
                     </DropdownMenuItem>
                   </TooltipTrigger_Shadcn_>
                   {!canSendRecovery && (
                     <TooltipContent_Shadcn_ side="left">
-                      You need additional permissions to send password recovery.
+                      您需要额外的权限才能发送密码重置。
                     </TooltipContent_Shadcn_>
                   )}
                 </Tooltip_Shadcn_>
@@ -157,12 +157,12 @@ const UserDropdown = ({
                       }}
                     >
                       <Mail size={14} />
-                      <p>Send magic link</p>
+                      <p>发送 magic link</p>
                     </DropdownMenuItem>
                   </TooltipTrigger_Shadcn_>
                   {!canSendMagicLink && (
                     <TooltipContent_Shadcn_ side="left">
-                      You need additional permissions to send magic link
+                      您需要额外的权限才能发送 magic link
                     </TooltipContent_Shadcn_>
                   )}
                 </Tooltip_Shadcn_>
@@ -179,12 +179,12 @@ const UserDropdown = ({
                     }}
                   >
                     <Mail size={14} />
-                    <p>Send OTP</p>
+                    <p>发送一次性密码</p>
                   </DropdownMenuItem>
                 </TooltipTrigger_Shadcn_>
                 {!canSendOtp && (
                   <TooltipContent_Shadcn_ side="left">
-                    You need additional permissions to send OTP
+                    您需要额外的权限才能发送一次性密码
                   </TooltipContent_Shadcn_>
                 )}
               </Tooltip_Shadcn_>
@@ -201,12 +201,12 @@ const UserDropdown = ({
                   className="space-x-2 !pointer-events-auto"
                 >
                   <ShieldOff size={14} />
-                  <p>Remove MFA factors</p>
+                  <p>移除 MFA 认证方式</p>
                 </DropdownMenuItem>
               </TooltipTrigger_Shadcn_>
               {!canRemoveMFAFactors && (
                 <TooltipContent_Shadcn_ side="left">
-                  You need additional permissions to remove a user's authentication factors
+                  您需要额外的权限才能移除用户的认证方式
                 </TooltipContent_Shadcn_>
               )}
             </Tooltip_Shadcn_>
@@ -221,12 +221,12 @@ const UserDropdown = ({
                   className="space-x-2 !pointer-events-auto"
                 >
                   <Trash size={14} />
-                  <p>Delete user</p>
+                  <p>删除用户</p>
                 </DropdownMenuItem>
               </TooltipTrigger_Shadcn_>
               {!canRemoveUser && (
                 <TooltipContent_Shadcn_ side="left">
-                  You need additional permissions to delete users
+                  您需要额外的权限才能删除用户
                 </TooltipContent_Shadcn_>
               )}
             </Tooltip_Shadcn_>
@@ -236,29 +236,29 @@ const UserDropdown = ({
 
       <ConfirmationModal
         visible={isDeleteModalOpen}
-        title="Confirm to delete"
-        confirmLabel="Delete"
+        title="确认删除"
+        confirmLabel="删除"
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={() => {
           handleDelete()
         }}
       >
         <p className="text-sm text-foreground-light">
-          This is permanent! Are you sure you want to delete user {user.email}?
+          这将是永久的！您确定要删除用户 {user.email}?
         </p>
       </ConfirmationModal>
 
       <ConfirmationModal
         visible={isDeleteFactorsModalOpen}
-        title="Confirm to delete"
-        confirmLabel="Delete"
+        title="确认删除"
+        confirmLabel="删除"
         onCancel={() => setIsDeleteFactorsModalOpen(false)}
         onConfirm={() => {
           handleDeleteFactors()
         }}
       >
         <p className="text-sm text-foreground-light">
-          This is permanent! Are you sure you want to delete the user's MFA factors?
+          这将是永久的！您确定要删除用户的 MFA 认证方式？
         </p>
       </ConfirmationModal>
     </>

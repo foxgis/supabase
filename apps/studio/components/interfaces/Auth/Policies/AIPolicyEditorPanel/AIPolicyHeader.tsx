@@ -43,14 +43,14 @@ export const AIPolicyHeader = ({
           )}
         >
           <X className="h-3 w-3" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">关闭</span>
         </SheetClose>
         <div className="h-[24px] w-[1px] bg-border-overlay" />
         <div>
           <SheetTitle className="truncate">
             {selectedPolicy !== undefined
-              ? `Update policy: ${selectedPolicy.name}`
-              : 'Create a new Row Level Security policy'}
+              ? `更新策略：${selectedPolicy.name}`
+              : '创建新的行级安全策略'}
           </SheetTitle>
           {isAiAssistantEnabled && selectedPolicy !== undefined && (
             <Collapsible_Shadcn_
@@ -61,7 +61,7 @@ export const AIPolicyHeader = ({
               <CollapsibleTrigger_Shadcn_ className="group  font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
                 <div className="flex items-center gap-x-2 w-full">
                   <p className="text-xs text-foreground-light group-hover:text-foreground transition">
-                    View policy details
+                    查看策略详情
                   </p>
                   <IconChevronDown
                     className="transition-transform duration-200"
@@ -74,27 +74,27 @@ export const AIPolicyHeader = ({
                 <div className="flex my-2">
                   <div>
                     <div className="text-xs flex items-start space-x-2 border-b py-1.5">
-                      <p className="w-[110px] text-foreground-light">Name:</p>
+                      <p className="w-[110px] text-foreground-light">名称：</p>
                       <p className="pr-4">{selectedPolicy?.name}</p>
                     </div>
                     <div className="text-xs flex items-start space-x-2 border-b py-1.5">
-                      <p className="w-[110px] text-foreground-light">Action:</p>
+                      <p className="w-[110px] text-foreground-light">操作：</p>
                       <p className="font-mono pr-4">{selectedPolicy?.action}</p>
                     </div>
                     <div className="text-xs flex items-start space-x-2 border-b py-1.5">
-                      <p className="w-[110px] text-foreground-light">Command:</p>
+                      <p className="w-[110px] text-foreground-light">命令：</p>
                       <p className="font-mono pr-4">{selectedPolicy?.command}</p>
                     </div>
                     <div className="text-xs flex items-start space-x-2 border-b py-1.5">
-                      <p className="w-[110px] text-foreground-light">Target roles:</p>
+                      <p className="w-[110px] text-foreground-light">目标角色：</p>
                       <p className="font-mono pr-4">{selectedPolicy?.roles.join(', ')}</p>
                     </div>
                     <div className="text-xs flex items-start space-x-2 border-b py-1.5">
-                      <p className="w-[110px] text-foreground-light">USING expression:</p>
+                      <p className="w-[110px] text-foreground-light">USING 表达式：</p>
                       <p className="font-mono pr-4">{selectedPolicy?.definition}</p>
                     </div>
                     <div className="text-xs flex items-start space-x-2 pt-1.5">
-                      <p className="w-[110px] text-foreground-light">CHECK expression:</p>
+                      <p className="w-[110px] text-foreground-light">CHECK 表达式：</p>
                       <p
                         className={`${selectedPolicy?.check ? '' : 'text-foreground-light'} font-mono pr-4`}
                       >
@@ -127,7 +127,7 @@ export const AIPolicyHeader = ({
           </button>
         </TooltipTrigger_Shadcn_>
         <TooltipContent_Shadcn_ side="left">
-          {assistantVisible ? 'Hide' : 'Show'} tools
+          {assistantVisible ? '隐藏' : '显示'} 工具
         </TooltipContent_Shadcn_>
       </Tooltip_Shadcn_>
     </SheetHeader>

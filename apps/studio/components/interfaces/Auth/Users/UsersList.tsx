@@ -52,13 +52,13 @@ const UsersList = ({
     <Table
       head={
         <>
-          <Table.th>Display Name</Table.th>
-          <Table.th>Email</Table.th>
-          <Table.th>Phone</Table.th>
-          <Table.th className="table-cell">Provider</Table.th>
-          <Table.th className="table-cell">Created</Table.th>
-          <Table.th className="table-cell">Last Sign In</Table.th>
-          <Table.th className="table-cell">User UID</Table.th>
+          <Table.th>显示名称</Table.th>
+          <Table.th>电子邮件</Table.th>
+          <Table.th>电话</Table.th>
+          <Table.th className="table-cell">提供商</Table.th>
+          <Table.th className="table-cell">创建时间</Table.th>
+          <Table.th className="table-cell">上次登录时间</Table.th>
+          <Table.th className="table-cell">用户 UID</Table.th>
           <Table.th></Table.th>
         </>
       }
@@ -72,7 +72,7 @@ const UsersList = ({
               <UsersListItemSkeleton />
             </>
           )}
-          {error && <AlertError error={error} subject="Failed to retrieve users" />}
+          {error && <AlertError error={error} subject="获取用户失败" />}
           {isSuccess && users.length === 0 && (
             <Table.tr>
               <Table.td
@@ -83,8 +83,8 @@ const UsersList = ({
                   <AlertCircle size={16} strokeWidth={2} />
                   <p className="text-foreground-light">
                     {keywords
-                      ? `No users matched the search query "${keywords}"`
-                      : 'No users in your project'}
+                      ? `没有用户匹配到搜索的 "${keywords}" `
+                      : '项目中没有用户'}
                   </p>
                 </div>
               </Table.td>

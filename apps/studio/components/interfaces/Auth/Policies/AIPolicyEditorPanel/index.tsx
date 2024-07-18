@@ -136,7 +136,7 @@ export const AIPolicyEditorPanel = memo(function ({
 
   const formId = 'rls-editor'
   const FormSchema = z.object({
-    name: z.string().min(1, 'Please provide a name'),
+    name: z.string().min(1, '请提供名称'),
     table: z.string(),
     behavior: z.string(),
     command: z.string(),
@@ -201,7 +201,7 @@ export const AIPolicyEditorPanel = memo(function ({
     onSuccess: async () => {
       // refresh all policies
       await queryClient.invalidateQueries(databasePoliciesKeys.list(ref))
-      toast.success('Successfully created new policy')
+      toast.success('成功创建了策略')
       onSelectCancel()
     },
     onError: (error) => setError(error),
@@ -209,7 +209,7 @@ export const AIPolicyEditorPanel = memo(function ({
 
   const { mutate: updatePolicy, isLoading: isUpdating } = useDatabasePolicyUpdateMutation({
     onSuccess: () => {
-      toast.success('Successfully updated policy')
+      toast.success('成功更新了策略')
       onSelectCancel()
     },
   })
@@ -274,7 +274,7 @@ export const AIPolicyEditorPanel = memo(function ({
 
     const assistantMessageBefore = generateThreadMessage({
       id: messageId,
-      content: 'Thinking...',
+      content: '思考中...',
       isDebug: true,
     })
     setDebugThread([...debugThread, assistantMessageBefore])
@@ -324,9 +324,9 @@ export const AIPolicyEditorPanel = memo(function ({
     }
 
     if (command === 'insert' && (check === undefined || check.length === 0)) {
-      return setFieldError('Please provide a SQL expression for the WITH CHECK statement')
+      return setFieldError('请提供一个 SQL 表达式用于 WITH CHECK 语句')
     } else if (command !== 'insert' && (using === undefined || using.length === 0)) {
-      return setFieldError('Please provide a SQL expression for the USING statement')
+      return setFieldError('请提供一个 SQL 表达式用于 USING 语句')
     } else {
       setFieldError(undefined)
     }
@@ -461,7 +461,7 @@ export const AIPolicyEditorPanel = memo(function ({
                     <div className="px-5 py-3 flex justify-between gap-3 bg-surface-75">
                       <div className="flex gap-2 items-center text-foreground-light">
                         <FileDiff className="h-4 w-4" />
-                        <span className="text-sm">Accept changes from assistant</span>
+                        <span className="text-sm">接受来自 AI 助手的更改</span>
                       </div>
                       <div className="flex gap-3">
                         <Button
@@ -498,7 +498,7 @@ export const AIPolicyEditorPanel = memo(function ({
                             )
                           }}
                         >
-                          Accept
+                          接受
                         </Button>
                       </div>
                     </div>
@@ -704,7 +704,7 @@ export const AIPolicyEditorPanel = memo(function ({
                               }}
                             />
                             <Label_Shadcn_ className="text-xs cursor-pointer" htmlFor="use-check">
-                              Use check expression
+                              使用 check 表达式
                             </Label_Shadcn_>
                           </div>
                         )}
@@ -730,7 +730,7 @@ export const AIPolicyEditorPanel = memo(function ({
                         disabled={isExecuting || isUpdating}
                         onClick={() => onClosingPanel()}
                       >
-                        Cancel
+                        取消
                       </Button>
                       <Button
                         form={formId}
@@ -752,7 +752,7 @@ export const AIPolicyEditorPanel = memo(function ({
                           }
                         }}
                       >
-                        Save policy
+                        保存策略
                       </Button>
                     </SheetFooter>
                   </div>
@@ -778,7 +778,7 @@ export const AIPolicyEditorPanel = memo(function ({
                         onClick={() => setTabId('templates')}
                         className="px-0 data-[state=active]:bg-transparent"
                       >
-                        Templates
+                        模版
                       </TabsTrigger_Shadcn_>
                       {isAiAssistantEnabled && !hasHipaaAddon && (
                         <TabsTrigger_Shadcn_
@@ -787,7 +787,7 @@ export const AIPolicyEditorPanel = memo(function ({
                           onClick={() => setTabId('conversation')}
                           className="px-0 data-[state=active]:bg-transparent"
                         >
-                          Assistant
+                          助手
                         </TabsTrigger_Shadcn_>
                       )}
                     </TabsList_Shadcn_>
@@ -863,8 +863,8 @@ export const AIPolicyEditorPanel = memo(function ({
 
       <ConfirmationModal
         visible={isClosingPolicyEditorPanel}
-        title="Discard changes"
-        confirmLabel="Discard"
+        title="舍弃更改"
+        confirmLabel="舍弃"
         onCancel={() => {
           setIsClosingPolicyEditorPanel(false)
         }}
@@ -874,8 +874,7 @@ export const AIPolicyEditorPanel = memo(function ({
         }}
       >
         <p className="text-sm text-foreground-light">
-          Are you sure you want to close the editor? Any unsaved changes on your policy and
-          conversations with the Assistant will be lost.
+          确定要关闭编辑器吗？在您的策略和与 AI 助手的对话中，任何未保存的更改都会丢失。
         </p>
       </ConfirmationModal>
     </>

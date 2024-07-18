@@ -51,8 +51,8 @@ const AuthProductMenu = () => {
 const AuthLayout = ({ title, children }: PropsWithChildren<AuthLayoutProps>) => {
   return (
     <ProjectLayout
-      title={title || '认证'}
-      product="认证"
+      title={title || '认证授权'}
+      product="认证授权"
       productMenu={<AuthProductMenu />}
       isBlocking={false}
     >

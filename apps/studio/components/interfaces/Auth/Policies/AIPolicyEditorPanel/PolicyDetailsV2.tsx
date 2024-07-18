@@ -108,12 +108,12 @@ export const PolicyDetailsV2 = ({
             name="name"
             render={({ field }) => (
               <FormItem_Shadcn_ className="col-span-6 flex flex-col gap-y-1">
-                <FormLabel_Shadcn_>Policy Name</FormLabel_Shadcn_>
+                <FormLabel_Shadcn_>策略名称</FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
                   <Input_Shadcn_
                     {...field}
                     className="bg-control border-control"
-                    placeholder="Provide a name for your policy"
+                    placeholder="为您的策略提供一个名称"
                   />
                 </FormControl_Shadcn_>
                 <FormMessage_Shadcn_ />
@@ -127,9 +127,9 @@ export const PolicyDetailsV2 = ({
             render={({ field }) => (
               <FormItem_Shadcn_ className="col-span-6 flex flex-col gap-y-1">
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
-                  <p className="text-foreground-light text-sm">Table</p>
+                  <p className="text-foreground-light text-sm">表</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">on</code> clause
+                    <code className="text-xs">on</code> 从句
                   </p>
                 </FormLabel_Shadcn_>
                 {authContext === 'database' && (
@@ -162,7 +162,7 @@ export const PolicyDetailsV2 = ({
                         sameWidthAsTrigger
                       >
                         <Command_Shadcn_>
-                          <CommandInput_Shadcn_ placeholder="Find a table..." />
+                          <CommandInput_Shadcn_ placeholder="查找表..." />
                           <CommandList_Shadcn_>
                             <CommandEmpty_Shadcn_>No tables found</CommandEmpty_Shadcn_>
                             <CommandGroup_Shadcn_>
@@ -215,9 +215,9 @@ export const PolicyDetailsV2 = ({
             render={({ field }) => (
               <FormItem_Shadcn_ className="col-span-6 flex flex-col gap-y-1">
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
-                  <p className="text-foreground-light text-sm">Policy Behavior</p>
+                  <p className="text-foreground-light text-sm">策略行为</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">as</code> clause
+                    <code className="text-xs">as</code> 从句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
@@ -232,15 +232,15 @@ export const PolicyDetailsV2 = ({
                     <SelectContent_Shadcn_>
                       <SelectGroup_Shadcn_>
                         <SelectItem_Shadcn_ value="permissive" className="text-sm">
-                          <p>Permissive</p>
+                          <p>允许</p>
                           <p className="text-foreground-light text-xs">
-                            Policies are combined using the "OR" Boolean operator
+                            策略组合使用“OR”布尔运算符
                           </p>
                         </SelectItem_Shadcn_>
                         <SelectItem_Shadcn_ value="restrictive" className="text-sm">
-                          <p>Restrictive</p>
+                          <p>限制</p>
                           <p className="text-foreground-light text-xs">
-                            Policies are combined using the "AND" Boolean operator
+                          策略组合使用“AND”布尔运算符
                           </p>
                         </SelectItem_Shadcn_>
                       </SelectGroup_Shadcn_>
@@ -257,9 +257,9 @@ export const PolicyDetailsV2 = ({
             render={({ field }) => (
               <FormItem_Shadcn_ className="col-span-12 flex flex-col gap-y-1">
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
-                  <p className="text-foreground-light text-sm">Policy Command</p>
+                  <p className="text-foreground-light text-sm">策略命令</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">for</code> clause
+                    <code className="text-xs">for</code> 从句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
@@ -298,17 +298,17 @@ export const PolicyDetailsV2 = ({
             render={({ field }) => (
               <FormItem_Shadcn_ className="col-span-12 flex flex-col gap-y-1">
                 <FormLabel_Shadcn_ className="flex items-center gap-x-4">
-                  <p className="text-foreground-light text-sm">Target Roles</p>
+                  <p className="text-foreground-light text-sm">目标角色</p>
                   <p className="text-foreground-light text-sm">
-                    <code className="text-xs">to</code> clause
+                    <code className="text-xs">to</code> 从句
                   </p>
                 </FormLabel_Shadcn_>
                 <FormControl_Shadcn_>
                   <MultiSelectV2
                     options={formattedRoles}
                     value={field.value.length === 0 ? [] : field.value?.split(', ')}
-                    placeholder="Defaults to all (public) roles if none selected"
-                    searchPlaceholder="Search for a role"
+                    placeholder="如果未选择角色则默认为所有角色（public）"
+                    searchPlaceholder="查找角色"
                     onChange={(roles) => form.setValue('roles', roles.join(', '))}
                   />
                 </FormControl_Shadcn_>

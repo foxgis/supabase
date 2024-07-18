@@ -83,7 +83,7 @@ const Users = () => {
             className="min-w-[275px]"
             name="email"
             id="email"
-            placeholder="Search by email or phone number"
+            placeholder="通过电子邮件或电话号码查找"
             icon={<IconSearch size="tiny" />}
             actions={[
               search && (
@@ -104,17 +104,17 @@ const Users = () => {
             id="verified"
             className="w-[200px]"
           >
-            <Listbox.Option label="All Users" value="">
-              All Users
+            <Listbox.Option label="所有用户" value="">
+              所有用户
             </Listbox.Option>
-            <Listbox.Option label="Verified Users" value="verified">
-              Verified Users
+            <Listbox.Option label="完成验证的用户" value="verified">
+              完成验证的用户
             </Listbox.Option>
-            <Listbox.Option label="Un-Verified Users" value="unverified">
-              Un-Verified Users
+            <Listbox.Option label="未验证的用户" value="unverified">
+              未验证的用户
             </Listbox.Option>
-            <Listbox.Option label="Anonymous Users" value="anonymous">
-              Anonymous Users
+            <Listbox.Option label="匿名用户" value="anonymous">
+              匿名用户
             </Listbox.Option>
           </Listbox>
         </div>
@@ -127,7 +127,7 @@ const Users = () => {
             loading={isRefetching && !isFetchingNextPage}
             onClick={() => refetch()}
           >
-            Reload
+            重新加载
           </Button>
           <AddUserDropdown projectKpsVersion={project?.kpsVersion} />
         </div>
@@ -137,7 +137,7 @@ const Users = () => {
           <div className="inline-block min-w-full align-middle">
             {isPermissionsLoaded && !canReadUsers ? (
               <div className="mt-8">
-                <NoPermission isFullPage resourceText="access your project's users" />
+                <NoPermission isFullPage resourceText="访问项目的用户" />
               </div>
             ) : (
               <UsersList

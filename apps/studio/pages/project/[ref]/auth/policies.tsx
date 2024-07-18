@@ -105,7 +105,7 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
   const schemaHasNoTables = (tables ?? []).length === 0
 
   if (isPermissionsLoaded && !canReadPolicies) {
-    return <NoPermission isFullPage resourceText="view this project's RLS policies" />
+    return <NoPermission isFullPage resourceText="查看项目的 RLS 策略" />
   }
 
   return (
@@ -124,7 +124,7 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
             />
             <Input
               size="small"
-              placeholder="Filter tables and policies"
+              placeholder="过滤表和策略"
               className="block w-64 text-sm placeholder-border-muted"
               value={searchString || ''}
               onChange={(e) => {
@@ -141,7 +141,7 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
                 rel="noreferrer"
                 href="https://supabase.com/docs/learn/auth-deep-dive/auth-row-level-security"
               >
-                Documentation
+                文档
               </a>
             </Button>
 
@@ -153,15 +153,15 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
                     disabled={!canCreatePolicies || schemaHasNoTables}
                     onClick={() => setShowPolicyAiEditor(true)}
                   >
-                    Create a new policy
+                    创建新策略
                   </Button>
                 </TooltipTrigger_Shadcn_>
                 {(!canCreatePolicies || schemaHasNoTables) && (
                   <TooltipContent_Shadcn_ side="bottom">
                     {!canCreatePolicies
-                      ? 'You need additional permissions to create RLS policies'
+                      ? '您需要额外的权限才能创建策略'
                       : schemaHasNoTables
-                        ? `No table in schema ${schema} to create policies on`
+                        ? `模式 ${schema} 中没有表可以用来创建策略`
                         : null}
                   </TooltipContent_Shadcn_>
                 )}

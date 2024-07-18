@@ -15,10 +15,10 @@ const UsersSidePanel = ({
   return (
     <SidePanel
       size="large"
-      header="View user info"
+      header="查看用户信息"
       visible={userSidePanelOpen}
       onCancel={() => setUserSidePanelOpen(false)}
-      cancelText="Close"
+      cancelText="关闭"
     >
       <SidePanel.Content className="space-y-10 py-6">
         <SimpleCodeBlock className="javascript">

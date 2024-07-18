@@ -53,11 +53,11 @@ const PolicyRow = ({
           <p className="font-mono text-xs text-foreground-light">{policy.command}</p>
           <p className="text-sm text-foreground">{policy.name}</p>
           {appliesToAnonymousUsers ? (
-            <Badge color="yellow">Applies to anonymous users</Badge>
+            <Badge color="yellow">应用于匿名用户</Badge>
           ) : null}
         </div>
         <div className="flex items-center space-x-2">
-          <p className="text-foreground-light text-sm">Applied to:</p>
+          <p className="text-foreground-light text-sm">应用于：</p>
           {policy.roles.slice(0, 3).map((role, i) => (
             <code key={`policy-${role}-${i}`} className="text-foreground-light text-xs">
               {role}
@@ -67,7 +67,7 @@ const PolicyRow = ({
             <Tooltip.Trigger>
               {policy.roles.length > 3 && (
                 <code key={`policy-etc`} className="text-foreground-light text-xs">
-                  + {policy.roles.length - 3} more roles
+                  和其他 {policy.roles.length - 3} 个角色
                 </code>
               )}
             </Tooltip.Trigger>
@@ -102,12 +102,12 @@ const PolicyRow = ({
             <DropdownMenuContent side="bottom" align="end" className="w-40">
               <DropdownMenuItem className="space-x-2" onClick={() => onSelectEditPolicy(policy)}>
                 <IconEdit size={14} />
-                <p>Edit policy</p>
+                <p>编辑策略</p>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="space-x-2" onClick={() => onSelectDeletePolicy(policy)}>
                 <IconTrash size={14} />
-                <p>Delete policy</p>
+                <p>删除策略</p>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -132,7 +132,7 @@ const PolicyRow = ({
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      You need additional permissions to edit RLS policies
+                      您需要额外的权限才能编辑 RLS 策略
                     </span>
                   </div>
                 </Tooltip.Content>

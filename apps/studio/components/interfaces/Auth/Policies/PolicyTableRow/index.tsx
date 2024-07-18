@@ -53,11 +53,10 @@ const PolicyTableRow = ({
             <Alert_Shadcn_>
               <WarningIcon />
               <AlertTitle_Shadcn_>
-                Row Level Security is enabled for this table, but no policies are set
+                这张表已启用行级安全性，但尚未设置策略
               </AlertTitle_Shadcn_>
               <AlertDescription_Shadcn_>
-                Select queries will return an{' '}
-                <span className="text-foreground underline">empty array</span> of results.
+                查询将返回一个 <span className="text-foreground underline">空数组</span> 的结果。
               </AlertDescription_Shadcn_>
             </Alert_Shadcn_>
           )}
@@ -65,17 +64,15 @@ const PolicyTableRow = ({
             <Alert_Shadcn_ variant="warning">
               <WarningIcon />
               <AlertTitle_Shadcn_>
-                Warning: Row Level Security is disabled. Your table is publicly readable and
-                writable.
+                警告：行级安全性已禁用。您的表是公开可读和可写的。
               </AlertTitle_Shadcn_>
               <AlertDescription_Shadcn_>
-                Anyone with the project's anonymous key can modify or delete your data. Enable RLS
-                and create access policies to keep your data secure.
+                任何人都可以使用项目的匿名密钥修改或删除您的数据。启用 RLS 并创建访问策略以保证数据安全。
               </AlertDescription_Shadcn_>
             </Alert_Shadcn_>
           )}
           {policies.length === 0 && (
-            <p className="text-foreground-light text-sm">No policies created yet</p>
+            <p className="text-foreground-light text-sm">还未创建策略</p>
           )}
         </div>
       )}

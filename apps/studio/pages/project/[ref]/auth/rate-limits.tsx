@@ -12,7 +12,7 @@ const PageLayout: NextPageWithLayout = () => {
   const isPermissionsLoaded = usePermissionsLoaded()
 
   if (isPermissionsLoaded && !canReadAuthSettings) {
-    return <NoPermission isFullPage resourceText="access your project's auth rate limit settings" />
+    return <NoPermission isFullPage resourceText="访问项目的认证限流设置" />
   } else {
     return (
       <FormsContainer>

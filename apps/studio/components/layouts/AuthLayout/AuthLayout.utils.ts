@@ -11,7 +11,7 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
       title: '配置',
       items: [
         {
-          name: '策略',
+          name: '认证策略',
           key: 'policies',
           url: `/project/${ref}/auth/policies`,
           items: [],
@@ -19,25 +19,25 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
         ...(IS_PLATFORM
           ? [
               {
-                name: 'Providers',
+                name: '供应商',
                 key: 'providers',
                 url: `/project/${ref}/auth/providers`,
                 items: [],
               },
               {
-                name: 'Rate Limits',
+                name: '限流',
                 key: 'rate-limits',
                 url: `/project/${ref}/auth/rate-limits`,
                 items: [],
               },
               {
-                name: 'Email Templates',
+                name: '电子邮件模板',
                 key: 'templates',
                 url: `/project/${ref}/auth/templates`,
                 items: [],
               },
               {
-                name: 'URL Configuration',
+                name: 'URL 配置',
                 key: 'url-configuration',
                 url: `/project/${ref}/auth/url-configuration`,
                 items: [],

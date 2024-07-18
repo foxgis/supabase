@@ -57,7 +57,7 @@ export const PolicyTemplates = ({
         size="small"
         id="template-search"
         icon={<Search size={16} className="text-foreground-muted" />}
-        placeholder="Search templates"
+        placeholder="查找模版"
         value={search}
         onChange={(event) => setSearch(event.target.value)}
       />

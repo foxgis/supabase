@@ -26,13 +26,13 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
     if (values.email.length === 0) {
-      errors.email = 'Please enter a valid email'
+      errors.email = '请输入有效的电子邮件'
     } else if (!emailValidateRegex.test(values.email)) {
-      errors.email = `${values.email} is an invalid email`
+      errors.email = `${values.email} 不是一个有效的电子邮件`
     }
 
     if (!values.password?.trim()) {
-      errors.password = 'Please enter a password'
+      errors.password = '请输入密码'
     }
 
     return errors
@@ -40,14 +40,14 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
 
   const { mutate: createUser, isLoading: isCreatingUser } = useUserCreateMutation({
     async onSuccess(res) {
-      toast.success(`Successfully created user: ${res.email}`)
+      toast.success(`成功创建了用户：${res.email}`)
       setVisible(false)
     },
   })
 
   const onCreateUser = async (values: any) => {
     if (!isSuccess) {
-      return toast.error(`Failed to create user: Error loading project config`)
+      return toast.error(`创建用户失败：加载项目配置失败`)
     }
     const { protocol, endpoint, serviceApiKey } = data.autoApiService
     createUser({ projectRef, endpoint, protocol, serviceApiKey, user: values })
@@ -59,7 +59,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
       size="small"
       key="create-user-modal"
       visible={visible}
-      header="Create a new user"
+      header="创建新用户"
       onCancel={handleToggle}
       loading={true}
     >
@@ -75,7 +75,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
               <Input
                 id="email"
                 autoComplete="off"
-                label="User Email"
+                label="用户的电子邮件"
                 icon={<IconMail />}
                 type="email"
                 name="email"
@@ -87,7 +87,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
                 id="password"
                 name="password"
                 type="password"
-                label="User Password"
+                label="用户密码"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                 icon={<IconLock />}
                 disabled={isCreatingUser || isLoading}
@@ -98,12 +98,12 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
                 value="true"
                 id="autoConfirmUser"
                 name="autoConfirmUser"
-                label="Auto Confirm User?"
+                label="自动确认用户？"
                 size="medium"
                 disabled={isCreatingUser || isLoading}
               />
               <p className="text-sm text-foreground-lighter">
-                A confirmation email will not be sent when creating a user via this form.
+                通过此表单创建用户时，不会发送确认电子邮件。
               </p>
             </Modal.Content>
             <Modal.Separator />
@@ -115,7 +115,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
                 loading={isCreatingUser}
                 disabled={!canCreateUsers || isCreatingUser || isLoading}
               >
-                Create user
+                创建用户
               </Button>
             </Modal.Content>
           </Loading>

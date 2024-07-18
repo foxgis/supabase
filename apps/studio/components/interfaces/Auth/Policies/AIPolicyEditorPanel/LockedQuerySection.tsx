@@ -35,7 +35,7 @@ export const LockedCreateQuerySection = ({
             <Lock size={14} className="text-foreground-lighter" />
           </div>
           <p className="text-xs text-foreground-lighter font-mono uppercase">
-            Use options above to edit
+            使用上面的选项编辑
           </p>
         </div>
         {/* <Button

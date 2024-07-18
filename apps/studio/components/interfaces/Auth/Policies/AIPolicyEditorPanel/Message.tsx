@@ -41,7 +41,7 @@ const Message = memo(function Message({
         )}
       >
         <AiIconAnimation
-          loading={content === 'Thinking...'}
+          loading={content === '思考中...'}
           className={cn('scale-75', '[&>div>div]:border-background')}
         />
       </div>
@@ -71,7 +71,7 @@ const Message = memo(function Message({
         {createdAt && (
           <span className="text-xs text-foreground-muted">{dayjs(createdAt).fromNow()}</span>
         )}
-        {isDebug && <Badge variant="warning">Debug request</Badge>}
+        {isDebug && <Badge variant="warning">调试请求</Badge>}
       </div>
       <ReactMarkdown
         className="gap-2.5 flex flex-col"

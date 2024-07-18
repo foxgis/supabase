@@ -15,7 +15,7 @@ export const generateDocsMenu = (
       items: [
         { name: '简介', key: 'introduction', url: `/project/${ref}/api`, items: [] },
         {
-          name: '授权认证',
+          name: '认证授权',
           key: 'auth',
           url: `/project/${ref}/api?page=auth`,
           items: [],

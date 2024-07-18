@@ -12,7 +12,7 @@ const PageLayout: NextPageWithLayout = () => {
   const isPermissionsLoaded = usePermissionsLoaded()
 
   if (isPermissionsLoaded && !canReadAuthSettings) {
-    return <NoPermission isFullPage resourceText="access your project's email settings" />
+    return <NoPermission isFullPage resourceText="访问项目的电子邮件设置" />
   } else {
     return (
       <FormsContainer>

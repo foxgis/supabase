@@ -89,7 +89,7 @@ export const generateProductRoutes = (
       ? [
           {
             key: 'auth',
-            label: '授权认证',
+            label: '认证授权',
             icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
           },

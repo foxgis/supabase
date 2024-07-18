@@ -42,7 +42,7 @@ const AddUserDropdown = ({ projectKpsVersion }: AddUserDropdownProps) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button type="primary" iconRight={<ChevronDown size={14} strokeWidth={1.5} />}>
-            Add user
+            添加用户
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="end">
@@ -57,12 +57,12 @@ const AddUserDropdown = ({ projectKpsVersion }: AddUserDropdownProps) => {
                   }}
                 >
                   <Mail size={14} />
-                  <p>Send invitation</p>
+                  <p>发送邀请</p>
                 </DropdownMenuItem>
               </TooltipTrigger_Shadcn_>
               {!canInviteUsers && (
                 <TooltipContent_Shadcn_ side="left">
-                  You need additional permissions to invite users
+                  您需要额外的权限才能邀请用户
                 </TooltipContent_Shadcn_>
               )}
             </Tooltip_Shadcn_>
@@ -78,12 +78,12 @@ const AddUserDropdown = ({ projectKpsVersion }: AddUserDropdownProps) => {
                 }}
               >
                 <UserPlus size={14} />
-                <p>Create new user</p>
+                <p>创建新用户</p>
               </DropdownMenuItem>
             </TooltipTrigger_Shadcn_>
             {!canCreateUsers && (
               <TooltipContent_Shadcn_ side="left">
-                You need additional permissions to create users
+                您需要额外的权限才能创建用户
               </TooltipContent_Shadcn_>
             )}
           </Tooltip_Shadcn_>
