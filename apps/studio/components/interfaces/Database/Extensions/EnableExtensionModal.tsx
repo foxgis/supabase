@@ -14,13 +14,13 @@ import {
   Alert_Shadcn_,
   Button,
   Form,
-  IconAlertTriangle,
   IconDatabase,
   IconPlus,
   Input,
   Listbox,
   Modal,
 } from 'ui'
+import { WarningIcon } from 'ui-patterns/Icons/StatusIcons'
 
 interface EnableExtensionModalProps {
   visible: boolean
@@ -190,7 +190,7 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
               {extension.name === 'pg_cron' && project?.cloud_provider === 'FLY' && (
                 <Modal.Content>
                   <Alert_Shadcn_ variant="warning">
-                    <IconAlertTriangle strokeWidth={2} />
+                    <WarningIcon />
                     <AlertTitle_Shadcn_>
                       pg_cron 扩展不支持 Fly 项目
                     </AlertTitle_Shadcn_>

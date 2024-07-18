@@ -1,56 +1,55 @@
 import { PermissionAction } from '@supabase/shared-types/out/constants'
-import { partition } from 'lodash'
-import { Plus } from 'lucide-react'
+import { FilePlus, FolderPlus, Plus } from 'lucide-react'
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { useParams } from 'common'
 import { untitledSnippetTitle } from 'components/interfaces/SQLEditor/SQLEditor.constants'
-import { createSqlSnippetSkeleton } from 'components/interfaces/SQLEditor/SQLEditor.utils'
-import AlertError from 'components/ui/AlertError'
+import {
+  createSqlSnippetSkeleton,
+  createSqlSnippetSkeletonV2,
+} from 'components/interfaces/SQLEditor/SQLEditor.utils'
 import { useContentDeleteMutation } from 'data/content/content-delete-mutation'
-import { SqlSnippet, useSqlSnippetsQuery } from 'data/content/sql-snippets-query'
+import { SqlSnippet } from 'data/content/sql-snippets-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useSelectedProject } from 'hooks/misc/useSelectedProject'
+import { useFlag } from 'hooks/ui/useFlag'
 import { uuidv4 } from 'lib/helpers'
 import { useProfile } from 'lib/profile'
-import { useSnippets, useSqlEditorStateSnapshot } from 'state/sql-editor'
-import { ResponseError } from 'types'
-import { Button, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_, Tooltip_Shadcn_ } from 'ui'
+import { useSqlEditorStateSnapshot } from 'state/sql-editor'
+import { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import {
-  InnerSideBarEmptyPanel,
   InnerSideBarFilterSearchInput,
+  InnerSideBarFilterSortDropdown,
+  InnerSideBarFilterSortDropdownItem,
   InnerSideBarFilters,
-  InnerSideBarShimmeringLoaders,
-  InnerSideMenuCollapsible,
-  InnerSideMenuCollapsibleContent,
-  InnerSideMenuCollapsibleTrigger,
   InnerSideMenuItem,
-  InnerSideMenuSeparator,
 } from 'ui-patterns/InnerSideMenu'
-import QueryItem from './QueryItem'
-import { selectItemsInRange } from './SQLEditorLayout.utils'
+import { SQLEditorNavV1 } from './SQLEditorNavV1'
+import { SQLEditorNav as SQLEditorNavV2 } from './SQLEditorNavV2/SQLEditorNav'
 
 export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: () => void }) => {
-  const { ref, id: activeId } = useParams()
   const router = useRouter()
   const { profile } = useProfile()
   const project = useSelectedProject()
+  const { ref, id: activeId } = useParams()
 
   const [searchText, setSearchText] = useState('')
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [selectedQueries, setSelectedQueries] = useState<string[]>([])
 
   const snap = useSqlEditorStateSnapshot()
-  const { isLoading, isSuccess, isError, error } = useSqlSnippetsQuery(ref, {
-    refetchOnWindowFocus: false,
-    staleTime: 300, // 5 minutes
-    onSuccess(data) {
-      if (ref) snap.setRemoteSnippets(data.snippets, ref)
-    },
-  })
+  const snapV2 = useSqlEditorV2StateSnapshot()
+  const enableFolders = useFlag('sqlFolderOrganization')
 
   const { mutate: deleteContent, isLoading: isDeleting } = useContentDeleteMutation({
     onSuccess: (data) => postDeleteCleanup(data),
@@ -75,116 +74,50 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
     }
   }
 
-  const snippets = useSnippets(ref)
-
-  const projectSnippets = useMemo(() => {
-    return snippets.filter((snippet) => snippet.visibility === 'project')
-  }, [snippets])
-
-  const filteredProjectSnippets = useMemo(() => {
-    if (searchText.length > 0) {
-      return projectSnippets.filter((tab) =>
-        tab.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-    }
-    return projectSnippets
-  }, [projectSnippets, searchText])
-
-  const personalSnippets = useMemo(() => {
-    const ss = snippets.filter(
-      (snippet) => snippet.visibility === 'user' && !snippet.content.favorite
-    )
-
-    if (searchText.length > 0) {
-      return ss.filter((tab) => tab.name.toLowerCase().includes(searchText.toLowerCase()))
-    }
-    return ss
-  }, [searchText, snippets])
-
-  const favoriteSnippets = useMemo(() => {
-    return snippets.filter((snippet) => snippet.content.favorite)
-  }, [snippets])
-
-  const filteredFavoriteSnippets = useMemo(() => {
-    if (searchText.length > 0) {
-      return favoriteSnippets.filter((tab) =>
-        tab.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-    }
-    return favoriteSnippets
-  }, [favoriteSnippets, searchText])
-
   const canCreateSQLSnippet = useCheckPermissions(PermissionAction.CREATE, 'user_content', {
     resource: { type: 'sql', owner_id: profile?.id },
     subject: { id: profile?.id },
   })
 
-  const onSelectQuery = (id?: string, isShiftHeld: boolean = false) => {
-    if (id === undefined) return
-
-    if (isShiftHeld) {
-      const [selectedFavSnippets, selectedOtherSnippets] = partition(
-        selectedQueries,
-        (id) => snippets.find((x) => x.id === id)?.content.favorite
-      )
-      const selectedSnippet = snippets.find((x) => x.id === id)
-      const isFavourite = selectedSnippet?.content.favorite
-
-      if (isFavourite) {
-        if (selectedFavSnippets.length > 0) {
-          const updatedSelectedFavSnippets = selectItemsInRange(
-            id,
-            filteredFavoriteSnippets,
-            selectedFavSnippets
-          )
-          setSelectedQueries(updatedSelectedFavSnippets.concat(selectedOtherSnippets))
-        } else {
-          selectQuery(id)
-        }
-      } else {
-        if (selectedOtherSnippets.length > 0) {
-          const updatedSelectedOtherSnippets = selectItemsInRange(
-            id,
-            personalSnippets,
-            selectedOtherSnippets
-          )
-          setSelectedQueries(updatedSelectedOtherSnippets.concat(selectedFavSnippets))
-        } else {
-          selectQuery(id)
-        }
-      }
-    } else {
-      selectQuery(id)
-    }
-  }
-
-  const selectQuery = (id: string) => {
-    if (selectedQueries.includes(id)) {
-      setSelectedQueries(selectedQueries.filter((x) => x !== id))
-    } else {
-      setSelectedQueries(selectedQueries.concat([id]))
-    }
+  const createNewFolder = () => {
+    // [Joshen] LEFT OFF: We need to figure out a good UX for creating folders
+    // - Modal? Directly chuck into the tree view like storage explorer?
+    if (!ref) return console.error('未找到项目号')
+    snapV2.addNewFolder({ projectRef: ref })
+    // createFolder({ projectRef: ref, name: 'test' })
   }
 
   const handleNewQuery = async () => {
-    if (!ref) return console.error('未找到项目')
-    if (!profile) return console.error('未找到用户')
+    if (!ref) return console.error('未找到项目号')
+    if (!project) return console.error('未找到项目')
+    if (!profile) return console.error('未找到用户资料')
     if (!canCreateSQLSnippet) {
       return toast('您的查询历史可能会丢失，因为您没有足够的权限')
     }
 
     try {
-      const snippet = createSqlSnippetSkeleton({
-        id: uuidv4(),
-        name: untitledSnippetTitle,
-        owner_id: profile?.id,
-        project_id: project?.id,
-      })
-
-      snap.addSnippet(snippet as SqlSnippet, ref)
-
-      router.push(`/project/${ref}/sql/${snippet.id}`)
-      setSearchText('')
+      if (enableFolders) {
+        const snippet = createSqlSnippetSkeletonV2({
+          id: uuidv4(),
+          name: untitledSnippetTitle,
+          owner_id: profile.id,
+          project_id: project.id,
+          sql: '',
+        })
+        snapV2.addSnippet({ projectRef: ref, snippet })
+        router.push(`/project/${ref}/sql/${snippet.id}`)
+        setSearchText('')
+      } else {
+        const snippet = createSqlSnippetSkeleton({
+          id: uuidv4(),
+          name: untitledSnippetTitle,
+          owner_id: profile?.id,
+          project_id: project?.id,
+        })
+        snap.addSnippet(snippet as SqlSnippet, ref)
+        router.push(`/project/${ref}/sql/${snippet.id}`)
+        setSearchText('')
+      }
     } catch (error: any) {
       toast.error(`创建查询失败: ${error.message}`)
     }
@@ -198,17 +131,63 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
   return (
     <>
       <div className="h-full flex flex-col justify-between">
-        <div className="mt-4 mb-2 flex flex-col gap-4">
-          <div className="mx-4">
-            <Button
-              block
-              type="default"
-              className="justify-start"
-              onClick={() => handleNewQuery()}
-              icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
-            >
-              新建查询
-            </Button>
+        <div className="mt-4 mb-2 flex flex-col gap-y-4">
+          <div className="mx-4 flex items-center justify-between gap-x-2">
+            {enableFolders ? (
+              <>
+                {/* [Joshen] Just double check with Jonny if this is okay */}
+                <InnerSideBarFilters className="w-full p-0 gap-0">
+                  <InnerSideBarFilterSearchInput
+                    name="search-queries"
+                    placeholder="查找查询..."
+                    aria-labelledby="查找查询"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value.trim())}
+                  >
+                    <InnerSideBarFilterSortDropdown
+                      value={snapV2.order}
+                      onValueChange={(value: any) => snapV2.setOrder(value)}
+                    >
+                      <InnerSideBarFilterSortDropdownItem key="name" value="name">
+                        名称
+                      </InnerSideBarFilterSortDropdownItem>
+                      <InnerSideBarFilterSortDropdownItem key="inserted_at" value="inserted_at">
+                        创建时间
+                      </InnerSideBarFilterSortDropdownItem>
+                    </InnerSideBarFilterSortDropdown>
+                  </InnerSideBarFilterSearchInput>
+                </InnerSideBarFilters>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      type="default"
+                      icon={<Plus className="text-foreground" />}
+                      className="w-[26px]"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" side="bottom" className="w-48">
+                    <DropdownMenuItem className="gap-x-2" onClick={() => handleNewQuery()}>
+                      <FilePlus size={14} />
+                      创建新的代码片段
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="gap-x-2" onClick={() => createNewFolder()}>
+                      <FolderPlus size={14} />
+                      创建新文件夹
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ) : (
+              <Button
+                block
+                type="default"
+                className="justify-start"
+                onClick={() => handleNewQuery()}
+                icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
+              >
+                新查询
+              </Button>
+            )}
           </div>
 
           <div className="px-2">
@@ -228,124 +207,17 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
             </InnerSideMenuItem>
           </div>
 
-          {isLoading && <InnerSideBarShimmeringLoaders />}
-
-          {isError && (
-            <div className="px-4">
-              <AlertError error={error as ResponseError} subject="加载 SQL 模板失败" />
-            </div>
-          )}
-
-          {isSuccess && (
-            <>
-              {snippets.length > 0 && (
-                <InnerSideBarFilters className="mx-2">
-                  <InnerSideBarFilterSearchInput
-                    name="search-queries"
-                    placeholder="查找历史查询..."
-                    onChange={(e) => setSearchText(e.target.value)}
-                    value={searchText}
-                    aria-labelledby="历史查询"
-                  />
-                </InnerSideBarFilters>
-              )}
-
-              {searchText.length > 0 &&
-                filteredProjectSnippets.length === 0 &&
-                filteredFavoriteSnippets.length === 0 &&
-                filteredProjectSnippets.length === 0 && (
-                  <InnerSideBarEmptyPanel
-                    className="mx-4"
-                    title="未发现查询"
-                    description="点击新建查询按钮创建查询"
-                    actions={
-                      <Button type="default" onClick={() => handleNewQuery()}>
-                        新建查询
-                      </Button>
-                    }
-                  />
-                )}
-
-              {filteredProjectSnippets.length > 0 && (
-                <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-                  <InnerSideMenuCollapsibleTrigger title="Project queries" />
-                  <InnerSideMenuCollapsibleContent>
-                    <>
-                      {filteredProjectSnippets.map((tabInfo) => (
-                        <QueryItem
-                          key={tabInfo.id}
-                          tabInfo={tabInfo}
-                          onDeleteQuery={postDeleteCleanup}
-                          hasQueriesSelected={selectedQueries.length > 0}
-                        />
-                      ))}
-                    </>
-                  </InnerSideMenuCollapsibleContent>
-                </InnerSideMenuCollapsible>
-              )}
-
-              {selectedQueries.length > 0 && (
-                <>
-                  <InnerSideMenuSeparator />
-                  <div className="px-4 flex items-center gap-x-2 py-2">
-                    <Button block type="danger" onClick={() => setShowDeleteModal(true)}>
-                      删除 {selectedQueries.length.toLocaleString()} 查询
-                      {selectedQueries.length > 1 ? '' : ''}
-                    </Button>
-                    <Tooltip_Shadcn_ delayDuration={100}>
-                      <TooltipTrigger_Shadcn_ asChild>
-                        <Button type="default" onClick={() => setSelectedQueries([])}>
-                          Cancel
-                        </Button>
-                      </TooltipTrigger_Shadcn_>
-                      <TooltipContent_Shadcn_ side="bottom">清除选中</TooltipContent_Shadcn_>
-                    </Tooltip_Shadcn_>
-                  </div>
-                </>
-              )}
-
-              {filteredFavoriteSnippets.length > 0 && (
-                <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-                  <InnerSideMenuCollapsibleTrigger title="Favorites" />
-                  <InnerSideMenuCollapsibleContent>
-                    <>
-                      {filteredFavoriteSnippets.map((tabInfo) => (
-                        <QueryItem
-                          key={tabInfo.id}
-                          tabInfo={tabInfo}
-                          isSelected={selectedQueries.includes(tabInfo.id as string)}
-                          hasQueriesSelected={selectedQueries.length > 0}
-                          onSelectQuery={(isShiftHeld) => onSelectQuery(tabInfo.id, isShiftHeld)}
-                          onDeleteQuery={postDeleteCleanup}
-                        />
-                      ))}
-                    </>
-                  </InnerSideMenuCollapsibleContent>
-                </InnerSideMenuCollapsible>
-              )}
-
-              {personalSnippets.length > 0 && (
-                <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-                  <InnerSideMenuCollapsibleTrigger title="您的查询" />
-                  <InnerSideMenuCollapsibleContent className="editor-product-menu">
-                    <>
-                      <div className="space-y-0.5">
-                        {personalSnippets.map((tabInfo) => (
-                          <QueryItem
-                            key={tabInfo.id}
-                            tabInfo={tabInfo}
-                            isSelected={selectedQueries.includes(tabInfo.id as string)}
-                            hasQueriesSelected={selectedQueries.length > 0}
-                            onSelectQuery={(isShiftHeld) => onSelectQuery(tabInfo.id, isShiftHeld)}
-                            onDeleteQuery={postDeleteCleanup}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  </InnerSideMenuCollapsibleContent>
-                </InnerSideMenuCollapsible>
-              )}
-            </>
+          {enableFolders ? (
+            <SQLEditorNavV2 searchText={searchText} />
+          ) : (
+            <SQLEditorNavV1
+              searchText={searchText}
+              setSearchText={setSearchText}
+              selectedQueries={selectedQueries}
+              handleNewQuery={handleNewQuery}
+              setSelectedQueries={setSelectedQueries}
+              setShowDeleteModal={setShowDeleteModal}
+            />
           )}
         </div>
 

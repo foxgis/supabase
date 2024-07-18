@@ -551,8 +551,9 @@ alter table public.messages
 
 -- 向 public.users 表插入一行并分配角色
 create function public.handle_new_user()
-returns trigger as
-$$
+returns trigger
+set search_path = ''
+as $$
   declare is_admin boolean;
   begin
     insert into public.users (id, username)
@@ -676,8 +677,9 @@ create policy "Can update own user data." on users
 * 当用户通过 Supabase Auth 完成注册时，此触发器会自动创建一个用户条目。
 */
 create function public.handle_new_user()
-returns trigger as
-$$
+returns trigger
+set search_path = ''
+as $$
   begin
     insert into public.users (id, full_name, avatar_url)
     values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url');
@@ -846,7 +848,9 @@ create policy "Users can update own profile." on profiles
 -- 此触发器会在通过 Supabase Auth 完成新用户注册时自动创建一个用户资料条目。
 -- 请参阅 https://supabase.com/docs/guides/auth/managing-user-data#using-triggers 以获取更多详细信息。
 create function public.handle_new_user()
-returns trigger as $$
+returns trigger
+set search_path = ''
+as $$
 begin
   insert into public.profiles (id, full_name, avatar_url)
   values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url');
@@ -1288,7 +1292,7 @@ create extension "supabase-dbdev";
     id: 25,
     type: 'template',
     title: '大对象',
-    description: '列出您的数据库中的大对象（表/索引）。',
+    description: '列出数据库中的大对象（表/索引）。',
     sql: `SELECT
     SCHEMA_NAME,
     relname,

@@ -8,44 +8,65 @@ import { SQL_TEMPLATES } from 'components/interfaces/SQLEditor/SQLEditor.queries
 import type { SqlSnippet } from 'data/content/sql-snippets-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useSelectedProject } from 'hooks/misc/useSelectedProject'
+import { useFlag } from 'hooks/ui/useFlag'
 import { uuidv4 } from 'lib/helpers'
 import { useProfile } from 'lib/profile'
 import Telemetry from 'lib/telemetry'
 import { useSqlEditorStateSnapshot } from 'state/sql-editor'
-import { createSqlSnippetSkeleton } from '../SQLEditor.utils'
+import { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
+import { createSqlSnippetSkeleton, createSqlSnippetSkeletonV2 } from '../SQLEditor.utils'
 import SQLCard from './SQLCard'
 
 const SQLQuickstarts = () => {
-  const { ref } = useParams()
   const router = useRouter()
+  const { ref } = useParams()
   const { profile } = useProfile()
   const project = useSelectedProject()
   const [, quickStart] = partition(SQL_TEMPLATES, { type: 'template' })
 
-  const telemetryProps = useTelemetryProps()
   const snap = useSqlEditorStateSnapshot()
+  const snapV2 = useSqlEditorV2StateSnapshot()
+  const telemetryProps = useTelemetryProps()
+  const enableFolders = useFlag('sqlFolderOrganization')
+
   const canCreateSQLSnippet = useCheckPermissions(PermissionAction.CREATE, 'user_content', {
     resource: { type: 'sql', owner_id: profile?.id },
     subject: { id: profile?.id },
   })
 
   const handleNewQuery = async (sql: string, name: string) => {
-    if (!ref) return console.error('未找到项目')
+    if (!ref) return console.error('未找到项目号')
+    if (!project) return console.error('未找到项目')
+    if (!profile) return console.error('未找到用户资料')
+
     if (!canCreateSQLSnippet) {
       return toast('您的查询不能被保存，因为您没有足够的权限')
     }
 
     try {
-      const snippet = createSqlSnippetSkeleton({
-        id: uuidv4(),
-        name,
-        sql,
-        owner_id: profile?.id,
-        project_id: project?.id,
-      })
-      snap.addSnippet(snippet as SqlSnippet, ref)
-      snap.addNeedsSaving(snippet.id!)
-      router.push(`/project/${ref}/sql/${snippet.id}`)
+      if (enableFolders) {
+        const snippet = createSqlSnippetSkeletonV2({
+          id: uuidv4(),
+          name,
+          sql,
+          owner_id: profile?.id,
+          project_id: project?.id,
+        })
+        snapV2.addSnippet({ projectRef: ref, snippet })
+        snapV2.addNeedsSaving(snippet.id)
+        router.push(`/project/${ref}/sql/${snippet.id}`)
+      } else {
+        const snippet = createSqlSnippetSkeleton({
+          id: uuidv4(),
+          name,
+          sql,
+          owner_id: profile.id,
+          project_id: project.id,
+        })
+        snap.addSnippet(snippet as SqlSnippet, ref)
+        snap.addNeedsSaving(snippet.id!)
+        router.push(`/project/${ref}/sql/${snippet.id}`)
+      }
     } catch (error: any) {
       toast.error(`Failed to create new query: ${error.message}`)
     }
