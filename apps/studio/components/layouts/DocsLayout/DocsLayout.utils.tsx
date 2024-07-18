@@ -88,7 +88,7 @@ export const generateDocsMenu = (
       title: '更多资料',
       items: [
         {
-          name: '指南',
+          name: '文档指南',
           key: 'guides',
           url: `https://supabase.com/docs`,
           icon: <IconBook size={14} strokeWidth={2} />,

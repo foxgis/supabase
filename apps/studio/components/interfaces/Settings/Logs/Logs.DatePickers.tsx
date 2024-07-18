@@ -103,7 +103,7 @@ const DatePickers: React.FC<Props> = ({ to, from, onChange, helpers }) => {
           ) {
             return (
               <Alert title={''} variant="warning" className="mx-3 pl-2 pr-2 pt-1 pb-2">
-                对于大项目，大的时间范围查询可能会导致内存错误。
+                大的时间范围查询可能会导致内存错误。
               </Alert>
             )
           }

@@ -1,6 +1,6 @@
 const schemas = [
   {
-    name: 'API 端',
+    name: 'API 网关',
     reference: 'edge_logs',
     fields: [
       { path: 'id', type: 'string' },

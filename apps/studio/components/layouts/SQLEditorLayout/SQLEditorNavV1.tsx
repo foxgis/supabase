@@ -167,10 +167,10 @@ export const SQLEditorNavV1 = ({
             <InnerSideBarFilters className="mx-2">
               <InnerSideBarFilterSearchInput
                 name="search-queries"
-                placeholder="Search queries..."
+                placeholder="查找查询..."
                 onChange={(e) => setSearchText(e.target.value.trim())}
                 value={searchText}
-                aria-labelledby="Search queries"
+                aria-labelledby="查找查询"
               />
             </InnerSideBarFilters>
           )}
@@ -181,11 +181,11 @@ export const SQLEditorNavV1 = ({
             filteredProjectSnippets.length === 0 && (
               <InnerSideBarEmptyPanel
                 className="mx-4"
-                title="No project queries found"
-                description="Click the New query button to create a new query"
+                title="未找到查询"
+                description="请点击新建查询按钮创建新查询"
                 actions={
                   <Button type="default" onClick={() => handleNewQuery()}>
-                    New query
+                    新建查询
                   </Button>
                 }
               />
@@ -214,16 +214,16 @@ export const SQLEditorNavV1 = ({
               <InnerSideMenuSeparator />
               <div className="px-4 flex items-center gap-x-2 py-2">
                 <Button block type="danger" onClick={() => setShowDeleteModal(true)}>
-                  Delete {selectedQueries.length.toLocaleString()} quer
-                  {selectedQueries.length > 1 ? 'ies' : 'y'}
+                  删除 {selectedQueries.length.toLocaleString()} 条查询
+                  {selectedQueries.length > 1 ? '' : ''}
                 </Button>
                 <Tooltip_Shadcn_ delayDuration={100}>
                   <TooltipTrigger_Shadcn_ asChild>
                     <Button type="default" onClick={() => setSelectedQueries([])}>
-                      Cancel
+                      取消
                     </Button>
                   </TooltipTrigger_Shadcn_>
-                  <TooltipContent_Shadcn_ side="bottom">Clear selection</TooltipContent_Shadcn_>
+                  <TooltipContent_Shadcn_ side="bottom">清除选中</TooltipContent_Shadcn_>
                 </Tooltip_Shadcn_>
               </div>
             </>
@@ -251,7 +251,7 @@ export const SQLEditorNavV1 = ({
 
           {personalSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="Your queries" />
+              <InnerSideMenuCollapsibleTrigger title="您的查询" />
               <InnerSideMenuCollapsibleContent className="editor-product-menu">
                 <>
                   <div className="space-y-0.5">

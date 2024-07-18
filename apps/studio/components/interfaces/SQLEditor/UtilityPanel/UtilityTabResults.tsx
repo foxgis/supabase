@@ -48,7 +48,7 @@ const UtilityTabResults = ({
     return (
       <div className="flex items-center gap-x-4 px-6 py-4 bg-table-header-light [[data-theme*=dark]_&]:bg-table-header-dark">
         <Loader2 size={14} className="animate-spin" />
-        <p className="m-0 border-0 font-mono text-sm">执行中...</p>
+        <p className="m-0 border-0 font-mono text-sm">正在执行...</p>
       </div>
     )
   } else if (result?.error) {

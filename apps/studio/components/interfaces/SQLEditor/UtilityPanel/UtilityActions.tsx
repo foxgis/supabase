@@ -279,14 +279,14 @@ const UtilityActions = ({
 
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center">
-          <DatabaseSelector
+          {/* <DatabaseSelector
             variant="connected-on-right"
             onSelectId={() => {
               if (enableFolders) snapV2.resetResult(id)
               else snap.resetResult(id)
             }}
-          />
-          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-both" />
+          /> */}
+          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-right" />
           <Button
             onClick={() => executeQuery()}
             disabled={isDisabled || isExecuting}
