@@ -123,20 +123,20 @@ const PolicyEditorModal = ({
     const { name, definition, check, command } = policyFormFields
 
     if (name.length === 0) {
-      return toast.error('Please provide a name for your policy')
+      return toast.error('请提供策略的名称')
     }
     if (!command) {
-      return toast.error('Please select an operation for your policy')
+      return toast.error('请选择策略的操作')
     }
     if (['SELECT', 'DELETE'].includes(command) && !definition) {
-      return toast.error('Please provide a USING expression for your policy')
+      return toast.error('请提供 USING 表达式')
     }
     if (command === 'INSERT' && !check) {
-      return toast.error('Please provide a WITH CHECK expression for your policy')
+      return toast.error('请提供 WITH CHECK 表达式')
     }
     if (command === 'UPDATE' && !definition && !check) {
       return toast.error(
-        'Please provide either a USING, or WITH CHECK expression, or both for your policy'
+        '请提供 USING 表达式、WITH CHECK 表达式或两者的组合'
       )
     }
     const policySQLStatement = createSQLPolicy(policyFormFields, selectedPolicyToEdit)
@@ -197,13 +197,12 @@ const PolicyEditorModal = ({
           }}
         >
           <p className="text-sm text-foreground-light">
-            There are unsaved changes. Are you sure you want to close the editor? Your changes will
-            be lost.
+            有未保存的更改。确定要关闭编辑器吗？您的更改将会丢失。
           </p>
         </ConfirmationModal>
         {view === POLICY_MODAL_VIEWS.SELECTION ? (
           <PolicySelection
-            description="Write rules with PostgreSQL's policies to fit your unique business needs."
+            description="编写 PostgreSQL 策略以满足您特定的业务需求。"
             onViewTemplates={onViewTemplates}
             onViewEditor={onViewEditor}
             showAssistantPreview={showAssistantPreview}
@@ -220,7 +219,7 @@ const PolicyEditorModal = ({
         ) : view === POLICY_MODAL_VIEWS.TEMPLATES ? (
           <PolicyTemplates
             templates={getGeneralPolicyTemplates(schema, table).filter((policy) => !policy.preview)}
-            templatesNote="* References a specific column in the table"
+            templatesNote="* 引用表中特定的列"
             onUseTemplate={onUseTemplate}
           />
         ) : view === POLICY_MODAL_VIEWS.REVIEW ? (

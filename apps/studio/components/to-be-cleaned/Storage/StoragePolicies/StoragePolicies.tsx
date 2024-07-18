@@ -176,7 +176,7 @@ const StoragePolicies = () => {
 
   return (
     <div className="flex min-h-full w-full flex-col">
-      <h3 className="text-xl">文件存储策略</h3>
+      <h3 className="text-xl">存储策略</h3>
       <p className="mt-2 text-sm text-foreground-light">
         通过策略定义存储桶级别所允许的操作来保护您的文件。
       </p>

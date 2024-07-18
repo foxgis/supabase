@@ -10,6 +10,6 @@ const StoragePoliciesPage: NextPageWithLayout = () => {
   )
 }
 
-StoragePoliciesPage.getLayout = (page) => <StorageLayout title="Policies">{page}</StorageLayout>
+StoragePoliciesPage.getLayout = (page) => <StorageLayout title="存储策略">{page}</StorageLayout>
 
 export default StoragePoliciesPage

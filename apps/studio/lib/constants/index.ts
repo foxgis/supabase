@@ -17,7 +17,7 @@ export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 export const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ'
 
 // should be used for all dayjs formattings shown to the user. Includes timezone info.
-export const DATETIME_FORMAT = 'DD MMM YYYY, HH:mm:ss (ZZ)'
+export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss (ZZ)'
 
 export const GOTRUE_ERRORS = {
   UNVERIFIED_GITHUB_USER: 'Error sending confirmation mail',

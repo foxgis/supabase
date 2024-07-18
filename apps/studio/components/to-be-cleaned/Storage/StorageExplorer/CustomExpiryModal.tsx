@@ -60,21 +60,21 @@ const CustomExpiryModal = ({ onCopyUrl }: CustomExpiryModalProps) => {
           <>
             <Modal.Content>
               <p className="text-sm text-foreground-light mb-2">
-                输入 URL 有效的时长：
+                输入 URL 的有效时长：
               </p>
               <div className="flex items-center space-x-2">
                 <Input disabled={isSubmitting} type="number" id="expiresIn" className="w-full" />
                 <Listbox id="units" className="w-[150px]">
-                  <Listbox.Option id="days" label="days" value="days">
+                  <Listbox.Option id="days" label="天" value="days">
                     天
                   </Listbox.Option>
-                  <Listbox.Option id="weeks" label="weeks" value="weeks">
+                  <Listbox.Option id="weeks" label="周" value="weeks">
                     周
                   </Listbox.Option>
-                  <Listbox.Option id="months" label="months" value="months">
+                  <Listbox.Option id="months" label="月" value="months">
                     月
                   </Listbox.Option>
-                  <Listbox.Option id="years" label="years" value="years">
+                  <Listbox.Option id="years" label="年" value="years">
                     年
                   </Listbox.Option>
                 </Listbox>

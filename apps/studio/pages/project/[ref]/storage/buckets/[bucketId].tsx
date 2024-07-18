@@ -25,7 +25,7 @@ const PageLayout: NextPageWithLayout = () => {
       {isSuccess ? (
         !bucket ? (
           <div className="flex h-full w-full items-center justify-center">
-            <p className="text-sm text-foreground-light">Bucket {bucketId} cannot be found</p>
+            <p className="text-sm text-foreground-light">无法找到存储桶 {bucketId}</p>
           </div>
         ) : (
           <StorageExplorer bucket={bucket} />
@@ -37,6 +37,6 @@ const PageLayout: NextPageWithLayout = () => {
   )
 }
 
-PageLayout.getLayout = (page) => <StorageLayout title="Buckets">{page}</StorageLayout>
+PageLayout.getLayout = (page) => <StorageLayout title="存储桶">{page}</StorageLayout>
 
 export default PageLayout

@@ -128,7 +128,7 @@ const StorageMenu = () => {
             <Menu.Group title={<span className="uppercase font-mono">配置</span>} />
             <Link href={`/project/${ref}/storage/policies`} legacyBehavior>
               <Menu.Item rounded active={page === 'policies'}>
-                <p className="truncate">策略</p>
+                <p className="truncate">存储策略</p>
               </Menu.Item>
             </Link>
             {/* <Link href={`/project/${ref}/settings/storage`}>

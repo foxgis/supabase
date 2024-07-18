@@ -16,11 +16,11 @@ const PolicyEditorFooter = ({
     <div className="flex w-full items-center justify-end gap-2">
       {showTemplates && (
         <Button type="default" onClick={onViewTemplates}>
-          View templates
+          查看模版
         </Button>
       )}
       <Button type="primary" onClick={onReviewPolicy}>
-        Review
+        检查
       </Button>
     </div>
   </div>

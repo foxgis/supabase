@@ -38,7 +38,7 @@ const PolicyDefinition = ({
           <div className="flex w-1/3 flex-col space-y-2">
             <div className="flex items-center space-x-2">
               <label className="text-base text-foreground-light" htmlFor="policy-name">
-                USING expression
+                USING 表达式
               </label>
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger>
@@ -54,17 +54,14 @@ const PolicyDefinition = ({
                       ].join(' ')}
                     >
                       <p className="text-xs text-foreground">
-                        This expression will be added to queries that refer to the table if
-                        row-level security is enabled.
+                        如果启用了行级安全性，此表达式将添加到对表的查询中。
                       </p>
                       <p className="text-xs text-foreground">
-                        Rows for which the expression returns true will be visible. Any rows for
-                        which the expression returns false or null will not be visible to the user
-                        (in a SELECT), and will not be available for modification (in an UPDATE or
-                        DELETE).
+                        对于返回 true 的表达式的行对将用户可见。对于返回 false 或 null 的表达式的行，将对用户不可见
+                        （SELECT 操作），并且也不能修改（UPDATE 或 DELETE操作）。
                       </p>
                       <p className="text-xs text-foreground">
-                        Such rows are silently suppressed - no error is reported.
+                        这些行将被静默限制，不会报告错误。
                       </p>
                     </div>
                   </Tooltip.Content>
@@ -72,7 +69,7 @@ const PolicyDefinition = ({
               </Tooltip.Root>
             </div>
             <p className="text-sm text-foreground-lighter">
-              Provide a SQL conditional expression that returns a boolean.
+              提供一个返回布尔值的 SQL 条件表达式。
             </p>
           </div>
           <div className={`w-2/3 ${showCheck(operation) ? 'h-32' : 'h-56'}`}>
@@ -85,7 +82,7 @@ const PolicyDefinition = ({
           <div className="flex w-1/3 flex-col space-y-2">
             <div className="flex items-center space-x-2">
               <label className="text-base text-foreground-light" htmlFor="policy-name">
-                WITH CHECK expression
+                WITH CHECK 表达式
               </label>
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger>
@@ -101,17 +98,15 @@ const PolicyDefinition = ({
                       ].join(' ')}
                     >
                       <p className="text-xs text-foreground">
-                        This expression will be used in INSERT and UPDATE queries against the table
-                        if row-level security is enabled.
+                        如果启用额行级安全性，
+                        此表达式将在对表的 INSERT 和 UPDATE 查询中使用。
                       </p>
                       <p className="text-xs text-foreground">
-                        Only rows for which the expression evaluates to true will be allowed. An
-                        error will be thrown if the expression evaluates to false or null for any of
-                        the records inserted or any of the records that result from the update.
+                        只有对于表达式返回为 true 的行才会被允许操作。如果表达式返回为 false 或 null，
+                        对于任何插入操作的新记录或者更新操作返回的记录将会抛出错误。
                       </p>
                       <p className="text-xs text-foreground">
-                        Note that this expression is evaluated against the proposed new contents of
-                        the row, not the original contents.
+                        请注意，此表达式是针对新行的数据进行求值，而不是行的原先的数据。
                       </p>
                     </div>
                   </Tooltip.Content>
@@ -119,7 +114,7 @@ const PolicyDefinition = ({
               </Tooltip.Root>
             </div>
             <p className="text-sm text-foreground-lighter">
-              Provide a SQL conditional expression that returns a boolean.
+              提供一个返回布尔值的 SQL 条件表达式。
             </p>
           </div>
           <div className={`w-2/3 ${showUsing(operation) ? 'h-32' : 'h-56'}`}>

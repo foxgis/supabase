@@ -52,7 +52,7 @@ const DEFAULT_EXPIRY = 10 * 365 * 24 * 60 * 60 // in seconds, default to 10 year
 const PREVIEW_SIZE_LIMIT = 10000000 // 10MB
 const BATCH_SIZE = 2
 const EMPTY_FOLDER_PLACEHOLDER_FILE_NAME = '.emptyFolderPlaceholder'
-const STORAGE_PROGRESS_INFO_TEXT = "Please do not close the browser until it's completed"
+const STORAGE_PROGRESS_INFO_TEXT = "完成之前请勿关闭浏览器。"
 
 class StorageExplorerStore {
   private projectRef: string = ''
@@ -289,7 +289,7 @@ class StorageExplorerStore {
     if (!/^[a-zA-Z0-9_-\s]*$/.test(formattedName)) {
       return UiToast({
         variant: 'destructive',
-        description: 'Folder name contains invalid special characters',
+        description: '文件夹名称包含无效的特殊字符',
         duration: 6000,
       })
     }
@@ -392,7 +392,7 @@ class StorageExplorerStore {
         this.addFileToPreviewCache(fileCache)
         return fileUrl
       } catch (error) {
-        console.error('Failed to get file URL', error)
+        console.error('获取文件的 URL 失败', error)
         return ''
       }
     }
@@ -422,7 +422,7 @@ class StorageExplorerStore {
 
   // https://stackoverflow.com/a/53058574
   private getFilesDataTransferItems = async (items: DataTransferItemList) => {
-    const { dismiss } = UiToast({ description: 'Retrieving items to upload...' })
+    const { dismiss } = UiToast({ description: '正在获取上传的文件...' })
     const files: (File & { path: string })[] = []
     const queue: FileSystemEntry[] = []
     for (const item of items) {
@@ -510,13 +510,12 @@ class StorageExplorerStore {
       toast.error(
         <div className="flex flex-col gap-y-1">
           <p className="text-foreground">
-            Failed to upload {numberOfFilesRejected} file{numberOfFilesRejected > 1 ? 's' : ''} as{' '}
-            {numberOfFilesRejected > 1 ? 'their' : 'its'} size
-            {numberOfFilesRejected > 1 ? 's are' : ' is'} beyond the upload limit of {value}
-            {unit}.
+            {numberOfFilesRejected} 个文件{numberOfFilesRejected > 1 ? '' : ''}上传失败，因为
+            {numberOfFilesRejected > 1 ? '它们的' : '它的'}大小
+            超出了上传文件的大小限制 {value} {unit}。
           </p>
           <p className="text-foreground-light">
-            You may change the file size upload limit under Storage in Project Settings.
+            您可以在项目设置中更改上传文件的大小限制。
           </p>
         </div>,
         { duration: 8000 }
@@ -565,8 +564,8 @@ class StorageExplorerStore {
     const toastId = toast.loading(
       <ToastLoader
         progress={0}
-        message={`Uploading ${formattedFilesToUpload.length} file${
-          formattedFilesToUpload.length > 1 ? 's' : ''
+        message={`正在上传 ${formattedFilesToUpload.length} 个文件${
+          formattedFilesToUpload.length > 1 ? '' : ''
         }...`}
         description={STORAGE_PROGRESS_INFO_TEXT}
       />
@@ -629,7 +628,7 @@ class StorageExplorerStore {
 
           if (error) {
             numberOfFilesUploadedFail += 1
-            toast.error(`Failed to upload ${file.name}: ${error.message}`)
+            toast.error(`上传文件 ${file.name} 失败：${error.message}`)
             resolve()
           } else {
             numberOfFilesUploadedSuccess += 1
@@ -651,8 +650,8 @@ class StorageExplorerStore {
         toast.loading(
           <ToastLoader
             progress={this.uploadProgress * 100}
-            message={`Uploading ${formattedFilesToUpload.length} file${
-              formattedFilesToUpload.length > 1 ? 's' : ''
+            message={`正在上传 ${formattedFilesToUpload.length} 个文件${
+              formattedFilesToUpload.length > 1 ? '' : ''
             }...`}
             description={STORAGE_PROGRESS_INFO_TEXT}
           />,
@@ -674,31 +673,31 @@ class StorageExplorerStore {
         toast.dismiss(toastId)
       } else if (numberOfFilesUploadedFail === numberOfFilesToUpload) {
         toast.error(
-          `Failed to upload ${numberOfFilesToUpload} file${numberOfFilesToUpload > 1 ? 's' : ''}!`,
+          `上传 ${numberOfFilesToUpload} 个文件${numberOfFilesToUpload > 1 ? '' : ''}失败！`,
           { id: toastId }
         )
       } else if (numberOfFilesUploadedSuccess === numberOfFilesToUpload) {
         toast.success(
-          `Successfully uploaded ${numberOfFilesToUpload} file${
-            numberOfFilesToUpload > 1 ? 's' : ''
-          }!`,
+          `成功上传了 ${numberOfFilesToUpload} 个文件${
+            numberOfFilesToUpload > 1 ? '' : ''
+          }！`,
           { id: toastId }
         )
       } else {
         toast.success(
-          `Successfully uploaded ${numberOfFilesUploadedSuccess} out of ${numberOfFilesToUpload} file${
-            numberOfFilesToUpload > 1 ? 's' : ''
-          }!`,
+          `已成功上传了 ${numberOfFilesToUpload} 个文件中的 ${numberOfFilesUploadedSuccess} 个${
+            numberOfFilesToUpload > 1 ? '' : ''
+          }！`,
           { id: toastId }
         )
       }
     } catch (e) {
-      toast.error('Failed to upload files', { id: toastId })
+      toast.error('批量上传文件失败', { id: toastId })
     }
 
     const t2 = new Date()
     console.log(
-      `Total time taken for ${formattedFilesToUpload.length} files: ${((t2 as any) - (t1 as any)) / 1000} seconds`
+      `上传 ${formattedFilesToUpload.length} 个文件总耗时：${((t2 as any) - (t1 as any)) / 1000} 秒`
     )
   }
 
@@ -709,7 +708,7 @@ class StorageExplorerStore {
     this.clearSelectedItems()
 
     const { dismiss } = UiToast({
-      description: 'Please do not close the browser until the move is completed',
+      description: '完成文件移动前请勿关闭浏览器',
       duration: Infinity,
     })
 
@@ -739,12 +738,12 @@ class StorageExplorerStore {
     )
 
     if (numberOfFilesMovedFail === this.selectedItemsToMove.length) {
-      UiToast({ variant: 'destructive', description: 'Failed to move files' })
+      UiToast({ variant: 'destructive', description: '移动文件失败' })
     } else {
       UiToast({
-        description: `Successfully moved ${
+        description: `成功将 ${
           this.selectedItemsToMove.length - numberOfFilesMovedFail
-        } files to ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : 'the root of your bucket'}`,
+        } 个文件移动到 ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : '存储桶根目录'}`,
       })
     }
 
@@ -775,7 +774,7 @@ class StorageExplorerStore {
         })
         return data.publicUrl
       } catch (error: any) {
-        toast.error(`Failed to fetch public file preview: ${error.message}`)
+        toast.error(`获取公开文件的预览失败：${error.message}`)
       }
     } else {
       try {
@@ -787,7 +786,7 @@ class StorageExplorerStore {
         })
         return data.signedUrl
       } catch (error: any) {
-        toast.error(`Failed to fetch signed url preview: ${error.message}`)
+        toast.error(`获取签名 URL 文件的预览失败：${error.message}`)
       }
     }
     return ''
@@ -820,7 +819,7 @@ class StorageExplorerStore {
     const toastId = toast.loading(
       <ToastLoader
         progress={0}
-        message={`Deleting ${prefixes.length} file(s)...`}
+        message={`正在删除 ${prefixes.length} 个文件...`}
         description={STORAGE_PROGRESS_INFO_TEXT}
       />
     )
@@ -842,7 +841,7 @@ class StorageExplorerStore {
       toast.loading(
         <ToastLoader
           progress={progress * 100}
-          message={`Deleting ${prefixes.length} file(s)...`}
+          message={`正在删除 ${prefixes.length} 个文件...`}
           description={STORAGE_PROGRESS_INFO_TEXT}
         />,
         { id: toastId }
@@ -867,7 +866,7 @@ class StorageExplorerStore {
       await Promise.all(
         parentFolderPrefixes.map((prefix) => this.validateParentFolderEmpty(prefix))
       )
-      toast.success(`Successfully deleted ${prefixes.length} file(s)`, { id: toastId })
+      toast.success(`成功删除了 ${prefixes.length} 个文件`, { id: toastId })
       await this.refetchAllOpenedFolders()
       this.clearSelectedItemsToDelete()
     } else {
@@ -877,14 +876,14 @@ class StorageExplorerStore {
 
   downloadFolder = async (folder: StorageItemWithColumn) => {
     let progress = 0
-    const toastId = toast.loading('Retrieving files from folder...')
+    const toastId = toast.loading('从文件夹中获取文件...')
 
     const files = await this.getAllItemsAlongFolder(folder)
 
     toast.loading(
       <ToastLoader
         progress={0}
-        message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+        message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
         description={STORAGE_PROGRESS_INFO_TEXT}
       />,
       { id: toastId }
@@ -916,7 +915,7 @@ class StorageExplorerStore {
               blob: new Blob([blob], { type: fileMimeType }),
             })
           } catch (error) {
-            console.error('Failed to download file', `${file.prefix}/${file.name}`)
+            console.error('下载文件失败', `${file.prefix}/${file.name}`)
             resolve(false)
           }
         })
@@ -931,7 +930,7 @@ class StorageExplorerStore {
         toast.loading(
           <ToastLoader
             progress={progress * 100}
-            message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+            message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
             description={STORAGE_PROGRESS_INFO_TEXT}
           />,
           { id: toastId }
@@ -951,7 +950,7 @@ class StorageExplorerStore {
     const zipWriter = new ZipWriter(zipFileWriter, { bufferedWrite: true })
 
     if (downloadedFiles.length === 0) {
-      toast.error(`Failed to download files from "${folder.name}"`, { id: toastId })
+      toast.error(`从 "${folder.name}" 中下载文件失败`, { id: toastId })
     }
 
     downloadedFiles.forEach((file) => {
@@ -968,10 +967,10 @@ class StorageExplorerStore {
 
     toast.success(
       downloadedFiles.length === files.length
-        ? `Successfully downloaded folder "${folder.name}"`
-        : `Downloaded folder "${folder.name}". However, ${
+        ? `成功下载了文件夹 "${folder.name}"`
+        : `成功下载了文件夹 "${folder.name}"。但是，有 ${
             files.length - downloadedFiles.length
-          } files did not download successfully.`,
+          } 个文件下载失败。`,
       { id: toastId }
     )
   }
@@ -993,7 +992,7 @@ class StorageExplorerStore {
     const returnBlob = true
     const showIndividualToast = false
     const toastId = toast.loading(
-      `Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`
+      `正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`
     )
 
     const promises = formattedFilesWithPrefix.map((file) => {
@@ -1016,7 +1015,7 @@ class StorageExplorerStore {
       toast.loading(
         <ToastLoader
           progress={progress * 100}
-          message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+          message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
           description={STORAGE_PROGRESS_INFO_TEXT}
         />,
         { id: toastId }
@@ -1038,14 +1037,14 @@ class StorageExplorerStore {
     link.click()
     link.parentNode?.removeChild(link)
 
-    toast.success(`Successfully downloaded ${downloadedFiles.length} files`, { id: toastId })
+    toast.success(`成功下载了 ${downloadedFiles.length} 个文件`, { id: toastId })
   }
 
   downloadFile = async (file: StorageItemWithColumn, showToast = true, returnBlob = false) => {
     const fileName: string = file.name
     const fileMimeType = file?.metadata?.mimetype ?? undefined
 
-    const toastId = showToast ? toast.loading(`Retrieving ${fileName}...`) : undefined
+    const toastId = showToast ? toast.loading(`获取文件 ${fileName}...`) : undefined
 
     const pathToFile = this.openedFolders
       .slice(0, file.columnIndex)
@@ -1073,12 +1072,12 @@ class StorageExplorerStore {
       link.parentNode?.removeChild(link)
       window.URL.revokeObjectURL(blob)
       if (toastId) {
-        toast.success(`Downloading ${fileName}`, { id: toastId })
+        toast.success(`正在下载 ${fileName}`, { id: toastId })
       }
       return true
     } catch {
       if (toastId) {
-        toast.error(`Failed to download ${fileName}`, { id: toastId })
+        toast.error(`下载 ${fileName} 失败`, { id: toastId })
       }
       return false
     }
@@ -1104,7 +1103,7 @@ class StorageExplorerStore {
           to: toPath,
         })
 
-        toast.success(`Successfully renamed "${originalName}" to "${newName}"`)
+        toast.success(`成功将 "${originalName}" 重命名为 "${newName}"`)
 
         // Clear file preview cache if the renamed file exists in the cache
         const updatedFilePreviewCache = this.filePreviewCache.filter(
@@ -1119,7 +1118,7 @@ class StorageExplorerStore {
 
         await this.refetchAllOpenedFolders()
       } catch (error: any) {
-        toast.error(`Failed to rename file: ${error.message}`)
+        toast.error(`重命名文件失败：${error.message}`)
       }
     }
   }
@@ -1179,7 +1178,7 @@ class StorageExplorerStore {
       )
     } catch (error: any) {
       if (!error.message.includes('aborted')) {
-        toast.error(`Failed to retrieve folder contents from "${folderName}": ${error.message}`)
+        toast.error(`从 "${folderName}" 中获取文件夹内容失败：${error.message}`)
       }
     }
   }
@@ -1220,7 +1219,7 @@ class StorageExplorerStore {
       })
     } catch (error: any) {
       if (!error.message.includes('aborted')) {
-        toast.error(`Failed to retrieve more folder contents: ${error.message}`)
+        toast.error(`获取更多文件夹内容失败：${error.message}`)
       }
     }
   }
@@ -1264,7 +1263,7 @@ class StorageExplorerStore {
           })
           return data
         } catch (error: any) {
-          toast.error(`Failed to fetch folders: ${error.message}`)
+          toast.error(`获取文件夹失败：${error.message}`)
           return []
         }
       })
@@ -1346,7 +1345,7 @@ class StorageExplorerStore {
     await this.refetchAllOpenedFolders()
     this.clearSelectedItemsToDelete()
 
-    toast.success(`Successfully deleted ${folder.name}`)
+    toast.success(`成功删除了 ${folder.name}`)
   }
 
   renameFolder = async (folder: StorageItemWithColumn, newName: string, columnIndex: number) => {
@@ -1358,7 +1357,7 @@ class StorageExplorerStore {
     const toastId = toast.loading(
       <ToastLoader
         progress={0}
-        message={`Renaming folder to ${newName}`}
+        message={`重命名文件夹为 ${newName}`}
         description={STORAGE_PROGRESS_INFO_TEXT}
       />
     )
@@ -1372,7 +1371,7 @@ class StorageExplorerStore {
      * todo: move this to a util file, as createFolder() uses same logic
      */
     if (newName.includes('/') || newName.includes('\\')) {
-      return toast.error(`Folder name cannot contain forward or back slashes.`)
+      return toast.error(`文件夹名称不能包含正斜杠或反斜杠。`)
     }
 
     this.updateRowStatus(originalName, STORAGE_ROW_STATUS.LOADING, columnIndex, newName)
@@ -1402,7 +1401,7 @@ class StorageExplorerStore {
             })
           } catch (error) {
             hasErrors = true
-            toast.error(`Failed to move ${fromPath} to the new folder`)
+            toast.error(`移动 ${fromPath} 到新文件夹失败`)
           }
           resolve()
         })
@@ -1419,7 +1418,7 @@ class StorageExplorerStore {
         toast.loading(
           <ToastLoader
             progress={progress * 100}
-            message={`Renaming folder to ${newName}`}
+            message={`文件夹重命名为 ${newName}`}
             description={STORAGE_PROGRESS_INFO_TEXT}
           />,
           { id: toastId }
@@ -1427,9 +1426,9 @@ class StorageExplorerStore {
       }, Promise.resolve())
 
       if (!hasErrors) {
-        toast.success(`Successfully renamed folder to ${newName}`, { id: toastId })
+        toast.success(`成功将文件夹重命名为 ${newName}`, { id: toastId })
       } else {
-        toast.error(`Renamed folder to ${newName} with some errors`, { id: toastId })
+        toast.error(`将文件夹重命名为 ${newName} 时发生错误`, { id: toastId })
       }
       await this.refetchAllOpenedFolders()
 
@@ -1440,7 +1439,7 @@ class StorageExplorerStore {
       )
       this.filePreviewCache = updatedFilePreviewCache
     } catch (e: any) {
-      toast.error(`Failed to rename folder to ${newName}: ${e.message}`, { id: toastId })
+      toast.error(`将文件夹重命名为 ${newName} 失败：${e.message}`, { id: toastId })
     }
   }
 
@@ -1539,9 +1538,7 @@ class StorageExplorerStore {
         const updatedFileName = fileName + ` (${itemsWithSameNameInColumn.length + 1})`
         return fileExt ? `${updatedFileName}.${fileExt}` : updatedFileName
       } else {
-        toast.error(
-          `The name ${name} already exists in the current directory. Please use a different name.`
-        )
+        toast.error(`名称 ${name} 已存在于当前目录。请使用不同的名称。`)
         return null
       }
     }

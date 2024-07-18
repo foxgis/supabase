@@ -24,10 +24,10 @@ const PolicyEditorModalTitle = ({
 }: PolicyEditorModalTitleProps) => {
   const getTitle = () => {
     if (view === POLICY_MODAL_VIEWS.EDITOR || view === POLICY_MODAL_VIEWS.SELECTION) {
-      return `${isNewPolicy ? 'Adding new policy to' : 'Editing policy from'} ${schema}.${table}`
+      return `正在为 ${schema}.${table} ${isNewPolicy ? '添加新策略' : '编辑策略'} `
     }
     if (view === POLICY_MODAL_VIEWS.REVIEW) {
-      return `Reviewing policy to be ${isNewPolicy ? 'created' : 'updated'} on ${schema}.${table}`
+      return `正在检查 {schema}.${table} 上${isNewPolicy ? '待创建的' : '待更新的'} 策略$`
     }
   }
 
@@ -41,7 +41,7 @@ const PolicyEditorModalTitle = ({
           >
             <IconChevronLeft strokeWidth={2} size={14} />
           </span>
-          <h4>Select a template to use for your new policy</h4>
+          <h4>请为您的新策略选择一个模板</h4>
         </div>
       </div>
     )
@@ -58,7 +58,7 @@ const PolicyEditorModalTitle = ({
             icon={<FlaskConical size={14} />}
             onClick={onToggleFeaturePreviewModal}
           >
-            Try Supabase Assistant
+            试用 Supabase Assistant
           </Button>
         )}
         <Button asChild type="default" icon={<IconExternalLink size={14} />}>
@@ -68,7 +68,7 @@ const PolicyEditorModalTitle = ({
             rel="noreferrer"
           >
             {' '}
-            Documentation
+            文档
           </a>
         </Button>
       </div>

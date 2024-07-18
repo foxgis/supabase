@@ -20,7 +20,7 @@ const TemplatePreview = ({ selectedTemplate }: TemplatePreviewProps) => {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-foreground-light text-sm">Policy SQL template:</label>
+              <label className="text-foreground-light text-sm">策略的 SQL 模板：</label>
               <div className="h-64">
                 <SqlEditor readOnly queryId={id} defaultValue={statement} />
               </div>
