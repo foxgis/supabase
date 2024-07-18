@@ -11,7 +11,7 @@ import {
   IconKey,
 } from 'ui'
 
-const DEFAULT_KEY = { name: 'hide', key: 'SUPABASE_KEY' }
+const DEFAULT_KEY = { name: '隐藏', key: 'SUPABASE_KEY' }
 
 interface LangSelectorProps {
   selectedLang: string
@@ -64,7 +64,7 @@ const LangSelector = ({
           <div className="flex">
             <div className="flex items-center gap-2 p-1 pl-2 text-xs text-foreground-lighter">
               <IconKey size={12} strokeWidth={1.5} />
-              <span>Project API key :</span>
+              <span>API key ：</span>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -73,7 +73,7 @@ const LangSelector = ({
               <DropdownMenuContent align="end" side="bottom">
                 <>
                   <DropdownMenuItem key="hide" onClick={() => setShowApiKey(DEFAULT_KEY)}>
-                    hide
+                    隐藏
                   </DropdownMenuItem>
                   {apiKey && (
                     <DropdownMenuItem

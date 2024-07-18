@@ -11,7 +11,7 @@ const snippets = {
     },
   }),
   install: () => ({
-    title: 'Install',
+    title: '安装',
     bash: null,
     js: {
       language: 'bash',
@@ -19,10 +19,10 @@ const snippets = {
     },
   }),
   init: (endpoint: string) => ({
-    title: 'Initializing',
+    title: '初始化',
     bash: {
       language: 'bash',
-      code: `# No client library required for Bash.`,
+      code: `# 无需客户端库即可在 Bash 中使用。`,
     },
     js: {
       language: 'js',
@@ -69,7 +69,7 @@ Future<void> main() async {
     endpoint: string,
     { keyName, showBearer = true }: { keyName?: string; showBearer?: boolean }
   ) => ({
-    title: 'Example usage',
+    title: '示例用法',
     bash: {
       language: 'bash',
       code: `
@@ -117,7 +117,7 @@ const supabase = createClient(SUPABASE_URL, process.env.${keyName || 'SUPABASE_K
             : ''
         }}`
     return {
-      title: 'Invoke function ',
+      title: '调用函数',
       bash: {
         language: 'bash',
         code: `
@@ -143,10 +143,10 @@ else console.log(data)
     }
   },
   subscribeAll: (listenerName: string, resourceId: string) => ({
-    title: 'Subscribe to all events',
+    title: '订阅所有事件',
     bash: {
       language: 'bash',
-      code: `# Realtime streams are only supported by our client libraries`,
+      code: `# 只能通过客户端库支持实时消息`,
     },
     js: {
       language: 'js',
@@ -163,10 +163,10 @@ const ${listenerName} = supabase.channel('custom-all-channel')
     },
   }),
   subscribeInserts: (listenerName: string, resourceId: string) => ({
-    title: 'Subscribe to inserts',
+    title: '订阅插入操作',
     bash: {
       language: 'bash',
-      code: `# Realtime streams are only supported by our client libraries`,
+      code: `# 只能通过客户端库支持实时消息`,
     },
     js: {
       language: 'js',
@@ -183,10 +183,10 @@ const ${listenerName} = supabase.channel('custom-insert-channel')
     },
   }),
   subscribeUpdates: (listenerName: string, resourceId: string) => ({
-    title: 'Subscribe to updates',
+    title: '订阅更新操作',
     bash: {
       language: 'bash',
-      code: `# Realtime streams are only supported by our client libraries`,
+      code: `# 只能通过客户端库支持实时消息`,
     },
     js: {
       language: 'js',
@@ -203,10 +203,10 @@ const ${listenerName} = supabase.channel('custom-update-channel')
     },
   }),
   subscribeDeletes: (listenerName: string, resourceId: string) => ({
-    title: 'Subscribe to deletes',
+    title: '订阅删除操作',
     bash: {
       language: 'bash',
-      code: `# Realtime streams are only supported by our client libraries`,
+      code: `# 只能通过客户端库支持实时消息`,
     },
     js: {
       language: 'js',
@@ -223,10 +223,10 @@ const ${listenerName} = supabase.channel('custom-delete-channel')
     },
   }),
   subscribeEq: (listenerName: string, resourceId: string, columnName: string, value: string) => ({
-    title: 'Subscribe to specific rows',
+    title: '订阅特定行',
     bash: {
       language: 'bash',
-      code: `# Realtime streams are only supported by our client libraries`,
+      code: `# 只能通过客户端库支持实时消息`,
     },
     js: {
       language: 'js',
@@ -243,7 +243,7 @@ const ${listenerName} = supabase.channel('custom-filter-channel')
     },
   }),
   readAll: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Read all rows',
+    title: '读取所有行',
     bash: {
       language: 'bash',
       code: `
@@ -262,7 +262,7 @@ let { data: ${resourceId}, error } = await supabase
     },
   }),
   readColumns: ({
-    title = 'Read specific columns',
+    title = '读取特定列',
     resourceId,
     endpoint,
     apiKey,
@@ -293,7 +293,7 @@ let { data: ${resourceId}, error } = await supabase
     },
   }),
   readForeignTables: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Read referenced tables',
+    title: '读取引用的表',
     bash: {
       language: 'bash',
       code: `
@@ -317,7 +317,7 @@ let { data: ${resourceId}, error } = await supabase
     },
   }),
   readRange: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'With pagination',
+    title: '使用分页',
     bash: {
       language: 'bash',
       code: `
@@ -338,7 +338,7 @@ let { data: ${resourceId}, error } = await supabase
     },
   }),
   readFilters: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'With filtering',
+    title: '使用过滤',
     bash: {
       language: 'bash',
       code: `
@@ -372,7 +372,7 @@ let { data: ${resourceId}, error } = await supabase
     },
   }),
   insertSingle: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Insert a row',
+    title: '插入一行',
     bash: {
       language: 'bash',
       code: `
@@ -397,7 +397,7 @@ const { data, error } = await supabase
     },
   }),
   insertMany: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Insert many rows',
+    title: '插入多行',
     bash: {
       language: 'bash',
       code: `
@@ -422,7 +422,7 @@ const { data, error } = await supabase
     },
   }),
   upsert: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Upsert matching rows',
+    title: '插入或更新匹配的行',
     bash: {
       language: 'bash',
       code: `
@@ -445,7 +445,7 @@ const { data, error } = await supabase
     },
   }),
   update: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Update matching rows',
+    title: '更新匹配的行',
     bash: {
       language: 'bash',
       code: `
@@ -469,7 +469,7 @@ const { data, error } = await supabase
     },
   }),
   delete: (resourceId: string, endpoint: string, apiKey: string) => ({
-    title: 'Delete matching rows',
+    title: '删除匹配的行',
     bash: {
       language: 'bash',
       code: `
@@ -489,7 +489,7 @@ const { error } = await supabase
     },
   }),
   authSignup: (endpoint: string, apiKey: string, randomPassword: string) => ({
-    title: 'User signup',
+    title: '用户注册',
     bash: {
       language: 'bash',
       code: `
@@ -513,7 +513,7 @@ let { data, error } = await supabase.auth.signUp({
     },
   }),
   authLogin: (endpoint: string, apiKey: string, randomPassword: string) => ({
-    title: 'User login',
+    title: '用户登录',
     bash: {
       language: 'bash',
       code: `
@@ -537,7 +537,7 @@ let { data, error } = await supabase.auth.signInWithPassword({
     },
   }),
   authMagicLink: (endpoint: string, apiKey: string) => ({
-    title: 'User login',
+    title: '用户登录',
     bash: {
       language: 'bash',
       code: `
@@ -559,7 +559,7 @@ let { data, error } = await supabase.auth.signInWithOtp({
     },
   }),
   authPhoneSignUp: (endpoint: string, apiKey: string) => ({
-    title: 'Phone Signup',
+    title: '电话注册',
     bash: {
       language: 'bash',
       code: `
@@ -583,7 +583,7 @@ let { data, error } = await supabase.auth.signUp({
     },
   }),
   authMobileOTPLogin: (endpoint: string, apiKey: string) => ({
-    title: 'Phone Login',
+    title: '电话登录',
     bash: {
       language: 'bash',
       code: `
@@ -605,7 +605,7 @@ let { data, error } = await supabase.auth.signInWithOtp({
     },
   }),
   authMobileOTPVerify: (endpoint: string, apiKey: string) => ({
-    title: 'Verify Pin',
+    title: '验证 PIN',
     bash: {
       language: 'bash',
       code: `
@@ -631,7 +631,7 @@ let { data, error } = await supabase.auth.verifyOtp({
     },
   }),
   authInvite: (endpoint: string, apiKey: string) => ({
-    title: 'Invite User',
+    title: '邀请用户',
     bash: {
       language: 'bash',
       code: `
@@ -652,7 +652,7 @@ let { data, error } = await supabase.auth.admin.inviteUserByEmail('someone@email
     },
   }),
   authThirdPartyLogin: (endpoint: string, apiKey: string) => ({
-    title: 'Third Party Login',
+    title: '第三方登录',
     bash: {
       language: 'bash',
       code: `
@@ -672,7 +672,7 @@ let { data, error } = await supabase.auth.signInWithOAuth({
     },
   }),
   authUser: (endpoint: string, apiKey: string) => ({
-    title: 'Get User',
+    title: '获取用户',
     bash: {
       language: 'bash',
       code: `
@@ -689,7 +689,7 @@ const { data: { user } } = await supabase.auth.getUser()
     },
   }),
   authRecover: (endpoint: string, apiKey: string) => ({
-    title: 'Password Recovery',
+    title: '密码恢复',
     bash: {
       language: 'bash',
       code: `
@@ -709,7 +709,7 @@ let { data, error } = await supabase.auth.resetPasswordForEmail(email)
     },
   }),
   authUpdate: (endpoint: string, apiKey: string) => ({
-    title: 'Update User',
+    title: '更新用户',
     bash: {
       language: 'bash',
       code: `
@@ -738,7 +738,7 @@ const { data, error } = await supabase.auth.updateUser({
     },
   }),
   authLogout: (endpoint: string, apiKey: string) => ({
-    title: 'User logout',
+    title: '用户登出',
     bash: {
       language: 'bash',
       code: `

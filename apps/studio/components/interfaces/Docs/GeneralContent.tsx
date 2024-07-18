@@ -29,8 +29,8 @@ const GeneralContent = ({ autoApiService, selectedLang, page, showApiKey }: any)
   else
     return (
       <div>
-        <h2 className="m-4">Not found</h2>
-        <p className="m-4"> Looks like you went somewhere that nobody knows.</p>
+        <h2 className="m-4">未找到页面</h2>
+        <p className="m-4">看起来你来到了一个没人知道的地方。</p>
       </div>
     )
 }

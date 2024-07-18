@@ -26,9 +26,9 @@ export default function GeneratingTypes({ selectedLang }: Props) {
       document.body.appendChild(element)
       element.click()
       document.body.removeChild(element)
-      toast.success(`Successfully generated types! File is being downloaded`)
+      toast.success(`成功生成了类型定义！文件已下载`)
     } catch (error: any) {
-      toast.error(`Failed to generate types: ${error.message}`)
+      toast.error(`生成类型定义失败：${error.message}`)
     } finally {
       setIsGeneratingTypes(false)
     }
@@ -37,30 +37,28 @@ export default function GeneratingTypes({ selectedLang }: Props) {
   return (
     <>
       <h2 className="doc-heading flex items-center justify-between">
-        <span>Generating types</span>
+        <span>生成类型定义</span>
         <Button asChild type="default" icon={<IconExternalLink />}>
           <Link
             href="https://supabase.com/docs/guides/database/api/generating-types"
             target="_blank"
             rel="noreferrer"
           >
-            Documentation
+            文档
           </Link>
         </Button>
       </h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            Supabase APIs are generated from your database, which means that we can use database
-            introspection to generate type-safe API definitions.
+            Supabase API 是通过数据库生成的，所以我们可以使用数据库的内省功能来生成类型安全的 API 定义。
           </p>
           <p>
-            You can generate types from your database either through the{' '}
+            您可以通过以下方式之一从数据库生成类型定义：
             <Link href="https://supabase.com/docs/guides/database/api/generating-types">
               Supabase CLI
             </Link>
-            , or by downloading the types file via the button on the right and importing it in your
-            application within <code>src/index.ts</code>.
+            ，或者通过右侧按钮下载类型文件并在 <code>src/index.ts</code> 中导入到您的应用程序中。
           </p>
         </article>
         <article
@@ -76,12 +74,12 @@ export default function GeneratingTypes({ selectedLang }: Props) {
                   icon={<IconDownload strokeWidth={1.5} />}
                   onClick={onClickGenerateTypes}
                 >
-                  Generate and download types
+                  生成并下载类型定义文件
                 </Button>
               )}
             </p>
             <p className="text-xs text-center text-foreground-light bg-studio p-4">
-              Remember to re-generate and download this file as you make changes to your tables.
+              请牢记，每当您对表进行更改时，都需要重新生成并下载此文件。
             </p>
           </div>
           <CodeSnippet selectedLang={selectedLang} snippet={localSnippets.cliLogin()} />
@@ -97,7 +95,7 @@ export default function GeneratingTypes({ selectedLang }: Props) {
 
 const localSnippets = {
   cliLogin: () => ({
-    title: 'Login via the CLI with your Personal Access Token',
+    title: '通过 CLI 使用您个人的 Access Token 登录',
     bash: {
       code: `
 npx supabase login

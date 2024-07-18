@@ -148,7 +148,7 @@ const FirstLevelNav = () => {
         })}
       </div>
 
-      <div className="px-2 py-4 border-b">
+      {/* <div className="px-2 py-4 border-b">
         <Button
           block
           asChild
@@ -178,7 +178,7 @@ const FirstLevelNav = () => {
             GraphQL 指南
           </Link>
         </Button>
-      </div>
+      </div> */}
 
       <div className="px-2 py-4">
         <Button block asChild type="text" size="small" icon={<IconBook />}>

@@ -41,7 +41,7 @@ const RpcContent = ({
 
       <div className="doc-section">
         <article className="code-column text-foreground">
-          <label className="font-mono text-xs uppercase text-foreground-lighter">Description</label>
+          <label className="font-mono text-xs uppercase text-foreground-lighter">描述</label>
           <Description content={summary} metadata={{ rpc: rpcId }} onChange={refreshDocs} />
         </article>
         <article className="code">
@@ -60,7 +60,7 @@ const RpcContent = ({
       </div>
       {rpcParams.length > 0 && (
         <div>
-          <h3 className="text-foreground mt-0 px-6 capitalize">Function Arguments</h3>
+          <h3 className="text-foreground mt-0 px-6 capitalize">函数参数</h3>
           {rpcParams.map((x, i) => {
             return (
               <div key={i} className="doc-section">

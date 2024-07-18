@@ -14,7 +14,7 @@ const PageConfig: NextPageWithLayout = () => {
   return <DocView />
 }
 
-PageConfig.getLayout = (page) => <DocsLayout title="API">{page}</DocsLayout>
+PageConfig.getLayout = (page) => <DocsLayout title="API 文档">{page}</DocsLayout>
 
 export default PageConfig
 
@@ -88,7 +88,7 @@ const DocView = () => {
     return (
       <div className="p-6 mx-auto text-center sm:w-full md:w-3/4">
         <p className="text-foreground-light">
-          <p>Error connecting to API</p>
+          <p>连接到 API 出错</p>
           <p>{`${error || jsonSchemaError}`}</p>
         </p>
       </div>
@@ -98,7 +98,7 @@ const DocView = () => {
   if (isLoading || !data || !jsonSchema) {
     return (
       <div className="p-6 mx-auto text-center sm:w-full md:w-3/4">
-        <h3 className="text-xl">Building docs ...</h3>
+        <h3 className="text-xl">正在生成 API 文档 ...</h3>
       </div>
     )
   }

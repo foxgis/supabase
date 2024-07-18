@@ -22,24 +22,22 @@ const Introduction = ({ selectedLang }: IntroductionProps) => {
 
   return (
     <>
-      <h2 className="doc-heading">Introduction</h2>
+      <h2 className="doc-heading">概述</h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            All views and tables in the <code>public</code> schema and accessible by the active
-            database role for a request are available for querying.
+            数据库中 <code>public</code> 模式下所有可被活动角色访问的视图和表都可以通过 API 访问。
           </p>
 
           {!isPublicSchemaEnabled && <PublicSchemaNotEnabledAlert />}
         </article>
       </div>
 
-      <h2 className="doc-heading">Non-exposed tables</h2>
+      <h2 className="doc-heading">不公开的表</h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            If you don't want to expose tables in your API, simply add them to a different schema
-            (not the <code>public</code> schema).
+            如果您不想通过 API 公开表，只需将它们添加到不同的模式中（非 <code>public</code> 模式）。
           </p>
         </article>
         <article className="code"></article>
@@ -47,41 +45,39 @@ const Introduction = ({ selectedLang }: IntroductionProps) => {
 
       <GeneratingTypes selectedLang={selectedLang} />
 
-      <h2 className="doc-heading">
+      {/* <h2 className="doc-heading">
         GraphQL <span className="lowercase">vs</span> Supabase
       </h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            If you have a GraphQL background, you might be wondering if you can fetch your data in a
-            single round-trip. The answer is yes!
+            如果您有使用 GraphQL 的背景，您可能会想知道是否可以在单个往返中获取您的数据。答案是肯定的！
           </p>
           <p>
-            The syntax is very similar. This example shows how you might achieve the same thing with
-            Apollo GraphQL and Supabase.
+            语法非常相似。这个例子展示了如何使用 Apollo GraphQL 和 Supabase 实现相同的功能。
             <br />
             <br />
           </p>
-          <h4>Still want GraphQL?</h4>
+          <h4>仍然想使用 GraphQL？</h4>
           <p>
-            If you still want to use GraphQL, you can. Supabase provides you with a full Postgres
-            database, so as long as your middleware can connect to the database then you can still
-            use the tools you love. You can find the database connection details{' '}
-            <Link href={`/project/${projectRef}/settings/database`}>in the settings.</Link>
+            如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要确保您的中间件可以连接到数据库，您就可以继续您喜欢的工具。
+            您可以在{' '}
+            <Link href={`/project/${projectRef}/settings/database`}>数据库设置</Link>{' '}
+            中找到数据库连接信息。
           </p>
         </article>
         <article className="code">
           <CodeSnippet selectedLang={selectedLang} snippet={localSnippets.withApollo()} />
           <CodeSnippet selectedLang={selectedLang} snippet={localSnippets.withSupabase()} />
         </article>
-      </div>
+      </div> */}
     </>
   )
 }
 
 const localSnippets = {
   withApollo: () => ({
-    title: 'With Apollo GraphQL',
+    title: '使用 Apollo GraphQL',
     bash: {
       language: 'js',
       code: `
@@ -116,7 +112,7 @@ const { loading, error, data } = useQuery(gql\`
     },
   }),
   withSupabase: () => ({
-    title: 'With Supabase',
+    title: '使用 Supabase',
     bash: {
       language: 'js',
       code: `

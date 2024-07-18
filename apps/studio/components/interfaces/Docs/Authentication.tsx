@@ -23,38 +23,34 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
 
   return (
     <>
-      <h2 className="doc-heading">Authentication</h2>
+      <h2 className="doc-heading">认证</h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
-          <p>Supabase works through a mixture of JWT and Key auth.</p>
+          <p>Supabase 混合使用 JWT 和 Key auth。</p>
           <p>
-            If no <code>Authorization</code> header is included, the API will assume that you are
-            making a request with an anonymous user.
+            如果没有 <code>Authorization</code> 请求头，API 会假定你正在使用匿名用户进行请求。
           </p>
           <p>
-            If an <code>Authorization</code> header is included, the API will "switch" to the role
-            of the user making the request. See the User Management section for more details.
+            如果包含 <code>Authorization</code> 请求头，API 会“切换”到请求用户的角色。有关更多详细信息，请参阅用户管理部分。
           </p>
-          <p>We recommend setting your keys as Environment Variables.</p>
+          <p>我们建议您通过环境变量设置您的 key。</p>
         </article>
       </div>
 
-      <h2 className="doc-heading">Client API Keys</h2>
+      <h2 className="doc-heading">客户端 API key</h2>
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>
-            Client keys allow "anonymous access" to your database, until the user has logged in.
-            After logging in the keys will switch to the user's own login token.
+            客户端 key 允许“匿名访问”您的数据库，直到用户完成登录。登录后，key 会切换到用户自己的登录 token。
           </p>
           <p>
-            In this documentation, we will refer to the key using the name <code>SUPABASE_KEY</code>
+            在本文档中，我们将使用 <code>SUPABASE_KEY</code> 表示客户端 key。
             .
           </p>
           <p>
-            We have provided you a Client Key to get started. You will soon be able to add as many
-            keys as you like. You can find the <code>anon</code> key in the{' '}
-            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API Settings</Link>{' '}
-            page.
+            我们已经提供了一个客户端 key 供您开始使用。您很快就可以添加任意数量的 key。您可以在{' '}
+            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API 设置</Link>{' '}
+            页面找到 <code>anon</code> key。
           </p>
         </article>
         <article className="code">
@@ -71,22 +67,19 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
         </article>
       </div>
 
-      <h2 className="doc-heading">Service Keys</h2>
+      <h2 className="doc-heading">服务端 Key</h2>
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>
-            Service keys have FULL access to your data, bypassing any security policies. Be VERY
-            careful where you expose these keys. They should only be used on a server and never on a
-            client or browser.
+            服务端 key 具有完全的访问权限，绕过任何安全策略。请务必小心暴露这些 key。它们只应该在服务器上使用，切勿在客户端或浏览器上使用。
           </p>
           <p>
-            In this documentation, we will refer to the key using the name <code>SERVICE_KEY</code>.
+            在本文档中，我们将使用 <code>SERVICE_KEY</code> 表示服务端 key。
           </p>
           <p>
-            We have provided you with a Service Key to get started. Soon you will be able to add as
-            many keys as you like. You can find the <code>service_role</code> in the{' '}
-            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API Settings</Link>{' '}
-            page.
+            我们已经提供了一个服务端 key 供您开始使用。您很快就可以添加任意数量的 key。您可以在{' '}
+            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API 设置</Link>{' '}
+            页面中找到 <code>service_role</code> key。
           </p>
         </article>
         <article className="code">

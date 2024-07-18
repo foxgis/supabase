@@ -65,7 +65,7 @@ const ResourceContent = ({
       <div className="doc-section">
         <article className="code-column text-foreground">
           <label className="font-mono text-xs uppercase text-foreground-lighter inline-block mb-2">
-            Description
+            描述
           </label>
           <Description
             content={description}
@@ -116,7 +116,7 @@ const ResourceContent = ({
           <div className="doc-section">
             <article className="code-column text-foreground">
               <p>
-                To read rows in <code>{resourceId}</code>, use the <code>select</code> method.
+                要在 <code>{resourceId}</code> 中读取行，请使用 <code>select</code> 方法。
               </p>
               <p>
                 <a
@@ -124,7 +124,7 @@ const ResourceContent = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Learn more
+                  了解更多
                 </a>
               </p>
             </article>
@@ -153,15 +153,15 @@ const ResourceContent = ({
           </div>
           <div className="doc-section">
             <article className="code-column text-foreground">
-              <h4 className="mt-0 text-white">Filtering</h4>
-              <p>Supabase provides a wide range of filters.</p>
+              <h4 className="mt-0 text-white">过滤</h4>
+              <p> Supabase 提供了丰富的过滤功能。</p>
               <p>
                 <a
                   href="https://supabase.com/docs/reference/javascript/using-filters"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Learn more
+                  了解更多
                 </a>
               </p>
             </article>
@@ -176,15 +176,14 @@ const ResourceContent = ({
       )}
       {methods.includes('POST') && (
         <>
-          <h3 className="text-foreground mt-4 px-6">Insert rows</h3>
+          <h3 className="text-foreground mt-4 px-6">插入行</h3>
           <div className="doc-section">
             <article className="code-column text-foreground">
               <p>
-                <code>insert</code> lets you insert into your tables. You can also insert in bulk
-                and do UPSERT.
+                <code>insert</code> 方法让您可以向表中插入数据。您也可以批量插入并执行 UPSERT。
               </p>
               <p>
-                <code>insert</code> will also return the replaced values for UPSERT.
+                <code>insert</code> 方法也会返回 UPSERT 操作的所替换的数据。
               </p>
               <p>
                 <a
@@ -192,7 +191,7 @@ const ResourceContent = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Learn more
+                  了解更多
                 </a>
               </p>
             </article>
@@ -215,16 +214,16 @@ const ResourceContent = ({
       )}
       {methods.includes('PATCH') && (
         <>
-          <h3 className="text-foreground mt-4 px-6">Update rows</h3>
+          <h3 className="text-foreground mt-4 px-6">更新行</h3>
           <div className="doc-section">
             <article className="code-column text-foreground">
               <p>
-                <code>update</code> lets you update rows. <code>update</code> will match all rows by
-                default. You can update specific rows using horizontal filters, e.g. <code>eq</code>
-                , <code>lt</code>, and <code>is</code>.
+                <code>update</code> 方法让您可以更新行。
+                <code>update</code> 默认会更新所有行。
+                您可以使用过滤条件来更新特定的行，例如 <code>eq</code>, <code>lt</code>和 <code>is</code>。
               </p>
               <p>
-                <code>update</code> will also return the replaced values for UPDATE.
+                <code>update</code> 也会返回 UPDATE 操作的所替换的数据。
               </p>
               <p>
                 <a
@@ -232,7 +231,7 @@ const ResourceContent = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Learn more
+                  了解更多
                 </a>
               </p>
             </article>
@@ -247,12 +246,12 @@ const ResourceContent = ({
       )}
       {methods.includes('DELETE') && (
         <>
-          <h3 className="text-foreground mt-4 px-6">Delete rows</h3>
+          <h3 className="text-foreground mt-4 px-6">删除行</h3>
           <div className="doc-section">
             <article className="code-column text-foreground">
               <p>
-                <code>delete</code> lets you delete rows. <code>delete</code> will match all rows by
-                default, so remember to specify your filters!
+                <code>delete</code> 方法让您可以删除行。
+                <code>delete</code> 默认删除所有行，因此请记住使用过滤条件！
               </p>
               <p>
                 <a
@@ -260,7 +259,7 @@ const ResourceContent = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Learn more
+                  了解更多
                 </a>
               </p>
             </article>
@@ -276,12 +275,11 @@ const ResourceContent = ({
       {realtimeEnabled &&
         (methods.includes('DELETE') || methods.includes('POST') || methods.includes('PATCH')) && (
           <>
-            <h3 className="text-foreground mt-4 px-6">Subscribe to changes</h3>
+            <h3 className="text-foreground mt-4 px-6">订阅变更</h3>
             <div className="doc-section">
               <article className="code-column text-foreground">
                 <p>
-                  Supabase provides realtime functionality and broadcasts database changes to
-                  authorized users depending on Row Level Security (RLS) policies.
+                  Supabase 提供了实时消息功能，让您可以广播数据库变更并根据行级安全性（RLS）策略将其发送给授权用户。
                 </p>
                 <p>
                   <a
@@ -289,7 +287,7 @@ const ResourceContent = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Learn more
+                    了解更多
                   </a>
                 </p>
               </article>

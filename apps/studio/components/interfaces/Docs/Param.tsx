@@ -47,7 +47,7 @@ const Param = ({
         <div className="flex gap-2 items-center">
           <div className="flex items-center gap-2">
             <label className="font-mono text-xs uppercase text-foreground-lighter  min-w-[55px]">
-              Column
+              列
             </label>
 
             <div className="flex items-center gap-4">
@@ -64,7 +64,7 @@ const Param = ({
         <div className="grid gap-2 mt-6">
           <div className="mb-4 flex items-center gap-2">
             <label className="font-mono text-xs uppercase text-foreground-lighter min-w-[55px]">
-              Type
+              类型
             </label>
             <div>
               <span className="flex grow-0 bg-slate-300 px-2 py-0.5 rounded-md text-foreground-light">
@@ -77,7 +77,7 @@ const Param = ({
           </div>
           <div className="mb-4 flex items-center gap-2">
             <label className="font-mono text-xs uppercase text-foreground-lighter min-w-[55px]">
-              Format
+              格式
             </label>
             <div>
               <span className="flex grow-0 bg-slate-300 px-2 py-0.5 rounded-md text-foreground-light">
@@ -92,7 +92,7 @@ const Param = ({
       )}
       {description !== false && (
         <div className="grid gap-2 mt-2">
-          <label className="font-mono text-xs uppercase text-foreground-lighter">Description</label>
+          <label className="font-mono text-xs uppercase text-foreground-lighter">描述</label>
           <Description
             content={description?.toString()}
             metadata={metadata}

@@ -13,7 +13,7 @@ export const generateDocsMenu = (
     {
       title: '快速上手',
       items: [
-        { name: '简介', key: 'introduction', url: `/project/${ref}/api`, items: [] },
+        { name: '概述', key: 'introduction', url: `/project/${ref}/api`, items: [] },
         {
           name: '认证授权',
           key: 'auth',
@@ -36,7 +36,7 @@ export const generateDocsMenu = (
       title: '数据表和视图',
       items: [
         {
-          name: '简介',
+          name: '概述',
           key: 'tables-intro',
           url: `/project/${ref}/api?page=tables-intro`,
           items: [],
@@ -55,7 +55,7 @@ export const generateDocsMenu = (
       title: '存储过程',
       items: [
         {
-          name: '简介',
+          name: '概述',
           key: 'rpc-intro',
           url: `/project/${ref}/api?page=rpc-intro`,
           items: [],
@@ -65,25 +65,25 @@ export const generateDocsMenu = (
         }),
       ],
     },
-    {
-      title: 'GraphQL',
-      items: [
-        {
-          name: 'GraphiQL',
-          key: 'graphiql',
-          url: `/project/${ref}/api/graphiql`,
-          icon: (
-            <SVG
-              src={`${BASE_PATH}/img/graphql.svg`}
-              style={{ width: `${16}px`, height: `${16}px` }}
-              className="text-foreground"
-              preProcessor={(code) => code.replace(/svg/, 'svg class="m-auto text-color-inherit"')}
-            />
-          ),
-          items: [],
-        },
-      ],
-    },
+    // {
+    //   title: 'GraphQL',
+    //   items: [
+    //     {
+    //       name: 'GraphiQL',
+    //       key: 'graphiql',
+    //       url: `/project/${ref}/api/graphiql`,
+    //       icon: (
+    //         <SVG
+    //           src={`${BASE_PATH}/img/graphql.svg`}
+    //           style={{ width: `${16}px`, height: `${16}px` }}
+    //           className="text-foreground"
+    //           preProcessor={(code) => code.replace(/svg/, 'svg class="m-auto text-color-inherit"')}
+    //         />
+    //       ),
+    //       items: [],
+    //     },
+    //   ],
+    // },
     {
       title: '更多资料',
       items: [
@@ -96,7 +96,7 @@ export const generateDocsMenu = (
           isExternal: true,
         },
         {
-          name: 'API参考',
+          name: 'API 参考',
           key: 'api-reference',
           url: `https://supabase.com/docs/guides/api`,
           icon: <IconBookOpen size={14} strokeWidth={2} />,

@@ -106,7 +106,7 @@ const Description = ({ content, metadata, onChange = noop }: DescrptionProps) =>
           {isUpdating ? (
             <IconLoader className="mx-auto animate-spin" size={14} strokeWidth={2} />
           ) : (
-            <span>Save</span>
+            <span>保存</span>
           )}
         </Button>
       </div>
