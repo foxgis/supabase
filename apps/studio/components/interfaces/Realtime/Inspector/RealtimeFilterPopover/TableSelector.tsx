@@ -85,40 +85,40 @@ const TableSelector = ({
           >
             {initiallyLoaded ? (
               <div className="w-full flex space-x-3">
-                <p className="text-xs text-light">table</p>
+                <p className="text-xs text-light">表</p>
                 <p className="text-xs">
-                  {selectedTableName === '*' ? 'All tables' : selectedTableName}
+                  {selectedTableName === '*' ? '所有表' : selectedTableName}
                 </p>
               </div>
             ) : (
-              <p className="flex text-xs text-light">Loading tables...</p>
+              <p className="flex text-xs text-light">正在加载表...</p>
             )}
           </Button>
         </PopoverTrigger_Shadcn_>
         <PopoverContent_Shadcn_ className="p-0 w-64" side="bottom" align="start">
           <Command_Shadcn_>
             <CommandInput_Shadcn_
-              placeholder="Find table..."
+              placeholder="查找表..."
               onValueChange={(str) => searchTables(str)}
             />
             <CommandList_Shadcn_>
               {isLoading && (
                 <div className="flex items-center justify-center space-x-2 px-3 py-2">
                   <IconLoader className="animate-spin" size={12} />
-                  <p className="flex text-xs text-light">Loading tables...</p>
+                  <p className="flex text-xs text-light">正在加载表...</p>
                 </div>
               )}
 
               {showError && isError && (
                 <Alert_Shadcn_ variant="warning" className="!px-3 !py-3 !border-0 rounded-none">
                   <AlertTitle_Shadcn_ className="text-xs text-amber-900">
-                    Failed to load tables
+                    加载表失败
                   </AlertTitle_Shadcn_>
                   <AlertDescription_Shadcn_ className="text-xs mb-2">
-                    Error: {(error as any)?.message}
+                    错误: {(error as any)?.message}
                   </AlertDescription_Shadcn_>
                   <Button type="default" size="tiny" onClick={() => refetch()}>
-                    Reload tables
+                    重新加载表
                   </Button>
                 </Alert_Shadcn_>
               )}
@@ -127,7 +127,7 @@ const TableSelector = ({
                 <>
                   <CommandGroup_Shadcn_ forceMount>
                     <ScrollArea className={(entities || []).length > 7 ? 'h-[210px]' : ''}>
-                      <CommandEmpty_Shadcn_>No tables found</CommandEmpty_Shadcn_>
+                      <CommandEmpty_Shadcn_>未找到表</CommandEmpty_Shadcn_>
                       {!searchInput && (
                         <CommandItem_Shadcn_
                           key="all-tables"

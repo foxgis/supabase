@@ -49,7 +49,7 @@ export const Header = ({ config, onChangeConfig }: HeaderProps) => {
                 }
               }}
             >
-              {config.enabled ? `Stop listening` : `Start listening`}
+              {config.enabled ? `停止监听` : `开始监听`}
             </Button>
           </Tooltip.Trigger>
           {config.channelName.length === 0 && (
@@ -63,7 +63,7 @@ export const Header = ({ config, onChangeConfig }: HeaderProps) => {
                   ].join(' ')}
                 >
                   <span className="text-xs text-foreground">
-                    You'll need to join a channel first
+                    您需要先加入一个频道
                   </span>
                 </div>
               </Tooltip.Content>

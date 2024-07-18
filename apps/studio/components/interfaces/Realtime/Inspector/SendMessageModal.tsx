@@ -34,14 +34,14 @@ export const SendMessageModal = ({
     <Modal
       size="medium"
       alignFooter="right"
-      header="Broadcast a message to all clients"
+      header="向所有客户端广播消息"
       visible={visible}
       loading={false}
       onCancel={onSelectCancel}
       onConfirm={() => {
         const payload = tryParseJson(values.payload)
         if (payload === undefined) {
-          setError('Please provide a valid JSON')
+          setError('请提供有效的 JSON')
         } else {
           onSelectConfirm({ ...values, payload })
         }
@@ -49,14 +49,14 @@ export const SendMessageModal = ({
     >
       <Modal.Content className="flex flex-col gap-y-4">
         <Input
-          label="Message name"
+          label="消息名称"
           size="small"
           className="flex-grow"
           value={values.message}
           onChange={(v) => setValues({ ...values, message: v.target.value })}
         />
         <div className="flex flex-col gap-y-2">
-          <p className="text-sm text-scale-1100">Message payload</p>
+          <p className="text-sm text-scale-1100">消息载荷</p>
           <CodeEditor
             id="message-payload"
             language="json"

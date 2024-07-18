@@ -63,12 +63,12 @@ const DeleteConfirmationDialogs = ({
       if (!(snap.confirmationDialog?.type === 'column')) return
       const selectedColumnToDelete = snap.confirmationDialog.column
       removeDeletedColumnFromFiltersAndSorts(selectedColumnToDelete.name)
-      toast.success(`Successfully deleted column "${selectedColumnToDelete.name}"`)
+      toast.success(`成功删除了列 "${selectedColumnToDelete.name}"`)
     },
     onError: (error) => {
       if (!(snap.confirmationDialog?.type === 'column')) return
       const selectedColumnToDelete = snap.confirmationDialog.column
-      toast.error(`Failed to delete ${selectedColumnToDelete!.name}: ${error.message}`)
+      toast.error(`删除 ${selectedColumnToDelete!.name} 失败：${error.message}`)
     },
     onSettled: () => {
       snap.closeConfirmationDialog()
@@ -78,10 +78,10 @@ const DeleteConfirmationDialogs = ({
     onSuccess: async () => {
       const tables = await getTables(snap.selectedSchemaName)
       onAfterDeleteTable(tables)
-      toast.success(`Successfully deleted table "${selectedTable?.name}"`)
+      toast.success(`成功删除了表 "${selectedTable?.name}"`)
     },
     onError: (error) => {
-      toast.error(`Failed to delete ${selectedTable?.name}: ${error.message}`)
+      toast.error(`删除 ${selectedTable?.name}失败：${error.message}`)
     },
     onSettled: () => {
       snap.closeConfirmationDialog()
@@ -93,7 +93,7 @@ const DeleteConfirmationDialogs = ({
       if (snap.confirmationDialog?.type === 'row') {
         snap.confirmationDialog.callback?.()
       }
-      toast.success(`Successfully deleted selected row(s)`)
+      toast.success(`成功删除了选中的行`)
     },
     onSettled: () => {
       snap.closeConfirmationDialog()
@@ -105,10 +105,10 @@ const DeleteConfirmationDialogs = ({
       if (snap.confirmationDialog?.type === 'row') {
         snap.confirmationDialog.callback?.()
       }
-      toast.success(`Successfully deleted selected rows`)
+      toast.success(`成功删除了选中的行`)
     },
     onError: (error) => {
-      toast.error(`Failed to delete rows: ${error.message}`)
+      toast.error(`删除行失败：${error.message}`)
     },
     onSettled: () => {
       snap.closeConfirmationDialog()
@@ -120,10 +120,10 @@ const DeleteConfirmationDialogs = ({
       if (snap.confirmationDialog?.type === 'row') {
         snap.confirmationDialog.callback?.()
       }
-      toast.success(`Successfully deleted all rows from table`)
+      toast.success(`成功删除了表中所有行`)
     },
     onError: (error) => {
-      toast.error(`Failed to delete rows: ${error.message}`)
+      toast.error(`删除行失败：${error.message}`)
     },
     onSettled: () => {
       snap.closeConfirmationDialog()
@@ -178,8 +178,8 @@ const DeleteConfirmationDialogs = ({
   const getImpersonatedRole = useGetImpersonatedRole()
 
   const onConfirmDeleteRow = async () => {
-    if (!project) return console.error('Project ref is required')
-    if (!selectedTable) return console.error('Selected table required')
+    if (!project) return console.error('未找到项目号')
+    if (!selectedTable) return console.error('未找到选择的表')
     if (snap.confirmationDialog?.type !== 'row') return
     const selectedRowsToDelete = snap.confirmationDialog.rows
 
@@ -187,7 +187,7 @@ const DeleteConfirmationDialogs = ({
       if (filters.length === 0) {
         if (getImpersonatedRole() !== undefined) {
           snap.closeConfirmationDialog()
-          return toast.error('Table truncation is not supported when impersonating a role')
+          return toast.error('当处于模拟角色时不支持表清空操作')
         }
 
         truncateRows({
@@ -225,7 +225,7 @@ const DeleteConfirmationDialogs = ({
           snap.confirmationDialog?.type === 'column' && snap.confirmationDialog.column.name
         }"`}
         confirmLabel="删除"
-        confirmLabelLoading="删除中"
+        confirmLabelLoading="正在删除"
         onCancel={() => {
           snap.closeConfirmationDialog()
         }}
@@ -233,7 +233,7 @@ const DeleteConfirmationDialogs = ({
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground-light">
-            Are you sure you want to delete the selected column? This action cannot be undone.
+            确定要删除所选列吗？此操作无法撤消。
           </p>
           <Checkbox
             label="级联删除列？"
@@ -273,7 +273,7 @@ const DeleteConfirmationDialogs = ({
           <span className="break-words">{`确认删除表 "${selectedTable?.name}"`}</span>
         }
         confirmLabel="删除"
-        confirmLabelLoading="删除中"
+        confirmLabelLoading="正在删除"
         onCancel={() => {
           snap.closeConfirmationDialog()
         }}
@@ -324,7 +324,7 @@ const DeleteConfirmationDialogs = ({
           </p>
         }
         confirmLabel="删除"
-        confirmLabelLoading="删除中"
+        confirmLabelLoading="正在删除"
         onCancel={() => snap.closeConfirmationDialog()}
         onConfirm={() => onConfirmDeleteRow()}
       >

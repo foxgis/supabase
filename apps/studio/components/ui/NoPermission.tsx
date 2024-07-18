@@ -19,7 +19,7 @@ const NoPermission = ({ resourceText, isFullPage = false }: NoPermissionProps) =
         </div>
         <div className="flex w-full items-center justify-between">
           <div className="space-y-1">
-            <p className="text-sm">您需要额外的权限才能 {resourceText}</p>
+            <p className="text-sm">您需要额外的权限才能{resourceText}</p>
             <div>
               <p className="text-sm text-foreground-light">
                 请联系您的组织所有者或管理员寻求帮助。

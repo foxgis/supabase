@@ -15,7 +15,7 @@ const TableEditorLayout = ({ children }: PropsWithChildren<{}>) => {
   if (isPermissionsLoaded && !canReadTables) {
     return (
       <ProjectLayoutWithAuth isBlocking={false}>
-        <NoPermission isFullPage resourceText="view tables from this project" />
+        <NoPermission isFullPage resourceText="查看本项目中的表" />
       </ProjectLayoutWithAuth>
     )
   }

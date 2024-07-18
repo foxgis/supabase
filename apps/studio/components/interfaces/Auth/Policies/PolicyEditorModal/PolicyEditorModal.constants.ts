@@ -241,14 +241,14 @@ with check ( realtime.messages.extension = 'broadcast' AND realtime.topic() = 'c
     {
       id: 'policy-presences-1',
       preview: false,
-      templateName: '仅允许通过身份验证的用户监听所有频道的在线状态',
-      description: '此策略仅允许通过身份验证的用户监听所有频道的在线状态。',
+      templateName: '仅允许通过身份验证的用户监听所有频道的状态同步',
+      description: '此策略仅允许通过身份验证的用户监听所有频道的状态同步。',
       statement: `
 create policy "Allow listening for presences on all channels for authenticated users only"
 on realtime.messages for select
 to authenticated
 using ( realtime.messages.extension = 'presence' );`.trim(),
-      name: '仅允许通过身份验证的用户监听所有频道的在线状态',
+      name: '仅允许通过身份验证的用户监听所有频道的状态同步',
       definition: "realtime.messages.extension = 'presence'",
       check: '',
       command: 'SELECT',
@@ -257,15 +257,15 @@ using ( realtime.messages.extension = 'presence' );`.trim(),
     {
       id: 'policy-presences-2',
       preview: false,
-      templateName: '仅允许通过身份验证的用户向所有频道广播在线状态',
-      description: '此策略仅允许通过身份验证的用户向所有频道广播在线状态。',
+      templateName: '仅允许通过身份验证的用户向所有频道广播状态同步',
+      description: '此策略仅允许通过身份验证的用户向所有频道广播状态同步。',
       statement: `
 create policy "Allow broadcasting presences on all channels for authenticated users only"
 ON realtime.messages for insert
 TO authenticated
 with check ( realtime.messages.extension = 'presence' );
   ;`.trim(),
-      name: '仅允许通过身份验证的用户向所有频道广播在线状态',
+      name: '仅允许通过身份验证的用户向所有频道广播状态同步',
       definition: "realtime.messages.extension = 'presence'",
       check: "realtime.messages.extension = 'presence'",
       command: 'INSERT',
@@ -274,13 +274,13 @@ with check ( realtime.messages.extension = 'presence' );
     {
       id: 'policy-presences-3',
       preview: false,
-      templateName: '仅允许从特定频道监听在线状态',
-      description: '此策略仅允许从特定频道监听在线状态。',
+      templateName: '仅允许从特定频道监听状态同步',
+      description: '此策略仅允许从特定频道监听状态同步。',
       statement: `
 create policy "Allow listening for presences from a specific channel"
 on realtime.messages for select
 using ( realtime.messages.extension = 'presence' AND realtime.topic() = 'channel_name' );`.trim(),
-      name: '仅允许从特定频道监听在线状态',
+      name: '仅允许从特定频道监听状态同步',
       definition: `realtime.messages.extension = 'presence' AND realtime.topic() = 'channel_name'`,
       check: '',
       command: 'SELECT',
@@ -289,14 +289,14 @@ using ( realtime.messages.extension = 'presence' AND realtime.topic() = 'channel
     {
       id: 'policy-presences-4',
       preview: false,
-      templateName: '向特定频道发布在线状态',
-      description: '此策略允许向特定频道发布在线状态。',
+      templateName: '向特定频道发布状态同步',
+      description: '此策略允许向特定频道发布状态同步。',
       statement: `
 create policy "Publish presence to a specific channel"
 ON realtime.messages for insert
 with check ( realtime.messages.extension = 'presence' AND realtime.topic() = 'channel_name' );
   ;`.trim(),
-      name: '向特定频道发布在线状态',
+      name: '向特定频道发布状态同步',
       definition: `realtime.messages.extension = 'presence' AND realtime.topic() = 'channel_name'`,
       check: `realtime.messages.extension = 'presence' AND realtime.topic() = 'channel_name'`,
       command: 'INSERT',

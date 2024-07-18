@@ -557,7 +557,7 @@ const SidePanelEditor = ({
         sqlKeys.query(project?.ref, [selectedTable!.schema, selectedTable!.name])
       ),
     ])
-    toast.success(`成功地向表 ${selectedTable.name} 中添加了 ${rowCount.toLocaleString()} 行！`, {
+    toast.success(`成功向表 ${selectedTable.name} 中添加了 ${rowCount.toLocaleString()} 行！`, {
       id: toastId,
     })
     resolve()

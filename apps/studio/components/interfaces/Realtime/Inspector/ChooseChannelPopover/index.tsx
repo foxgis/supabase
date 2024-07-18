@@ -85,7 +85,7 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
             className="max-w-[120px] truncate"
             title={config.channelName.length > 0 ? config.channelName : ''}
           >
-            {config.channelName.length > 0 ? `Channel: ${config.channelName}` : 'Join a channel'}
+            {config.channelName.length > 0 ? `频道：${config.channelName}` : '加入频道'}
           </p>
         </Button>
       </PopoverTrigger_Shadcn_>
@@ -105,14 +105,14 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                     render={({ field }) => (
                       <FormItem_Shadcn_ className="flex flex-col gap-y-2">
                         <div className="flex flex-col gap-y-1">
-                          <label className="text-foreground text-xs">Name of channel</label>
+                          <label className="text-foreground text-xs">频道名</label>
                           <div className="flex flex-row">
                             <FormControl_Shadcn_>
                               <Input_Shadcn_
                                 {...field}
                                 autoComplete="off"
                                 className="rounded-r-none text-xs px-2.5 py-1 h-auto"
-                                placeholder="Enter a channel name"
+                                placeholder="输入频道名称"
                               />
                             </FormControl_Shadcn_>
 
@@ -122,21 +122,21 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                               disabled={form.getValues().channel.length === 0}
                               onClick={() => onSubmit()}
                             >
-                              Listen to channel
+                              监听频道
                             </Button>
                           </div>
                         </div>
                         <FormDescription_Shadcn_ className="text-xs text-foreground-lighter">
-                          The channel you initialize with the Supabase Realtime client. Learn more
-                          in{' '}
+                          通过 Supabase Realtime 客户端初始化的频道。到
                           <a
                             target="_blank"
                             rel="noreferrer"
                             className="underline hover:text-foreground transition"
                             href="https://supabase.com/docs/guides/realtime/concepts#channels"
                           >
-                            our docs
+                            文档
                           </a>
+                          了解更多
                         </FormDescription_Shadcn_>
                       </FormItem_Shadcn_>
                     )}
@@ -158,12 +158,11 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                               />
                             </FormControl_Shadcn_>
                             <FormLabel_Shadcn_ className="text-xs">
-                              Is channel private?
+                              私有频道？
                             </FormLabel_Shadcn_>
                           </div>
                           <FormDescription_Shadcn_ className="text-xs text-foreground-lighter mt-2">
-                            If the channel is marked as private, it will use RLS policies to filter
-                            messages.
+                            如果频道被标记为私有，将会使用 RLS 策略过滤消息。
                           </FormDescription_Shadcn_>
                         </FormItem_Shadcn_>
                       )}
@@ -176,7 +175,7 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                       rel="noreferrer"
                       href="https://supabase.com/docs/guides/realtime/authorization"
                     >
-                      Documentation
+                      文档
                     </a>
                   </Button>
                 </form>
@@ -197,13 +196,13 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                 </p>
               </div>
               <p className="text-xs text-foreground-lighter mt-2">
-                If you leave this channel, all of the messages populated on this page will disappear
+                如果您离开频道，当前页面上弹出的所有消息都将消失
               </p>
               <Button
                 type="default"
                 onClick={() => onChangeConfig({ ...config, channelName: '', enabled: false })}
               >
-                Leave channel
+                离开频道
               </Button>
             </div>
           )}

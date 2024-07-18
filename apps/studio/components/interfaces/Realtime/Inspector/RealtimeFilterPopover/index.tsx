@@ -59,17 +59,18 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
           >
             {isFiltered ? (
               <>
-                <span className="mr-1">Filtered by </span>
-                <Badge variant="brand">table: {config.table}</Badge>
+                <span className="mr-1">通过</span>
+                <Badge variant="brand">表：{config.table}</Badge>
+                <span className="mr-1">过滤</span>
               </>
             ) : (
-              <span className="mr-1">Filter messages</span>
+              <span className="mr-1">过滤消息</span>
             )}
           </Button>
         </PopoverTrigger_Shadcn_>
         <PopoverContent_Shadcn_ className="p-0 w-[365px]" align="start">
           <div className="border-b border-overlay text-xs px-4 py-3 text-foreground">
-            Listen to event types
+            监听的事件类型
           </div>
           <div className="py-3 px-4 border-b border-overlay">
             <div className="flex items-center justify-between gap-2">
@@ -79,7 +80,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
                   className="bg-foreground rounded text-background-muted"
                 />
                 <label htmlFor="toggle-presence" className="text-sm">
-                  Presence
+                  状态同步
                 </label>
               </div>
               <Toggle
@@ -92,7 +93,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
               />
             </div>
             <p className="text-xs text-foreground-light pt-1">
-              Store and synchronize user state consistently across clients
+              在客户端之间保存和同步用户状态
             </p>
           </div>
           <div className="py-3 px-4 border-b border-overlay">
@@ -103,7 +104,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
                   className="bg-foreground rounded text-background-muted"
                 />
                 <label htmlFor="toggle-broadcast" className="text-sm">
-                  Broadcast
+                  广播
                 </label>
               </div>
               <Toggle
@@ -116,7 +117,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
               />
             </div>
             <p className="text-xs  text-foreground-light pt-1">
-              Send any data to any client subscribed to the same channel
+              向订阅同一频道的客户端发送数据
             </p>
           </div>
           <div className="py-3 px-4 border-b border-overlay">
@@ -127,7 +128,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
                   className="bg-foreground rounded text-background-muted"
                 />
                 <label htmlFor="toggle-db-changes" className="text-sm">
-                  Database changes
+                  数据库变更
                 </label>
               </div>
               <Toggle
@@ -140,14 +141,14 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
               />
             </div>
             <p className="text-xs text-foreground-light pt-1">
-              Listen for Database inserts, updates, deletes and more
+              监听数据库的插入、更新、删除等操作
             </p>
           </div>
 
           {tempConfig.enableDbChanges && (
             <>
               <div className="border-b border-overlay text-xs px-4 py-3 text-foreground">
-                Filter messages from database changes
+                从数据库变更中过滤消息
               </div>
               <div className="flex border-b border-overlay p-4 gap-y-2 flex-col">
                 <FilterSchema
@@ -173,15 +174,16 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
                   />
                 </div>
                 <p className="text-xs text-foreground-light pl-[80px]">
-                  Learn more about realtime filtering in{' '}
+                  到{' '}
                   <Link
                     className="underline"
                     target="_blank"
                     rel="noreferrer"
                     href="https://supabase.com/docs/guides/realtime/postgres-changes#available-filters"
                   >
-                    our docs
-                  </Link>
+                    文档
+                  </Link>{' '}
+                  中了解更多关于实时消息过滤的内容
                 </p>
               </div>
             </>
@@ -190,14 +192,14 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
             <Button type="default" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setApplyConfigOpen(true)}>Apply</Button>
+            <Button onClick={() => setApplyConfigOpen(true)}>应用</Button>
           </div>
         </PopoverContent_Shadcn_>
       </Popover_Shadcn_>
       <ConfirmationModal
-        title="Previously found messages will be lost"
+        title="先前找到的消息将会消失。"
         variant="destructive"
-        confirmLabel="Confirm"
+        confirmLabel="确定"
         size="small"
         visible={applyConfigOpen}
         onCancel={() => setApplyConfigOpen(false)}
@@ -217,8 +219,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
         }}
       >
         <p className="text-sm text-foreground-light">
-          The realtime inspector will clear currently collected messages and start listening for new
-          messages matching the updated filters.
+          实时消息探查器将会清除当前收集的消息，并开始监听符合更新过滤器的新消息。
         </p>
       </ConfirmationModal>
     </>

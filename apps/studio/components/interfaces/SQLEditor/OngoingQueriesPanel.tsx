@@ -61,7 +61,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
 
   const { mutate: abortQuery, isLoading } = useQueryAbortMutation({
     onSuccess: () => {
-      toast.success(`成功地终止了查询（ID: ${selectedId}）`)
+      toast.success(`成功终止了查询（ID: ${selectedId}）`)
       setSelectedId(undefined)
     },
   })

@@ -12,7 +12,7 @@ export const generateRealtimeMenu = (
       title: '工具',
       items: [
         {
-          name: '调试器',
+          name: '检视器',
           key: 'inspector',
           url: `/project/${ref}/realtime/inspector`,
           items: [],

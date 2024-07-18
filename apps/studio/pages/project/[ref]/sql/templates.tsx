@@ -6,6 +6,6 @@ const SqlEditorWelcome: NextPageWithLayout = () => {
   return <SQLTemplates />
 }
 
-SqlEditorWelcome.getLayout = (page) => <SQLEditorLayout title="SQL">{page}</SQLEditorLayout>
+SqlEditorWelcome.getLayout = (page) => <SQLEditorLayout title="SQL 查询">{page}</SQLEditorLayout>
 
 export default SqlEditorWelcome

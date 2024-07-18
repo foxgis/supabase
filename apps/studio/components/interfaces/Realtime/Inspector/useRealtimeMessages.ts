@@ -198,7 +198,7 @@ export const useRealtimeMessages = (
         }
       } else if (status === 'CHANNEL_ERROR') {
         toast.error(
-          `Failed to connect to the channel ${channelName}: This may be due to restrictive RLS policies. Check your role and try again.`
+          `连接到频道 ${channelName} 失败：这可能是因为限制性的 RLS 策略。请检查您的角色并重试。`
         )
 
         newChannel.unsubscribe()
@@ -233,13 +233,13 @@ export const useRealtimeMessages = (
           payload,
         })
         if (res === 'error') {
-          toast.error('Failed to broadcast message')
+          toast.error('广播消息失败')
         } else {
-          toast.success('Successfully broadcasted message')
+          toast.success('成功广播了消息')
           callback()
         }
       } else {
-        toast.error('Failed to broadcast message: channel has not been set')
+        toast.error('广播消息失败：频道尚未设置')
       }
     },
     [channel]

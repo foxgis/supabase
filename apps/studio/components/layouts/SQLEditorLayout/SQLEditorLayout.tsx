@@ -23,7 +23,7 @@ const SQLEditorLayout = ({ title, children }: SQLEditorLayoutProps) => {
 
   return (
     <ProjectLayout
-      title={title || 'SQL'}
+      title={title || 'SQL 查询'}
       product="SQL 查询"
       productMenu={productMenu}
       isBlocking={false}

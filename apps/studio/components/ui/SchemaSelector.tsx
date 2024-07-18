@@ -70,7 +70,7 @@ const SchemaSelector = ({
     <div className={className}>
       {isSchemasLoading && (
         <Button type="default" className="justify-start" block size={size} loading>
-          加载模式...
+          正在加载模式...
         </Button>
       )}
 

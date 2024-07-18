@@ -10,14 +10,14 @@ export const InspectorPage: NextPageWithLayout = () => {
   const canReadAPIKeys = useCheckPermissions(PermissionAction.READ, 'service_api_keys')
 
   if (!canReadAPIKeys) {
-    return <NoPermission isFullPage resourceText="access your project's realtime functionalities" />
+    return <NoPermission isFullPage resourceText="访问项目的实时消息功能" />
   }
 
   return <RealtimeInspector />
 }
 
 InspectorPage.getLayout = (page) => (
-  <RealtimeLayout title="Realtime Inspector">{page}</RealtimeLayout>
+  <RealtimeLayout title="实时消息检视器">{page}</RealtimeLayout>
 )
 
 export default InspectorPage

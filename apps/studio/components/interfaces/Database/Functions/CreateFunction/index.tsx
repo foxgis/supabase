@@ -110,7 +110,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
         },
         {
           onSuccess: () => {
-            toast.success(`成功地更新了函数 ${data.name}`)
+            toast.success(`成功更新了函数 ${data.name}`)
             setVisible(!visible)
           },
         }
@@ -124,7 +124,7 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
         },
         {
           onSuccess: () => {
-            toast.success(`成功地创建了函数 ${data.name}`)
+            toast.success(`成功创建了函数 ${data.name}`)
             setVisible(!visible)
           },
         }

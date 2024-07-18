@@ -35,31 +35,31 @@ const NoResultAlert = ({
         <NoChannelEmptyState />
       ) : (
         <>
-          {enabled && <p className="text-foreground">No Realtime messages found</p>}
-          <p className="text-foreground-lighter">Realtime message logs will be shown here</p>
+          {enabled && <p className="text-foreground">未找到实时消息</p>}
+          <p className="text-foreground-lighter">实时消息日志会显示在这里</p>
 
           <div className="mt-4 border bg-surface-100 border-border rounded-md justify-start items-center flex flex-col w-full">
             <div className="w-full px-5 py-4 items-center gap-4 inline-flex border-b">
               <IconBroadcast size="xlarge" className="text-background bg-foreground rounded w-6" />
               <div className="grow flex-col flex">
-                <p className="text-foreground">Create a Broadcast message</p>
-                <p className="text-foreground-lighter text-xs">Send a message in the channel</p>
+                <p className="text-foreground">创建广播消息</p>
+                <p className="text-foreground-lighter text-xs">在频道中发送一条消息</p>
               </div>
               <Button type="default" onClick={showSendMessage}>
-                Broadcast a message
+                广播消息
               </Button>
             </div>
             <div className="w-full px-5 py-4 items-center gap-4 inline-flex border-b">
               <IconPresence size="xlarge" className="text-background bg-foreground rounded w-6" />
               <div className="grow flex-col flex">
-                <p className="text-foreground">Join from another browser tab</p>
+                <p className="text-foreground">从浏览器的另一标签页加入</p>
                 <p className="text-foreground-lighter text-xs">
-                  Send messages between multiple clients
+                  在多个客户端之间发送消息
                 </p>
               </div>
               <Link href={`/project/${ref}/realtime/inspector`} target="_blank" rel="noreferrer">
                 <Button type="default" iconRight={<IconExternalLink />}>
-                  Open inspector
+                  打开检视器
                 </Button>
               </Link>
             </div>
@@ -70,19 +70,19 @@ const NoResultAlert = ({
                 className="text-background bg-foreground rounded w-6"
               />
               <div className="grow flex-col flex">
-                <p className="text-foreground">Listen to a table for changes</p>
-                <p className="text-foreground-lighter text-xs">Tables must have realtime enabled</p>
+                <p className="text-foreground">监听一张表的变更</p>
+                <p className="text-foreground-lighter text-xs">表必须已启用实时消息</p>
               </div>
               <Link href={`/project/${ref}/database/publications`} target="_blank" rel="noreferrer">
                 <Button type="default" iconRight={<IconExternalLink />}>
-                  Publications settings
+                  数据库事件发布设置
                 </Button>
               </Link>
             </div>
             <div className="w-full px-5 py-4 items-center gap-4 inline-flex rounded-b-md bg-studio">
               <div className="grow flex-col flex">
-                <p className="text-foreground">Not sure what to do?</p>
-                <p className="text-foreground-lighter text-xs">Browse our documentation</p>
+                <p className="text-foreground">不确定要怎么做？</p>
+                <p className="text-foreground-lighter text-xs">请浏览我们的文档</p>
               </div>
               <Button type="default" iconRight={<IconExternalLink />}>
                 <a
@@ -90,7 +90,7 @@ const NoResultAlert = ({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Documentation
+                  文档
                 </a>
               </Button>
             </div>

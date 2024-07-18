@@ -71,7 +71,7 @@ export const RealtimeTokensPopover = ({ config, onChangeConfig }: RealtimeTokens
         token = anonRoleKey
         await getRoleImpersonationJWT(config.projectRef, jwtSecret, snap.role)
           .then((b) => (bearer = b))
-          .catch((err) => toast.error(`Failed to get JWT for role: ${err.message}`))
+          .catch((err) => toast.error(`获取角色的 JWT失败：${err.message}`))
       } else {
         token = serviceRoleKey
       }

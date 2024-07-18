@@ -78,7 +78,7 @@ const UtilityActions = ({
   const toggleIntellisense = () => {
     setIntellisenseEnabled(!intellisenseEnabled)
     toast.success(
-      `成功地 ${intellisenseEnabled ? '禁用' : '启用'} 了 intellisense。${intellisenseEnabled ? '请刷新您的浏览器使配置生效。' : ''}`
+      `成功 ${intellisenseEnabled ? '禁用' : '启用'} 了 intellisense。${intellisenseEnabled ? '请刷新您的浏览器使配置生效。' : ''}`
     )
   }
 
