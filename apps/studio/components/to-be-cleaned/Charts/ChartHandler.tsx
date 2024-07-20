@@ -131,7 +131,7 @@ const ChartHandler = ({
     return (
       <div className="flex h-52 w-full flex-col items-center justify-center gap-y-2">
         <Loader2 size={18} className="animate-spin text-border-strong" />
-        <p className="text-xs text-foreground-lighter">Loading data for {label}</p>
+        <p className="text-xs text-foreground-lighter">正在加载 {label} 的数据</p>
       </div>
     )
   }
@@ -140,7 +140,7 @@ const ChartHandler = ({
     return (
       <div className="flex h-52 w-full flex-col items-center justify-center gap-y-2">
         <WarningIcon />
-        <p className="text-xs text-foreground-lighter">Unable to load data for {label}</p>
+        <p className="text-xs text-foreground-lighter">加载 {label} 的数据失败</p>
       </div>
     )
   }
@@ -159,7 +159,7 @@ const ChartHandler = ({
               />
             </TooltipTrigger_Shadcn_>
             <TooltipContent_Shadcn_ side="left" align="center">
-              View as {chartStyle === 'bar' ? 'line chart' : 'bar chart'}
+              以{chartStyle === 'bar' ? '折线图' : '柱状图'}方式查看
             </TooltipContent_Shadcn_>
           </Tooltip_Shadcn_>
         )}

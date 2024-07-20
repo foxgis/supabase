@@ -231,7 +231,7 @@ export const SQLEditorNavV1 = ({
 
           {filteredFavoriteSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="Favorites" />
+              <InnerSideMenuCollapsibleTrigger title="收藏夹" />
               <InnerSideMenuCollapsibleContent>
                 <>
                   {filteredFavoriteSnippets.map((tabInfo) => (

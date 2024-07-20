@@ -33,26 +33,26 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
   const SNIPPETS = [
     {
       id: 'migration',
-      label: 'Migration',
-      title: 'Download as migration',
-      description: `Download the snippet in a new migration named \`${migrationName}\``,
+      label: '迁移文件',
+      title: '下载为迁移文件',
+      description: `将代码片段下载到一个新的迁移文件，文件名为 \`${migrationName}\``,
       cli: generateMigrationCliCommand(id, migrationName),
       npm: generateMigrationCliCommand(id, migrationName, true),
     },
     {
       id: 'seed',
-      label: 'Seed file',
-      title: 'Download as seed file',
+      label: '种子文件',
+      title: '下载为种子文件',
       description:
-        'If your query consists of sample data, append the snippet to the end of `supabase/seed.sql`',
+        '如果你的查询包含示例数据，将代码片段追加到 `supabase/seed.sql` 的末尾',
       cli: generateSeedCliCommand(id),
       npm: generateSeedCliCommand(id, true),
     },
     {
       id: 'sql',
-      label: 'SQL file',
-      title: 'Download as SQL file',
-      description: `Download the snippet directly into a new SQL file named \`${migrationName}.sql\``,
+      label: 'SQL 文件',
+      title: '下载为 SQL 文件',
+      description: `直接将代码片段下载到一个新的 SQL 文件中，文件名为 \`${migrationName}.sql\``,
       cli: generateFileCliCommand(id, migrationName),
       npm: generateFileCliCommand(id, migrationName, true),
     },
@@ -63,7 +63,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       hideFooter
       showCloseButton
       size="xlarge"
-      header={<p>Download snippet as local migration file via the Supabase CLI.</p>}
+      header={<p>通过 Supabase CLI 将代码片段下载到本地迁移文件。</p>}
       {...props}
     >
       <div className="flex flex-col items-start justify-between gap-4 relative pt-2">
@@ -104,7 +104,9 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
           })}
         </Tabs>
         <Modal.Content className="w-full flex items-center justify-between pt-0">
-          <p className="text-xs text-lighter">Run this command from your project directory</p>
+          <p className="text-xs text-lighter">
+            从你的项目目录运行此命令
+          </p>
           <div className="flex justify-between items-center gap-x-2">
             <Button asChild type="default" icon={<ExternalLink strokeWidth={1.5} />}>
               <Link
@@ -112,7 +114,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                About migrations
+                关于迁移
               </Link>
             </Button>
 
@@ -122,7 +124,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                About CLI
+                关于 CLI
               </Link>
             </Button>
           </div>

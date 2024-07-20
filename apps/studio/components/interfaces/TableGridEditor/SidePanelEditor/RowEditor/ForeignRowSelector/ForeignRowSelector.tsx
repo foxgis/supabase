@@ -112,7 +112,7 @@ const ForeignRowSelector = ({
           {isLoading && (
             <div className="flex h-full py-6 flex-col items-center justify-center space-y-2">
               <IconLoader className="animate-spin" />
-              <p className="text-sm text-foreground-light">Loading rows</p>
+              <p className="text-sm text-foreground-light">正在加载行</p>
             </div>
           )}
 

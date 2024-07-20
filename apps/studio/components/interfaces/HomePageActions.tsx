@@ -47,12 +47,12 @@ const HomePageActions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button type="primary">
-            <span>New project</span>
+            <span>新项目</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="center">
           <>
-            <DropdownMenuLabel>Choose organization</DropdownMenuLabel>
+            <DropdownMenuLabel>选择组织</DropdownMenuLabel>
             {organizations
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((x) => (
@@ -67,7 +67,7 @@ const HomePageActions = ({
       {IS_PLATFORM && organizationCreationEnabled && orgsLoaded && (
         <Button type="default" asChild>
           <Link href="/new" className="flex items-center gap-2">
-            New organization
+            新组织
           </Link>
         </Button>
       )}
@@ -92,11 +92,11 @@ const HomePageActions = ({
           </PopoverTrigger_Shadcn_>
           <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
             <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
-              <p className="text-xs">Filter projects by status</p>
+              <p className="text-xs">按状态筛选项目</p>
               <div className="flex flex-col">
                 {[
-                  { key: PROJECT_STATUS.ACTIVE_HEALTHY, label: 'Active' },
-                  { key: PROJECT_STATUS.INACTIVE, label: 'Paused' },
+                  { key: PROJECT_STATUS.ACTIVE_HEALTHY, label: '活跃' },
+                  { key: PROJECT_STATUS.INACTIVE, label: '暂停' },
                 ].map(({ key, label }) => (
                   <div key={key} className="group flex items-center justify-between py-0.5">
                     <div className="flex items-center gap-x-2">
@@ -122,7 +122,7 @@ const HomePageActions = ({
                       onClick={() => setFilterStatus([key])}
                       className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
                     >
-                      Select only
+                      单选
                     </Button>
                   </div>
                 ))}

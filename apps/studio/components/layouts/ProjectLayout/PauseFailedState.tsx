@@ -16,10 +16,9 @@ const PauseFailedState = () => {
               <CriticalIcon className="w-5 h-5" />
             </div>
             <div className="space-y-1">
-              <p>Something went wrong while pausing your project</p>
+              <p>项目暂停失败</p>
               <p className="text-sm text-foreground-light">
-                Your project's data is intact, but your project is inaccessible due to the failure
-                while pausing. Please contact support for assistance.
+                您的项目数据完好无损，但是由于暂停失败导致项目暂时无法访问。请联系技术支持寻求帮助。
               </p>
             </div>
           </div>
@@ -29,7 +28,7 @@ const PauseFailedState = () => {
               <Link
                 href={`/support/new?category=Database_unresponsive&ref=${project?.ref}&subject=Restoration%20failed%20for%20project`}
               >
-                Contact support
+                联系技术支持
               </Link>
             </Button>
           </div>

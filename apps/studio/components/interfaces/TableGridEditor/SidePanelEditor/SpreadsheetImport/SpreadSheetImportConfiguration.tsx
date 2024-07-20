@@ -21,7 +21,7 @@ const SpreadsheetImportConfiguration = ({
       <Collapsible.Trigger asChild>
         <SidePanel.Content>
           <div className="py-1 flex items-center justify-between">
-            <p className="text-sm">Configure import data</p>
+            <p className="text-sm">导入数据配置</p>
             <Button
               type="text"
               icon={
@@ -41,9 +41,9 @@ const SpreadsheetImportConfiguration = ({
         <SidePanel.Content>
           <div className="py-2 space-y-3">
             <div>
-              <p className="text-sm text-foreground-light">Select which columns to import</p>
+              <p className="text-sm text-foreground-light">选择导入哪些列</p>
               <p className="text-sm text-foreground-light">
-                By default, all columns are selected to be imported from your CSV
+                默认情况下，所有列都将被导入
               </p>
             </div>
             <div className="flex items-center flex-wrap gap-2 pl-0.5 pb-0.5">

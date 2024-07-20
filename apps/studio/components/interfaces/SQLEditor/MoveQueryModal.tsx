@@ -71,7 +71,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
     isLoading: isMovingSnippet,
   } = useContentUpsertV2Mutation({
     onError: (error) => {
-      toast.error(`Failed to move query: ${error.message}`)
+      toast.error(`移动查询失败：${error.message}`)
     },
   })
 
@@ -86,9 +86,9 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
   const folders = Object.values(snapV2.folders).map((x) => x.folder)
   const selectedFolder =
     selectedId === 'root'
-      ? 'Root of the editor'
+      ? '编辑器的根目录'
       : selectedId === 'new-folder'
-        ? 'Create a new folder'
+        ? '创建一个新文件夹'
         : folders.find((f) => f.id === selectedId)?.name
   const isCurrentFolder =
     snippets.length === 1 &&
@@ -98,7 +98,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
     ((!snippets[0].folder_id && selectedId === 'root') || snippets[0].folder_id === selectedId)
 
   const onConfirmMove = async (values: z.infer<typeof FormSchema>) => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
 
     try {
       let folderId = selectedId
@@ -117,7 +117,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
           }
 
           if (snippetContent === undefined) {
-            return toast.error('Failed to save snippet: Unable to retrieve snippet contents')
+            return toast.error('保存代码片段失败：无法获取代码片段的内容')
           } else {
             moveSnippetAsync({
               projectRef: ref,
@@ -138,7 +138,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
       )
 
       toast.success(
-        `Successfully moved ${snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length} snippets`} to ${selectedId === 'root' ? 'the root of the editor' : selectedFolder}`
+        `成功移动了 ${snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length} 个代码片段`}到${selectedId === 'root' ? '编辑器的根目录' : selectedFolder}`
       )
       snippets.forEach((snippet) => {
         snapV2.updateSnippet({
@@ -149,7 +149,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
       })
       onClose()
     } catch (error: any) {
-      toast.error(`Failed to create new folder: ${error.message}`)
+      toast.error(`创建新文件夹失败：${error.message}`)
     }
   }
 
@@ -171,11 +171,10 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
           <form id="move-snippet" onSubmit={form.handleSubmit(onConfirmMove)}>
             <DialogHeader>
               <DialogTitle>
-                Move {snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length}`} to a
-                folder
+                移动 {snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length}`} 到文件夹
               </DialogTitle>
               <DialogDescription>
-                Select which folder to move your quer{snippets.length > 1 ? 'ies' : 'y'} to
+                选择要将您的查询{snippets.length > 1 ? 'i' : ''}移动到哪个文件夹
               </DialogDescription>
             </DialogHeader>
 
@@ -183,7 +182,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
 
             <DialogSection className="py-5 flex flex-col gap-y-4">
               <div className="flex flex-col gap-y-2">
-                <Label_Shadcn_ className="text-foreground-light">Select a folder</Label_Shadcn_>
+                <Label_Shadcn_ className="text-foreground-light">选择文件夹</Label_Shadcn_>
                 <Popover_Shadcn_ open={open} onOpenChange={setOpen} modal={false}>
                   <PopoverTrigger_Shadcn_ asChild>
                     <Button
@@ -201,15 +200,15 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                     >
                       <div className="flex items-center space-x-2">
                         {selectedFolder}
-                        {isCurrentFolder && ` (Current)`}
+                        {isCurrentFolder && `（当前）`}
                       </div>
                     </Button>
                   </PopoverTrigger_Shadcn_>
                   <PopoverContent_Shadcn_ className="p-0 w-80" side="bottom" align="start">
                     <Command_Shadcn_>
-                      <CommandInput_Shadcn_ placeholder="Find folder..." />
+                      <CommandInput_Shadcn_ placeholder="查找文件夹..." />
                       <CommandList_Shadcn_>
-                        <CommandEmpty_Shadcn_>No folders found</CommandEmpty_Shadcn_>
+                        <CommandEmpty_Shadcn_>未找到文件夹</CommandEmpty_Shadcn_>
                         <CommandGroup_Shadcn_>
                           <ScrollArea className={(folders || []).length > 6 ? 'h-[210px]' : ''}>
                             <CommandItem_Shadcn_
@@ -226,10 +225,10 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                               }}
                             >
                               <span>
-                                Root of the editor
+                                编辑器的根目录
                                 {snippets.length === 1 &&
                                   snippets[0].folder_id === null &&
-                                  ` (Current)`}
+                                  `（当前）`}
                               </span>
                               {selectedId === 'root' && <Check size={14} />}
                             </CommandItem_Shadcn_>
@@ -288,7 +287,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                     control={form.control}
                     render={({ field }) => (
                       <FormItem_Shadcn_ className="flex flex-col gap-y-2">
-                        <FormLabel_Shadcn_>Provide a name for your new folder</FormLabel_Shadcn_>
+                        <FormLabel_Shadcn_>为新文件夹提供一个名称</FormLabel_Shadcn_>
                         <FormControl_Shadcn_>
                           <Input_Shadcn_
                             autoFocus
@@ -311,7 +310,14 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                 disabled={isMovingSnippet || isCreatingFolder}
                 onClick={() => onClose()}
               >
-                Cancel
+                取消
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={isMovingSnippet || isCreatingFolder}
+              >
+                确定
               </Button>
               <Button
                 type="primary"
@@ -319,7 +325,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                 disabled={isMovingToSameFolder}
                 loading={isMovingSnippet || isCreatingFolder}
               >
-                Move file
+                移动文件
               </Button>
             </DialogFooter>
           </form>

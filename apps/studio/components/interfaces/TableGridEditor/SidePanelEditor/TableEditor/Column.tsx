@@ -148,7 +148,7 @@ const Column = ({
                 align="end"
               >
                 <div className="text-xs px-2 pt-2">
-                  Involved in {relations.length} foreign key{relations.length > 1 ? 's' : ''}
+                  有 {relations.length} 个外键{relations.length > 1 ? '' : ''}
                 </div>
                 <Command_Shadcn_>
                   <CommandList_Shadcn_>
@@ -178,7 +178,7 @@ const Column = ({
                                 <p className="truncate">
                                   {relation.name || (
                                     <>
-                                      To{' '}
+                                      到{' '}
                                       {relation.columns
                                         .filter((c) => c.source === column.name)
                                         .map((c) => {
@@ -190,8 +190,8 @@ const Column = ({
                                         })}
                                       {relation.columns.length > 1 && (
                                         <>
-                                          and {relation.columns.length - 1} other column
-                                          {relation.columns.length > 2 ? 's' : ''}
+                                          和 {relation.columns.length - 1} 个其他列
+                                          {relation.columns.length > 2 ? '' : ''}
                                         </>
                                       )}
                                     </>
@@ -211,7 +211,7 @@ const Column = ({
                         onClick={() => onEditForeignKey()}
                       >
                         <Plus size={14} strokeWidth={1.5} />
-                        <p>Add foreign key relation</p>
+                        <p>添加外键关联</p>
                       </CommandItem_Shadcn_>
                     </CommandGroup_Shadcn_>
                   </CommandList_Shadcn_>
@@ -230,9 +230,7 @@ const Column = ({
             showLabel={false}
             className="table-editor-column-type lg:gap-0 "
             disabled={hasForeignKeys}
-            description={
-              hasForeignKeys ? 'Column type cannot be changed as it has a foreign key relation' : ''
-            }
+            description={hasForeignKeys ? '列类型不能被修改，因为它有外键关联' : ''}
             onOptionSelect={(format: string) => {
               const defaultValue = format === 'uuid' ? 'gen_random_uuid()' : null
               onUpdateColumn({ format, defaultValue })
@@ -256,8 +254,8 @@ const Column = ({
               column.format.includes('int') && column.isIdentity ? 'opacity-50' : ''
             }`}
             suggestions={suggestions}
-            suggestionsHeader="Suggested expressions"
-            suggestionsTooltip="Suggested expressions"
+            suggestionsHeader="建议的表达式"
+            suggestionsTooltip="建议的表达式"
             onChange={(event: any) => onUpdateColumn({ defaultValue: event.target.value })}
             onSelectSuggestion={(suggestion: Suggestion) =>
               onUpdateColumn({ defaultValue: suggestion.value })
@@ -284,7 +282,7 @@ const Column = ({
               data-testid={`${column.name}-extra-options`}
               header={
                 <div className="flex items-center justify-center">
-                  <h5 className="text-sm text-foreground">Extra options</h5>
+                  <h5 className="text-sm text-foreground">额外选项</h5>
                 </div>
               }
               overlay={[
@@ -292,8 +290,8 @@ const Column = ({
                   {!column.isPrimaryKey && (
                     <>
                       <Checkbox
-                        label="Is Nullable"
-                        description="Specify if the column can assume a NULL value if no value is provided"
+                        label="可空"
+                        description="指定如果列在没有值的情况下可以设为 NULL 值"
                         checked={column.isNullable}
                         className="p-4"
                         onChange={() => onUpdateColumn({ isNullable: !column.isNullable })}
@@ -302,8 +300,8 @@ const Column = ({
                     </>
                   )}
                   <Checkbox
-                    label="Is Unique"
-                    description="Enforce if values in the column should be unique across rows"
+                    label="唯一"
+                    description="强制列中的值在所有行中必须唯一"
                     checked={column.isUnique}
                     className="p-4"
                     onChange={() => onUpdateColumn({ isUnique: !column.isUnique })}
@@ -312,8 +310,8 @@ const Column = ({
                   {column.format.includes('int') && (
                     <>
                       <Checkbox
-                        label="Is Identity"
-                        description="Automatically assign a sequential unique number to the column"
+                        label="自增"
+                        description="自动为列分配一个连续的唯一数字"
                         checked={column.isIdentity}
                         className="p-4"
                         onChange={() => {
@@ -328,8 +326,8 @@ const Column = ({
 
                   {!column.isPrimaryKey && (
                     <Checkbox
-                      label="Define as Array"
-                      description="Define your column as a variable-length multidimensional array"
+                      label="定义为数组"
+                      description="定义你的列作为一个可变长度的多维数组"
                       checked={column.isArray}
                       className="p-4"
                       onChange={() => {

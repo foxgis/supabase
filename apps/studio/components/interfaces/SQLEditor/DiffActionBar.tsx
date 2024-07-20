@@ -64,7 +64,7 @@ export const DiffActionBar = ({
         iconRight={<span className="dark:text-brand-500 group-hover:text-brand-600">ESC</span>}
         onClick={onCancel}
       >
-        Discard
+        舍弃
       </Button>
     </>
   )

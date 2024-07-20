@@ -132,17 +132,17 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
 
   const { mutate: deleteContent, isLoading: isDeleting } = useContentDeleteMutation({
     onError: (error, data) => {
-      if (error.message.includes('Contents not found')) {
+      if (error.message.includes('未找到内容')) {
         postDeleteCleanup(data.ids)
       } else {
-        toast.error(`Failed to delete query: ${error.message}`)
+        toast.error(`删除查询失败：${error.message}`)
       }
     },
   })
 
   const { mutate: deleteFolder, isLoading: isDeletingFolder } = useSQLSnippetFoldersDeleteMutation({
     onSuccess: (_, vars) => {
-      toast.success('Successfully deleted folder')
+      toast.success('成功删除了文件夹')
       const { ids } = vars
       snapV2.removeFolder(ids[0])
       setSelectedFolderToDelete(undefined)
@@ -168,13 +168,13 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
   }
 
   const onConfirmDelete = () => {
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     deleteContent(
       { projectRef, ids: selectedSnippets.map((x) => x.id) },
       {
         onSuccess: (data) => {
           toast.success(
-            `Successfully deleted ${selectedSnippets.length.toLocaleString()} quer${selectedSnippets.length > 1 ? 'ies' : 'y'}`
+            `成功删除了 ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`
           )
           postDeleteCleanup(data)
         },
@@ -183,24 +183,24 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
   }
 
   const onConfirmShare = () => {
-    if (!selectedSnippetToShare) return console.error('Snippet ID is required')
+    if (!selectedSnippetToShare) return console.error('未找到代码片段 ID')
     snapV2.shareSnippet(selectedSnippetToShare.id, 'project')
     setSelectedSnippetToShare(undefined)
     setShowSharedSnippets(true)
   }
 
   const onConfirmUnshare = () => {
-    if (!selectedSnippetToUnshare) return console.error('Snippet ID is required')
+    if (!selectedSnippetToUnshare) return console.error('未找到代码片段 ID')
     snapV2.shareSnippet(selectedSnippetToUnshare.id, 'user')
     setSelectedSnippetToUnshare(undefined)
     setShowPrivateSnippets(true)
   }
 
   const onSelectCopyPersonal = async (snippet: Snippet) => {
-    if (!profile) return console.error('Profile is required')
-    if (!project) return console.error('Project is required')
-    if (!projectRef) return console.error('Project ref is required')
-    if (!id) return console.error('Snippet ID is required')
+    if (!profile) return console.error('未找到用户资料')
+    if (!project) return console.error('未找到项目')
+    if (!projectRef) return console.error('未找到项目号')
+    if (!id) return console.error('未找到代码片段 ID')
 
     let sql: string = ''
     if (!('content' in snippet)) {
@@ -225,8 +225,8 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
   }
 
   const onConfirmDeleteFolder = async () => {
-    if (!projectRef) return console.error('Project ref is required')
-    if (selectedFolderToDelete === undefined) return console.error('No folder is selected')
+    if (!projectRef) return console.error('未找到项目号')
+    if (selectedFolderToDelete === undefined) return console.error('未选中文件夹')
 
     const folderSnippets = contents.filter(
       (content) => content.folder_id === selectedFolderToDelete.id
@@ -304,18 +304,18 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
             <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
               <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
               <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                Favorites{numFavoriteSnippets > 0 && ` (${numFavoriteSnippets})`}
+                收藏{numFavoriteSnippets > 0 && ` (${numFavoriteSnippets}) 条`}
               </span>
             </CollapsibleTrigger_Shadcn_>
             <CollapsibleContent_Shadcn_ className="pt-2">
               {numFavoriteSnippets === 0 ? (
                 <div className="mx-4">
                   <Alert_Shadcn_ className="p-3">
-                    <AlertTitle_Shadcn_ className="text-xs">No favorite queries</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_ className="text-xs">没有收藏的查询</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_ className="text-xs ">
-                      Save a query to favorites for easy accessbility by clicking the{' '}
+                      保存查询到收藏夹，方便日后快速访问。点击{' '}
                       <Heart size={12} className="inline-block relative align-center -top-[1px]" />{' '}
-                      icon.
+                      图标。
                     </AlertDescription_Shadcn_>
                   </Alert_Shadcn_>
                 </div>
@@ -367,9 +367,9 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
               {numProjectSnippets === 0 ? (
                 <div className="mx-4">
                   <Alert_Shadcn_ className="p-3">
-                    <AlertTitle_Shadcn_ className="text-xs">No shared queries</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_ className="text-xs">没有分享的查询</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_ className="text-xs ">
-                      Share queries with your team by right-clicking on the query.
+                      分享查询到团队，右键点击该查询即可。
                     </AlertDescription_Shadcn_>
                   </Alert_Shadcn_>
                 </div>
@@ -424,9 +424,9 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
           ) : folders.length === 0 && numPrivateSnippets === 0 ? (
             <div className="mx-4">
               <Alert_Shadcn_ className="p-3">
-                <AlertTitle_Shadcn_ className="text-xs">No queries created yet</AlertTitle_Shadcn_>
+                <AlertTitle_Shadcn_ className="text-xs">没有创建查询</AlertTitle_Shadcn_>
                 <AlertDescription_Shadcn_ className="text-xs">
-                  Queries will be automatically saved once you start writing in the editor.
+                  当你在编辑器中开始编写查询时，查询会自动保存。
                 </AlertDescription_Shadcn_>
               </Alert_Shadcn_>
             </div>
@@ -523,55 +523,55 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
 
       <ConfirmationModal
         size="medium"
-        title={`Confirm to share query: ${selectedSnippetToShare?.name}`}
-        confirmLabel="Share query"
-        confirmLabelLoading="Sharing query"
+        title={`确认分享查询：${selectedSnippetToShare?.name}`}
+        confirmLabel="分享查询"
+        confirmLabelLoading="正在分享查询"
         visible={selectedSnippetToShare !== undefined}
         onCancel={() => setSelectedSnippetToShare(undefined)}
         onConfirm={onConfirmShare}
         alert={{
-          title: 'This SQL query will become public to all team members',
-          description: 'Anyone with access to the project can view it',
+          title: '此 SQL 查询将会对所有团队成员公开',
+          description: '任何可访问本项目的人都可以查看它',
         }}
       >
         <ul className="text-sm text-foreground-light space-y-5">
           <li className="flex gap-3">
             <Eye />
-            <span>Project members will have read-only access to this query.</span>
+            <span>项目成员将具有此查询的只读访问权限。</span>
           </li>
           <li className="flex gap-3">
             <Unlock />
-            <span>Anyone will be able to duplicate it to their personal snippets.</span>
+            <span>任何人都可以将它复制到他们的个人代码片段收藏中。</span>
           </li>
         </ul>
       </ConfirmationModal>
 
       <ConfirmationModal
         size="medium"
-        title={`Confirm to unshare query: ${selectedSnippetToUnshare?.name}`}
-        confirmLabel="Unshare query"
-        confirmLabelLoading="Unsharing query"
+        title={`确认取消分享：${selectedSnippetToUnshare?.name}`}
+        confirmLabel="取消分享查询"
+        confirmLabelLoading="正在取消分享查询"
         visible={selectedSnippetToUnshare !== undefined}
         onCancel={() => setSelectedSnippetToUnshare(undefined)}
         onConfirm={onConfirmUnshare}
         alert={{
-          title: 'This SQL query will no longer be public to all team members',
-          description: 'Only you will have access to this query',
+          title: '此 SQL 查询不再对所有团队成员公开',
+          description: '只有你才有访问此查询的权限',
         }}
       >
         <ul className="text-sm text-foreground-light space-y-5">
           <li className="flex gap-3">
             <EyeOffIcon />
-            <span>Project members will no longer be able to view this query.</span>
+            <span>项目成员将不再能够查看此查询。</span>
           </li>
         </ul>
       </ConfirmationModal>
 
       <ConfirmationModal
         size="small"
-        title={`Confirm to delete ${selectedSnippets.length === 1 ? 'query' : `${selectedSnippets.length.toLocaleString()} quer${selectedSnippets.length > 1 ? 'ies' : 'y'}`}`}
-        confirmLabel={`Delete ${selectedSnippets.length.toLocaleString()} quer${selectedSnippets.length > 1 ? 'ies' : 'y'}`}
-        confirmLabelLoading="Deleting query"
+        title={`确认删除${selectedSnippets.length === 1 ? '查询' : ` ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`}`}
+        confirmLabel={`删除 ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`}
+        confirmLabelLoading="正在删除查询"
         loading={isDeleting}
         visible={showDeleteModal}
         variant="destructive"
@@ -583,9 +583,9 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
         alert={
           (selectedSnippets[0]?.visibility as unknown as string) === 'project'
             ? {
-                title: 'This SQL snippet will be lost forever',
+                title: '此 SQL 代码片段将永远丢失',
                 description:
-                  'Deleting this query will remove it for all members of the project team.',
+                  '删除此查询也将从项目团队的所有成员中移除。',
               }
             : undefined
         }
@@ -593,29 +593,29 @@ export const SQLEditorNav = ({ searchText }: SQLEditorNavProps) => {
         <p className="text-sm">
           This action cannot be undone.{' '}
           {selectedSnippets.length === 1
-            ? `Are you sure you want to delete '${selectedSnippets[0]?.name}'?`
-            : `Are you sure you want to delete the selected ${selectedSnippets.length} quer${selectedSnippets.length > 1 ? 'ies' : 'y'}?`}
+            ? `您确定想要删除 '${selectedSnippets[0]?.name}' 吗？`
+            : `您确定想要删除选中的 ${selectedSnippets.length} 条查询吗？`}
         </p>
       </ConfirmationModal>
 
       <ConfirmationModal
         size="small"
-        title="Confirm to delete folder"
-        confirmLabel="Delete folder"
-        confirmLabelLoading="Deleting folder"
+        title="确认删除文件夹"
+        confirmLabel="删除文件夹"
+        confirmLabelLoading="正在删除文件夹"
         loading={isDeletingFolder}
         visible={selectedFolderToDelete !== undefined}
         variant="destructive"
         onCancel={() => setSelectedFolderToDelete(undefined)}
         onConfirm={onConfirmDeleteFolder}
         alert={{
-          title: 'This action cannot be undone',
+          title: '此操作无法撤销',
           description:
-            'All SQL snippets within the folder will be permanently removed, and cannot be recovered.',
+            '此文件夹中的所有 SQL 代码片段也讲会被久删除，无法恢复。',
         }}
       >
         <p className="text-sm">
-          Are you sure you want to delete the folder '{selectedFolderToDelete?.name}'?
+          您确定要删除文件夹 '{selectedFolderToDelete?.name}' 吗？
         </p>
       </ConfirmationModal>
     </>

@@ -71,26 +71,26 @@ export const createSqlSnippetSkeletonV2 = ({
 export function getDiffTypeButtonLabel(diffType: DiffType) {
   switch (diffType) {
     case DiffType.Modification:
-      return 'Accept change'
+      return '接受变更'
     case DiffType.Addition:
-      return 'Accept addition'
+      return '接受新增'
     case DiffType.NewSnippet:
-      return 'Create new snippet'
+      return '创建新代码片段'
     default:
-      throw new Error(`Unknown diff type '${diffType}'`)
+      throw new Error(`未知的 diff 类型 '${diffType}'`)
   }
 }
 
 export function getDiffTypeDropdownLabel(diffType: DiffType) {
   switch (diffType) {
     case DiffType.Modification:
-      return 'Compare as change'
+      return '对比为变更'
     case DiffType.Addition:
-      return 'Compare as addition'
+      return '对比为新增'
     case DiffType.NewSnippet:
-      return 'Compare as new snippet'
+      return '对比为新代码片段'
     default:
-      throw new Error(`Unknown diff type '${diffType}'`)
+      throw new Error(`未知的 diff 类型 '${diffType}'`)
   }
 }
 

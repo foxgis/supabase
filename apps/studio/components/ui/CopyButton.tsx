@@ -14,8 +14,8 @@ const CopyButton = ({
   iconOnly = false,
   children,
   onClick,
-  copyLabel = 'Copy',
-  copiedLabel = 'Copied',
+  copyLabel = '复制',
+  copiedLabel = '已复制',
   ...props
 }: CopyButtonProps) => {
   const [showCopied, setShowCopied] = useState(false)

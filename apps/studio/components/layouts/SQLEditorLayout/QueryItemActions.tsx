@@ -77,8 +77,8 @@ export const QueryItemActions = ({
   }
 
   const createPersonalCopy = async () => {
-    if (!ref) return console.error('Project ref is required')
-    if (!id) return console.error('Snippet ID is required')
+    if (!ref) return console.error('未找到项目号')
+    if (!id) return console.error('未找到代码片段 ID')
     try {
       const snippet = createSqlSnippetSkeleton({
         id: uuidv4(),
@@ -91,7 +91,7 @@ export const QueryItemActions = ({
       snap.addNeedsSaving(snippet.id!)
       router.push(`/project/${ref}/sql/${snippet.id}`)
     } catch (error: any) {
-      toast.error(`Failed to create a personal copy of this query: ${error.message}`)
+      toast.error(`为此查询创建个人副本失败：${error.message}`)
     }
   }
 
@@ -102,7 +102,7 @@ export const QueryItemActions = ({
           <DropdownMenuTrigger
             className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 focus:opacity-100 data-[state=open]:opacity-100"
             asChild
-            name="Query actions"
+            name="查询操作"
           >
             <Button
               type="text"
@@ -115,27 +115,27 @@ export const QueryItemActions = ({
             {isSnippetOwner && (
               <DropdownMenuItem onClick={onClickRename} className="flex gap-2">
                 <Edit size={14} />
-                Rename query
+                重命名查询
               </DropdownMenuItem>
             )}
 
             {visibility === 'user' && canCreateSQLSnippet && (
               <DropdownMenuItem onClick={onClickShare} className="flex gap-2">
                 <Share size={14} />
-                Share query
+                分享查询
               </DropdownMenuItem>
             )}
             {visibility === 'project' && canCreateSQLSnippet && (
               <DropdownMenuItem onClick={createPersonalCopy} className="flex gap-2">
                 <Copy size={14} />
-                Duplicate personal copy
+                复制个人副本
               </DropdownMenuItem>
             )}
 
             {IS_PLATFORM && (
               <DropdownMenuItem onClick={() => onSelectDownloadQuery()} className="flex gap-2">
                 <Download size={14} />
-                Download as migration file
+                下载为迁移文件
               </DropdownMenuItem>
             )}
             {isSnippetOwner && (
@@ -143,7 +143,7 @@ export const QueryItemActions = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={onClickDelete} className="flex gap-2">
                   <Trash size={14} />
-                  Delete query
+                  删除查询
                 </DropdownMenuItem>
               </>
             )}

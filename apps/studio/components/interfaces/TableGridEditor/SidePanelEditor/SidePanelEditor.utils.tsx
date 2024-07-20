@@ -61,7 +61,7 @@ const listEncryptedColumns = async (
     })
     return encryptedColumns.result.map((column: any) => column.name.split('decrypted_')[1])
   } catch (error) {
-    console.error('Error fetching encrypted columns', error)
+    console.error('拉取加密的列失败', error)
     return []
   }
 }
@@ -283,7 +283,7 @@ export const createColumn = async ({
   primaryKey?: Constraint
   foreignKeyRelations?: ForeignKey[]
 }) => {
-  const toastId = toast.loading(`Creating column "${payload.name}"...`)
+  const toastId = toast.loading(`正在创建列 "${payload.name}"...`)
   try {
     // Once pg-meta supports composite keys, we can remove this logic
     const { isPrimaryKey, ...formattedPayload } = payload
@@ -295,7 +295,7 @@ export const createColumn = async ({
 
     // Firing createColumn in createTable will bypass this block
     if (isPrimaryKey) {
-      toast.loading('Assigning primary key to column...', { id: toastId })
+      toast.loading('正在为列指定主键...', { id: toastId })
       // Same logic in createTable: Remove any primary key constraints first (we'll add it back later)
       const existingPrimaryKeys = selectedTable.primary_keys.map((x) => x.name)
 
@@ -329,9 +329,9 @@ export const createColumn = async ({
       })
     }
 
-    toast.success(`Successfully created column "${column.name}"`, { id: toastId })
+    toast.success(`成功创建了列 "${column.name}"`, { id: toastId })
   } catch (error: any) {
-    toast.error(`An error occurred while creating the column "${payload.name}"`, { id: toastId })
+    toast.error(`创建列 "${payload.name}" 出错`, { id: toastId })
     return { error }
   }
 }
@@ -408,7 +408,7 @@ export const updateColumn = async ({
       })
     }
 
-    if (!skipSuccessMessage) toast.success(`Successfully updated column "${column.name}"`)
+    if (!skipSuccessMessage) toast.success(`成功更新了列 "${column.name}"`)
   } catch (error: any) {
     return { error }
   }
@@ -544,7 +544,7 @@ export const createTable = async ({
     // Then insert the columns - we don't do Promise.all as we want to keep the integrity
     // of the column order during creation. Note that we add primary key constraints separately
     // via the query endpoint to support composite primary keys as pg-meta does not support that OOB
-    toast.loading(`Adding ${columns.length} columns to ${table.name}...`, { id: toastId })
+    toast.loading(`正在向 ${table.name} 添加 ${columns.length} 列...`, { id: toastId })
 
     for (const column of columns) {
       // We create all columns without primary keys first
@@ -595,7 +595,7 @@ export const createTable = async ({
                   max={100}
                   type="horizontal"
                   barClass="bg-brand"
-                  labelBottom={`Adding ${importContent.rowCount.toLocaleString()} rows to ${table.name}`}
+                  labelBottom={`正在向 ${table.name} 添加 ${importContent.rowCount.toLocaleString()} 行`}
                   labelBottomClass=""
                   labelTop={`${progress.toFixed(2)}%`}
                   labelTopClass="tabular-nums"
@@ -617,9 +617,9 @@ export const createTable = async ({
         }
 
         if (error !== undefined) {
-          toast.error('Do check your spreadsheet if there are any discrepancies.')
+          toast.error('请检查您的电子表格是否有任何不一致之处。')
 
-          const message = `Table ${table.name} has been created but we ran into an error while inserting rows: ${error.message}`
+          const message = `表 ${table.name} 创建成功，但在插入行时遇到错误：${error.message}`
           toast.error(message)
           console.error('Error:', { error, message })
         }
@@ -639,7 +639,7 @@ export const createTable = async ({
                   max={100}
                   type="horizontal"
                   barClass="bg-brand"
-                  labelBottom={`Adding ${importContent.rows.length.toLocaleString()} rows to ${table.name}`}
+                  labelBottom={`正在向 ${table.name} 添加 ${importContent.rows.length.toLocaleString()} 行`}
                   labelBottomClass=""
                   labelTop={`${progress.toFixed(2)}%`}
                   labelTopClass="tabular-nums"
@@ -729,7 +729,7 @@ export const updateTable = async ({
   // Delete any removed columns
   const columnsToRemove = originalColumns.filter((column) => !columnIds.includes(column.id))
   for (const column of columnsToRemove) {
-    toast.loading(`Removing column ${column.name} from ${updatedTable.name}`, { id: toastId })
+    toast.loading(`正在从 ${updatedTable.name} 中删除列 ${column.name}...`, { id: toastId })
     await deleteDatabaseColumn({
       projectRef,
       connectionString,
@@ -741,7 +741,7 @@ export const updateTable = async ({
   let hasError = false
   for (const column of columns) {
     if (!column.id.includes(table.id.toString())) {
-      toast.loading(`Adding column ${column.name} to ${updatedTable.name}`, { id: toastId })
+      toast.loading(`正在向 ${updatedTable.name} 添加列 ${column.name}...`, { id: toastId })
       // Ensure that columns do not created as primary key first, cause the primary key will
       // be added later on further down in the code
       const columnPayload = generateCreateColumnPayload(updatedTable.id, {
@@ -763,7 +763,7 @@ export const updateTable = async ({
           column
         )
         if (!isEmpty(columnPayload)) {
-          toast.loading(`Updating column ${column.name} from ${updatedTable.name}`, { id: toastId })
+          toast.loading(`正在更新 ${updatedTable.name} 中的列 ${column.name}...`, { id: toastId })
           const skipPKCreation = true
           const skipSuccessMessage = true
           const res = await updateColumn({
@@ -777,7 +777,7 @@ export const updateTable = async ({
           })
           if (res?.error) {
             hasError = true
-            toast.error(`Failed to update column "${column.name}": ${res.error.message}`)
+            toast.error(`更新列 "${column.name}" 失败: ${res.error.message}`)
           }
         }
       }
@@ -882,7 +882,7 @@ export const insertRowsViaSpreadsheet = async (
       },
       complete: () => {
         const t2: any = new Date()
-        console.log(`Total time taken for importing spreadsheet: ${(t2 - t1) / 1000} seconds`)
+        console.log(`导入表格数据总耗时: ${(t2 - t1) / 1000} 秒`)
         resolve({ error: insertError })
       },
     })

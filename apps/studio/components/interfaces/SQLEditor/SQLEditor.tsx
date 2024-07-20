@@ -312,7 +312,7 @@ const SQLEditor = () => {
           (db) => db.identifier === databaseSelectorState.selectedDatabaseId
         )?.connectionString
         if (IS_PLATFORM && !connectionString) {
-          return toast.error('Unable to run query: Connection string is missing')
+          return toast.error('执行查询失败：未找到连接字符串')
         }
 
         const { appendAutoLimit } = checkIfAppendLimitRequired(sql, snap.limit)
@@ -426,7 +426,7 @@ const SQLEditor = () => {
       // entire error body from the assistant
       if (isError(error)) {
         toast.error(
-          `Sorry, the assistant failed to debug your query! Please try again with a different one.`
+          `抱歉，助理未能成功调试您的查询！请尝试使用不同的查询。`
         )
       }
     }
@@ -571,7 +571,7 @@ const SQLEditor = () => {
           }
 
           default:
-            throw new Error(`Unknown diff type '${selectedDiffType}'`)
+            throw new Error(`未知 diff 类型 '${selectedDiffType}'`)
         }
       }
     } catch (e) {
@@ -617,10 +617,10 @@ const SQLEditor = () => {
     <>
       <ConfirmModal
         visible={isConfirmModalOpen}
-        title="Destructive operation"
+        title="破坏性操作"
         danger
-        description="We've detected a potentially destructive operation in the query. Please confirm that you would like to execute this query."
-        buttonLabel="Run destructive query"
+        description="检测到此查询中有潜在破坏性操作。请确认您是否要执行此查询。"
+        buttonLabel="运行破坏性查询"
         onSelectCancel={() => {
           setIsConfirmModalOpen(false)
           // [Joshen] Somehow calling this immediately doesn't work, hence the timeout

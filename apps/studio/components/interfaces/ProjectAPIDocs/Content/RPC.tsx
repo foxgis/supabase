@@ -60,9 +60,9 @@ const RPC = ({ language }: ContentProps) => {
               <Table.td title={parameter.type}>{parameter.type}</Table.td>
               <Table.td>
                 {parameter.required ? (
-                  <Badge variant="warning">Required</Badge>
+                  <Badge variant="warning">必须</Badge>
                 ) : (
-                  <p className="text-foreground-light">Optional</p>
+                  <p className="text-foreground-light">可选</p>
                 )}
               </Table.td>
             </Table.tr>

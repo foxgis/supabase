@@ -13,13 +13,13 @@ import type { ForeignKeyConstraint } from 'data/database/foreign-key-constraints
 export const validateFields = (field: TableField) => {
   const errors = {} as any
   if (field.name.length === 0) {
-    errors['name'] = 'Please assign a name for your table'
+    errors['name'] = '请提供表名'
   }
   if (some(field.columns, (column: ColumnField) => column.format.length === 0)) {
-    errors['columns'] = 'Ensure that all your columns are assigned a type'
+    errors['columns'] = '请确保所有列都已分配类型'
   }
   if (some(field.columns, (column: ColumnField) => column.name.length === 0)) {
-    errors['columns'] = 'Ensure that all your columns are named'
+    errors['columns'] = '请确保所有列都已命名'
   }
   return errors
 }
@@ -44,7 +44,7 @@ export const generateTableFieldFromPostgresTable = (
   return {
     id: table.id,
     name: isDuplicating ? `${table.name}_duplicate` : table.name,
-    comment: isDuplicating ? `This is a duplicate of ${table.name}` : table?.comment ?? '',
+    comment: isDuplicating ? `这是 ${table.name} 的副本` : table?.comment ?? '',
     // @ts-ignore
     columns: (table?.columns ?? []).map((column: PostgresColumn) => {
       return generateColumnFieldFromPostgresColumn(column, table, foreignKeys)

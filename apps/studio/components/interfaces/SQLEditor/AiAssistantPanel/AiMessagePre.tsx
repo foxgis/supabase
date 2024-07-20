@@ -140,7 +140,7 @@ export const AiMessagePre = ({ onDiff, children, className }: AiMessagePreProps)
             </Button>
           </TooltipTrigger_Shadcn_>
           <TooltipContent_Shadcn_ side="bottom" className="font-sans">
-            Copy code
+            复制代码
           </TooltipContent_Shadcn_>
         </Tooltip_Shadcn_>
       </div>

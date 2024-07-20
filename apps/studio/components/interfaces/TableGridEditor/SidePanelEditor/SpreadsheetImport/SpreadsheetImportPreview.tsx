@@ -62,9 +62,9 @@ const SpreadsheetImportPreview = ({
         <SidePanel.Content>
           <div className="py-1 flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <p className="text-sm">Preview data to be imported</p>
-              {!isCompatible && <Badge variant="destructive">Data incompatible</Badge>}
-              {errors.length > 0 && <Badge variant="warning">{errors.length} issues found</Badge>}
+              <p className="text-sm">预览将要导入的数据</p>
+              {!isCompatible && <Badge variant="destructive">数据不兼容</Badge>}
+              发现了 {errors.length > 0 && <Badge variant="warning">{errors.length} 个问题</Badge>}
             </div>
             <Button
               type="text"
@@ -93,8 +93,7 @@ const SpreadsheetImportPreview = ({
                   }"`}
             </p>
             <p className="text-sm text-foreground-light">
-              Here is a preview of the data that will be added (up to the first 20 columns and first
-              20 rows).
+              这里是将要添加的数据的预览（最多显示前 20 列和前 20 行）。
             </p>
           </div>
           <div className="mb-4">
@@ -116,12 +115,12 @@ const SpreadsheetImportPreview = ({
           {(!isCompatible || errors.length > 0) && (
             <div className="space-y-2 my-4">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm">Issues found in spreadsheet</p>
+                <p className="text-sm">在表格数据中发现了问题</p>
                 {isCompatible && (
                   <p className="text-sm text-foreground-light">
                     {selectedTable !== undefined
-                      ? 'This CSV can still be imported into your table despite issues in the following rows.'
-                      : 'Your table can still be created nonetheless despite issues in the following rows.'}
+                      ? '尽管在以下行中发现了问题，仍然可以将这个 CSV 导入到您的表中。'
+                      : '尽管在以下行中发现了问题，仍然可以创建您的表。'}
                   </p>
                 )}
               </div>
@@ -133,12 +132,11 @@ const SpreadsheetImportPreview = ({
                         <div className="w-[6px] h-[6px] rounded-full bg-foreground-lighter" />
                       </div>
                       <p className="text-sm">
-                        This CSV <span className="text-red-900">cannot</span> be imported into your
-                        table due to incompatible headers:
+                        这个 CSV <span className="text-red-900">不能</span> 被导入到您的表中，因为以下列不匹配：
                         <br />
-                        The column{incompatibleHeaders.length > 1 ? 's' : ''}{' '}
-                        {incompatibleHeaders.map((x) => `"${x}"`).join(', ')}{' '}
-                        {incompatibleHeaders.length > 1 ? 'are' : 'is'} not present in your table
+                        您的表不存在这些列： {incompatibleHeaders.length > 1 ? '' : ''}{' '}
+                        {incompatibleHeaders.map((x) => `"${x}"`).join('，')}{' '}
+                        {incompatibleHeaders.length > 1 ? '' : ''}
                       </p>
                     </div>
                   </div>
@@ -170,7 +168,7 @@ const SpreadsheetImportPreview = ({
                         {error.data?.__parsed_extra && (
                           <>
                             <IconArrowRight size={14} />
-                            <p className="text-sm">Extra field(s):</p>
+                            <p className="text-sm">额外的列：</p>
                             {error.data?.__parsed_extra.map((value: any, i: number) => (
                               <code key={i} className="text-xs">
                                 {value}

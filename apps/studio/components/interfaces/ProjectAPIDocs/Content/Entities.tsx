@@ -24,9 +24,9 @@ const Entities = ({ language }: ContentProps) => {
       document.body.appendChild(element)
       element.click()
       document.body.removeChild(element)
-      toast.success(`Successfully generated types! File is being downloaded`)
+      toast.success(`成功生成了类型文件！文件已下载`)
     } catch (error: any) {
-      toast.error(`Failed to generate types: ${error.message}`)
+      toast.error(`生成类型文件失败：${error.message}`)
     } finally {
       setIsGeneratingTypes(false)
     }
@@ -44,7 +44,7 @@ const Entities = ({ language }: ContentProps) => {
               target="_blank"
               rel="noreferrer"
             >
-              Documentation
+              文档
             </Link>
           </Button>
           <Button
@@ -54,11 +54,11 @@ const Entities = ({ language }: ContentProps) => {
             icon={<IconDownload strokeWidth={1.5} />}
             onClick={onClickGenerateTypes}
           >
-            Generate and download types
+            生成并下载类型文件
           </Button>
         </div>
         <p className="text-xs text-foreground-light px-4 mt-2">
-          Remember to re-generate and download this file as you make changes to your tables.
+          请记住在您对表进行任何更改后需要重新生成并下载此文件。
         </p>
       </div>
       <ContentSnippet selectedLanguage={language} snippet={DOCS_CONTENT.graphql} />

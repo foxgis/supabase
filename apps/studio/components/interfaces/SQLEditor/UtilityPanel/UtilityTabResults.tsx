@@ -113,7 +113,7 @@ const UtilityTabResults = ({
             </div>
           )}
 
-          <div className="flex items-center gap-x-2">
+          {/* <div className="flex items-center gap-x-2">
             {readReplicaError && (
               <Button
                 className="py-2"
@@ -135,7 +135,7 @@ const UtilityTabResults = ({
                 使用 Supabase AI 调试
               </Button>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     )

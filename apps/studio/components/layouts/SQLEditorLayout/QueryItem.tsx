@@ -62,17 +62,17 @@ const QueryItem = ({
       onDeleteQuery(data)
     },
     onError: (error, data) => {
-      if (error.message.includes('Contents not found')) {
+      if (error.message.includes('未找到内容')) {
         onDeleteQuery(data.ids)
       } else {
-        toast.error(`Failed to delete query: ${error.message}`)
+        toast.error(`删除查询失败：${error.message}`)
       }
     },
   })
 
   const onConfirmDelete = async () => {
-    if (!ref) return console.error('Project ref is required')
-    if (!id) return console.error('Snippet ID is required')
+    if (!ref) return console.error('未找到项目号')
+    if (!id) return console.error('未找到代码片段 ID')
     deleteContent({ projectRef: ref, ids: [id] })
   }
 
@@ -92,7 +92,7 @@ const QueryItem = ({
         snap.shareSnippet(id, 'project')
         return Promise.resolve()
       } catch (error: any) {
-        toast.error(`Failed to share query: ${error.message}`)
+        toast.error(`分享查询失败：${error.message}`)
       }
     }
   }
@@ -160,7 +160,7 @@ const QueryItem = ({
                     `${content.sql.length > 43 ? '...' : ''}`}
                 </SimpleCodeBlock>
               ) : (
-                <p className="text-xs text-foreground-lighter">This query is empty</p>
+                <p className="text-xs text-foreground-lighter">此查询是空的</p>
               )}
               {content.sql.trim() && (
                 <CopyButton
@@ -181,9 +181,9 @@ const QueryItem = ({
         onComplete={() => setRenameModalOpen(false)}
       />
       <ConfirmationModal
-        title="Confirm to delete query"
-        confirmLabel="Delete query"
-        confirmLabelLoading="Deleting query"
+        title="确认删除查询"
+        confirmLabel="删除查询"
+        confirmLabelLoading="正在删除查询"
         size="medium"
         loading={isDeleting}
         visible={deleteModalOpen}
@@ -193,36 +193,36 @@ const QueryItem = ({
         alert={
           visibility === 'project'
             ? {
-                title: 'This SQL snippet will be lost forever',
+                title: '此 SQL 代码片段会永远丢失',
                 description:
-                  'Deleting this query will remove it for all members of the project team.',
+                  '删除查询也会从项目团队的所有成员中移除此查询。',
               }
             : undefined
         }
       >
-        <p className="text-sm">Are you sure you want to delete '{name}'?</p>
+        <p className="text-sm">你确定要删除 '{name}' 吗？</p>
       </ConfirmationModal>
       <ConfirmationModal
-        title="Confirm sharing query"
+        title="确认分享查询"
         size="medium"
-        confirmLabel="Share query"
-        confirmLabelLoading="Sharing query"
+        confirmLabel="分享查询"
+        confirmLabelLoading="正在分享查询"
         visible={shareModalOpen}
         onCancel={() => setShareModalOpen(false)}
         onConfirm={onConfirmShare}
         alert={{
-          title: 'This SQL query will become public to all team members',
-          description: 'Anyone with access to the project can view it',
+          title: '此 SQL 查询将公开给所有团队成员',
+          description: '任何可访问本项目的人都可以查看它',
         }}
       >
         <ul className="text-sm text-foreground-light space-y-5">
           <li className="flex gap-3">
             <Eye />
-            <span>Project members will have read-only access to this query.</span>
+            <span>项目成员将只有此查询的只读访问权限。</span>
           </li>
           <li className="flex gap-3">
             <Unlock />
-            <span>Anyone will be able to duplicate it to their personal snippets.</span>
+            <span>任何人都可以将它复制到个人代码片段收藏中。</span>
           </li>
         </ul>
       </ConfirmationModal>

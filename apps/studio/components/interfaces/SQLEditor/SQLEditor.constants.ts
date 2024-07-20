@@ -3,7 +3,7 @@ import type { SqlSnippets, UserContent } from 'types'
 const SQL_SNIPPET_SCHEMA_VERSION = '1.0'
 
 export const NEW_SQL_SNIPPET_SKELETON: UserContent<SqlSnippets.Content> = {
-  name: 'New Query',
+  name: '新查询',
   description: '',
   type: 'sql',
   visibility: 'user', // default to user scope

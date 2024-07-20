@@ -70,7 +70,7 @@ const AISchemaSuggestionPopover = ({
               <div className="flex flex-row items-center gap-4 max-w-md">
                 <IconInfo className="w-6 h-6" />
                 <p className="text-sm">
-                  Generate more relevant queries by including database metadata in your requests.
+                  在请求中包含数据库元数据来生成更相关的查询。
                 </p>
               </div>
               <div className="flex flex-row gap-2 justify-end">
@@ -80,7 +80,7 @@ const AISchemaSuggestionPopover = ({
                     setIsSchemaSuggestionDismissed(true)
                   }}
                 >
-                  Dismiss
+                  取消
                 </Button>
                 <Button
                   onClick={() => {
@@ -88,7 +88,7 @@ const AISchemaSuggestionPopover = ({
                     onClickSettings?.()
                   }}
                 >
-                  Open settings
+                  打开设置
                 </Button>
               </div>
             </div>

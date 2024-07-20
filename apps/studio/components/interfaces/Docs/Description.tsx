@@ -83,7 +83,7 @@ const Description = ({ content, metadata, onChange = noop }: DescrptionProps) =>
     <div className="space-y-2">
       <AutoTextArea
         className="w-full"
-        placeholder="Click to edit."
+        placeholder="点击编辑"
         value={value}
         onChange={(e: any) => setValue(e.target.value)}
       />
@@ -100,7 +100,7 @@ const Description = ({ content, metadata, onChange = noop }: DescrptionProps) =>
             setIsUpdating(false)
           }}
         >
-          Cancel
+          取消
         </Button>
         <Button disabled={!hasChanged} onClick={updateDescription}>
           {isUpdating ? (

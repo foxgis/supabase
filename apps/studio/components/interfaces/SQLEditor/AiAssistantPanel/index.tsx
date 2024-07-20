@@ -124,10 +124,10 @@ export const AiAssistantPanel = ({
               }
               onClick={() => snap.setShowAiSettingsModal(true)}
             >
-              {includeSchemaMetadata ? 'Include' : 'Exclude'} database metadata in queries
+              在查询中{includeSchemaMetadata ? '包含' : '排除'} 数据库元数据
             </Button>
             <Button type="warning" onClick={() => onClearHistory()}>
-              Clear history
+              清除历史
             </Button>
           </div>
         </Message>
@@ -145,7 +145,7 @@ export const AiAssistantPanel = ({
           />
         ))}
 
-        {pendingReply && <Message key="thinking" role="assistant" content="Thinking..." />}
+        {pendingReply && <Message key="thinking" role="assistant" content="正在思考..." />}
 
         <div ref={bottomRef} className="h-1" />
       </div>
@@ -188,7 +188,7 @@ export const AiAssistantPanel = ({
                           formRef?.current?.requestSubmit()
                         }
                       }}
-                      placeholder="Ask a question about your SQL query"
+                      placeholder="针对您的 SQL 查询提问"
                     />
                     {loading && <Loader2 className="absolute top-2 right-3 animate-spin" />}
                   </div>

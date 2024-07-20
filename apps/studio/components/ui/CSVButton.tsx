@@ -73,7 +73,7 @@ const CSVButton = ({
           </Button>
         </TooltipTrigger_Shadcn_>
         <TooltipContent_Shadcn_ side="bottom" className="text-xs">
-          Download logs as CSV
+          下载日志 CSV
         </TooltipContent_Shadcn_>
       </Tooltip_Shadcn_>
     </>

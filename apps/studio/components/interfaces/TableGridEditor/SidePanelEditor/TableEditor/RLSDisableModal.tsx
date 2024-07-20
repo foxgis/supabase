@@ -12,29 +12,29 @@ export default function RLSDisableModalContent() {
             title="This table will be publicly readable and writable"
             withIcon
           >
-            <p>Anyone can edit or delete data in this table.</p>
+            <p>所有人都可以编辑或删除这张表的数据。</p>
           </Alert>
           <ul className="mt-4 space-y-5">
             <li className="flex gap-3">
               <IconAlertOctagon />
-              <span>All requests to this table will be accepted.</span>
+              <span>所有对这张表的请求都将会被接受。</span>
             </li>
 
             <li className="flex gap-3">
               <IconShieldOff />
-              <span>Auth policies will not be enforced.</span>
+              <span>认证授权策略将不会被执行。</span>
             </li>
 
             <li className="flex gap-3">
               <IconLock w={14} className="flex-shrink-0" />
               <div>
-                <strong>Before you turn off Row Level Security, consider:</strong>
+                <strong>您在关闭行级安全之前，请先考虑：</strong>
                 <ul className="space-y-2 mt-2">
                   <li className="list-disc ml-4">
-                    Any personal information in this table will be publicly accessible.
+                    这张表中的任何个人信息都将会被公开访问。
                   </li>
                   <li className="list-disc ml-4">
-                    Anyone will be able to modify, add or delete any row in this table.
+                    任何人都可以编辑或删除这张表中的任何数据。
                   </li>
                 </ul>
               </div>

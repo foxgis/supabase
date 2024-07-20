@@ -43,7 +43,7 @@ const DocView = () => {
   const endpoint =
     customDomainData?.customDomain?.status === 'active'
       ? `https://${customDomainData.customDomain?.hostname}`
-      : `${data?.autoApiService.protocol ?? 'https'}://${data?.autoApiService.endpoint ?? '-'}`
+      : `${data?.autoApiService.protocol ?? 'http'}://${data?.autoApiService.endpoint ?? '-'}`
 
   const { paths } = jsonSchema || {}
   const PAGE_KEY: any = resource || rpc || page || 'index'

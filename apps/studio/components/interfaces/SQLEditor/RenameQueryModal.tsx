@@ -50,7 +50,7 @@ const RenameQueryModal = ({
       if (!descriptionInput) setDescriptionInput(description)
     },
     onError: (error) => {
-      toast.error(`Failed to rename query: ${error.message}`)
+      toast.error(`查询重命名失败：${error.message}`)
     },
   })
 
@@ -65,7 +65,7 @@ const RenameQueryModal = ({
           const { content } = await getContentById({ projectRef: ref, id: snippet.id })
           titleSql({ sql: content.sql })
         } catch (error) {
-          toast.error('Unable to generate title based on query contents')
+          toast.error('未能基于查询内容生成标题')
         }
       }
     } else {
@@ -99,7 +99,7 @@ const RenameQueryModal = ({
       if (onComplete) onComplete()
     } catch (error: any) {
       // [Joshen] We probably need some rollback cause all the saving is async
-      toast.error(`Failed to rename query: ${error.message}`)
+      toast.error(`查询重命名失败：${error.message}`)
     }
   }
 
@@ -142,15 +142,15 @@ const RenameQueryModal = ({
                       <div className="scale-75">
                         <AiIconAnimation loading={isTitleGenerationLoading} />
                       </div>
-                      <span>Rename with Supabase AI</span>
+                      <span>使用 Supabase AI 重命名</span>
                     </div>
                   </Button>
                 )}
               </div>
               <Input.TextArea
-                label="Description"
+                label="描述"
                 id="description"
-                placeholder="Describe query"
+                placeholder="描述查询"
                 size="medium"
                 textAreaClassName="resize-none"
                 value={descriptionInput}
@@ -160,10 +160,10 @@ const RenameQueryModal = ({
             <Modal.Separator />
             <Modal.Content className="flex items-center justify-end gap-2">
               <Button htmlType="reset" type="default" onClick={onCancel} disabled={isSubmitting}>
-                Cancel
+                取消
               </Button>
               <Button htmlType="submit" loading={isSubmitting} disabled={isSubmitting}>
-                Rename query
+                重命名查询
               </Button>
             </Modal.Content>
           </>

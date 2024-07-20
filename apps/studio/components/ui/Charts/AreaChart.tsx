@@ -48,7 +48,7 @@ const AreaChart = ({
   if (data.length === 0) {
     return (
       <NoDataPlaceholder
-        description="It may take up to 24 hours for data to show"
+        description="可能需要 24 小时才能生成可供展示的数据"
         size={size}
         className={className}
         attribute={title}

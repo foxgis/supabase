@@ -57,7 +57,7 @@ export const ForeignKeyRow = ({
               </Badge>
             )}
             <p className="text-sm text-foreground-light">
-              {foreignKey.columns.length > 1 ? 'Composite foreign' : 'Foreign'} key relation to:
+              {foreignKey.columns.length > 1 ? '复合外键' : '外键'} 关联到：
             </p>
             <Button
               asChild
@@ -106,15 +106,15 @@ export const ForeignKeyRow = ({
       {!disabled && (
         <div className="flex items-center gap-x-2">
           <Button type="default" onClick={onSelectEdit}>
-            Edit
+            编辑
           </Button>
           {foreignKey.toRemove ? (
             <Button type="default" onClick={onSelectUndoRemove}>
-              Cancel remove
+              取消移动
             </Button>
           ) : (
             <Button type="default" onClick={onSelectRemove}>
-              Remove
+              移动
             </Button>
           )}
         </div>

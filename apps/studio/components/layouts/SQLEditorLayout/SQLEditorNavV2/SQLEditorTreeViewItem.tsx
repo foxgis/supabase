@@ -83,7 +83,7 @@ export const SQLEditorTreeViewItem = ({
 
   // [Joshen] Folder contents are loaded on demand too
   const onOpenFolder = async (id: string) => {
-    if (!ref) return console.error('Project ref is required')
+    if (!ref) return console.error('未找到项目号')
 
     try {
       setIsFetching(true)
@@ -92,7 +92,7 @@ export const SQLEditorTreeViewItem = ({
         snapV2.addSnippet({ projectRef: ref, snippet })
       })
     } catch (error: any) {
-      toast.error(`Failed to retrieve folder contents: ${error.message}`)
+      toast.error(`获取文件夹内容失败：${error.message}`)
     } finally {
       setIsFetching(false)
     }
@@ -141,7 +141,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Plus size={14} />
-                  Create new snippet
+                  创建新的代码片段
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectRename !== undefined && isOwner && (
@@ -151,7 +151,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Edit size={14} />
-                  Rename folder
+                  重命名文件夹
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectDelete !== undefined && isOwner && (
@@ -163,7 +163,7 @@ export const SQLEditorTreeViewItem = ({
                     onFocusCapture={(e) => e.stopPropagation()}
                   >
                     <Trash size={14} />
-                    Delete folder
+                    删除文件夹
                   </ContextMenuItem_Shadcn_>
                 </>
               )}
@@ -177,7 +177,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Move size={14} />
-                  Move selected queries
+                  移动选中的查询
                 </ContextMenuItem_Shadcn_>
               )}
               <ContextMenuSeparator_Shadcn_ />
@@ -188,7 +188,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Trash size={14} />
-                  Delete selected queries
+                  删除选中的查询
                 </ContextMenuItem_Shadcn_>
               )}
             </>
@@ -202,7 +202,7 @@ export const SQLEditorTreeViewItem = ({
               >
                 <Link href={`/project/${ref}/sql/${element.id}`} target="_blank" rel="noreferrer">
                   <ExternalLink size={14} />
-                  Open in new tab
+                  在新标签页中打开
                 </Link>
               </ContextMenuItem_Shadcn_>
               <ContextMenuSeparator_Shadcn_ />
@@ -213,7 +213,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Edit size={14} />
-                  Rename query
+                  重命名查询
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectMove !== undefined && isOwner && (
@@ -223,7 +223,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Move size={14} />
-                  Move query
+                  移动查询
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectShare !== undefined && !isSharedSnippet && canCreateSQLSnippet && (
@@ -233,7 +233,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Share size={14} />
-                  Share query with team
+                  分享查询给团队
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectUnshare !== undefined && isSharedSnippet && isOwner && (
@@ -243,7 +243,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Lock size={14} />
-                  Unshare query with team
+                  取消分享查询给团队
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectCopyPersonal !== undefined &&
@@ -256,7 +256,7 @@ export const SQLEditorTreeViewItem = ({
                     onFocusCapture={(e) => e.stopPropagation()}
                   >
                     <Copy size={14} />
-                    Duplicate personal copy
+                    复制个人副本
                   </ContextMenuItem_Shadcn_>
                 )}
               {onSelectDownload !== undefined && IS_PLATFORM && (
@@ -266,7 +266,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Download size={14} />
-                  Download as migration file
+                  下载为迁移文件
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectDelete !== undefined && isOwner && (
@@ -274,7 +274,7 @@ export const SQLEditorTreeViewItem = ({
                   <ContextMenuSeparator_Shadcn_ />
                   <ContextMenuItem_Shadcn_ className="gap-x-2" onSelect={() => onSelectDelete()}>
                     <Trash size={14} />
-                    Delete query
+                    删除查询
                   </ContextMenuItem_Shadcn_>
                 </>
               )}
