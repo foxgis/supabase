@@ -465,7 +465,9 @@ export const fillTimeseries = (
   const diff = maxDate.diff(minDate, truncation as dayjs.UnitType)
   // Intentional throwing of error here to be caught by Sentry, as this would indicate a bug since charts shouldn't be rendering more than 10k data points
   if (diff > 10000) {
-    throw new Error('数据错误，超过10k数据点会导致性能下降。')
+    throw new Error(
+      '选择的日期范围将导致图表呈现超过 10,000 个数据点，这会降低浏览器的性能。请选择一个较小的日期范围。'
+    )
   }
 
   for (let i = 0; i <= diff; i++) {

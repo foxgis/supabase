@@ -140,7 +140,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                   <InnerSideBarFilterSearchInput
                     name="search-queries"
                     placeholder="查找查询..."
-                    aria-labelledby="查找查询"
+                    aria-labelledby="search-queries"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value.trim())}
                   >

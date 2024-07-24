@@ -160,8 +160,9 @@ const TableEditorMenu = () => {
         <div className="flex flex-auto flex-col gap-2 pb-4 px-2">
           <InnerSideBarFilters>
             <InnerSideBarFilterSearchInput
+              id='search-tables'
               name="search-tables"
-              aria-labelledby="查找表"
+              aria-labelledby="search-tables"
               onChange={(e) => {
                 setSearchText(e.target.value.trim())
               }}

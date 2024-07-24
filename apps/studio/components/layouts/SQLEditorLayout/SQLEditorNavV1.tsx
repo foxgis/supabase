@@ -170,7 +170,7 @@ export const SQLEditorNavV1 = ({
                 placeholder="查找查询..."
                 onChange={(e) => setSearchText(e.target.value.trim())}
                 value={searchText}
-                aria-labelledby="查找查询"
+                aria-labelledby="search-queries"
               />
             </InnerSideBarFilters>
           )}
