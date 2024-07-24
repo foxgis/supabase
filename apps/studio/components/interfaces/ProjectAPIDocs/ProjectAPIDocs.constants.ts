@@ -4,7 +4,7 @@ export const DOCS_MENU = [
   { name: '表和视图', key: 'entities' },
   { name: '存储过程', key: 'stored-procedures' },
   { name: '文件存储', key: 'storage' },
-  { name: '边缘函数', key: 'edge-functions' },
+  { name: '云函数', key: 'edge-functions' },
   { name: '实时消息', key: 'realtime' },
 ]
 

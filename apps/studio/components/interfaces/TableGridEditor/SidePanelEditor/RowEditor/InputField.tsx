@@ -142,7 +142,7 @@ const InputField = ({
               {field.comment && <p>{field.comment}</p>}
               {isTruncated && (
                 <p>
-                  注意：值太长无法在仪表盘中呈现，请在编辑框中展开查看和编辑
+                  注意：值太长无法在界面中呈现，请在编辑框中展开查看和编辑
                 </p>
               )}
             </>
@@ -198,7 +198,7 @@ const InputField = ({
             {field.comment && <p>{field.comment}</p>}
             {isTruncated && (
               <p>
-                注意：值太长无法在仪表盘中呈现，请在编辑框中展开查看和编辑
+                注意：值太长无法在界面中呈现，请在编辑框中展开查看和编辑
               </p>
             )}
           </>

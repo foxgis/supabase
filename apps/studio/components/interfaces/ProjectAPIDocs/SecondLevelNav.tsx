@@ -58,7 +58,7 @@ const SecondLevelNav = () => {
       docsUrl: 'https://supabase.com/docs/reference/javascript/storage-createbucket',
     },
     'edge-functions': {
-      title: '边缘函数',
+      title: '云函数',
       options: edgeFunctions ?? [],
       docsUrl: 'https://supabase.com/docs/reference/javascript/functions-invoke',
     },

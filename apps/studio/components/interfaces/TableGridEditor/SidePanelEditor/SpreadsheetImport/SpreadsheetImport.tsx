@@ -80,7 +80,7 @@ const SpreadsheetImport = ({
       event.target.value = ''
       return toast(
         <div className="space-y-1">
-          <p>当前仪表盘仅支持导入小于 100MB 的 CSV 文件。</p>
+          <p>当前界面仅支持导入小于 100MB 的 CSV 文件。</p>
           <p>对于大批量数据加载，我们建议您直接通过数据库进行。</p>
           <Button asChild type="default" icon={<IconExternalLink />} className="!mt-2">
             <Link

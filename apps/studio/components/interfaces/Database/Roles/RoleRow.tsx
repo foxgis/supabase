@@ -191,7 +191,7 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                                     ].join(' ')}
                                   >
                                     <span className="text-xs">
-                                      此权限无法通过仪表板更新
+                                      此权限无法通过本界面更新
                                     </span>
                                   </div>
                                 </Tooltip.Content>

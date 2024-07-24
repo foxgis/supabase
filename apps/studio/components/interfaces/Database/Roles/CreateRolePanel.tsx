@@ -149,7 +149,7 @@ const CreateRolePanel = ({ visible, onClose }: CreateRolePanelProps) => {
               <SidePanel.Separator />
 
               <div className="grid gap-4">
-                <p className="text-sm">此权限不能通过仪表板授予：</p>
+                <p className="text-sm">此权限不能通过本界面授予：</p>
                 {(Object.keys(ROLE_PERMISSIONS) as (keyof typeof ROLE_PERMISSIONS)[])
                   .filter((permissionKey) => !ROLE_PERMISSIONS[permissionKey].grant_by_dashboard)
                   .map((permissionKey) => {
