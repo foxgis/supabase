@@ -210,7 +210,7 @@ const PreviewFilterPanel = ({
         <CSVButton data={csvData} disabled={!Boolean(csvData)} title="Download data" />
       </div>
 
-      {showDatabaseSelector ? (
+      {false ? (
         <div className="flex items-center justify-center gap-x-2">
           <Tooltip_Shadcn_ delayDuration={100}>
             <TooltipTrigger_Shadcn_ asChild>
