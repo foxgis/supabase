@@ -141,7 +141,7 @@ export const JsonEditor = <TRow, TSummaryRow = unknown>({
       setIsPopoverOpen(false)
     } else {
       const { onError } = state
-      if (onError) onError(Error('Please enter a valid JSON'))
+      if (onError) onError(Error('请输入有效的 JSON'))
     }
   }
 
@@ -183,13 +183,13 @@ export const JsonEditor = <TRow, TSummaryRow = unknown>({
                     <div className="px-1.5 py-[2.5px] rounded bg-selection border border-strong flex items-center justify-center">
                       <span className="text-[10px]">⏎</span>
                     </div>
-                    <p className="text-xs text-foreground-light">Save changes</p>
+                    <p className="text-xs text-foreground-light">保存变更</p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="px-1 py-[2.5px] rounded bg-selection border border-strong flex items-center justify-center">
                       <span className="text-[10px]">Esc</span>
                     </div>
-                    <p className="text-xs text-foreground-light">Cancel changes</p>
+                    <p className="text-xs text-foreground-light">取消变更</p>
                   </div>
                 </div>
               )}
@@ -206,7 +206,7 @@ export const JsonEditor = <TRow, TSummaryRow = unknown>({
                   </div>
                 </TooltipTrigger_Shadcn_>
                 <TooltipContent_Shadcn_ side="bottom" align="center">
-                  <span>Expand editor</span>
+                  <span>展开编辑器</span>
                 </TooltipContent_Shadcn_>
               </Tooltip_Shadcn_>
             </div>

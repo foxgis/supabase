@@ -56,7 +56,7 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
   const loadFullValue = () => {
     if (selectedTable === undefined || project === undefined) return
     if ((selectedTable as PostgresTable).primary_keys.length === 0) {
-      return toast('Unable to load value as table has no primary keys')
+      return toast('无法载入值，因为表没有主键')
     }
 
     const pkMatch = (selectedTable as PostgresTable).primary_keys.reduce((a, b) => {
@@ -141,13 +141,13 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
                     <div className="px-1.5 py-[2.5px] rounded bg-surface-300 border border-strong flex items-center justify-center">
                       <span className="text-[10px]">⏎</span>
                     </div>
-                    <p className="text-xs text-foreground-light">Save changes</p>
+                    <p className="text-xs text-foreground-light">保存变更</p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="px-1 py-[2.5px] rounded bg-surface-300 border border-strong flex items-center justify-center">
                       <span className="text-[10px]">Esc</span>
                     </div>
-                    <p className="text-xs text-foreground-light">Cancel changes</p>
+                    <p className="text-xs text-foreground-light">取消变更</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-y-1">
@@ -160,7 +160,7 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
                         icon={<Maximize size={12} strokeWidth={2} />}
                       />
                     </TooltipTrigger_Shadcn_>
-                    <TooltipContent_Shadcn_ side="bottom">Expand editor</TooltipContent_Shadcn_>
+                    <TooltipContent_Shadcn_ side="bottom">展开编辑器</TooltipContent_Shadcn_>
                   </Tooltip_Shadcn_>
                   {isNullable && (
                     <Button
@@ -170,7 +170,7 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
                       size="tiny"
                       onClick={() => saveChanges(null)}
                     >
-                      <div>Set to NULL</div>
+                      <div>设为 NULL</div>
                     </Button>
                   )}
                 </div>

@@ -17,13 +17,13 @@ export const TruncatedWarningOverlay = ({
       )}
     >
       <div className="flex flex-col gap-y-1">
-        <p>Value is larger than {MAX_CHARACTERS.toLocaleString()} characters</p>
+        <p>值的长度超过了 {MAX_CHARACTERS.toLocaleString()} 个字符</p>
         <p className="text-foreground-light">
-          You may try to render the entire value, but your browser may run into performance issues
+          您可以尝试渲染整个值，但您的浏览器可能会遇到性能问题
         </p>
       </div>
       <Button type="default" loading={isLoading} onClick={loadFullValue}>
-        Load full value
+        载入完整值
       </Button>
     </div>
   )
