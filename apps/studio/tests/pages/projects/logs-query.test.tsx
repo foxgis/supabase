@@ -83,7 +83,7 @@ test.skip('custom sql querying', async () => {
   userEvent.type(editor, 'select \ncount(*) as my_count \nfrom edge_logs')
 
   // run query by button
-  userEvent.click(await screen.findByText('Run'))
+  userEvent.click(await screen.findByText('执行'))
 
   // run query by editor
   userEvent.type(editor, '\nlimit 123{ctrl}{enter}')
@@ -102,7 +102,7 @@ test.skip('custom sql querying', async () => {
 test.skip('bug: can edit query after selecting a log', async () => {
   const { container } = render(<LogsExplorerPage dehydratedState={{}} />)
   // run default query
-  userEvent.click(await screen.findByText('Run'))
+  userEvent.click(await screen.findByText('执行'))
   const rowValue = await screen.findByText(/12345/) // row value
   // open up an show selection panel
   await userEvent.click(rowValue)

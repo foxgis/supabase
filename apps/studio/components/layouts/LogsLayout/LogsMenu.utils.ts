@@ -23,7 +23,7 @@ export const generateLogsMenu = (
           { key: 'explorer', name: '查询', root: true },
           IS_PLATFORM ? { key: 'saved', name: '保存的查询' } : null,
           { key: 'recent', name: '最近的查询' },
-          IS_PLATFORM ? { key: 'templates', name: '查询模版' } : null,
+          { key: 'templates', name: '查询模版' },
         ].filter((item) => item) as { name: string; key: string; root: boolean }[]
       ).map(({ key, name, root }) => ({
         name,

@@ -262,7 +262,7 @@ export const LogsPreviewer = ({
               loading={isLoadingOlder}
               disabled={isLoadingOlder}
             >
-              加入旧的
+              加载更多
             </Button>
             <div className="flex flex-row justify-end mt-2">
               <UpgradePrompt show={showUpgradePrompt} setShowUpgradePrompt={setShowUpgradePrompt} />

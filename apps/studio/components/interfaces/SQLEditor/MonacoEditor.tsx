@@ -66,7 +66,7 @@ const MonacoEditor = ({
 
     editor.addAction({
       id: 'run-query',
-      label: 'Run Query',
+      label: '执行查询',
       keybindings: [monaco.KeyMod.CtrlCmd + monaco.KeyCode.Enter],
       contextMenuGroupId: 'operation',
       contextMenuOrder: 0,

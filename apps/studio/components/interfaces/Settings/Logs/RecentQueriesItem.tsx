@@ -27,7 +27,7 @@ const RecentQueriesItem: React.FC<Props> = ({ item }) => {
             router.push(`/project/${ref}/logs/explorer?q=${encodeURIComponent(item.sql)}`)
           }
         >
-          Run
+          执行
         </Button>
       </Table.td>
     </Table.tr>

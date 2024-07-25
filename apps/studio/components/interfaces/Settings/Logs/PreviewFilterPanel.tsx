@@ -235,7 +235,7 @@ const PreviewFilterPanel = ({
         </div>
       ) : (
         <Button asChild type="default" onClick={onExploreClick}>
-          <Link href={queryUrl}>通过查询查看</Link>
+          <Link href={queryUrl}>查看查询语句</Link>
         </Button>
       )}
     </div>

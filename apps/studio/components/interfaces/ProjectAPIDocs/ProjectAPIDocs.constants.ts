@@ -333,7 +333,7 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
     category: 'edge-functions',
     title: '概述',
     description: `
-Edge Functions 是在边缘（靠近用户）处运行的服务器端 TypeScript 函数。它们可用于侦听 webhooks 或将与第三方服务（如 Stripe）集成到 Supabase 项目中。Edge Functions 是使用 Deno 开发的，这为开发者提供了一些好处：
+云函数是在服务器端运行的 TypeScript 函数。它们可用于侦听 webhooks 或将与第三方服务（如 Stripe）集成到 Supabase 项目中。云函数使用 Deno 开发，这为开发者提供了一些好处：
 `,
     js: undefined,
     bash: undefined,
@@ -369,9 +369,9 @@ supabase functions new hello-world
   deployEdgeFunction: {
     key: 'deploy-edge-function',
     category: 'edge-functions',
-    title: '部署一个 Edge Function',
+    title: '部署一个云函数',
     description: `
-通过 Supabase CLI 将一个 Supabase Edge Function 部署到您的 Supabase 项目。
+通过 Supabase CLI 将一个云函数部署到您的 Supabase 项目。
 `,
     js: () => `// 通过 Supabase CLI 部署一个 edge function`,
     bash: () => `supabase functions deploy hello-world --project-ref [ref]
