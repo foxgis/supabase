@@ -9,7 +9,7 @@ const LoadingState = () => {
   const projectName =
     ref !== 'default'
       ? allProjects?.find((project) => project.ref === ref)?.name
-      : '欢迎来到您的项目'
+      : '欢迎进入您的项目'
 
   return (
     <div className="w-full mx-auto my-16 space-y-16 max-w-7xl">

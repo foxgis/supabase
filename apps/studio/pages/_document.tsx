@@ -11,7 +11,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="en">
+      <Html lang="zh-CN">
         <Head>
           {/* Workaround for https://github.com/suren-atoyan/monaco-react/issues/272 */}
           <link

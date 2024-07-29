@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "downlevelIteration": true,
     "incremental": true,
+    "sourceMap": true,
     "paths": {
       "@ui/*": ["./../../packages/ui/src/*"] // handle ui package paths
     },

@@ -163,7 +163,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   <title>数据中间件</title>
                   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 </Head>
-                <MetaFaviconsPagesRouter applicationName="FoxGIS Studio" />
+                <MetaFaviconsPagesRouter applicationName="数据中间件" />
                 <PageTelemetry>
                   <TooltipProvider>
                     <RouteValidationWrapper>

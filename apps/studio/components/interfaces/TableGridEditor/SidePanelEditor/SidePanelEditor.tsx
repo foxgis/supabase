@@ -649,8 +649,8 @@ const SidePanelEditor = ({
       />
       <ConfirmationModal
         visible={isClosingPanel}
-        title="放弃变更"
-        confirmLabel="放弃"
+        title="舍弃变更"
+        confirmLabel="舍弃"
         onCancel={() => setIsClosingPanel(false)}
         onConfirm={() => {
           setIsClosingPanel(false)

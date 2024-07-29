@@ -54,10 +54,10 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
   const { mutate: deleteContent, isLoading: isDeleting } = useContentDeleteMutation({
     onSuccess: (data) => postDeleteCleanup(data),
     onError: (error, data) => {
-      if (error.code === 404 && error.message.includes('Content not found')) {
+      if (error.code === 404 && error.message.includes('未找到内容')) {
         postDeleteCleanup(data.ids)
       } else {
-        toast.error(`Failed to delete queries: ${error.message}`)
+        toast.error(`删除查询失败: ${error.message}`)
       }
     },
   })
