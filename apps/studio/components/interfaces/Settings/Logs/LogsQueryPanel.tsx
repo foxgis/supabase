@@ -112,7 +112,7 @@ const LogsQueryPanel = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">
                   <DropdownMenuItem onClick={() => onDataSourceChange('logs')}>
-                    <DropdownMenuItemContent name="Logs" desc="Logs for all Supabase products" />
+                    <DropdownMenuItemContent name="日志" desc="数据中间件所有组件的日志" />
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onDataSourceChange('warehouse')}>
                     <DropdownMenuItemContent
@@ -228,7 +228,7 @@ const LogsQueryPanel = ({
                           <p key={index}>
                             {warning.text}{' '}
                             {warning.link && (
-                              <Link href={warning.link}>{warning.linkText || 'View'}</Link>
+                              <Link href={warning.link}>{warning.linkText || '查看'}</Link>
                             )}
                           </p>
                         ))}

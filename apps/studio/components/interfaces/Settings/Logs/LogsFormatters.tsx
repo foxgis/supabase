@@ -16,7 +16,7 @@ export const RowLayout: React.FC<React.PropsWithChildren> = ({ children }) => (
 // renders a timestamp (either unix microsecond or iso timestamp)
 export const SelectionDetailedTimestampRow = ({ value }: { value: string | number }) => (
   <SelectionDetailedRow
-    label="Timestamp"
+    label="时间"
     value={isUnixMicro(value) ? unixMicroToIsoTimestamp(value) : String(value)}
   />
 )

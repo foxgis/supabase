@@ -73,7 +73,7 @@ const MessageSelection = ({ log, onClose }: MessageSelectionProps) => {
               <CopyButton
                 text={selectionText}
                 type="default"
-                title="Copy log to clipboard"
+                title="复制日志到剪贴板"
                 onClick={() => {
                   Telemetry.sendEvent(
                     {

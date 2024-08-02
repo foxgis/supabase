@@ -15,7 +15,7 @@ export const SelectionDetailedTimestampRow = ({
   hideCopy?: boolean
 }) => (
   <SelectionDetailedRow
-    label="Timestamp"
+    label="时间"
     value={unixMicroToIsoTimestamp(value)}
     hideCopy={hideCopy}
   />
@@ -42,7 +42,7 @@ export const SelectionDetailedRow = ({
           text={value}
           className="group-hover:opacity-100 opacity-0 my-auto transition col-span-2  h-4 w-4 px-0 py-0"
           type="text"
-          title="Copy to clipboard"
+          title="复制到剪贴板"
         />
       )}
     </div>

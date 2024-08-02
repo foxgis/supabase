@@ -62,16 +62,16 @@ const RowContextMenu = ({ rows }: RowContextMenuProps) => {
       <Menu id={ROW_CONTEXT_MENU_ID} animation={false}>
         <Item onClick={onCopyCellContent}>
           <IconClipboard size="tiny" />
-          <span className="ml-2 text-xs">Copy cell content</span>
+          <span className="ml-2 text-xs">复制单元格内容</span>
         </Item>
         <Item onClick={onEditRowClick} hidden={isItemHidden} data="edit">
           <IconEdit size="tiny" />
-          <span className="ml-2 text-xs">Edit row</span>
+          <span className="ml-2 text-xs">编辑行</span>
         </Item>
         {state.editable && <Separator />}
         <Item onClick={onDeleteRow} hidden={isItemHidden} data="delete">
           <IconTrash size="tiny" stroke="red" />
-          <span className="ml-2 text-xs">Delete row</span>
+          <span className="ml-2 text-xs">删除行</span>
         </Item>
       </Menu>
     </>

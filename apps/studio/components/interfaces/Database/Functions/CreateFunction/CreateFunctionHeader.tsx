@@ -23,12 +23,12 @@ export const CreateFunctionHeader = ({
           )}
         >
           <X className="h-3 w-3" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">关闭</span>
         </SheetClose>
         <SheetTitle className="truncate">
           {selectedFunction !== undefined
-            ? `Edit '${selectedFunction}' function`
-            : 'Add a new function'}
+            ? `编辑 '${selectedFunction}' 函数`
+            : '添加新函数'}
         </SheetTitle>
       </div>
       {/* <Tooltip_Shadcn_>
