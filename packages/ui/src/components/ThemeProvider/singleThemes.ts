@@ -4,8 +4,8 @@ export interface SingleTheme {
 }
 
 export const singleThemes = [
-  { name: 'Dark', value: 'dark' }, // Classic Supabase dark
-  { name: 'Deep Dark', value: 'deep-dark' }, // Deep Dark Supabase dark
-  { name: 'Light', value: 'light' }, // Classic Supabase light
-  { name: 'System', value: 'system' }, // Classic Supabase light
+  { name: '暗黑', value: 'dark' }, // Classic Supabase dark
+  { name: '明亮', value: 'light' }, // Classic Supabase light
+  { name: '深黑', value: 'classic-dark' }, // Deep Dark Supabase dark
+  { name: '系统', value: 'system' }, // Classic Supabase light
 ]

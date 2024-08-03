@@ -24,12 +24,12 @@ const MessageSelection = ({ log, onClose }: MessageSelectionProps) => {
   return (
     <div
       className={cn(
-        'relative flex h-full flex-grow flex-col border-l border-t-2 overflow-y-scroll bg-gray-200'
+        'relative flex h-full flex-grow flex-col border-l border-t-2 overflow-y-scroll bg-200'
       )}
     >
       <div
         className={cn(
-          'absolute flex h-full w-full flex-col items-center justify-center gap-2 bg-scale-200 text-center opacity-0 transition-all',
+          'absolute flex h-full w-full flex-col items-center justify-center gap-2 bg-200 text-center opacity-0 transition-all',
           log ? 'z-0 opacity-0' : 'z-10 opacity-100'
         )}
       >
@@ -59,7 +59,7 @@ const MessageSelection = ({ log, onClose }: MessageSelectionProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <h3 className="text-sm text-foreground">选择一条消息</h3>
+            <h3 className="text-sm text-foreground">选择消息</h3>
             <p className="text-xs text-foreground-lighter">
               点击左侧消息查看详情。
             </p>
