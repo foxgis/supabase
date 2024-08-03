@@ -25,7 +25,7 @@ export function convertArgumentTypes(value: string) {
 
         return { name, type, defaultValue: parsedDefaultValue }
       } else {
-        console.error('Error while trying to parse function arguments', x)
+        console.error('解析函数参数失败', x)
         return null
       }
     })

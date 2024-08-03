@@ -57,7 +57,8 @@ export const FeaturePreviewContextProvider = ({ children }: PropsWithChildren<{}
 
 export const useIsAPIDocsSidePanelEnabled = () => {
   const { flags } = useFeaturePreviewContext()
-  return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_API_SIDE_PANEL]
+  // return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_API_SIDE_PANEL]
+  return true
 }
 
 export const useIsRLSAIAssistantEnabled = () => {

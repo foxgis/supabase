@@ -4,31 +4,31 @@ export const DOCS_MENU = [
   { name: '表和视图', key: 'entities' },
   { name: '存储过程', key: 'stored-procedures' },
   { name: '文件存储', key: 'storage' },
-  { name: '云函数', key: 'edge-functions' },
-  { name: '实时消息', key: 'realtime' },
+  // { name: '云函数', key: 'edge-functions' },
+  { name: '实时通信', key: 'realtime' },
 ]
 
 export const DOCS_CONTENT = {
   init: {
     key: 'introduction',
     category: 'introduction',
-    title: `连接到你的项目`,
-    description: `项目都有一套 RESTful API 接口，您可以使用项目的 API key 来查询和管理数据库。请将这些密钥放入您的 .env 文件中。`,
+    title: `连接到项目`,
+    description: `项目都有一套 RESTful API 接口，您可以通过项目的 API 密钥来查询和管理数据库。请将这些密钥放入您的 .env 文件中。`,
     js: (apikey?: string, endpoint?: string) => `
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = '${endpoint}'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)`,
-    bash: () => `# 无需客户端库即可在 Bash 中使用。`,
+    bash: () => `# 无需客户端 SDK 即可在 Bash 中使用。`,
   },
   clientApiKeys: {
     key: 'client-api-keys',
     category: 'introduction',
-    title: `客户端 API 密钥`,
-    description: `客户端密钥允许“匿名访问”到您的数据库，直到用户登录。登录后，密钥将切换到用户的登录令牌。
+    title: `客户端密钥`,
+    description: `客户端密钥允许“匿名访问”到您的数据库，直到用户完成登录。登录后，密钥将切换到该用户的登录令牌。
 
-在本文档中，我们将使用名称 \`SUPABASE_KEY\` 来引用密钥。您可以在 [API 设置](/project/[ref]/settings/api) 页面中找到 \`anon\` 密钥。`,
+在本文档中，我们将使用名称 \`SUPABASE_KEY\` 来表示密钥。您可以在 [API 设置](/project/[ref]/settings/api) 页面中找到 \`anon\` 密钥。`,
     js: (apikey?: string, endpoint?: string) => `
 const SUPABASE_KEY = '${apikey}'
 const SUPABASE_URL = '${endpoint}'
@@ -39,7 +39,7 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
     key: 'service-keys',
     category: 'introduction',
     title: `服务端密钥`,
-    description: `服务端密钥具有对您的数据的完全访问权限，绕过任何安全策略。请务必小心暴露这些密钥。它们只能在服务器上使用，绝不应该在客户端或浏览器上使用。
+    description: `服务端密钥具有数据的完全访问权限，绕过任何安全策略。请务必小心暴露这些密钥。它们只应该在服务端使用，绝不应该在客户端或浏览器上使用。
 
 在本文档中，我们将使用名称 \`SERVICE_KEY\` 来引用密钥。您可以在 [API 设置](/project/[ref]/settings/api) 页面中找到 \`service_role\` 密钥。`,
     js: (apikey?: string, endpoint?: string) => `
@@ -55,9 +55,9 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
     title: `概述`,
     description: `Supabase 使用户管理变得容易。
 
-  Supabase 会自动为每个用户分配一个唯一的 ID。您可以在数据库中的任何位置引用此 ID。例如，您可能会创建一个 \`profiles\` 表，该表引用用户使用 \`user_id\` 字段。
+  Supabase 会自动为每个用户分配一个唯一的 ID。您可以在数据库中的任何位置引用此 ID。例如，您可以创建一张 \`profiles\` 表，该表使用 \`user_id\` 字段关联到用户。
 
-  Supabase 已经内置了管理用户的路由，包括注册、登录和注销。`,
+  Supabase 已经内置了用户管理的路由，包括注册、登录和注销。`,
     js: undefined,
     bash: undefined,
   },
@@ -67,7 +67,7 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
     title: `注册`,
     description: `允许用户注册以及创建账号。
 
-  当他们完成注册后，所有使用 Supabase 客户端的交互都会被视为“该用户”。`,
+  当用户完成注册后，所有使用 Supabase 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signUp({
   email: 'someone@email.com',
@@ -85,11 +85,11 @@ curl -X POST '${endpoint}/auth/v1/signup' \\
   emailLogin: {
     key: 'email-login',
     category: 'user-management',
-    title: `Log in with Email/Password`,
+    title: `使用电子邮件和密码登录`,
     description: `
 如果创建了账号，用户可以登录到您的应用。
 
-当他们完成登录后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
+当用户完成登录后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithPassword({
   email: 'someone@email.com',
@@ -109,11 +109,11 @@ curl -X POST '${endpoint}/auth/v1/token?grant_type=password' \\
   magicLinkLogin: {
     key: 'magic-link-login',
     category: 'user-management',
-    title: `通过向 Email 发送 Magic Link 登录`,
+    title: `通过电子邮件发送 Magic Link 登录`,
     description: `
 发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。
 
-当他们点击链接后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
+当用户点击链接后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithOtp({
   email: 'someone@email.com'
@@ -131,11 +131,11 @@ curl -X POST '${endpoint}/auth/v1/magiclink' \\
   phoneLogin: {
     key: 'phone-log-in',
     category: 'user-management',
-    title: `使用电话号码/密码注册`,
+    title: `使用电话号码和密码注册`,
     description: `
 电话号码可以用作主要账号确认机制。
 
-用户将收到一个短信验证码，他们可以使用该验证码验证他们是否控制该电话号码。
+用户将收到一个短信验证码，他们可以使用该验证码验证他们是否拥有该电话号码。
 
 您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用短信确认。`,
     js: (apikey?: string, endpoint?: string) => `
@@ -238,7 +238,7 @@ curl -X GET '${endpoint}/auth/v1/user' \\
   forgotPassWordEmail: {
     key: 'forgot-password-email',
     category: 'user-management',
-    title: `忘记密码或 email`,
+    title: `忘记密码或电子邮件`,
     description: `通过电子邮件向用户发送登录链接。用户一旦登录，您应该将用户导向一个新密码表单，并在下方使用“更新用户”保存新密码。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.resetPasswordForEmail(email)
@@ -321,9 +321,9 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
     key: 'storage',
     category: 'storage',
     title: `概述`,
-    description: `Supabase Storage 使文件上传和提供文件访问控制变得简单。
+    description: `文件存储使文件上传和文件访问控制变得简单。
 
-您可以使用 Supabase Storage 存储图像、视频、文档和其他任何文件类型。通过全球 CDN 为超过 285 个城市提供快速的服务。Supabase Storage 内置了图像优化器，因此您可以在不牺牲质量的情况下在运行时调整媒体文件的大小和压缩。`,
+您可以使用文件存储模块存储图像、视频、文档和其他任何文件类型。通过全球 CDN 为超过 285 个城市提供快速的服务。文件存储内置了图像优化器，因此您可以在不牺牲质量的情况下在运行时动态调整媒体文件的尺寸以及压缩。`,
     js: undefined,
     bash: undefined,
   },
@@ -333,7 +333,7 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
     category: 'edge-functions',
     title: '概述',
     description: `
-云函数是在服务器端运行的 TypeScript 函数。它们可用于侦听 webhooks 或将与第三方服务（如 Stripe）集成到 Supabase 项目中。云函数使用 Deno 开发，这为开发者提供了一些好处：
+云函数是在服务器端运行的 TypeScript 函数。它们可用于侦听 webhooks 或将与第三方服务（如 Stripe）集成到项目中。云函数使用 Deno 开发，这将使开发者更容易上手。
 `,
     js: undefined,
     bash: undefined,
@@ -343,13 +343,13 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
     category: 'edge-functions',
     title: '前提条件',
     description: `
-按照以下步骤在本地机器上准备您的 Supabase 项目。
+按照以下步骤在本地机器上准备您的项目。
 
 - 安装 Supabase [CLI](https://supabase.com/docs/guides/cli).
 - [登录到 CLI](https://supabase.com/docs/reference/cli/usage#supabase-login) 使用命令：\`supabase login\`..
-- [初始化 Supabase](https://supabase.com/docs/guides/getting-started/local-development#getting-started) 在项目中使用命令：\`supabase init\`..
-- [链接到您的云端项目](https://supabase.com/docs/reference/cli/usage#supabase-link) 使用命令 \`supabase link --project-ref [ref]\`..
-- 设置您的环境：按照[这里](https://supabase.com/docs/guides/functions/quickstart#setting-up-your-environment)的步骤进行设置。
+- [初始化项目](https://supabase.com/docs/guides/getting-started/local-development#getting-started) 在项目中使用命令：\`supabase init\`..
+- [连接到云端项目](https://supabase.com/docs/reference/cli/usage#supabase-link) 使用命令 \`supabase link --project-ref [ref]\`..
+- 设置开发环境：按照[这里](https://supabase.com/docs/guides/functions/quickstart#setting-up-your-environment)的步骤进行设置。
 `,
     js: undefined,
     bash: undefined,
@@ -357,11 +357,11 @@ curl -X POST '${endpoint}/auth/v1/invite' \\
   createEdgeFunction: {
     key: 'create-edge-function',
     category: 'edge-functions',
-    title: '创建一个 Edge Function',
+    title: '创建一个云函数',
     description: `
-通过 Supabase CLI 在本地创建一个 Supabase Edge Function。
+通过 Supabase CLI 在本地创建一个云函数。
 `,
-    js: () => `// 通过 Supabase CLI 创建一个 edge function`,
+    js: () => `// 通过 Supabase CLI 创建一个云函数`,
     bash: () => `
 supabase functions new hello-world
 `,
@@ -371,9 +371,9 @@ supabase functions new hello-world
     category: 'edge-functions',
     title: '部署一个云函数',
     description: `
-通过 Supabase CLI 将一个云函数部署到您的 Supabase 项目。
+通过 Supabase CLI 将一个云函数部署到您的项目。
 `,
-    js: () => `// 通过 Supabase CLI 部署一个 edge function`,
+    js: () => `// 通过 Supabase CLI 部署一个云函数`,
     bash: () => `supabase functions deploy hello-world --project-ref [ref]
 `,
   },
@@ -397,68 +397,68 @@ supabase functions new hello-world
     description: `
 Supabase API 是从您的数据库生成的，这意味着我们可以使用数据库内省来生成类型安全的 API 定义。
 
-您可以通过 [Supabase CLI](https://supabase.com/docs/guides/database/api/generating-types) 或通过右侧的下载按钮将类型文件导入到您的应用程序的 \`src/index.ts\` 中。
+您可以通过 [Supabase CLI](https://supabase.com/docs/guides/database/api/generating-types) 或通过右侧的下载按钮将类型文件导入到您的应用程序的 \`src/index.ts\` 文件中。
 `,
     js: undefined,
     bash: undefined,
   },
-  graphql: {
-    key: 'graphql',
-    category: 'entities',
-    title: 'GraphQL vs PostgREST',
-    description: `
-如果您有 GraphQL 使用经历，您可能会想知道是否可以在单个往返中获取您的数据。答案是肯定的！语法非常相似。这个例子展示了如何使用 Apollo GraphQL 和 Supabase 实现相同的功能。
+//   graphql: {
+//     key: 'graphql',
+//     category: 'entities',
+//     title: 'GraphQL vs PostgREST',
+//     description: `
+// 如果您有 GraphQL 使用经历，您可能会想知道是否可以在单个往返中获取您的数据。答案是肯定的！语法非常相似。这个例子展示了如何使用 Apollo GraphQL 和 Supabase 实现相同的功能。
 
-仍然想使用 GraphQL？
-如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要您的中间件可以连接到数据库，您就可以继续使用您喜爱的工具。您可以在 [设置](/project/[ref]/settings/database) 中找到数据库连接详细信息。
-`,
-    js: (apikey?: string, endpoint?: string) => `
-// 使用 Apollo GraphQL
-const { loading, error, data } = useQuery(gql\`
-  query GetDogs {
-    dogs {
-      id
-      breed
-      owner {
-        id
-        name
-      }
-    }
-  }
-    \`)
+// 仍然想使用 GraphQL？
+// 如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要您的中间件可以连接到数据库，您就可以继续使用您喜爱的工具。您可以在 [设置](/project/[ref]/settings/database) 中找到数据库连接详细信息。
+// `,
+//     js: (apikey?: string, endpoint?: string) => `
+// // 使用 Apollo GraphQL
+// const { loading, error, data } = useQuery(gql\`
+//   query GetDogs {
+//     dogs {
+//       id
+//       breed
+//       owner {
+//         id
+//         name
+//       }
+//     }
+//   }
+//     \`)
 
-// 使用 Supabase
-const { data, error } = await supabase
-  .from('dogs')
-  .select(\`
-      id, breed,
-      owner (id, name)
-  \`)
-`,
-    bash: (apikey?: string, endpoint?: string) => `
-// 使用 Apollo GraphQL
-const { loading, error, data } = useQuery(gql\`
-  query GetDogs {
-    dogs {
-      id
-      breed
-      owner {
-        id
-        name
-      }
-    }
-  }
-    \`)
+// // 使用 Supabase
+// const { data, error } = await supabase
+//   .from('dogs')
+//   .select(\`
+//       id, breed,
+//       owner (id, name)
+//   \`)
+// `,
+//     bash: (apikey?: string, endpoint?: string) => `
+// // 使用 Apollo GraphQL
+// const { loading, error, data } = useQuery(gql\`
+//   query GetDogs {
+//     dogs {
+//       id
+//       breed
+//       owner {
+//         id
+//         name
+//       }
+//     }
+//   }
+//     \`)
 
-// 使用 Supabase
-const { data, error } = await supabase
-  .from('dogs')
-  .select(\`
-      id, breed,
-      owner (id, name)
-  \`)
-    `,
-  },
+// // 使用 Supabase
+// const { data, error } = await supabase
+//   .from('dogs')
+//   .select(\`
+//       id, breed,
+//       owner (id, name)
+//   \`)
+//     `,
+//   },
   // Stored Procedures
   storedProceduresIntroduction: {
     key: 'stored-procedures-introduction',
@@ -467,7 +467,7 @@ const { data, error } = await supabase
     description: `
 数据库中的所有存储过程都可以通过 API 直接访问。这意味着您可以直接在数据库中构建逻辑（如果您足够勇敢）！
 
-API 接口支持 POST 方式（有些情况下是 GET 方式）执行存储过程。
+API 接口支持 POST 方式（有些情况下是 GET 方式）调用存储过程。
 `,
     js: undefined,
     bash: undefined,
@@ -480,9 +480,9 @@ API 接口支持 POST 方式（有些情况下是 GET 方式）执行存储过�
     description: `
 Supabase 提供了一个全球分布的实时服务器集群，可用于以下功能：
 
-- [广播](https://supabase.com/docs/guides/realtime/broadcast): 客户端之间发送实时消息，具有较低的延迟。
+- [广播](https://supabase.com/docs/guides/realtime/broadcast): 客户端之间发送实时通信，具有较低的延迟。
 - [状态同步](https://supabase.com/docs/guides/realtime/presence): 跟踪和同步客户端之间的共享状态。
-- [Postgres 变更](https://supabase.com/docs/guides/realtime/postgres-changes): 侦听 Postgres 数据库变更并将其发送给授权客户端。
+- [数据库变更](https://supabase.com/docs/guides/realtime/postgres-changes): 监听数据库变更并将其发送给授权客户端。
 `,
     js: undefined,
     bash: undefined,
@@ -495,7 +495,7 @@ Supabase 提供了一个全球分布的实时服务器集群，可用于以下�
 创建一个事件处理程序，用于侦听更改。
 
 - 默认情况下，广播和状态同步对所有项目都是启用的。
-- 默认情况下，侦听数据库更改对新项目是禁用的，因为数据库性能和安全方面的考虑。您可以通过管理实时消息 API 的 [复制](https://supabase.com/docs/guides/api#realtime-api-overview) 来打开它。
+- 默认情况下，侦听数据库更改对新项目是禁用的，因为数据库性能和安全方面的考虑。您可以通过管理实时通信 API 的 [复制](https://supabase.com/docs/guides/api#realtime-api-overview) 来打开它。
 - 您可以通过将表的 \`REPLICA IDENTITY\` 设置为 \`FULL\` （例如 \`ALTER TABLE your_table REPLICA IDENTITY FULL;\`）来接收更新和删除操作的“先前”数据。
 - 行级安全策略不应用于删除语句。当启用 RLS 并将复制同步标识设置为 full 时，仅发送主键给客户端。
 `,
@@ -515,41 +515,41 @@ supabase
     }
   })
     `,
-    bash: () => `# 实时消息推送功能仅能通过客户端SDK支持`,
+    bash: () => `# 实时通信推送功能仅能通过客户端 SDK 支持`,
   },
   unsubscribeChannel: {
     key: 'unsubscribe-channel',
     category: 'realtime',
     title: '取消订阅频道',
     description: `
-取消订阅并删除实时消息频道。
+取消订阅并删除实时通信频道。
 
-当您正在侦听 Postgres 更改时，删除频道是维护您项目的实时消息服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
+当您正在侦听数据库更改时，删除频道是维护您项目的实时通信服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
 `,
     js: () => `supabase.removeChannel(myChannel)`,
-    bash: () => `# 实时消息推送功能仅能通过客户端SDK支持`,
+    bash: () => `# 实时通信推送功能仅能通过客户端 SDK 支持`,
   },
   unsubscribeChannels: {
     key: 'unsubscribe-channels',
     category: 'realtime',
     title: '取消订阅所有频道',
     description: `
-取消订阅并删除所有实时消息频道。
+取消订阅并删除所有实时通信频道。
 
-当您正在侦听 Postgres 更改时，删除频道是维护您项目的实时消息服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
+当您正在侦听数据库更改时，删除频道是维护您项目的实时通信服务性能以及数据库性能的好方法。Supabase 将在客户端断开连接 30 秒后自动清理未使用的频道，但多个客户端同时订阅同一频道可能会导致性能下降。
 `,
     js: () => `supabase.removeChannels()`,
-    bash: () => `# 实时消息推送功能仅能通过客户端SDK支持`,
+    bash: () => `# 实时通信推送功能仅能通过客户端 SDK 支持`,
   },
   retrieveAllChannels: {
     key: 'retrieve-all-channels',
     category: 'realtime',
     title: '获取订阅的频道',
     description: `
-返回所有实时消息频道。
+返回所有实时通信频道。
 `,
     js: () => `const channels = supabase.getChannels()`,
-    bash: () => `# 实时消息推送功能仅能通过客户端SDK支持`,
+    bash: () => `# 实时通信推送功能仅能通过客户端 SDK 支持`,
   },
 }
 
@@ -916,7 +916,7 @@ const { error } = await supabase
     category: 'entities',
     title: '订阅更改',
     description: `
-Supabase 提供实时消息功能，根据行级安全策略（RLS），将数据库更改广播给授权用户。
+Supabase 提供实时通信功能，根据行级安全策略（RLS），将数据库更改广播给授权用户。
 `,
     docsUrl: 'https://supabase.com/docs/reference/javascript/subscribe',
     code: ({ resourceId }: { resourceId: string }) => {
@@ -924,7 +924,7 @@ Supabase 提供实时消息功能，根据行级安全策略（RLS），将数�
         {
           key: 'subscribe-all-events',
           title: '订阅所有事件',
-          bash: `# 实时消息功能只能通过客户端SDK支持`,
+          bash: `# 实时通信功能只能通过客户端 SDK 支持`,
           js: `
 const channels = supabase.channel('custom-all-channel')
   .on(
@@ -939,7 +939,7 @@ const channels = supabase.channel('custom-all-channel')
         {
           key: 'subscribe-to-inserts',
           title: '订阅插入操作',
-          bash: `# 实时消息功能只能通过客户端SDK支持`,
+          bash: `# 实时通信功能只能通过客户端 SDK 支持`,
           js: `
 const channels = supabase.channel('custom-insert-channel')
   .on(
@@ -954,7 +954,7 @@ const channels = supabase.channel('custom-insert-channel')
         {
           key: 'subscribe-to-updates',
           title: '订阅更新操作',
-          bash: `# 实时消息功能只能通过客户端SDK支持`,
+          bash: `# 实时通信功能只能通过客户端 SDK 支持`,
           js: `
 const channels = supabase.channel('custom-update-channel')
   .on(
@@ -969,7 +969,7 @@ const channels = supabase.channel('custom-update-channel')
         {
           key: 'subscribe-to-deletes',
           title: '订阅删除操作',
-          bash: `# 实时消息功能只能通过客户端SDK支持`,
+          bash: `# 实时通信功能只能通过客户端 SDK 支持`,
           js: `
 const channels = supabase.channel('custom-delete-channel')
   .on(
@@ -984,7 +984,7 @@ const channels = supabase.channel('custom-delete-channel')
         {
           key: 'subscribe-to-specific-rows',
           title: '订阅特定行',
-          bash: `# 实时消息功能只能通过客户端SDK支持`,
+          bash: `# 实时通信功能只能通过客户端 SDK 支持`,
           js: `
 const channels = supabase.channel('custom-filter-channel')
   .on(

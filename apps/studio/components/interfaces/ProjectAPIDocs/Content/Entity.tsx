@@ -59,7 +59,7 @@ const Entity = ({ language, apikey = '', endpoint = '' }: ContentProps) => {
         <div className="flex flex-col gap-y-1">
           <h2 className="text-xl">{resource}</h2>
           <p className="text-sm text-foreground-light">
-            {definition?.description ?? '无描述'}
+            {definition?.description ?? '无描述信息'}
           </p>
         </div>
         <LanguageSelector />

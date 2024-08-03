@@ -61,7 +61,7 @@ const Entities = ({ language }: ContentProps) => {
           请记住在您对表进行任何更改后需要重新生成并下载此文件。
         </p>
       </div>
-      <ContentSnippet selectedLanguage={language} snippet={DOCS_CONTENT.graphql} />
+      {/* <ContentSnippet selectedLanguage={language} snippet={DOCS_CONTENT.graphql} /> */}
     </>
   )
 }

@@ -40,15 +40,15 @@ const RPC = ({ language }: ContentProps) => {
     <div className="divide-y">
       <div className="space-y-1 px-4 py-4">
         <h2 className="text-xl">{rpc.name}</h2>
-        <p className="text-sm text-foreground-light">{summary ?? 'No description available'}</p>
+        <p className="text-sm text-foreground-light">{summary ?? '无描述信息'}</p>
       </div>
       <div className="space-y-2 px-4 py-4">
-        <p className="text-sm text-foreground-light">Function arguments</p>
+        <p className="text-sm text-foreground-light">函数参数</p>
         <Table
           head={[
-            <Table.th key="name">Name</Table.th>,
-            <Table.th key="format">Format</Table.th>,
-            <Table.th key="type">Type</Table.th>,
+            <Table.th key="name">参数名</Table.th>,
+            <Table.th key="format">格式</Table.th>,
+            <Table.th key="type">类型</Table.th>,
             <Table.th key="required"></Table.th>,
           ]}
           body={parameters.map((parameter: any) => (
@@ -60,7 +60,7 @@ const RPC = ({ language }: ContentProps) => {
               <Table.td title={parameter.type}>{parameter.type}</Table.td>
               <Table.td>
                 {parameter.required ? (
-                  <Badge variant="warning">必须</Badge>
+                  <Badge variant="warning">必选</Badge>
                 ) : (
                   <p className="text-foreground-light">可选</p>
                 )}

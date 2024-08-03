@@ -188,7 +188,7 @@ const FirstLevelNav = () => {
             rel="noreferrer"
             className="!justify-start"
           >
-            文档
+            文档中心
           </Link>
         </Button>
         <Button block asChild type="text" size="small" icon={<IconBookOpen />}>
@@ -198,7 +198,7 @@ const FirstLevelNav = () => {
             rel="noreferrer"
             className="!justify-start"
           >
-            REST 指南
+            API 指南
           </Link>
         </Button>
       </div>

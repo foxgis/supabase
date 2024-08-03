@@ -73,7 +73,7 @@ function Input({
   validation,
   ...props
 }: Props) {
-  const [copyLabel, setCopyLabel] = useState('Copy')
+  const [copyLabel, setCopyLabel] = useState('复制')
   const [hidden, setHidden] = useState(true)
 
   const __styles = styleHandler('input')
@@ -118,15 +118,15 @@ function Input({
     navigator.clipboard.writeText(value)?.then(
       function () {
         /* clipboard successfully set */
-        setCopyLabel('Copied')
+        setCopyLabel('已复制')
         setTimeout(function () {
-          setCopyLabel('Copy')
+          setCopyLabel('复制')
         }, 3000)
         onCopy?.()
       },
       function () {
         /* clipboard write failed */
-        setCopyLabel('Failed to copy')
+        setCopyLabel('复制失败')
       }
     )
   }
@@ -188,7 +188,7 @@ function Input({
             ) : null}
             {reveal && hidden ? (
               <Button size="tiny" type="default" onClick={onReveal}>
-                Reveal
+                显示
               </Button>
             ) : null}
             {actions && actions}
@@ -253,21 +253,21 @@ function TextArea({
   ...props
 }: TextAreaProps) {
   const [charLength, setCharLength] = useState(0)
-  const [copyLabel, setCopyLabel] = useState('Copy')
+  const [copyLabel, setCopyLabel] = useState('复制')
 
   function _onCopy(value: any) {
     navigator.clipboard.writeText(value).then(
       function () {
         /* clipboard successfully set */
-        setCopyLabel('Copied')
+        setCopyLabel('已复制')
         setTimeout(function () {
-          setCopyLabel('Copy')
+          setCopyLabel('复制')
         }, 3000)
         onCopy?.()
       },
       function () {
         /* clipboard write failed */
-        setCopyLabel('Failed to copy')
+        setCopyLabel('复制失败')
       }
     )
   }

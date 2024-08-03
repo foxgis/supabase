@@ -51,7 +51,7 @@ const ProjectAPIDocs = () => {
   const endpoint =
     customDomainData?.customDomain?.status === 'active'
       ? `https://${customDomainData.customDomain?.hostname}`
-      : `https://${data?.autoApiService.endpoint ?? ''}`
+      : `${data?.autoApiService.protocol}://${data?.autoApiService.endpoint ?? ''}`
 
   return (
     <SidePanel
@@ -68,7 +68,7 @@ const ProjectAPIDocs = () => {
             <div className="flex items-center space-x-1">
               {!isEntityDocs && <LanguageSelector simplifiedVersion />}
               <Button type="default" onClick={() => setShowKeys(!showKeys)}>
-                {showKeys ? '隐藏 key' : '显示 key'}
+                {showKeys ? '隐藏密钥' : '显示密钥'}
               </Button>
             </div>
           </div>

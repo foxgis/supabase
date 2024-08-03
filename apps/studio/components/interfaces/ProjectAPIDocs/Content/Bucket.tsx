@@ -31,7 +31,7 @@ const Bucket = ({ language, apikey, endpoint }: ContentProps) => {
           </Badge>
         </div>
         <p className="text-sm text-foreground-light">
-          Allowed MIME types:{' '}
+          允许的多媒体类型：
           {allowedMimeTypes === null
             ? '允许所有类型'
             : (allowedMimeTypes ?? []).length === 0

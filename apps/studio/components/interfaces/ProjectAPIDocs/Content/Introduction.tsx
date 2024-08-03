@@ -32,18 +32,18 @@ const Introduction = ({ showKeys, language, apikey, endpoint }: ContentProps) =>
       >
         <div className="px-4 space-y-6">
           <div className="flex space-x-4 mt-8">
-            <p className="text-sm w-40">项目 URL</p>
+            <p className="text-sm w-40">项目地址</p>
             <Input disabled readOnly copy size="small" value={endpoint} className="w-full" />
           </div>
           <div className="flex space-x-4">
-            <p className="text-sm w-40">客户端 API key</p>
+            <p className="text-sm w-40">客户端密钥</p>
             <Input
               disabled
               readOnly
               size="small"
-              value={showKeys ? apikey : '通过下拉菜单在头部显示 API key'}
+              value={showKeys ? apikey : '点击菜单栏顶部的按钮显示密钥'}
               className="w-full"
-              descriptionText="这个 key 可以安全地在浏览器中使用，前提是您启用行级安全（RLS）并且配置了相应的策略。"
+              descriptionText="这个密钥可以安全地在浏览器中使用，前提是您启用行级安全（RLS）并且配置了相应的策略。"
               actions={[
                 <Button
                   key="copy"
@@ -62,16 +62,16 @@ const Introduction = ({ showKeys, language, apikey, endpoint }: ContentProps) =>
             />
           </div>
           <div className="flex space-x-4">
-            <p className="text-sm w-40 mb-16">服务端 key</p>
+            <p className="text-sm w-40 mb-16">服务端密钥</p>
             <Input
               disabled
               readOnly
               size="small"
-              value={showKeys ? serviceKey : '通过下拉菜单在头部显示 API key'}
+              value={showKeys ? serviceKey : '点击菜单栏顶部的按钮显示密钥'}
               className="w-full"
               descriptionText={
                 <p>
-                  这个 key 可以绕过行级安全策略。{' '}
+                  这个密钥可以绕过行级安全策略。
                   <span className="text-amber-900">请务必不要公开它。</span>
                 </p>
               }
