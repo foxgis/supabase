@@ -313,10 +313,10 @@ const LogsQueryPanel = ({
                         <Table
                           head={[
                             <Table.th className="text-xs !p-2" key="path">
-                              Path
+                              路径
                             </Table.th>,
                             <Table.th key="type" className="text-xs !p-2">
-                              Type
+                              类型
                             </Table.th>,
                           ]}
                           body={schema.fields
@@ -374,7 +374,7 @@ const Field = ({
                     'border border-background',
                   ].join(' ')}
                 >
-                  <span className="text-xs text-foreground">Copied</span>
+                  <span className="text-xs text-foreground">已复制</span>
                 </div>
               </Tooltip.Content>
             </Tooltip.Portal>
@@ -393,7 +393,7 @@ const Field = ({
                     'border border-background',
                   ].join(' ')}
                 >
-                  <span className="text-xs text-foreground">Copy value</span>
+                  <span className="text-xs text-foreground">复制</span>
                 </div>
               </Tooltip.Content>
             </Tooltip.Portal>

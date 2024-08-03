@@ -97,6 +97,6 @@ const ProjectLints: NextPageWithLayout = () => {
   )
 }
 
-ProjectLints.getLayout = (page) => <AdvisorsLayout title="Linter">{page}</AdvisorsLayout>
+ProjectLints.getLayout = (page) => <AdvisorsLayout title="性能助手">{page}</AdvisorsLayout>
 
 export default ProjectLints

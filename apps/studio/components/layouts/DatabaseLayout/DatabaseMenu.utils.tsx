@@ -131,7 +131,7 @@ export const generateDatabaseMenu = (
           items: [],
         },
         {
-          name: '查询性能',
+          name: '查询优化',
           key: 'query-performance',
           url: `/project/${ref}/database/query-performance`,
           items: [],

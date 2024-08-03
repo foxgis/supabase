@@ -48,7 +48,7 @@ const QueryPerformanceReport: NextPageWithLayout = () => {
     <div className="h-full flex flex-col">
       <FormHeader
         className="py-4 px-6 !mb-0"
-        title="查询性能"
+        title="查询优化"
         docsUrl="https://supabase.com/docs/guides/platform/performance#examining-query-performance"
         // actions={<DatabaseSelector />}
       />
@@ -58,7 +58,7 @@ const QueryPerformanceReport: NextPageWithLayout = () => {
 }
 
 QueryPerformanceReport.getLayout = (page) => (
-  <DatabaseLayout title="查询性能">{page}</DatabaseLayout>
+  <DatabaseLayout title="查询优化">{page}</DatabaseLayout>
 )
 
 export default QueryPerformanceReport

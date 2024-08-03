@@ -275,7 +275,7 @@ limit 12
     },
   },
   [Presets.QUERY_PERFORMANCE]: {
-    title: '查询性能',
+    title: '查询优化',
     queries: {
       mostFrequentlyInvoked: {
         queryType: 'db',

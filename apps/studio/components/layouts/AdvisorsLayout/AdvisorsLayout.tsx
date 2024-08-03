@@ -11,7 +11,7 @@ export interface AdvisorsLayoutProps {
   title?: string
 }
 
-const AdvisorsLayout = ({ children }: PropsWithChildren<AdvisorsLayoutProps>) => {
+const AdvisorsLayout = ({ children, title }: PropsWithChildren<AdvisorsLayoutProps>) => {
   const project = useSelectedProject()
 
   const router = useRouter()
@@ -19,6 +19,7 @@ const AdvisorsLayout = ({ children }: PropsWithChildren<AdvisorsLayoutProps>) =>
 
   return (
     <ProjectLayout
+      title={title}
       isLoading={false}
       product="优化助手"
       productMenu={<ProductMenu page={page} menu={generateAdvisorsMenu(project)} />}

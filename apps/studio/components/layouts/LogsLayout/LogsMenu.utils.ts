@@ -42,13 +42,13 @@ export const generateLogsMenu = (
           items: [],
         },
         {
-          name: 'Postgres',
+          name: '数据库',
           key: 'postgres-logs',
           url: `/project/${ref}/logs/postgres-logs`,
           items: [],
         },
         {
-          name: 'PostgREST',
+          name: '接口生成器',
           key: 'postgrest-logs',
           url: `/project/${ref}/logs/postgrest-logs`,
           items: [],

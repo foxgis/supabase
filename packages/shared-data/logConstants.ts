@@ -67,7 +67,7 @@ const schemas = [
     ],
   },
   {
-    name: '认证',
+    name: '认证授权',
     reference: 'auth_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -130,7 +130,7 @@ const schemas = [
     ],
   },
   {
-    name: '边缘函数',
+    name: '云函数',
     reference: 'function_edge_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -159,7 +159,7 @@ const schemas = [
     ],
   },
   {
-    name: '边缘函数运行时',
+    name: '云函数运行时',
     reference: 'function_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -177,7 +177,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Postgres',
+    name: '数据库',
     reference: 'postgres_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -218,7 +218,7 @@ const schemas = [
     ],
   },
   {
-    name: 'PostgREST',
+    name: '接口生成器',
     reference: 'postgrest_logs',
     fields: [
       { path: 'event_message', type: 'string' },
@@ -229,7 +229,7 @@ const schemas = [
     ],
   },
   {
-    name: 'Supavisor',
+    name: '连接池',
     reference: 'supavisor_logs',
     fields: [
       { path: 'event_message', type: 'string' },
