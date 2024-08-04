@@ -75,13 +75,13 @@ const RenameQueryModal = ({
 
   const validate = () => {
     const errors: any = {}
-    if (!nameInput) errors.name = 'Please enter a query name'
+    if (!nameInput) errors.name = '请输入查询的名称'
     return errors
   }
 
   const onSubmit = async (values: any, { setSubmitting }: any) => {
-    if (!ref) return console.error('Project ref is required')
-    if (!id) return console.error('Snippet ID is required')
+    if (!ref) return console.error('未找到项目号')
+    if (!id) return console.error('未找到代码段 ID')
 
     setSubmitting(true)
     try {
@@ -109,7 +109,7 @@ const RenameQueryModal = ({
   }, [snippet.id])
 
   return (
-    <Modal visible={visible} onCancel={onCancel} hideFooter header="Rename" size="small">
+    <Modal visible={visible} onCancel={onCancel} hideFooter header="重命名" size="small">
       <Form
         onReset={onCancel}
         validateOnBlur
@@ -124,13 +124,13 @@ const RenameQueryModal = ({
           <>
             <Modal.Content className="space-y-4">
               <Input
-                label="Name"
+                label="名称"
                 id="name"
                 name="name"
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
               />
-              <div className="flex w-full justify-end mt-2">
+              {/* <div className="flex w-full justify-end mt-2">
                 {!hasHipaaAddon && isAiButtonVisible && (
                   <Button
                     type="default"
@@ -146,11 +146,11 @@ const RenameQueryModal = ({
                     </div>
                   </Button>
                 )}
-              </div>
+              </div> */}
               <Input.TextArea
                 label="描述"
                 id="description"
-                placeholder="描述查询"
+                placeholder="查询的描述信息"
                 size="medium"
                 textAreaClassName="resize-none"
                 value={descriptionInput}

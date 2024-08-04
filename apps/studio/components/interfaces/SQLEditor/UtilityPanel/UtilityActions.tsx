@@ -72,7 +72,7 @@ const UtilityActions = ({
   const snapV2 = useSqlEditorV2StateSnapshot()
   const enableFolders = useFlag('sqlFolderOrganization')
 
-  const [isAiOpen] = useLocalStorageQuery(LOCAL_STORAGE_KEYS.SQL_EDITOR_AI_OPEN, true)
+  const [isAiOpen] = useLocalStorageQuery(LOCAL_STORAGE_KEYS.SQL_EDITOR_AI_OPEN, false)
   const [intellisenseEnabled, setIntellisenseEnabled] = useLocalStorageQuery(
     LOCAL_STORAGE_KEYS.SQL_EDITOR_INTELLISENSE,
     true
@@ -210,7 +210,7 @@ const UtilityActions = ({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {IS_PLATFORM && (
+        {true && (
           <Tooltip_Shadcn_>
             <TooltipTrigger_Shadcn_ asChild>
               {isFavorite ? (

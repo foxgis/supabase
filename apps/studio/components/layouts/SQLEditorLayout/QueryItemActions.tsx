@@ -97,7 +97,7 @@ export const QueryItemActions = ({
 
   return (
     <>
-      {IS_PLATFORM ? (
+      {true ? (
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger
             className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 focus:opacity-100 data-[state=open]:opacity-100"
@@ -128,7 +128,7 @@ export const QueryItemActions = ({
             {visibility === 'project' && canCreateSQLSnippet && (
               <DropdownMenuItem onClick={createPersonalCopy} className="flex gap-2">
                 <Copy size={14} />
-                复制个人副本
+                复制到您的个人查询
               </DropdownMenuItem>
             )}
 

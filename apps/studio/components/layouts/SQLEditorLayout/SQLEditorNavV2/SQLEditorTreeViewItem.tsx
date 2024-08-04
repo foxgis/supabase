@@ -256,7 +256,7 @@ export const SQLEditorTreeViewItem = ({
                     onFocusCapture={(e) => e.stopPropagation()}
                   >
                     <Copy size={14} />
-                    复制个人副本
+                    复制到您的个人查询
                   </ContextMenuItem_Shadcn_>
                 )}
               {onSelectDownload !== undefined && IS_PLATFORM && (

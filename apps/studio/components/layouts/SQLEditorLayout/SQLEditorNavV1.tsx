@@ -195,7 +195,7 @@ export const SQLEditorNavV1 = ({
 
           {filteredProjectSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="Project queries" />
+              <InnerSideMenuCollapsibleTrigger title="分享的查询" />
               <InnerSideMenuCollapsibleContent>
                 <>
                   {filteredProjectSnippets.map((tabInfo) => (
@@ -253,7 +253,7 @@ export const SQLEditorNavV1 = ({
 
           {personalSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="您的查询" />
+              <InnerSideMenuCollapsibleTrigger title="您的个人查询" />
               <InnerSideMenuCollapsibleContent className="editor-product-menu">
                 <>
                   <div className="space-y-0.5">

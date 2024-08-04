@@ -185,7 +185,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                 onClick={() => handleNewQuery()}
                 icon={<Plus className="text-foreground-muted" strokeWidth={1} size={14} />}
               >
-                新查询
+                新建查询
               </Button>
             )}
           </div>
