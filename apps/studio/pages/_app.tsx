@@ -73,6 +73,11 @@ loader.config({
       ? 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.37.0/min/vs'
       : `${BASE_PATH}/monaco-editor`,
   },
+  'vs/nls': {
+    availableLanguages: {
+      '*': 'zh-cn',
+    },
+  },
 })
 
 // [Joshen TODO] Once we settle on the new nav layout - we'll need a lot of clean up in terms of our layout components

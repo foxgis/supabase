@@ -402,7 +402,7 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
                     ].join(' ')}
                   >
                     <span className="text-xs text-foreground">
-                      模拟角色不支持清空表操作
+                      切换角色不支持清空表操作
                     </span>
                   </div>
                 </Tooltip.Content>

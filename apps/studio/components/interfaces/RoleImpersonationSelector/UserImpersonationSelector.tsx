@@ -71,7 +71,7 @@ const UserImpersonationSelector = () => {
                 impersonatingUser.id ??
                 '未知用户'
             )}`
-          : '模拟用户'}
+          : '切换用户'}
       </h2>
       <p className="text-sm text-foreground-light max-w-md">
         {!impersonatingUser
@@ -111,7 +111,7 @@ const UserImpersonationSelector = () => {
             <CollapsibleTrigger_Shadcn_ className="group font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
               <div className="flex items-center gap-x-1 w-full">
                 <p className="text-xs text-foreground-light group-hover:text-foreground transition">
-                  Advanced options
+                  高级选项
                 </p>
                 <ChevronDown
                   className="transition-transform duration-200"
@@ -122,13 +122,12 @@ const UserImpersonationSelector = () => {
             </CollapsibleTrigger_Shadcn_>
             <CollapsibleContent_Shadcn_ className="mt-1 flex flex-row items-center gap-x-4 text-sm text-foreground-light">
               <div className="flex items-center gap-x-1">
-                <h3>MFA assurance level</h3>
+                <h3>MFA 认证级别</h3>
                 <InfoTooltip side="top" className="flex flex-col gap-1 max-w-96">
                   <p>
-                    AAL1 verifies users via standard login methods, while AAL2 adds a second
-                    authentication factor.
+                    AAL1 通过标准登录方法验证用户，而 AAL2 添加了第二身份验证因素。
                     <br />
-                    If you're not using MFA, you can leave this on AAL1.
+                    如果您不使用 MFA，您可以将此设置为 AAL1。
                   </p>
                   <a
                     href="/docs/guides/auth/auth-mfa"
@@ -136,7 +135,7 @@ const UserImpersonationSelector = () => {
                     rel="noreferrer"
                     className="flex items-center gap-x-1 opacity-50 hover:opacity-100 transition"
                   >
-                    Learn more about MFA <ExternalLink size={14} strokeWidth={2} />
+                    了解更多有关 MFA 的信息 <ExternalLink size={14} strokeWidth={2} />
                   </a>
                 </InfoTooltip>
               </div>
@@ -231,7 +230,7 @@ const UserImpersonatingRow = ({
           onClick(user)
         }}
       >
-        {isImpersonating ? '停止模拟' : '模拟'}
+        {isImpersonating ? '停止切换' : '切换'}
       </Button>
     </div>
   )
@@ -269,7 +268,7 @@ const UserRow = ({ user, onClick, isImpersonating = false }: UserRowProps) => {
           onClick(user)
         }}
       >
-        {isImpersonating ? '停止模拟' : '模拟'}
+        {isImpersonating ? '停止切换' : '切换'}
       </Button>
     </div>
   )

@@ -187,7 +187,7 @@ const DeleteConfirmationDialogs = ({
       if (filters.length === 0) {
         if (getImpersonatedRole() !== undefined) {
           snap.closeConfirmationDialog()
-          return toast.error('当处于模拟角色时不支持表清空操作')
+          return toast.error('当处于切换角色时不支持表清空操作')
         }
 
         truncateRows({
