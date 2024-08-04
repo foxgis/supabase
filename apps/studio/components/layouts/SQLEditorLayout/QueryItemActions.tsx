@@ -128,7 +128,7 @@ export const QueryItemActions = ({
             {visibility === 'project' && canCreateSQLSnippet && (
               <DropdownMenuItem onClick={createPersonalCopy} className="flex gap-2">
                 <Copy size={14} />
-                复制到您的个人查询
+                复制到个人的查询
               </DropdownMenuItem>
             )}
 

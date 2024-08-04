@@ -233,7 +233,7 @@ export const SQLEditorNavV1 = ({
 
           {filteredFavoriteSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="收藏夹" />
+              <InnerSideMenuCollapsibleTrigger title="收藏的查询" />
               <InnerSideMenuCollapsibleContent>
                 <>
                   {filteredFavoriteSnippets.map((tabInfo) => (
@@ -253,7 +253,7 @@ export const SQLEditorNavV1 = ({
 
           {personalSnippets.length > 0 && (
             <InnerSideMenuCollapsible className="editor-product-menu" defaultOpen>
-              <InnerSideMenuCollapsibleTrigger title="您的个人查询" />
+              <InnerSideMenuCollapsibleTrigger title="个人的查询" />
               <InnerSideMenuCollapsibleContent className="editor-product-menu">
                 <>
                   <div className="space-y-0.5">

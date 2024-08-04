@@ -305,7 +305,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
             <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
               <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
               <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                收藏{numFavoriteSnippets > 0 && ` (${numFavoriteSnippets}) 条`}
+                收藏的查询{numFavoriteSnippets > 0 && `（${numFavoriteSnippets} 条）`}
               </span>
             </CollapsibleTrigger_Shadcn_>
             <CollapsibleContent_Shadcn_ className="pt-2">
@@ -361,7 +361,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
             <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
               <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
               <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                Shared{numProjectSnippets > 0 && ` (${numProjectSnippets})`}
+                分享的查询{numProjectSnippets > 0 && `（${numProjectSnippets} 条）`}
               </span>
             </CollapsibleTrigger_Shadcn_>
             <CollapsibleContent_Shadcn_ className="pt-2">
@@ -413,8 +413,8 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
           <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
           <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-            PRIVATE
-            {numPrivateSnippets > 0 && ` (${numPrivateSnippets})`}
+            个人的查询
+            {numPrivateSnippets > 0 && `（${numPrivateSnippets}条）`}
           </span>
         </CollapsibleTrigger_Shadcn_>
         <CollapsibleContent_Shadcn_ className="pt-2">
@@ -592,7 +592,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         }
       >
         <p className="text-sm">
-          This action cannot be undone.{' '}
+          此操作无法撤销。{' '}
           {selectedSnippets.length === 1
             ? `您确定想要删除 '${selectedSnippets[0]?.name}' 吗？`
             : `您确定想要删除选中的 ${selectedSnippets.length} 条查询吗？`}
