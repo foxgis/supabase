@@ -168,7 +168,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
                   <DropdownMenuContent align="end" side="bottom" className="w-48">
                     <DropdownMenuItem className="gap-x-2" onClick={() => handleNewQuery()}>
                       <FilePlus size={14} />
-                      创建新的代码片段
+                      创建新的代码段
                     </DropdownMenuItem>
                     <DropdownMenuItem className="gap-x-2" onClick={() => createNewFolder()}>
                       <FolderPlus size={14} />
@@ -240,7 +240,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: { onViewOngoingQueries: 
         variant={'destructive'}
         alert={{
           title: '本操作无法被撤销',
-          description: '一旦删除了选中的 SQL 代码片段将不能再恢复',
+          description: '一旦删除了选中的 SQL 代码段将不能再恢复',
         }}
       >
         <p className="text-sm text-foreground-light">

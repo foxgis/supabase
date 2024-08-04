@@ -184,14 +184,14 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
   }
 
   const onConfirmShare = () => {
-    if (!selectedSnippetToShare) return console.error('未找到代码片段 ID')
+    if (!selectedSnippetToShare) return console.error('未找到代码段 ID')
     snapV2.shareSnippet(selectedSnippetToShare.id, 'project')
     setSelectedSnippetToShare(undefined)
     setShowSharedSnippets(true)
   }
 
   const onConfirmUnshare = () => {
-    if (!selectedSnippetToUnshare) return console.error('未找到代码片段 ID')
+    if (!selectedSnippetToUnshare) return console.error('未找到代码段 ID')
     snapV2.shareSnippet(selectedSnippetToUnshare.id, 'user')
     setSelectedSnippetToUnshare(undefined)
     setShowPrivateSnippets(true)
@@ -201,7 +201,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
     if (!profile) return console.error('未找到用户资料')
     if (!project) return console.error('未找到项目')
     if (!projectRef) return console.error('未找到项目号')
-    if (!id) return console.error('未找到代码片段 ID')
+    if (!id) return console.error('未找到代码段 ID')
 
     let sql: string = ''
     if (!('content' in snippet)) {
@@ -542,7 +542,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
           </li>
           <li className="flex gap-3">
             <Unlock />
-            <span>任何人都可以将它复制到他们的个人代码片段收藏中。</span>
+            <span>任何人都可以将它复制到他们的个人代码段收藏中。</span>
           </li>
         </ul>
       </ConfirmationModal>
@@ -584,7 +584,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         alert={
           (selectedSnippets[0]?.visibility as unknown as string) === 'project'
             ? {
-                title: '此 SQL 代码片段将永远丢失',
+                title: '此 SQL 代码段将永远丢失',
                 description:
                   '删除此查询也将从项目团队的所有成员中移除。',
               }
@@ -612,7 +612,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         alert={{
           title: '此操作无法撤销',
           description:
-            '此文件夹中的所有 SQL 代码片段也讲会被久删除，无法恢复。',
+            '此文件夹中的所有 SQL 代码段也讲会被久删除，无法恢复。',
         }}
       >
         <p className="text-sm">

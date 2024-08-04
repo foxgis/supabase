@@ -117,7 +117,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
           }
 
           if (snippetContent === undefined) {
-            return toast.error('保存代码片段失败：无法获取代码片段的内容')
+            return toast.error('保存代码段失败：无法获取代码段的内容')
           } else {
             moveSnippetAsync({
               projectRef: ref,
@@ -138,7 +138,7 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
       )
 
       toast.success(
-        `成功移动了 ${snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length} 个代码片段`}到${selectedId === 'root' ? '编辑器的根目录' : selectedFolder}`
+        `成功移动了 ${snippets.length === 1 ? `"${snippets[0].name}"` : `${snippets.length} 个代码段`}到${selectedId === 'root' ? '编辑器的根目录' : selectedFolder}`
       )
       snippets.forEach((snippet) => {
         snapV2.updateSnippet({

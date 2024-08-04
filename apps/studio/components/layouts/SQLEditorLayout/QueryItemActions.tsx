@@ -78,7 +78,7 @@ export const QueryItemActions = ({
 
   const createPersonalCopy = async () => {
     if (!ref) return console.error('未找到项目号')
-    if (!id) return console.error('未找到代码片段 ID')
+    if (!id) return console.error('未找到代码段 ID')
     try {
       const snippet = createSqlSnippetSkeleton({
         id: uuidv4(),

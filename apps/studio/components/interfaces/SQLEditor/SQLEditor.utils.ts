@@ -75,7 +75,7 @@ export function getDiffTypeButtonLabel(diffType: DiffType) {
     case DiffType.Addition:
       return '接受新增'
     case DiffType.NewSnippet:
-      return '创建新代码片段'
+      return '创建新代码段'
     default:
       throw new Error(`未知的 diff 类型 '${diffType}'`)
   }
@@ -88,7 +88,7 @@ export function getDiffTypeDropdownLabel(diffType: DiffType) {
     case DiffType.Addition:
       return '对比为新增'
     case DiffType.NewSnippet:
-      return '对比为新代码片段'
+      return '对比为新代码段'
     default:
       throw new Error(`未知的 diff 类型 '${diffType}'`)
   }

@@ -25,7 +25,7 @@ export const LogsSavedPage: NextPageWithLayout = () => {
         <Table
           head={
             <>
-              <Table.th>代码片段</Table.th>
+              <Table.th>代码段</Table.th>
               <Table.th className="w-24">
                 <Button size="tiny" type="default" onClick={() => setRecentLogSnippets([])}>
                   清除历史

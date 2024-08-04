@@ -141,7 +141,7 @@ export const SQLEditorTreeViewItem = ({
                   onFocusCapture={(e) => e.stopPropagation()}
                 >
                   <Plus size={14} />
-                  创建新的代码片段
+                  创建新的代码段
                 </ContextMenuItem_Shadcn_>
               )}
               {onSelectRename !== undefined && isOwner && (

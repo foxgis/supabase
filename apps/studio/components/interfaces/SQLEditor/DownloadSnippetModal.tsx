@@ -35,7 +35,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       id: 'migration',
       label: '迁移文件',
       title: '下载为迁移文件',
-      description: `将代码片段下载到一个新的迁移文件，文件名为 \`${migrationName}\``,
+      description: `将代码段下载到一个新的迁移文件，文件名为 \`${migrationName}\``,
       cli: generateMigrationCliCommand(id, migrationName),
       npm: generateMigrationCliCommand(id, migrationName, true),
     },
@@ -44,7 +44,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       label: '种子文件',
       title: '下载为种子文件',
       description:
-        '如果你的查询包含示例数据，将代码片段追加到 `supabase/seed.sql` 的末尾',
+        '如果你的查询包含示例数据，将代码段追加到 `supabase/seed.sql` 的末尾',
       cli: generateSeedCliCommand(id),
       npm: generateSeedCliCommand(id, true),
     },
@@ -52,7 +52,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       id: 'sql',
       label: 'SQL 文件',
       title: '下载为 SQL 文件',
-      description: `直接将代码片段下载到一个新的 SQL 文件中，文件名为 \`${migrationName}.sql\``,
+      description: `直接将代码段下载到一个新的 SQL 文件中，文件名为 \`${migrationName}.sql\``,
       cli: generateFileCliCommand(id, migrationName),
       npm: generateFileCliCommand(id, migrationName, true),
     },
@@ -63,7 +63,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       hideFooter
       showCloseButton
       size="xlarge"
-      header={<p>通过 Supabase CLI 将代码片段下载到本地迁移文件。</p>}
+      header={<p>通过 Supabase CLI 将代码段下载到本地迁移文件。</p>}
       {...props}
     >
       <div className="flex flex-col items-start justify-between gap-4 relative pt-2">

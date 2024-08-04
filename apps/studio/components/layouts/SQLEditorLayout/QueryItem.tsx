@@ -72,7 +72,7 @@ const QueryItem = ({
 
   const onConfirmDelete = async () => {
     if (!ref) return console.error('未找到项目号')
-    if (!id) return console.error('未找到代码片段 ID')
+    if (!id) return console.error('未找到代码段 ID')
     deleteContent({ projectRef: ref, ids: [id] })
   }
 
@@ -193,7 +193,7 @@ const QueryItem = ({
         alert={
           visibility === 'project'
             ? {
-                title: '此 SQL 代码片段会永远丢失',
+                title: '此 SQL 代码段会永远丢失',
                 description:
                   '删除查询也会从项目团队的所有成员中移除此查询。',
               }
@@ -222,7 +222,7 @@ const QueryItem = ({
           </li>
           <li className="flex gap-3">
             <Unlock />
-            <span>任何人都可以将它复制到个人代码片段收藏中。</span>
+            <span>任何人都可以将它复制到个人代码段收藏中。</span>
           </li>
         </ul>
       </ConfirmationModal>
