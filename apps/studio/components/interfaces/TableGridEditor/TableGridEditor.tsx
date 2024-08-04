@@ -57,7 +57,7 @@ const TableGridEditor = ({
   const { project } = useProjectContext()
   const snap = useTableEditorStateSnapshot()
   const getImpersonatedRole = useGetImpersonatedRole()
-  const [{ view: selectedView = 'data' }] = useUrlState()
+  const [{ view: selectedView = '数据' }] = useUrlState()
 
   const canEditTables = useCheckPermissions(PermissionAction.TENANT_SQL_ADMIN_WRITE, 'tables')
   const canEditColumns = useCheckPermissions(PermissionAction.TENANT_SQL_ADMIN_WRITE, 'columns')
@@ -314,9 +314,9 @@ const TableGridEditor = ({
           snap.onExpandTextEditor(column, row)
         }}
         onEditForeignKeyColumnValue={snap.onEditForeignKeyColumnValue}
-        showCustomChildren={(isViewSelected || isTableSelected) && selectedView === 'definition'}
+        showCustomChildren={(isViewSelected || isTableSelected) && selectedView === '定义'}
         customHeader={
-          (isViewSelected || isTableSelected) && selectedView === 'definition' ? (
+          (isViewSelected || isTableSelected) && selectedView === '定义' ? (
             <div className="flex items-center space-x-2">
               <p>
                 <code className="text-sm">{selectedTable.name}</code>的 SQL 定义{' '}

@@ -18,10 +18,10 @@ const Footer = ({ isRefetching }: FooterProps) => {
   const { data: selectedTable } = useTable(id)
   const entityType = useEntityType(selectedTable?.id)
 
-  const [{ view: selectedView = 'data' }, setUrlState] = useUrlState()
+  const [{ view: selectedView = '数据' }, setUrlState] = useUrlState()
 
   const setSelectedView = (view: string) => {
-    if (view === 'data') {
+    if (view === '数据') {
       setUrlState({ view: undefined })
     } else {
       setUrlState({ view })
@@ -34,17 +34,17 @@ const Footer = ({ isRefetching }: FooterProps) => {
 
   return (
     <GridFooter>
-      {selectedView === 'data' && <Pagination />}
+      {selectedView === '数据' && <Pagination />}
 
       <div className="ml-auto flex items-center gap-x-2">
-        {selectedTable && selectedView === 'data' && (
+        {selectedTable && selectedView === '数据' && (
           <RefreshButton table={selectedTable} isRefetching={isRefetching} />
         )}
 
         {(isViewSelected || isTableSelected) && (
           <TwoOptionToggle
             width={75}
-            options={['definition', 'data']}
+            options={['定义', '数据']}
             activeOption={selectedView}
             borderOverride="border"
             onClickOption={setSelectedView}
