@@ -34,7 +34,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
 
   const { mutate: disableExtension, isLoading: isDisabling } = useDatabaseExtensionDisableMutation({
     onSuccess: () => {
-      toast.success(`${extension.name} is off.`)
+      toast.success(`${extension.name} 已禁用。`)
       setIsDisableModalOpen(false)
     },
   })
@@ -81,7 +81,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
         {isOn && (
           <div className="border-b border-overlay py-2 px-3">
             <p className="text-foreground-light text-sm">
-              Installed in <span className="text-foreground">{extension.schema}</span> schema
+              已安装在 <span className="text-foreground">{extension.schema}</span> 模式下
             </p>
           </div>
         )}
@@ -118,7 +118,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
                     : extensions.find((item: any) => item.name === extension.name)?.link ?? ''
                 }
               >
-                Docs
+                文档
               </a>
             </Button>
           </div>
