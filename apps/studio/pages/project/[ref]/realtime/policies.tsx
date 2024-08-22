@@ -7,6 +7,6 @@ const RealtimePoliciesPage: NextPageWithLayout = () => {
   return <RealtimePolicies />
 }
 
-RealtimePoliciesPage.getLayout = (page) => <RealtimeLayout title="实时消息策略">{page}</RealtimeLayout>
+RealtimePoliciesPage.getLayout = (page) => <RealtimeLayout title="实时通信策略">{page}</RealtimeLayout>
 
 export default RealtimePoliciesPage

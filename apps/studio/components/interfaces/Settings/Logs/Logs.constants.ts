@@ -384,7 +384,7 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.FUNCTIONS]: '从运行时生成的函数日志',
   [LogsTableName.FN_EDGE]: '包含请求和响应的函数调用日志',
   [LogsTableName.AUTH]: '来自 GoTrue 的身份验证日志',
-  [LogsTableName.REALTIME]: 'Postgres 逻辑复制时的实时消息日志',
+  [LogsTableName.REALTIME]: 'Postgres 逻辑复制时的实时通信日志',
   [LogsTableName.STORAGE]: '文件存储日志',
   [LogsTableName.POSTGREST]: 'RESTful API 服务器日志',
   [LogsTableName.SUPAVISOR]: '云原生 Postgres 连接池日志',
@@ -472,7 +472,7 @@ export const FILTER_OPTIONS: FilterTableSet = {
         },
         {
           key: 'realtime',
-          label: '实时消息',
+          label: '实时通信',
           description: '',
         },
       ],

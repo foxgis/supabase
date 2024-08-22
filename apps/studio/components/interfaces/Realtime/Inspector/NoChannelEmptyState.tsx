@@ -7,7 +7,7 @@ const NoChannelEmptyState = () => {
         <div className="grow flex-col flex gap-y-1">
           <p className="text-foreground">加入一个频道开始监听消息</p>
           <p className="text-foreground-lighter text-xs">
-            频道是实时消息的基础构件，客户端在频道内进行双向发送和接收消息。
+            频道是实时通信的基础构件，客户端在频道内进行双向发送和接收消息。
           </p>
         </div>
       </div>

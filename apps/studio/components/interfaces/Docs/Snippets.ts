@@ -146,7 +146,7 @@ else console.log(data)
     title: '订阅所有事件',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时消息`,
+      code: `# 只能通过客户端库支持实时通信`,
     },
     js: {
       language: 'js',
@@ -166,7 +166,7 @@ const ${listenerName} = supabase.channel('custom-all-channel')
     title: '订阅插入操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时消息`,
+      code: `# 只能通过客户端库支持实时通信`,
     },
     js: {
       language: 'js',
@@ -186,7 +186,7 @@ const ${listenerName} = supabase.channel('custom-insert-channel')
     title: '订阅更新操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时消息`,
+      code: `# 只能通过客户端库支持实时通信`,
     },
     js: {
       language: 'js',
@@ -206,7 +206,7 @@ const ${listenerName} = supabase.channel('custom-update-channel')
     title: '订阅删除操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时消息`,
+      code: `# 只能通过客户端库支持实时通信`,
     },
     js: {
       language: 'js',
@@ -226,7 +226,7 @@ const ${listenerName} = supabase.channel('custom-delete-channel')
     title: '订阅特定行',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时消息`,
+      code: `# 只能通过客户端库支持实时通信`,
     },
     js: {
       language: 'js',

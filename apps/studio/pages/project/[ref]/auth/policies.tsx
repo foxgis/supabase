@@ -10,6 +10,7 @@ import Policies from 'components/interfaces/Auth/Policies/Policies'
 import AuthLayout from 'components/layouts/AuthLayout/AuthLayout'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import AlertError from 'components/ui/AlertError'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import NoPermission from 'components/ui/NoPermission'
 import SchemaSelector from 'components/ui/SchemaSelector'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
@@ -20,7 +21,7 @@ import { useCheckPermissions, usePermissionsLoaded } from 'hooks/misc/useCheckPe
 import { useUrlState } from 'hooks/ui/useUrlState'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
 import type { NextPageWithLayout } from 'types'
-import { Button, Input, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_, Tooltip_Shadcn_ } from 'ui'
+import { Button, Input } from 'ui'
 
 /**
  * Filter tables by table name and policy name
@@ -146,26 +147,23 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
             </Button>
 
             {isAiAssistantEnabled && (
-              <Tooltip_Shadcn_>
-                <TooltipTrigger_Shadcn_ asChild>
-                  <Button
-                    type="primary"
-                    disabled={!canCreatePolicies || schemaHasNoTables}
-                    onClick={() => setShowPolicyAiEditor(true)}
-                  >
-                    创建新策略
-                  </Button>
-                </TooltipTrigger_Shadcn_>
-                {(!canCreatePolicies || schemaHasNoTables) && (
-                  <TooltipContent_Shadcn_ side="bottom">
-                    {!canCreatePolicies
-                      ? '您需要额外的权限才能创建策略'
+              <ButtonTooltip
+                type="primary"
+                disabled={!canCreatePolicies || schemaHasNoTables}
+                onClick={() => setShowPolicyAiEditor(true)}
+                tooltip={{
+                  content: {
+                    side: 'bottom',
+                    text: !canCreatePolicies
+                      ? '您需要额外的权限才能创建 RLS 策略'
                       : schemaHasNoTables
-                        ? `模式 ${schema} 中没有表可以用来创建策略`
-                        : null}
-                  </TooltipContent_Shadcn_>
-                )}
-              </Tooltip_Shadcn_>
+                        ? `${schema} 模式下没有表可用于创建策略`
+                        : undefined,
+                  },
+                }}
+              >
+                新建策略
+              </ButtonTooltip>
             )}
           </div>
         </div>

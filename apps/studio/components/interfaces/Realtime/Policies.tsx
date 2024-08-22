@@ -33,7 +33,7 @@ export const RealtimePolicies = () => {
     <div className="flex min-h-full w-full flex-col p-4 gap-y-4">
       <FormHeader
         className="!mb-0"
-        title="实时消息策略"
+        title="实时通信策略"
         description="您可以使用 RLS 策略来控制对实时频道的访问权限"
       />
 

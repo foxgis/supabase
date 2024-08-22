@@ -7,14 +7,14 @@ const StoragePoliciesPlaceholder = () => (
       <div key="storagePlaceholder" className="flex w-full items-center justify-between">
         <div className="flex items-center space-x-4">
           <IconArchive size="small" />
-          <h4>Bucket policies</h4>
+          <h4>存储桶策略</h4>
         </div>
       </div>,
     ]}
   >
     <div className="p-4 px-6">
       <p className="text-sm text-foreground-light">
-        Create a bucket first to start writing policies!
+        请先创建一个存储桶再开始编写策略！
       </p>
     </div>
   </Panel>

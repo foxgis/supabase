@@ -1,10 +1,10 @@
 import { useParams, useTelemetryProps } from 'common'
 import { isEqual } from 'lodash'
-import { Loader2, MegaphoneIcon } from 'lucide-react'
+import { ExternalLink, Loader2, MegaphoneIcon } from 'lucide-react'
 import Link from 'next/link'
-import { Key, useEffect, useState } from 'react'
-import DataGrid, { RenderRowProps, Row } from 'react-data-grid'
-import { Button, IconBroadcast, IconDatabaseChanges, IconExternalLink, IconPresence, cn } from 'ui'
+import { useEffect, useState } from 'react'
+import DataGrid, { Row } from 'react-data-grid'
+import { Button, IconBroadcast, IconDatabaseChanges, IconPresence, cn } from 'ui'
 
 import ShimmerLine from 'components/ui/ShimmerLine'
 import Telemetry from 'lib/telemetry'
@@ -35,8 +35,8 @@ const NoResultAlert = ({
         <NoChannelEmptyState />
       ) : (
         <>
-          {enabled && <p className="text-foreground">未找到实时消息</p>}
-          <p className="text-foreground-lighter">实时消息日志会显示在这里</p>
+          {enabled && <p className="text-foreground">未找到实时通信</p>}
+          <p className="text-foreground-lighter">实时通信日志会显示在这里</p>
 
           <div className="mt-4 border bg-surface-100 border-border rounded-md justify-start items-center flex flex-col w-full">
             <div className="w-full px-5 py-4 items-center gap-4 inline-flex border-b">
@@ -58,7 +58,7 @@ const NoResultAlert = ({
                 </p>
               </div>
               <Link href={`/project/${ref}/realtime/inspector`} target="_blank" rel="noreferrer">
-                <Button type="default" iconRight={<IconExternalLink />}>
+                <Button type="default" iconRight={<ExternalLink />}>
                   打开检视器
                 </Button>
               </Link>
@@ -71,10 +71,10 @@ const NoResultAlert = ({
               />
               <div className="grow flex-col flex">
                 <p className="text-foreground">监听一张表的变更</p>
-                <p className="text-foreground-lighter text-xs">表必须已启用实时消息</p>
+                <p className="text-foreground-lighter text-xs">表必须已启用实时通信</p>
               </div>
               <Link href={`/project/${ref}/database/publications`} target="_blank" rel="noreferrer">
-                <Button type="default" iconRight={<IconExternalLink />}>
+                <Button type="default" iconRight={<ExternalLink />}>
                   数据库事件发布设置
                 </Button>
               </Link>
@@ -84,7 +84,7 @@ const NoResultAlert = ({
                 <p className="text-foreground">不确定要怎么做？</p>
                 <p className="text-foreground-lighter text-xs">请浏览我们的文档</p>
               </div>
-              <Button type="default" iconRight={<IconExternalLink />}>
+              <Button type="default" iconRight={<ExternalLink />}>
                 <a
                   href="https://supabase.com/docs/guides/realtime"
                   target="_blank"
@@ -99,10 +99,6 @@ const NoResultAlert = ({
       )}
     </div>
   )
-}
-
-const RowRenderer = (key: Key, props: RenderRowProps<LogData, unknown>) => {
-  return <Row key={key} {...props} isRowSelected={false} selectedCellIdx={undefined} />
 }
 
 interface MessagesTableProps {
@@ -167,34 +163,42 @@ const MessagesTable = ({
               className="data-grid--simple-logs h-full border-b-0"
               rowHeight={40}
               headerRowHeight={0}
-              onSelectedCellChange={({ rowIdx }) => {
-                Telemetry.sendEvent(
-                  {
-                    category: 'realtime_inspector',
-                    action: 'focused-specific-message',
-                    label: 'realtime_inspector_results',
-                  },
-                  telemetryProps,
-                  router
-                )
-
-                setFocusedLog(data[rowIdx])
-              }}
-              selectedRows={new Set([])}
               columns={ColumnRenderer}
               rowClass={(row) => {
                 return cn([
                   'font-mono tracking-tight',
                   isEqual(row, focusedLog)
                     ? 'bg-scale-800 rdg-row--focused'
-                    : ' bg-200 hover:bg-scale-300 cursor-pointer',
+                    : 'bg-200 hover:bg-scale-300 cursor-pointer',
                   isErrorLog(row) && '!bg-warning-300',
                 ])
               }}
               rows={data}
               rowKeyGetter={(row) => row.id}
               renderers={{
-                renderRow: RowRenderer,
+                renderRow(idx, props) {
+                  const { row } = props
+                  return (
+                    <Row
+                      key={idx}
+                      {...props}
+                      isRowSelected={false}
+                      selectedCellIdx={undefined}
+                      onClick={() => {
+                        Telemetry.sendEvent(
+                          {
+                            category: 'realtime_inspector',
+                            action: 'focused-specific-message',
+                            label: 'realtime_inspector_results',
+                          },
+                          telemetryProps,
+                          router
+                        )
+                        setFocusedLog(row)
+                      }}
+                    />
+                  )
+                },
                 noRowsFallback: (
                   <div className="mx-auto flex h-full w-full items-center justify-center space-y-12 py-4 transition-all delay-200 duration-500">
                     <NoResultAlert

@@ -65,7 +65,7 @@ const EMPTY_FOLDER_PLACEHOLDER_FILE_NAME = '.emptyFolderPlaceholder'
 const STORAGE_PROGRESS_INFO_TEXT = "操作完成之前请勿关闭浏览器"
 
 class StorageExplorerStore {
-  private projectRef: string = ''
+  projectRef: string = ''
   view: STORAGE_VIEWS = STORAGE_VIEWS.COLUMNS
   sortBy: STORAGE_SORT_BY = STORAGE_SORT_BY.NAME
   sortByOrder: STORAGE_SORT_BY_ORDER = STORAGE_SORT_BY_ORDER.ASC
@@ -711,6 +711,7 @@ class StorageExplorerStore {
 
           // Max chunk size is 500MB
           chunkSize = Math.min(chunkSize, 500 * 1024 * 1024)
+          const uploadDataDuringCreation = file.size <= chunkSize
 
           const upload = new tus.Upload(file, {
             endpoint: this.resumableUploadUrl,
@@ -719,7 +720,7 @@ class StorageExplorerStore {
               authorization: `Bearer ${this.serviceKey}`,
               'x-source': 'supabase-dashboard',
             },
-            uploadDataDuringCreation: true,
+            uploadDataDuringCreation: uploadDataDuringCreation,
             removeFingerprintOnSuccess: true,
             metadata: {
               bucketName: this.selectedBucket.name,

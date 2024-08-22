@@ -578,14 +578,14 @@ create trigger on_auth_user_created
 
 /**
  * REALTIME SUBSCRIPTIONS
- * 只允许实时消息监听 public 模式下的表。
+ * 只允许实时通信监听 public 模式下的表。
  */
 
 begin;
-  -- 删除实时消息的订阅
+  -- 删除实时通信的订阅
   drop publication if exists supabase_realtime;
 
-  -- 重新创建实时消息的订阅，暂时不在任何表上启用
+  -- 重新创建实时通信的订阅，暂时不在任何表上启用
   create publication supabase_realtime;
 commit;
 
@@ -806,8 +806,8 @@ create policy "Can only view own subs data." on subscriptions
   for select using ((select auth.uid()) = user_id);
 
 /**
- * 实时消息订阅表
- * 只允许实时消息订阅 public 模式下的表。
+ * 实时通信订阅表
+ * 只允许实时通信订阅 public 模式下的表。
  */
 drop publication if exists supabase_realtime;
 create publication supabase_realtime

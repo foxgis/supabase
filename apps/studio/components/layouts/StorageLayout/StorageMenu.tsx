@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { useLocalStorage } from '@uidotdev/usehooks'
 import { useParams } from 'common'
 import CreateBucketModal from 'components/interfaces/Storage/CreateBucketModal'
 import EditBucketModal from 'components/interfaces/Storage/EditBucketModal'
@@ -15,7 +16,14 @@ import ShimmeringLoader from 'components/ui/ShimmeringLoader'
 import { useBucketsQuery } from 'data/storage/buckets-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useSelectedProject } from 'hooks/misc/useSelectedProject'
-import { AlertDescription_Shadcn_, AlertTitle_Shadcn_, Alert_Shadcn_, Menu } from 'ui'
+import { Alert_Shadcn_, AlertDescription_Shadcn_, AlertTitle_Shadcn_, Menu } from 'ui'
+import {
+  InnerSideBarEmptyPanel,
+  InnerSideBarFilters,
+  InnerSideBarFilterSearchInput,
+  InnerSideBarFilterSortDropdown,
+  InnerSideBarFilterSortDropdownItem,
+} from 'ui-patterns'
 import BucketRow from './BucketRow'
 
 const StorageMenu = () => {
@@ -24,11 +32,17 @@ const StorageMenu = () => {
   const projectDetails = useSelectedProject()
   const isBranch = projectDetails?.parent_project_ref !== undefined
 
+  const [searchText, setSearchText] = useState<string>('')
   const [showCreateBucketModal, setShowCreateBucketModal] = useState(false)
   const [selectedBucketToEdit, setSelectedBucketToEdit] = useState<StorageBucket>()
   const [selectedBucketToEmpty, setSelectedBucketToEmpty] = useState<StorageBucket>()
   const [selectedBucketToDelete, setSelectedBucketToDelete] = useState<StorageBucket>()
   const canCreateBuckets = useCheckPermissions(PermissionAction.STORAGE_ADMIN_WRITE, '*')
+
+  const [sort, setSort] = useLocalStorage<'alphabetical' | 'created-at'>(
+    'storage-explorer-sort',
+    'created-at'
+  )
 
   const page = router.pathname.split('/')[4] as
     | undefined
@@ -39,12 +53,22 @@ const StorageMenu = () => {
 
   const { data, error, isLoading, isError, isSuccess } = useBucketsQuery({ projectRef: ref })
   const buckets = data ?? []
+  const sortedBuckets =
+    sort === 'alphabetical'
+      ? buckets.sort((a, b) =>
+          a.name.toLowerCase().trim().localeCompare(b.name.toLowerCase().trim())
+        )
+      : buckets.sort((a, b) => (new Date(b.created_at) > new Date(a.created_at) ? -1 : 1))
+  const filteredBuckets =
+    searchText.length > 1
+      ? sortedBuckets.filter((bucket) => bucket.name.includes(searchText.trim()))
+      : sortedBuckets
   const tempNotSupported = error?.message.includes('Tenant config') && isBranch
 
   return (
     <>
       <Menu type="pills" className="my-6 flex flex-grow flex-col">
-        <div className="mb-6 mx-5">
+        <div className="mb-6 mx-5 flex flex-col gap-y-1.5">
           <ButtonTooltip
             block
             type="default"
@@ -61,6 +85,34 @@ const StorageMenu = () => {
           >
             新建存储桶
           </ButtonTooltip>
+
+          <InnerSideBarFilters className="px-0">
+            <InnerSideBarFilterSearchInput
+              name="search-buckets"
+              aria-labelledby="Search buckets"
+              placeholder="查找存储桶..."
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value)
+              }}
+            >
+              <InnerSideBarFilterSortDropdown
+                value={sort}
+                onValueChange={(value: any) => setSort(value)}
+              >
+                <InnerSideBarFilterSortDropdownItem
+                  key="alphabetical"
+                  value="alphabetical"
+                  className="flex gap-2"
+                >
+                  名称
+                </InnerSideBarFilterSortDropdownItem>
+                <InnerSideBarFilterSortDropdownItem key="created-at" value="created-at">
+                  创建时间
+                </InnerSideBarFilterSortDropdownItem>
+              </InnerSideBarFilterSortDropdown>
+            </InnerSideBarFilterSearchInput>
+          </InnerSideBarFilters>
         </div>
 
         <div className="space-y-6">
@@ -95,16 +147,20 @@ const StorageMenu = () => {
             {isSuccess && (
               <>
                 {buckets.length === 0 && (
-                  <div className="px-2">
-                    <Alert_Shadcn_>
-                      <AlertTitle_Shadcn_>无存储桶</AlertTitle_Shadcn_>
-                      <AlertDescription_Shadcn_>
-                        您创建的存储桶将在这里显示。
-                      </AlertDescription_Shadcn_>
-                    </Alert_Shadcn_>
-                  </div>
+                  <InnerSideBarEmptyPanel
+                    className="mx-2"
+                    title="无可用存储桶"
+                    description="您创建的存储桶将在这里显示"
+                  />
                 )}
-                {buckets.map((bucket, idx: number) => {
+                {searchText.length > 0 && filteredBuckets.length === 0 && (
+                  <InnerSideBarEmptyPanel
+                    className="mx-2"
+                    title="未找到结果"
+                    description={`您查询的 "${searchText}" 没有返回任何结果`}
+                  />
+                )}
+                {filteredBuckets.map((bucket, idx: number) => {
                   const isSelected = bucketId === bucket.id
                   return (
                     <BucketRow

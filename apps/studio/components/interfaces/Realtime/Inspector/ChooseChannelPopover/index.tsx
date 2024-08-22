@@ -36,7 +36,6 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
   const [open, setOpen] = useState(false)
   const telemetryProps = useTelemetryProps()
   const router = useRouter()
-  const authzEnabled = useFlag('authzRealtime')
 
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: 'onBlur',
@@ -142,32 +141,30 @@ export const ChooseChannelPopover = ({ config, onChangeConfig }: ChooseChannelPo
                     )}
                   />
 
-                  {authzEnabled ? (
-                    <FormField_Shadcn_
-                      key="isPrivate"
-                      control={form.control}
-                      name="isPrivate"
-                      render={({ field }) => (
-                        <FormItem_Shadcn_ className="">
-                          <div className="flex flex-row items-center gap-x-2">
-                            <FormControl_Shadcn_>
-                              <Switch
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                                disabled={field.disabled}
-                              />
-                            </FormControl_Shadcn_>
-                            <FormLabel_Shadcn_ className="text-xs">
-                              私有频道？
-                            </FormLabel_Shadcn_>
-                          </div>
-                          <FormDescription_Shadcn_ className="text-xs text-foreground-lighter mt-2">
-                            如果频道被标记为私有，将会使用 RLS 策略过滤消息。
-                          </FormDescription_Shadcn_>
-                        </FormItem_Shadcn_>
-                      )}
-                    />
-                  ) : null}
+                  <FormField_Shadcn_
+                    key="isPrivate"
+                    control={form.control}
+                    name="isPrivate"
+                    render={({ field }) => (
+                      <FormItem_Shadcn_ className="">
+                        <div className="flex flex-row items-center gap-x-2">
+                          <FormControl_Shadcn_>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              disabled={field.disabled}
+                            />
+                          </FormControl_Shadcn_>
+                          <FormLabel_Shadcn_ className="text-xs">
+                            私有频道？
+                          </FormLabel_Shadcn_>
+                        </div>
+                        <FormDescription_Shadcn_ className="text-xs text-foreground-lighter mt-2">
+                          如果频道被标记为私有，将使用 RLS 策略过滤消息。
+                        </FormDescription_Shadcn_>
+                      </FormItem_Shadcn_>
+                    )}
+                  />
 
                   <Button asChild type="default" className="w-min" icon={<ExternalLink />}>
                     <a

@@ -56,11 +56,11 @@ const PolicyTableRow = ({
                 这张表已启用行级安全性，但尚未设置策略
               </AlertTitle_Shadcn_>
               <AlertDescription_Shadcn_>
-                查询将返回一个 <span className="text-foreground underline">空数组</span> 的结果。
+                Select 查询可能会返回空结果。
               </AlertDescription_Shadcn_>
             </Alert_Shadcn_>
           )}
-          {!table.rls_enabled && (
+          {!table.rls_enabled && !isLocked && (
             <Alert_Shadcn_ variant="warning">
               <WarningIcon />
               <AlertTitle_Shadcn_>

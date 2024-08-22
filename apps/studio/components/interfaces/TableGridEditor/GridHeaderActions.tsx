@@ -21,7 +21,7 @@ import useEntityType from 'hooks/misc/useEntityType'
 import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { TableLike } from 'hooks/misc/useTable'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
-import { Button, PopoverContent_Shadcn_, PopoverTrigger_Shadcn_, Popover_Shadcn_ } from 'ui'
+import { Button, PopoverContent_Shadcn_, PopoverTrigger_Shadcn_, Popover_Shadcn_, cn } from 'ui'
 import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { RoleImpersonationPopover } from '../RoleImpersonationSelector'
@@ -90,7 +90,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
         setShowEnableRealtime(false)
       },
       onError: (error) => {
-        toast.error(`为 ${table.name} 启用实时消息失败：${error.message}`)
+        toast.error(`为 ${table.name} 启用实时通信失败：${error.message}`)
       },
     })
 
@@ -119,7 +119,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
 
   const toggleRealtime = async () => {
     if (!project) return console.error('未找到项目')
-    if (!realtimePublication) return console.error('未发现实时消息发布')
+    if (!realtimePublication) return console.error('未发现实时通信发布')
 
     const exists = realtimeEnabledTables.some((x: any) => x.id == table.id)
     const tables = !exists
@@ -214,10 +214,8 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                         ].join(' ')}
                       >
                         <div className="text-xs text-foreground p-1 leading-relaxed">
-                          <p>此表启用了 RLS，但没有设置策略。</p>
-                          <p>
-                            Select 查询将返回一个<u>空数组</u>的结果。
-                          </p>
+                          <p>表已启用了 RLS 但未设置任何策略。</p>
+                          <p>Select 查询可能会返回空结果。</p>
                         </div>
                       </div>
                     </Tooltip.Content>
@@ -230,9 +228,17 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                   className="group"
                   icon={
                     isLocked || policies.length > 0 ? (
-                      <span className="text-right text-xs rounded-xl px-[6px] bg-foreground-lighter/30 text-brand-1100">
-                        {policies.length}
-                      </span>
+                      <div
+                        className={cn(
+                          'flex items-center justify-center rounded-full bg-border-stronger h-[16px]',
+                          policies.length > 9 ? ' px-1' : 'w-[16px]',
+                          ''
+                        )}
+                      >
+                        <span className="text-[11px] text-foreground font-mono text-center">
+                          {policies.length}
+                        </span>
+                      </div>
                     ) : (
                       <PlusCircle strokeWidth={1.5} />
                     )
@@ -392,7 +398,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             }
             onClick={() => setShowEnableRealtime(true)}
           >
-            实时消息 {isRealtimeEnabled ? '已开启' : '已关闭'}
+            实时通信 {isRealtimeEnabled ? '已开启' : '已关闭'}
           </Button>
         )}
 
@@ -402,15 +408,15 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
       <ConfirmationModal
         visible={showEnableRealtime}
         loading={isTogglingRealtime}
-        title={`为表 ${table.name} ${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
-        confirmLabel={`${isRealtimeEnabled ? '禁用' : '启用'}实时消息`}
-        confirmLabelLoading={`${isRealtimeEnabled ? '正在禁用' : '正在启用'}实时消息`}
+        title={`为表 ${table.name} ${isRealtimeEnabled ? '禁用' : '启用'}实时通信`}
+        confirmLabel={`${isRealtimeEnabled ? '禁用' : '启用'}实时通信`}
+        confirmLabelLoading={`${isRealtimeEnabled ? '正在禁用' : '正在启用'}实时通信`}
         onCancel={() => setShowEnableRealtime(false)}
         onConfirm={() => toggleRealtime()}
       >
         <div className="space-y-2">
           <p className="text-sm">
-            一旦{isRealtimeEnabled ? '禁用' : '启用'}实时消息，将{isRealtimeEnabled ? '不再' : ''}向授权的订阅者广播表的任何更新事件。
+            一旦{isRealtimeEnabled ? '禁用' : '启用'}实时通信，将{isRealtimeEnabled ? '不再' : ''}向授权的订阅者广播表的任何更新事件。
           </p>
           {!isRealtimeEnabled && (
             <p className="text-sm">

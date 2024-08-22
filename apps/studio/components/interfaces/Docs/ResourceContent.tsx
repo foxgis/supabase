@@ -279,7 +279,7 @@ const ResourceContent = ({
             <div className="doc-section">
               <article className="code-column text-foreground">
                 <p>
-                  Supabase 提供了实时消息功能，让您可以广播数据库变更并根据行级安全性（RLS）策略将其发送给授权用户。
+                  Supabase 提供了实时通信功能，让您可以广播数据库变更并根据行级安全性（RLS）策略将其发送给授权用户。
                 </p>
                 <p>
                   <a

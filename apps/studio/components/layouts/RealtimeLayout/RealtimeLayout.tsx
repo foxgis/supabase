@@ -18,15 +18,11 @@ const RealtimeLayout = ({ title, children }: PropsWithChildren<RealtimeLayoutPro
   const router = useRouter()
   const page = router.pathname.split('/')[4]
 
-  const authzEnabled = useFlag('authzRealtime')
-
   return (
     <ProjectLayout
       title={title}
-      product="实时消息"
-      productMenu={
-        <ProductMenu page={page} menu={generateRealtimeMenu(project!, { authzEnabled })} />
-      }
+      product="实时通信"
+      productMenu={<ProductMenu page={page} menu={generateRealtimeMenu(project!)} />}
     >
       {children}
     </ProjectLayout>

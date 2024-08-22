@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import type { PostgresTable } from '@supabase/postgres-meta'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { noop } from 'lodash'
@@ -7,8 +6,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { useIsRLSAIAssistantEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
-import { Badge, Button, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_, Tooltip_Shadcn_ } from 'ui'
+import { Badge } from 'ui'
 
 interface PolicyTableRowHeaderProps {
   table: PostgresTable
@@ -55,42 +55,35 @@ const PolicyTableRowHeader = ({
       {!isTableLocked && (
         <div className="flex-1">
           <div className="flex flex-row justify-end gap-x-2">
-            {!isRealtimeMessagesTable ? (
-              <Tooltip_Shadcn_ delayDuration={0}>
-                <TooltipTrigger_Shadcn_ asChild>
-                  <Button
-                    type="default"
-                    disabled={!canToggleRLS}
-                    onClick={() => onSelectToggleRLS(table)}
-                  >
-                    {table.rls_enabled ? '禁用 RLS' : '启用 RLS'}
-                  </Button>
-                </TooltipTrigger_Shadcn_>
-                {!canToggleRLS && (
-                  <TooltipContent_Shadcn_ side="bottom">
-                    <Tooltip.Arrow className="radix-tooltip-arrow" />
-                    <div
-                      className={[
-                        'rounded bg-alternative py-1 px-2 leading-none shadow',
-                        'border border-background',
-                      ].join(' ')}
-                    >
-                      <span className="text-xs text-foreground">
-                        您需要额外的权限才能启停 RLS
-                      </span>
-                    </div>
-                  </TooltipContent_Shadcn_>
-                )}
-              </Tooltip_Shadcn_>
-            ) : null}
+            {!isRealtimeMessagesTable && (
+              <ButtonTooltip
+                type="default"
+                disabled={!canToggleRLS}
+                onClick={() => onSelectToggleRLS(table)}
+                tooltip={{
+                  content: {
+                    side: 'bottom',
+                    text: '您需要额外的权限才能启停 RLS',
+                  },
+                }}
+              >
+                {table.rls_enabled ? '禁用 RLS' : '启用 RLS'}
+              </ButtonTooltip>
+            )}
             {!isAiAssistantEnabled && (
-              <Button
+              <ButtonTooltip
                 type="default"
                 disabled={!canToggleRLS}
                 onClick={() => onSelectCreatePolicy()}
+                tooltip={{
+                  content: {
+                    side: 'bottom',
+                    text: '您需要额外的权限才能创建 RLS',
+                  },
+                }}
               >
                 创建策略
-              </Button>
+              </ButtonTooltip>
             )}
           </div>
         </div>

@@ -183,7 +183,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
                   >
                     文档
                   </Link>{' '}
-                  中了解更多关于实时消息过滤的内容
+                  中了解更多关于实时通信过滤的内容
                 </p>
               </div>
             </>
@@ -219,7 +219,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
         }}
       >
         <p className="text-sm text-foreground-light">
-          实时消息探查器将会清除当前收集的消息，并开始监听符合更新过滤器的新消息。
+          实时通信探查器将会清除当前收集的消息，并开始监听符合更新过滤器的新消息。
         </p>
       </ConfirmationModal>
     </>

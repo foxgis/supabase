@@ -248,6 +248,20 @@ export const MOBILES: ConnectionType[] = [
       },
     ],
   },
+  {
+    key: 'ionicangular',
+    label: 'Ionic Angular',
+    icon: 'ionic-angular',
+    guideLink: 'https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-angular',
+    children: [
+      {
+        key: 'supabasejs',
+        label: 'Supabase-js',
+        children: [],
+        icon: 'supabase',
+      },
+    ],
+  },
 ]
 
 export const ORMS: ConnectionType[] = [
@@ -269,7 +283,7 @@ export const ORMS: ConnectionType[] = [
 ]
 
 export const CONNECTION_TYPES = [
-  { key: 'frameworks', label: 'App Frameworks', obj: FRAMEWORKS },
-  { key: 'mobiles', label: 'Mobile Frameworks', obj: MOBILES },
+  { key: 'frameworks', label: '应用程序框架', obj: FRAMEWORKS },
+  { key: 'mobiles', label: '移动应用框架', obj: MOBILES },
   { key: 'orms', label: 'ORMs', obj: ORMS },
 ]

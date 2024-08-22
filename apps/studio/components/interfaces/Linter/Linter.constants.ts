@@ -18,16 +18,16 @@ export const LINT_TABS = [
   {
     id: LINTER_LEVELS.ERROR,
     label: '错误',
-    description: '你应该将这些问题视为紧急问题，并尽快修复。',
+    description: '您应该将这些问题视为紧急问题，并尽快修复。',
   },
   {
     id: LINTER_LEVELS.WARN,
     label: '警告 ',
-    description: '你应该尝试浏览这些问题，并在必要时进行修复。',
+    description: '您应该尝试浏览这些问题，并在必要时进行修复。',
   },
   {
     id: LINTER_LEVELS.INFO,
     label: '建议 ',
-    description: '你应该仔细阅读这些建议，并考虑实施它们。',
+    description: '您应该仔细阅读这些建议，并考虑实施它们。',
   },
 ]
