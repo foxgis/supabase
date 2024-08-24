@@ -1,4 +1,4 @@
-name: Build studio multiarch image with buildx
+name: Build studio multiarch docker image
 
 on:
   # run this action every day at 04:00 UTC (Singapore noon)
