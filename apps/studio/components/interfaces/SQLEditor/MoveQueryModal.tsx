@@ -204,7 +204,12 @@ export const MoveQueryModal = ({ visible, snippets = [], onClose }: MoveQueryMod
                       </div>
                     </Button>
                   </PopoverTrigger_Shadcn_>
-                  <PopoverContent_Shadcn_ className="p-0 w-80" side="bottom" align="start">
+                  <PopoverContent_Shadcn_
+                    className="p-0"
+                    side="bottom"
+                    align="start"
+                    sameWidthAsTrigger
+                  >
                     <Command_Shadcn_>
                       <CommandInput_Shadcn_ placeholder="查找文件夹..." />
                       <CommandList_Shadcn_>
