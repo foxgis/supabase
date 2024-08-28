@@ -46,7 +46,8 @@ export const QueryItemActions = ({
   const snap = useSqlEditorStateSnapshot()
   const project = useSelectedProject()
 
-  const { id, name, visibility, content } = tabInfo || {}
+  const { id, name, visibility, content, type } = tabInfo || {}
+  const isSQLSnippet = type === 'sql'
 
   const canCreateSQLSnippet = useCheckPermissions(PermissionAction.CREATE, 'user_content', {
     resource: { type: 'sql', owner_id: profile?.id },
@@ -77,6 +78,7 @@ export const QueryItemActions = ({
   }
 
   const createPersonalCopy = async () => {
+    if (!isSQLSnippet) return console.error('不是 SQL 代码段')
     if (!ref) return console.error('未找到项目号')
     if (!id) return console.error('未找到代码段 ID')
     try {
