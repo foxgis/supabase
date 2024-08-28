@@ -156,6 +156,7 @@ const MonacoEditor = ({
       defaultLanguage="pgsql"
       defaultValue={snippet?.snippet.content.sql}
       path={id}
+      loading={'加载中...'}
       options={{
         tabSize: 2,
         fontSize: 13,

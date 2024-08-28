@@ -410,7 +410,7 @@ const SQLEditor = () => {
       // entire error body from the assistant
       if (isError(error)) {
         toast.error(
-          `抱歉，助理未能成功调试您的查询！请尝试使用不同的查询。`
+          `抱歉，AI 助理未能成功调试您的查询！请尝试使用不同的查询。`
         )
       }
     }
@@ -665,7 +665,7 @@ const SQLEditor = () => {
             )}
             <ResizablePanel collapsible collapsedSize={10} minSize={20}>
               <div className="flex-grow overflow-y-auto border-b h-full">
-                {false && (
+                {/* {!isAiOpen && (
                   <motion.button
                     layoutId="ask-ai-input-icon"
                     transition={{ duration: 0.1 }}
@@ -676,7 +676,7 @@ const SQLEditor = () => {
                   >
                     <AiIconAnimation loading={false} allowHoverEffect />
                   </motion.button>
-                )}
+                )} */}
 
                 {isLoading ? (
                   <div className="flex h-full w-full items-center justify-center">
@@ -750,7 +750,7 @@ const SQLEditor = () => {
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
-        <ResizableHandle withHandle />
+        {/* <ResizableHandle withHandle />
         <ResizablePanel
           ref={aiPanelRef}
           collapsible
@@ -767,7 +767,7 @@ const SQLEditor = () => {
             onDiff={updateEditorWithCheckForDiff}
             onClose={() => aiPanelRef.current?.collapse()}
           />
-        </ResizablePanel>
+        </ResizablePanel> */}
       </ResizablePanelGroup>
     </>
   )

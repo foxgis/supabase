@@ -23,7 +23,7 @@ export const TruncatedWarningOverlay = ({
         </p>
       </div>
       <Button type="default" loading={isLoading} onClick={loadFullValue}>
-        载入完整值
+        加载完整值
       </Button>
     </div>
   )

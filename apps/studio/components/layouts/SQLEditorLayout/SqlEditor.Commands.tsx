@@ -64,7 +64,7 @@ export function useSnippetCommands() {
     [
       {
         id: 'run-snippet',
-        name: 'Run snippet',
+        name: '执行代码段',
         icon: () => <Code />,
         action: () => setPage(SNIPPET_PAGE_NAME),
       },
@@ -116,7 +116,7 @@ function LoadingState() {
     <div className="p-6">
       <p className="text-center">
         <Loader2 className="inline-block mr-2 animate-spin" />
-        Loading...
+        加载中...
       </p>
     </div>
   )
@@ -127,7 +127,7 @@ function ErrorState() {
     <div className="p-6">
       <p className="text-center">
         <AlertTriangle className="inline-block mr-2" />
-        Couldn&apos;t load snippets
+        无法加载代码段
       </p>
     </div>
   )
@@ -144,7 +144,7 @@ function EmptyState({
 
   return (
     <div className="p-6">
-      <p className="mb-2 text-center">No snippets found.</p>
+      <p className="mb-2 text-center">未找到代码段</p>
       <CommandList_Shadcn_ className="py-2">
         <CommandGroup_Shadcn_>
           <CommandItem_Shadcn_
@@ -152,7 +152,7 @@ function EmptyState({
             className={generateCommandClassNames(false)}
             onSelect={() => router.push(`/project/${projectRef ?? '_'}/sql/new`)}
           >
-            {canCreateNew ? 'Create new snippet' : 'Run new SQL'}
+            {canCreateNew ? '新建代码段' : '执行新的 SQL'}
           </CommandItem_Shadcn_>
         </CommandGroup_Shadcn_>
       </CommandList_Shadcn_>
@@ -207,7 +207,7 @@ function SnippetSelector({
                 onSelect={() => router.push(`/project/${projectRef ?? '_'}/sql/new`)}
                 forceMount={true}
               >
-                Create new snippet
+                新建代码段
               </CommandItem_Shadcn_>
             </CommandGroup_Shadcn_>
           </div>

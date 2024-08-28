@@ -96,7 +96,7 @@ test.skip('custom sql querying', async () => {
   await expect(screen.findByText(/元数据/)).rejects.toThrow()
 
   // should not see chronological features
-  await expect(screen.findByText(/载入旧的/)).rejects.toThrow()
+  await expect(screen.findByText(/加载更多/)).rejects.toThrow()
 })
 
 test.skip('bug: can edit query after selecting a log', async () => {

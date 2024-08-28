@@ -93,7 +93,7 @@ const SqlEditor = ({
     })
   }
 
-  const Loading = () => <h4 className="text-lg">Loading</h4>
+  const Loading = () => <h4 className="text-lg">加载中</h4>
 
   return (
     <Editor

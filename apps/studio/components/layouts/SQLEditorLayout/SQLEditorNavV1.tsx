@@ -169,7 +169,7 @@ export const SQLEditorNavV1 = ({
 
       {isError && (
         <div className="px-4">
-          <AlertError error={error as ResponseError} subject="载入 SQL 代码段失败" />
+          <AlertError error={error as ResponseError} subject="加载 SQL 代码段失败" />
         </div>
       )}
 

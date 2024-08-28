@@ -58,7 +58,7 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
   const loadFullValue = () => {
     if (selectedTable === undefined || project === undefined) return
     if ((selectedTable as PostgresTable).primary_keys.length === 0) {
-      return toast('无法载入值，因为表没有主键')
+      return toast('无法加载值，因为表没有主键')
     }
 
     const pkMatch = (selectedTable as PostgresTable).primary_keys.reduce((a, b) => {
