@@ -195,7 +195,7 @@ const Pagination = () => {
 
           <div className="flex items-center gap-x-2">
             <p className="text-xs text-foreground-light">
-              {`${count} ${data.count === 0 || data.count > 1 ? `记录` : '记录'}`}{' '}
+              {`${count} 条${data.count === 0 || data.count > 1 ? `记录` : '记录'}`}{' '}
               {data.is_estimate ? '（估计）' : ''}
             </p>
 
