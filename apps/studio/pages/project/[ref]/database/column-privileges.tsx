@@ -318,7 +318,7 @@ const PrivilegesPage: NextPageWithLayout = () => {
                 isApplyingChanges={isApplyingChanges}
               />
               {isLocked && (
-                <ProtectedSchemaWarning schema={selectedSchema} entity="column privileges" />
+                <ProtectedSchemaWarning schema={selectedSchema} entity="列权限" />
               )}
               {isLoading ? (
                 <GenericSkeletonLoader />

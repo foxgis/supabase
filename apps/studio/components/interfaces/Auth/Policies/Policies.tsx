@@ -137,7 +137,7 @@ const Policies = ({
   return (
     <>
       <div className="flex flex-col gap-y-4 pb-4">
-        {isLocked && <ProtectedSchemaWarning schema={schema} entity="policies" />}
+        {isLocked && <ProtectedSchemaWarning schema={schema} entity="策略" />}
         {tables.length > 0 ? (
           tables.map((table) => (
             <section key={table.id}>

@@ -131,7 +131,7 @@ const TriggersList = ({
             )}
           </div>
 
-          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="triggers" />}
+          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="触发器" />}
 
           <Table
             className="table-fixed"

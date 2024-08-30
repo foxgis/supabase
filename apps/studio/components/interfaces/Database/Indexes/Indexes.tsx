@@ -136,7 +136,7 @@ const Indexes = () => {
             )}
           </div>
 
-          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="indexes" />}
+          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="索引" />}
 
           {isLoadingIndexes && <GenericSkeletonLoader />}
 

@@ -98,7 +98,7 @@ const ColumnList = ({
         )}
       </div>
 
-      {isLocked && <ProtectedSchemaWarning schema={selectedTable?.schema ?? ''} entity="columns" />}
+      {isLocked && <ProtectedSchemaWarning schema={selectedTable?.schema ?? ''} entity="列" />}
 
       {isLoading && <GenericSkeletonLoader />}
 

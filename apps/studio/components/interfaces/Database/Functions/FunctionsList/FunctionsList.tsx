@@ -137,7 +137,7 @@ const FunctionsList = ({
             )}
           </div>
 
-          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="functions" />}
+          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="函数" />}
 
           <Table
             className="table-fixed"

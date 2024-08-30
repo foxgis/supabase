@@ -278,7 +278,7 @@ const TableList = ({
         )}
       </div>
 
-      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="tables" />}
+      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="表" />}
 
       {isLoading && <GenericSkeletonLoader />}
 
