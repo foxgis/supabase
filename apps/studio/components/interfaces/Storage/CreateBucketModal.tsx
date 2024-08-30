@@ -154,7 +154,7 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
               >
                 <Collapsible.Trigger asChild>
                   <div className="w-full cursor-pointer py-3 px-5 flex items-center justify-between border-t border-default">
-                    <p className="text-sm">额外配置</p>
+                    <p className="text-sm">其他配置</p>
                     <IconChevronDown
                       size={18}
                       strokeWidth={2}

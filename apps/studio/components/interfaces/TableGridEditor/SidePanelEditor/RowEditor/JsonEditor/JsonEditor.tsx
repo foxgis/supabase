@@ -44,7 +44,7 @@ const JsonEdit = ({
   const { data: selectedTable } = useTable(id)
   const project = useSelectedProject()
 
-  const [view, setView] = useState<'edit' | 'view'>('edit')
+  const [view, setView] = useState<'编辑' | '查看'>('编辑')
   const [jsonStr, setJsonStr] = useState('')
   const isTruncated = jsonString.endsWith('...') && jsonString.length > MAX_CHARACTERS
 
@@ -104,7 +104,7 @@ const JsonEdit = ({
       size="large"
       header={
         <div className="flex items-center justify-between">
-          {view === 'edit' ? (
+          {view === '编辑' ? (
             <p>
               {readOnly ? '正在查看' : '正在编辑'}JSON 字段：<code>{column}</code>
             </p>
@@ -115,7 +115,7 @@ const JsonEdit = ({
           )}
           {(!isTruncated || (isTruncated && isSuccess)) && (
             <div className="flex items-center gap-x-2">
-              {view === 'edit' && (
+              {view === '编辑' && (
                 <Tooltip.Root delayDuration={0}>
                   <Tooltip.Trigger asChild>
                     <Button
@@ -141,7 +141,7 @@ const JsonEdit = ({
                 </Tooltip.Root>
               )}
               <TwoOptionToggle
-                options={['view', 'edit']}
+                options={['查看', '编辑']}
                 activeOption={view}
                 borderOverride="border-muted"
                 onClickOption={setView}
@@ -163,7 +163,7 @@ const JsonEdit = ({
       }
     >
       <div className="flex flex-auto h-full flex-col gap-y-4 relative">
-        {view === 'edit' ? (
+        {view === '编辑' ? (
           <div className="w-full h-full flex-grow">
             <JsonCodeEditor
               key={jsonString}

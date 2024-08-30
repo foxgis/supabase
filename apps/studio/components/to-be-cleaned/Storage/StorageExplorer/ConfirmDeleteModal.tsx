@@ -2,12 +2,19 @@ import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
 import { Alert, Button, Modal } from 'ui'
 import { StorageItem } from '../Storage.types'
+import { STORAGE_ROW_TYPES } from '../Storage.constants'
 
 interface ConfirmDeleteModalProps {
   visible: boolean
   selectedItemsToDelete: StorageItem[]
   onSelectCancel: () => void
   onSelectDelete: () => void
+}
+
+const rowTypes: Record<STORAGE_ROW_TYPES, string> = {
+  FILE: '文件',
+  FOLDER: '文件夹',
+  BUCKET: '存储桶',
 }
 
 const ConfirmDeleteModal = ({
@@ -33,7 +40,7 @@ const ConfirmDeleteModal = ({
   const description = multipleFiles
     ? `确认删除选中的 ${selectedItemsToDelete.length} 个文件吗？`
     : selectedItemsToDelete.length === 1
-      ? `确认删除选中的 ${selectedItemsToDelete[0].type.toLowerCase()} 吗？`
+      ? `确认删除选中的${rowTypes[selectedItemsToDelete[0].type]}吗？`
       : ``
 
   const onConfirmDelete = () => {
