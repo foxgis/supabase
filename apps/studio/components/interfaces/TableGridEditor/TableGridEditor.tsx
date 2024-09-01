@@ -2,14 +2,14 @@ import type { PostgresColumn, PostgresRelationship, PostgresTable } from '@supab
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { QueryKey, useQueryClient } from '@tanstack/react-query'
 import { find, isUndefined } from 'lodash'
+import { ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/router'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 import { useParams } from 'common'
 import { SupabaseGrid } from 'components/grid/SupabaseGrid'
 import { parseSupaTable } from 'components/grid/SupabaseGrid.utils'
 import { SupaTable } from 'components/grid/types'
-import { Markdown } from 'components/interfaces/Markdown'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import { Loading } from 'components/ui/Loading'
 import { FOREIGN_KEY_CASCADE_ACTION } from 'data/database/database-query-constants'
@@ -27,11 +27,10 @@ import type { TableLike } from 'hooks/misc/useTable'
 import { useUrlState } from 'hooks/ui/useUrlState'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
 import { EMPTY_ARR } from 'lib/void'
-import { ExternalLink } from 'lucide-react'
 import { useGetImpersonatedRole } from 'state/role-impersonation-state'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
 import type { Dictionary, SchemaView } from 'types'
-import { Button, toast as UiToast } from 'ui'
+import { Button } from 'ui'
 import GridHeaderActions from './GridHeaderActions'
 import NotFoundState from './NotFoundState'
 import SidePanelEditor from './SidePanelEditor/SidePanelEditor'
@@ -236,32 +235,23 @@ const TableGridEditor = ({
 
     const configuration = { identifiers }
     if (Object.keys(identifiers).length === 0) {
-      return UiToast({
-        variant: 'default',
-        style: { flexDirection: 'column' },
-        title: (
-          <Markdown
-            className="text-foreground [&>p]:m-0"
-            content="无法更新行，因为表中没有主键"
-          />
-        ) as any,
+      return toast('无法更新行，因为表中没有主键', {
         description: (
-          <Markdown
-            className="[&>p]:m-0"
-            content="在更新或删除行之前，请先向表中添加主键列，作为每一行的唯一标识符。"
-          />
-        ),
-        action: (
-          <div className="w-full flex gap-x-2 !mx-0 mt-3">
-            <Button asChild type="outline" icon={<ExternalLink />}>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://supabase.com/docs/guides/database/tables#primary-keys"
-              >
-                查看文档
-              </a>
-            </Button>
+          <div>
+            <p className="text-sm text-foreground-light">
+              在更新或删除行之前，请首先为表添加一个主键列作为每一行的唯一标识。
+            </p>
+            <div className="mt-3">
+              <Button asChild type="outline" icon={<ExternalLink />}>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://supabase.com/docs/guides/database/tables#primary-keys"
+                >
+                  文档
+                </a>
+              </Button>
+            </div>
           </div>
         ),
       })
