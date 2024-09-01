@@ -60,7 +60,7 @@ const ProtectedSchemaWarning = ({ schema, entity }: { schema: string; entity: st
     <>
       <Alert_Shadcn_>
         <IconAlertCircle strokeWidth={2} />
-        <AlertTitle_Shadcn_>当前正在查看一个受保护的模式 {entity}</AlertTitle_Shadcn_>
+        <AlertTitle_Shadcn_>当前正在一个受保护的模式下查看{entity}</AlertTitle_Shadcn_>
         <AlertDescription_Shadcn_>
           <p className="mb-2">
             模式 <code className="text-xs">{schema}</code> 是由系统管理的，当前被设置为只读，无法通过表编辑器进行编辑。

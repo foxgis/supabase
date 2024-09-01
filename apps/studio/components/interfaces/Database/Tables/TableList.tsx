@@ -27,7 +27,7 @@ import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import SchemaSelector from 'components/ui/SchemaSelector'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useDatabasePublicationsQuery } from 'data/database-publications/database-publications-query'
-import { ENTITY_TYPE } from 'data/entity-types/entity-type-constants'
+import { ENTITY_TYPE, ENTITY_TYPE_LABELS } from 'data/entity-types/entity-type-constants'
 import { useForeignTablesQuery } from 'data/foreign-tables/foreign-tables-query'
 import { useMaterializedViewsQuery } from 'data/materialized-views/materialized-views-query'
 import { useTablesQuery } from 'data/tables/tables-query'
@@ -189,11 +189,7 @@ const TableList = ({
     isSuccessTables && isSuccessViews && isSuccessMaterializedViews && isSuccessForeignTables
 
   const formatTooltipText = (entityType: string) => {
-    return Object.entries(ENTITY_TYPE)
-      .find(([, value]) => value === entityType)?.[0]
-      ?.toLowerCase()
-      ?.split('_')
-      ?.join(' ')
+    return ENTITY_TYPE_LABELS[entityType as ENTITY_TYPE]
   }
 
   return (
@@ -236,7 +232,7 @@ const TableList = ({
                             }}
                           />
                           <Label_Shadcn_ htmlFor={key} className="capitalize text-xs">
-                            {key.toLowerCase().replace('_', ' ')}
+                            {ENTITY_TYPE_LABELS[value]}
                           </Label_Shadcn_>
                         </div>
                         <Button
@@ -278,7 +274,7 @@ const TableList = ({
         )}
       </div>
 
-      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="tables" />}
+      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="表" />}
 
       {isLoading && <GenericSkeletonLoader />}
 
@@ -322,17 +318,17 @@ const TableList = ({
                         <>
                           <p className="text-sm text-foreground">还未创建表</p>
                           <p className="text-sm text-foreground-light">
-                            在模式 "{selectedSchema}" 中未找到任何{' '}
+                            在模式 "{selectedSchema}" 中未找到任何
                             {visibleTypes.length === 5
                               ? '表'
                               : visibleTypes.length === 1
-                                ? `${formatTooltipText(visibleTypes[0])}s`
+                                ? `${formatTooltipText(visibleTypes[0])}`
                                 : `${visibleTypes
                                     .slice(0, -1)
-                                    .map((x) => `${formatTooltipText(x)}s`)
+                                    .map((x) => `${formatTooltipText(x)}`)
                                     .join(
-                                      ', '
-                                    )} 和 ${formatTooltipText(visibleTypes[visibleTypes.length - 1])}s`}{' '}
+                                      '、'
+                                    )}和${formatTooltipText(visibleTypes[visibleTypes.length - 1])}`}
                           </p>
                         </>
                       )}
@@ -379,9 +375,7 @@ const TableList = ({
                                     'text-foreground-light bg-border-stronger'
                                 )}
                               >
-                                {Object.entries(ENTITY_TYPE)
-                                  .find(([, value]) => value === x.type)?.[0]?.[0]
-                                  ?.toUpperCase()}
+                                {ENTITY_TYPE_LABELS[x.type]}
                               </div>
                             )}
                           </TooltipTrigger_Shadcn_>

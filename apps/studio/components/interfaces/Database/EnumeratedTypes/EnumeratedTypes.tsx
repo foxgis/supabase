@@ -84,7 +84,7 @@ const EnumeratedTypes = () => {
         )}
       </div>
 
-      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="enumerated types" />}
+      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="枚举类型" />}
 
       {isLoading && <GenericSkeletonLoader />}
 

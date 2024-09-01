@@ -1,6 +1,6 @@
 import { partition, sortBy } from 'lodash'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 import { useParams } from 'common'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
@@ -136,7 +136,7 @@ const Indexes = () => {
             )}
           </div>
 
-          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="indexes" />}
+          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="索引" />}
 
           {isLoadingIndexes && <GenericSkeletonLoader />}
 

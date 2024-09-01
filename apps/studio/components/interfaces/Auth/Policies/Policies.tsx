@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash'
 import { HelpCircle } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 import { useParams } from 'common'
 import PolicyTableRow from 'components/interfaces/Auth/Policies/PolicyTableRow'
@@ -137,7 +137,7 @@ const Policies = ({
   return (
     <>
       <div className="flex flex-col gap-y-4 pb-4">
-        {isLocked && <ProtectedSchemaWarning schema={schema} entity="policies" />}
+        {isLocked && <ProtectedSchemaWarning schema={schema} entity="策略" />}
         {tables.length > 0 ? (
           tables.map((table) => (
             <section key={table.id}>

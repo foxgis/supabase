@@ -1,8 +1,8 @@
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import { BlobReader, BlobWriter, ZipWriter } from '@zip.js/zip.js'
 import { chunk, compact, find, findIndex, has, isEqual, isObject, uniq, uniqBy } from 'lodash'
-import { makeAutoObservable, toJS } from 'mobx'
-import toast from 'react-hot-toast'
+import { makeAutoObservable } from 'mobx'
+import { toast } from 'sonner'
 import * as tus from 'tus-js-client'
 
 import {
@@ -19,7 +19,6 @@ import {
   StorageItemWithColumn,
 } from 'components/to-be-cleaned/Storage/Storage.types'
 import { convertFromBytes } from 'components/to-be-cleaned/Storage/StorageSettings/StorageSettings.utils'
-import { ToastLoader } from 'components/ui/ToastLoader'
 import { configKeys } from 'data/config/keys'
 import { ProjectStorageConfigResponse } from 'data/config/project-storage-config-query'
 import { getQueryClient } from 'data/query-client'
@@ -33,7 +32,7 @@ import { moveStorageObject } from 'data/storage/object-move-mutation'
 import { IS_PLATFORM } from 'lib/constants'
 import { lookupMime } from 'lib/mime'
 import { PROJECT_ENDPOINT_PROTOCOL } from 'pages/api/constants'
-import { Button, toast as UiToast } from 'ui'
+import { Button, SONNER_DEFAULT_DURATION, SonnerProgress } from 'ui'
 
 type CachedFile = { id: string; fetchedAt: number; expiresIn: number; url: string }
 
@@ -306,11 +305,7 @@ class StorageExplorerStore {
     if (formattedName === null) return
 
     if (!/^[a-zA-Z0-9_-\s]*$/.test(formattedName)) {
-      return UiToast({
-        variant: 'destructive',
-        description: '文件夹名称包含无效的特殊字符',
-        duration: 6000,
-      })
+      return toast.error('文件夹名称包含无效的特殊字符')
     }
 
     if (formattedName.length === 0) {
@@ -441,7 +436,7 @@ class StorageExplorerStore {
 
   // https://stackoverflow.com/a/53058574
   private getFilesDataTransferItems = async (items: DataTransferItemList) => {
-    const { dismiss } = UiToast({ description: '正在获取上传的文件...' })
+    const toastId = toast('正在获取上传的文件...')
     const files: (File & { path: string })[] = []
     const queue: FileSystemEntry[] = []
     for (const item of items) {
@@ -464,7 +459,7 @@ class StorageExplorerStore {
         queue.push(...(await this.readAllDirectoryEntries(dirEntry.createReader())))
       }
     }
-    dismiss()
+    toast.dismiss(toastId)
     return files
   }
 
@@ -493,34 +488,32 @@ class StorageExplorerStore {
     }
   }
 
-  onUploadProgress(toastId?: string) {
+  onUploadProgress(toastId?: string | number) {
     const totalFiles = this.uploadProgresses.length
     const progress =
       (this.uploadProgresses.reduce((acc, { percentage }) => acc + percentage, 0) / totalFiles) *
       100
     const remainingTime = this.calculateTotalRemainingTime(this.uploadProgresses)
 
-    return toast.loading(
-      <ToastLoader
+    return toast(
+      <SonnerProgress
         progress={progress}
-        message={`Uploading ${totalFiles} file${totalFiles > 1 ? 's' : ''}...`}
-        labelTopOverride={`${remainingTime && !isNaN(remainingTime) && isFinite(remainingTime) ? `${this.formatTime(remainingTime)} remaining – ` : ''}${progress.toFixed(2)}%`}
-      >
-        <div className="flex items-center gap-2">
-          <p className="flex-1 text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-          {toastId && (
+        message={`正在上传 ${totalFiles} 个文件${totalFiles > 1 ? '' : ''}...`}
+        progressPrefix={`${remainingTime && !isNaN(remainingTime) && isFinite(remainingTime) && remainingTime !== 0 ? `剩余 ${this.formatTime(remainingTime)}` : ''}`}
+        action={
+          toastId && (
             <Button
               type="default"
               size="tiny"
               className="ml-6"
               onClick={() => this.abortUploads(toastId)}
             >
-              Cancel
+              取消
             </Button>
-          )}
-        </div>
-      </ToastLoader>,
-      { id: toastId }
+          )
+        }
+      />,
+      { id: toastId, closeButton: false, position: 'bottom-right' }
     )
   }
 
@@ -567,8 +560,7 @@ class StorageExplorerStore {
           <p className="text-foreground-light">
             您可以在项目设置中更改上传文件的大小限制。
           </p>
-        </div>,
-        { duration: 8000 }
+        </div>
       )
 
       if (numberOfFilesRejected === filesToUpload.length) return
@@ -584,8 +576,7 @@ class StorageExplorerStore {
             {numberOfFilesRejected > 1 ? 'their' : 'its'} size
             {numberOfFilesRejected > 1 ? 's are' : ' is'} 0.
           </p>
-        </div>,
-        { duration: 8000 }
+        </div>
       )
 
       if (numberOfFilesRejected === filesWithinUploadLimit.length) return
@@ -821,25 +812,29 @@ class StorageExplorerStore {
       } else if (numberOfFilesUploadedFail === numberOfFilesToUpload) {
         toast.error(
           `上传 ${numberOfFilesToUpload} 个文件${numberOfFilesToUpload > 1 ? '' : ''}失败！`,
-          { id: toastId }
+          { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
         )
       } else if (numberOfFilesUploadedSuccess === numberOfFilesToUpload) {
         toast.success(
           `成功上传了 ${numberOfFilesToUpload} 个文件${
             numberOfFilesToUpload > 1 ? '' : ''
           }！`,
-          { id: toastId }
+          { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
         )
       } else {
         toast.success(
-          `已成功上传了 ${numberOfFilesToUpload} 个文件中的 ${numberOfFilesUploadedSuccess} 个${
+          `成功上传了 ${numberOfFilesToUpload} 个文件${
             numberOfFilesToUpload > 1 ? '' : ''
-          }！`,
-          { id: toastId }
+          }中的${numberOfFilesUploadedSuccess} 个！`,
+          { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
         )
       }
     } catch (e) {
-      toast.error('批量上传文件失败', { id: toastId })
+      toast.error('上传文件失败', {
+        id: toastId,
+        closeButton: true,
+        duration: SONNER_DEFAULT_DURATION,
+      })
     }
 
     const t2 = new Date()
@@ -848,7 +843,7 @@ class StorageExplorerStore {
     )
   }
 
-  abortUploads = (toastId: string) => {
+  abortUploads = (toastId: string | number) => {
     this.abortUploadCallbacks[toastId].forEach((callback) => callback())
     this.abortUploadCallbacks[toastId] = []
   }
@@ -859,8 +854,7 @@ class StorageExplorerStore {
     let numberOfFilesMovedFail = 0
     this.clearSelectedItems()
 
-    const { dismiss } = UiToast({
-      description: STORAGE_PROGRESS_INFO_TEXT,
+    const toastId = toast(STORAGE_PROGRESS_INFO_TEXT, {
       duration: Infinity,
     })
 
@@ -890,16 +884,16 @@ class StorageExplorerStore {
     )
 
     if (numberOfFilesMovedFail === this.selectedItemsToMove.length) {
-      UiToast({ variant: 'destructive', description: '移动文件失败' })
+      toast.error('移动文件失败')
     } else {
-      UiToast({
-        description: `成功将 ${
+      toast(
+        `成功将 ${
           this.selectedItemsToMove.length - numberOfFilesMovedFail
-        } 个文件移动到 ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : '存储桶根目录'}`,
-      })
+        } 个文件移动到 ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : '存储桶根目录'}`
+      )
     }
 
-    dismiss()
+    toast.dismiss(toastId)
 
     // Clear file preview cache if moved files exist in cache
     const idsOfItemsToMove = this.selectedItemsToMove.map((item) => item.id)
@@ -968,10 +962,9 @@ class StorageExplorerStore {
 
     this.clearSelectedItems()
 
-    const toastId = toast.loading(
-      <ToastLoader progress={0} message={`正在删除 ${prefixes.length} 个文件...`}>
-        <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-      </ToastLoader>
+    const toastId = toast(
+      <SonnerProgress progress={0} message={`正在删除 ${prefixes.length} 个文件...`} />,
+      { closeButton: false, position: 'bottom-right' }
     )
 
     // batch BATCH_SIZE prefixes per request
@@ -988,11 +981,12 @@ class StorageExplorerStore {
     await chunk(batches, BATCH_SIZE).reduce(async (previousPromise, nextBatch) => {
       await previousPromise
       await Promise.all(nextBatch.map((batch) => batch()))
-      toast.loading(
-        <ToastLoader progress={progress * 100} message={`正在删除 ${prefixes.length} 个文件...`}>
-          <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-        </ToastLoader>,
-        { id: toastId }
+      toast(
+        <SonnerProgress
+          progress={progress * 100}
+          message={`正在删除 ${prefixes.length} 个文件...`}
+        />,
+        { id: toastId, closeButton: false, position: 'bottom-right' }
       )
     }, Promise.resolve())
 
@@ -1014,7 +1008,12 @@ class StorageExplorerStore {
       await Promise.all(
         parentFolderPrefixes.map((prefix) => this.validateParentFolderEmpty(prefix))
       )
-      toast.success(`成功删除了 ${prefixes.length} 个文件`, { id: toastId })
+
+      toast.success(`成功删除了 ${prefixes.length} 个文件`, {
+        id: toastId,
+        closeButton: true,
+        duration: SONNER_DEFAULT_DURATION,
+      })
       await this.refetchAllOpenedFolders()
       this.clearSelectedItemsToDelete()
     } else {
@@ -1029,14 +1028,12 @@ class StorageExplorerStore {
     try {
       const files = await this.getAllItemsAlongFolder(folder)
 
-      toast.loading(
-        <ToastLoader
+      toast(
+        <SonnerProgress
           progress={0}
-          message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
-        >
-          <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-        </ToastLoader>,
-        { id: toastId }
+          message={`正在删除 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
+        />,
+        { id: toastId, closeButton: false, position: 'bottom-right' }
       )
 
       const promises = files.map((file) => {
@@ -1077,14 +1074,12 @@ class StorageExplorerStore {
         async (previousPromise, nextBatch) => {
           const previousResults = await previousPromise
           const batchResults = await Promise.allSettled(nextBatch.map((batch) => batch()))
-          toast.loading(
-            <ToastLoader
+          toast(
+            <SonnerProgress
               progress={progress * 100}
-              message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
-            >
-              <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-            </ToastLoader>,
-            { id: toastId }
+              message={`增加下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
+            />,
+            { id: toastId, closeButton: false, position: 'bottom-right' }
           )
           return previousResults.concat(batchResults.map((x: any) => x.value).filter(Boolean))
         },
@@ -1101,7 +1096,11 @@ class StorageExplorerStore {
       const zipWriter = new ZipWriter(zipFileWriter, { bufferedWrite: true })
 
       if (downloadedFiles.length === 0) {
-        toast.error(`Failed to download files from "${folder.name}"`, { id: toastId })
+        toast.error(`从文件夹 "${folder.name}" 下载文件失败`, {
+          id: toastId,
+          closeButton: true,
+          duration: SONNER_DEFAULT_DURATION,
+        })
       }
 
       downloadedFiles.forEach((file) => {
@@ -1119,13 +1118,17 @@ class StorageExplorerStore {
       toast.success(
         downloadedFiles.length === files.length
           ? `成功下载了文件夹 "${folder.name}"`
-          : `成功下载了文件夹 "${folder.name}"。但是， 有 ${
+          : `成功下载了文件夹 "${folder.name}"。但是，有 ${
               files.length - downloadedFiles.length
             } 个文件未下载成功。`,
-        { id: toastId }
+        { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
       )
     } catch (error: any) {
-      toast.error(`下载文件夹失败：${error.message}`, { id: toastId })
+      toast.error(`下载文件夹失败：${error.message}`, {
+        id: toastId,
+        closeButton: true,
+        duration: SONNER_DEFAULT_DURATION,
+      })
     }
   }
 
@@ -1166,14 +1169,12 @@ class StorageExplorerStore {
     const downloadedFiles = await batchedPromises.reduce(async (previousPromise, nextBatch) => {
       const previousResults = await previousPromise
       const batchResults = await Promise.allSettled(nextBatch.map((batch) => batch()))
-      toast.loading(
-        <ToastLoader
+      toast(
+        <SonnerProgress
           progress={progress * 100}
           message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
-        >
-          <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-        </ToastLoader>,
-        { id: toastId }
+        />,
+        { id: toastId, closeButton: false, position: 'bottom-right' }
       )
       return previousResults.concat(batchResults.map((x: any) => x.value).filter(Boolean))
     }, Promise.resolve<{ name: string; blob: Blob }[]>([]))
@@ -1192,7 +1193,11 @@ class StorageExplorerStore {
     link.click()
     link.parentNode?.removeChild(link)
 
-    toast.success(`成功下载了 ${downloadedFiles.length} 个文件`, { id: toastId })
+    toast.success(`成功下载了 ${downloadedFiles.length} 个文件`, {
+      id: toastId,
+      closeButton: true,
+      duration: SONNER_DEFAULT_DURATION,
+    })
   }
 
   downloadFile = async (file: StorageItemWithColumn, showToast = true, returnBlob = false) => {
@@ -1227,12 +1232,20 @@ class StorageExplorerStore {
       link.parentNode?.removeChild(link)
       window.URL.revokeObjectURL(blob)
       if (toastId) {
-        toast.success(`正在下载 ${fileName}`, { id: toastId })
+        toast.success(`正在下载 ${fileName}`, {
+          id: toastId,
+          closeButton: true,
+          duration: SONNER_DEFAULT_DURATION,
+        })
       }
       return true
     } catch {
       if (toastId) {
-        toast.error(`下载 ${fileName} 失败`, { id: toastId })
+        toast.error(`下载 ${fileName} 失败`, {
+          id: toastId,
+          closeButton: true,
+          duration: SONNER_DEFAULT_DURATION,
+        })
       }
       return false
     }
@@ -1513,10 +1526,9 @@ class StorageExplorerStore {
       return this.updateRowStatus(originalName, STORAGE_ROW_STATUS.READY, columnIndex)
     }
 
-    const toastId = toast.loading(
-      <ToastLoader progress={0} message={`正在将文件夹重命名为 ${newName}`}>
-        <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-      </ToastLoader>
+    const toastId = toast(
+      <SonnerProgress progress={0} message={`正在将文件夹重命名为 ${newName}`} />,
+      { closeButton: false, position: 'bottom-right' }
     )
 
     try {
@@ -1573,18 +1585,24 @@ class StorageExplorerStore {
       await batchedPromises.reduce(async (previousPromise, nextBatch) => {
         await previousPromise
         await Promise.all(nextBatch.map((batch) => batch()))
-        toast.loading(
-          <ToastLoader progress={progress * 100} message={`正在将文件夹重命名为 ${newName}`}>
-            <p className="text-xs text-foreground-light">{STORAGE_PROGRESS_INFO_TEXT}</p>
-          </ToastLoader>,
-          { id: toastId }
+        toast(
+          <SonnerProgress progress={progress * 100} message={`正在将文件夹重命名为 ${newName}`} />,
+          { id: toastId, closeButton: false, position: 'bottom-right' }
         )
       }, Promise.resolve())
 
       if (!hasErrors) {
-        toast.success(`成功将文件夹重命名为 ${newName}`, { id: toastId })
+        toast.success(`成功将文件夹重命名为 ${newName}`, {
+          id: toastId,
+          closeButton: true,
+          duration: SONNER_DEFAULT_DURATION,
+        })
       } else {
-        toast.error(`将文件夹重命名为 ${newName} 时发生错误`, { id: toastId })
+        toast.error(`将文件夹重命名为 ${newName} 时发生错误`, {
+          id: toastId,
+          closeButton: true,
+          duration: SONNER_DEFAULT_DURATION,
+        })
       }
       await this.refetchAllOpenedFolders()
 
@@ -1595,7 +1613,11 @@ class StorageExplorerStore {
       )
       this.filePreviewCache = updatedFilePreviewCache
     } catch (e: any) {
-      toast.error(`将文件夹重命名为 ${newName} 失败：${e.message}`, { id: toastId })
+      toast.error(`将文件夹重命名为 ${newName} 失败：${e.message}`, {
+        id: toastId,
+        closeButton: true,
+        duration: SONNER_DEFAULT_DURATION,
+      })
     }
   }
 
@@ -1920,10 +1942,10 @@ class StorageExplorerStore {
     const minutes = Math.floor(seconds / 60)
     seconds = Math.floor(seconds % 60)
 
-    if (days > 0) return `${days}d `
-    if (hours > 0) return `${hours}h `
-    if (minutes > 0) return `${minutes}m `
-    return `${seconds}s`
+    if (days > 0) return `${days} 天`
+    if (hours > 0) return `${hours} 小时`
+    if (minutes > 0) return `${minutes} 分钟`
+    return `${seconds} 秒`
   }
 }
 

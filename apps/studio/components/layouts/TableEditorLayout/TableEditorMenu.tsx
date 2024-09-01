@@ -10,7 +10,7 @@ import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import InfiniteList from 'components/ui/InfiniteList'
 import SchemaSelector from 'components/ui/SchemaSelector'
 import { useSchemasQuery } from 'data/database/schemas-query'
-import { ENTITY_TYPE } from 'data/entity-types/entity-type-constants'
+import { ENTITY_TYPE, ENTITY_TYPE_LABELS } from 'data/entity-types/entity-type-constants'
 import { useEntityTypesQuery } from 'data/entity-types/entity-types-infinite-query'
 import { useTableQuery } from 'data/tables/table-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
@@ -225,7 +225,7 @@ const TableEditorMenu = () => {
                             }}
                           />
                           <Label_Shadcn_ htmlFor={key} className="capitalize text-xs">
-                            {key.toLowerCase().replace('_', ' ')}
+                            {ENTITY_TYPE_LABELS[value]}
                           </Label_Shadcn_>
                         </div>
                         <Button
