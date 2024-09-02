@@ -58,6 +58,27 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
 
+      <div className="space-y-4">
+        <div className="mx-6">
+          <h4 className="text-lg">关于数据中间件</h4>
+        </div>
+        <p className="mx-6 text-sm">
+          数据中间件是一款高效便捷的后端即服务（BaaS）平台，旨在为开发者提供一整套后端数据服务，使开发者能够专注于业务逻辑和用户体验，而不必花费大量时间和精力在后端基础设施的搭建和维护上，简化和加速应用程序开发流程。
+          数据中间件是在开源的 Supabase 基础上打造，通过集成 FoxGIS 先进的 GIS
+          能力、国产数据库适配、安全加固和本地化部署等一系列深度改造，使之成为更贴合中国开发者需求的一站式数据开发服务平台。
+        </p>
+        <div className="flex justify-center">
+          <figure className="text-center">
+            <img
+              className="h-96"
+              src={`${BASE_PATH}/img/architecture.png`}
+              alt="架构图"
+            />
+            <figcaption className="text-sm">数据中间件架构图</figcaption>
+          </figure>
+        </div>
+      </div>
+
       <div className="mx-6">
         <ProjectUpgradeFailedBanner />
       </div>
