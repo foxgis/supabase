@@ -9,6 +9,7 @@ import { useReportsGotoCommands } from './ReportsLayout/Reports.Commands'
 import { useStorageGotoCommands } from './StorageLayout/Storage.Commands'
 import { useSqlEditorGotoCommands } from './SQLEditorLayout/SqlEditor.Commands'
 import { useTableEditorGotoCommands } from './TableEditorLayout/TableEditor.Commands'
+import { useGISGoToCommands } from './GISLayout/GIS.Commands'
 import { useIsLoggedIn } from 'common'
 
 export function useLayoutNavCommands() {
@@ -25,4 +26,5 @@ export function useLayoutNavCommands() {
   useReportsGotoCommands({ enabled: isLoggedIn })
   useApiDocsGotoCommands({ enabled: isLoggedIn })
   useProjectSettingsGotoCommands({ enabled: isLoggedIn })
+  useGISGoToCommands({ enabled: isLoggedIn })
 }

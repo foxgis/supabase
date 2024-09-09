@@ -38,7 +38,6 @@ import {
   generateProductRoutes,
   generateSettingsRoutes,
   generateToolRoutes,
-  generateGISRoutes,
 } from './NavigationBar.utils'
 import { NavigationIconButton } from './NavigationIconButton'
 import NavigationIconLink from './NavigationIconLink'
@@ -94,7 +93,6 @@ const NavigationBar = () => {
 
   const otherRoutes = generateOtherRoutes(projectRef, project)
   const settingsRoutes = generateSettingsRoutes(projectRef, project)
-  const gisRoutes = generateGISRoutes(projectRef, project)
 
   const onCloseNavigationIconLink = (event: any) => {
     snap.setNavigationPanelOpen(
@@ -144,15 +142,6 @@ const NavigationBar = () => {
           />
           <Separator className="my-1 bg-border-muted" />
           {toolRoutes.map((route) => (
-            <NavigationIconLink
-              key={route.key}
-              route={route}
-              isActive={activeRoute === route.key}
-              onClick={onCloseNavigationIconLink}
-            />
-          ))}
-          <Separator className="my-1 bg-border-muted" />
-          {gisRoutes.map((route) => (
             <NavigationIconLink
               key={route.key}
               route={route}

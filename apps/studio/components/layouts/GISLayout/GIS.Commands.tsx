@@ -3,7 +3,7 @@ import { COMMAND_MENU_SECTIONS } from 'components/interfaces/App/CommandMenu/Com
 import type { CommandOptions } from 'ui-patterns/CommandMenu'
 import { useRegisterCommands } from 'ui-patterns/CommandMenu'
 
-export function useAdvisorsGoToCommands(options?: CommandOptions) {
+export function useGISGoToCommands(options?: CommandOptions) {
   let { ref } = useParams()
   ref ||= '_'
 
@@ -11,15 +11,21 @@ export function useAdvisorsGoToCommands(options?: CommandOptions) {
     COMMAND_MENU_SECTIONS.NAVIGATE,
     [
       {
-        id: 'nav-advisors-security',
-        name: '安全助手',
-        route: `/project/${ref}/advisors/security`,
+        id: 'nav-gis-maps',
+        name: '地图服务',
+        route: `/project/${ref}/gis/maps`,
         defaultHidden: true,
       },
       {
-        id: 'nav-advisors-performance',
-        name: '性能助手',
-        route: `/project/${ref}/advisors/performance`,
+        id: 'nav-gis-tiles',
+        name: '瓦片服务',
+        route: `/project/${ref}/gis/tiles`,
+        defaultHidden: true,
+      },
+      {
+        id: 'nav-gis-features',
+        name: '要素服务',
+        route: `/project/${ref}/gis/features`,
         defaultHidden: true,
       },
     ],

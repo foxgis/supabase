@@ -12,7 +12,7 @@ import {
   TableEditor,
 } from 'icons'
 import { ICON_SIZE, ICON_STROKE_WIDTH } from './NavigationBar'
-import { Settings, FileText, List, Lightbulb, Waypoints, Map } from 'lucide-react'
+import { Settings, FileText, List, Lightbulb, Globe } from 'lucide-react'
 
 export const generateToolRoutes = (ref?: string, project?: Project): Route[] => {
   const isProjectBuilding = project?.status === PROJECT_STATUS.COMING_UP
@@ -49,6 +49,12 @@ export const generateProductRoutes = (
   const realtimeEnabled = features?.realtime ?? true
 
   return [
+    {
+      key: 'gis',
+      label: 'GIS 服务',
+      icon: <Globe size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      link: ref && (isProjectBuilding? buildingUrl : `/project/${ref}/gis/tiles`),
+    },
     {
       key: 'database',
       label: '数据库',
@@ -146,24 +152,5 @@ export const generateSettingsRoutes = (ref?: string, project?: Project): Route[]
           },
         ]
       : []),
-  ]
-}
-
-export const generateGISRoutes = (ref?: string, project?: Project): Route[] => {
-  return [
-    {
-      key: 'maps',
-      label: '地图服务',
-      icon: <Map size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-      link: '/pg_tileserv/index.html',
-      target: '_blank',
-    },
-    {
-      key: 'features',
-      label: '要素服务',
-      icon: <Waypoints size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-      link: '/pg_featureserv/index.html',
-      target: '_blank',
-    },
   ]
 }

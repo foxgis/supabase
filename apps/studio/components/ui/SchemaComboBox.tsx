@@ -74,20 +74,20 @@ export const SchemaComboBox = ({
     <div className={className}>
       {isSchemasLoading && (
         <Button type="default" className="justify-start" block size={size} loading>
-          Loading schemas...
+          正在加载模式...
         </Button>
       )}
 
       {showError && isSchemasError && (
         <Alert_Shadcn_ variant="warning" className="!px-3 !py-3">
           <AlertTitle_Shadcn_ className="text-xs text-amber-900">
-            Failed to load schemas
+            加载模式失败
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="text-xs mb-2 break-words">
-            Error: {(schemasError as any)?.message}
+            错误：{(schemasError as any)?.message}
           </AlertDescription_Shadcn_>
           <Button type="default" size="tiny" onClick={() => refetchSchemas()}>
-            Reload schemas
+            重新加载模式
           </Button>
         </Alert_Shadcn_>
       )}
@@ -111,9 +111,9 @@ export const SchemaComboBox = ({
           </PopoverTrigger_Shadcn_>
           <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="start">
             <Command_Shadcn_>
-              <CommandInput_Shadcn_ placeholder="Find schema..." />
+              <CommandInput_Shadcn_ placeholder="查找模式..." />
               <CommandList_Shadcn_>
-                <CommandEmpty_Shadcn_>No schemas found</CommandEmpty_Shadcn_>
+                <CommandEmpty_Shadcn_>未找到任何模式</CommandEmpty_Shadcn_>
                 <CommandGroup_Shadcn_>
                   <ScrollArea className={(schemas || []).length > 7 ? 'h-[210px]' : ''}>
                     {schemas?.map((schema) => (

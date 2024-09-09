@@ -74,14 +74,14 @@ const FunctionsList = ({
   })
 
   if (isLoading) return <GenericSkeletonLoader />
-  if (isError) return <AlertError error={error} subject="Failed to retrieve database functions" />
+  if (isError) return <AlertError error={error} subject="获取数据库函数失败" />
 
   return (
     <>
       {(functions ?? []).length == 0 ? (
         <div className="flex h-full w-full items-center justify-center">
           <ProductEmptyState
-            title="Functions"
+            title="函数"
             ctaButtonLabel="创建新函数"
             onClickCta={() => createFunction()}
             disabled={!canCreateFunctions}

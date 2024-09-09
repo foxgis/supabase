@@ -143,7 +143,7 @@ const RolesList = () => {
                 ].join(' ')}
               >
                 <p className="text-xs text-foreground-light pr-2">
-                  按角色划分的连接数:
+                  按角色统计连接数：
                 </p>
                 {rolesWithActiveConnections.map((role) => (
                   <div key={role.id} className="text-xs text-foreground">

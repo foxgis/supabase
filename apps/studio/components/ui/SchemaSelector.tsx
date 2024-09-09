@@ -112,7 +112,7 @@ const SchemaSelector = ({
             <Command_Shadcn_>
               <CommandInput_Shadcn_ placeholder="查找模式..." />
               <CommandList_Shadcn_>
-                <CommandEmpty_Shadcn_>No schemas found</CommandEmpty_Shadcn_>
+                <CommandEmpty_Shadcn_>未找到任何模式</CommandEmpty_Shadcn_>
                 <CommandGroup_Shadcn_>
                   <ScrollArea className={(schemas || []).length > 7 ? 'h-[210px]' : ''}>
                     {supportSelectAll && (
