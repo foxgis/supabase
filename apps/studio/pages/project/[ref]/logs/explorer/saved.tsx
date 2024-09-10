@@ -1,4 +1,5 @@
 import { useParams } from 'common'
+import { Save } from 'lucide-react'
 import Link from 'next/link'
 
 import LogsSavedQueriesItem from 'components/interfaces/Settings/Logs/Logs.SavedQueriesItem'
@@ -7,7 +8,7 @@ import Table from 'components/to-be-cleaned/Table'
 import LogsExplorerHeader from 'components/ui/Logs/LogsExplorerHeader'
 import { useContentQuery } from 'data/content/content-query'
 import type { NextPageWithLayout } from 'types'
-import { IconSave, Loading } from 'ui'
+import { Loading } from 'ui'
 
 export const LogsSavedPage: NextPageWithLayout = () => {
   const { ref } = useParams()
@@ -45,12 +46,12 @@ export const LogsSavedPage: NextPageWithLayout = () => {
       )}
       {saved.length === 0 && (
         <div className="my-auto flex h-full flex-grow flex-col items-center justify-center gap-1">
-          <IconSave className="animate-bounce" />
+          <Save className="animate-bounce" />
           <h3 className="text-lg text-foreground">暂无保存的查询</h3>
           <p className="text-sm text-foreground-lighter">
             保存的查询会在这里显示。您可以从{' '}
             <Link href={`/project/${ref}/logs/explorer`}>
-              <span className="cursor-pointer font-bold underline">Query</span>
+              <span className="cursor-pointer font-bold underline">查询</span>
             </Link>{' '}
             标签下保存查询。
           </p>

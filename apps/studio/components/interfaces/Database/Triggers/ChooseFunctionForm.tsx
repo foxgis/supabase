@@ -4,12 +4,13 @@ import { map as lodashMap, uniqBy } from 'lodash'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Button, IconChevronDown, IconHelpCircle, IconTerminal, SidePanel } from 'ui'
+import { Button, SidePanel } from 'ui'
 
 import ProductEmptyState from 'components/to-be-cleaned/ProductEmptyState'
 import InformationBox from 'components/ui/InformationBox'
 import SqlEditor from 'components/ui/SqlEditor'
 import type { DatabaseFunction } from 'data/database-functions/database-functions-query'
+import { HelpCircle, Terminal, ChevronDown } from 'lucide-react'
 
 export interface ChooseFunctionFormProps {
   triggerFunctions: DatabaseFunction[]
@@ -69,8 +70,8 @@ const NoticeBox = () => {
   return (
     <div className="px-6">
       <InformationBox
-        icon={<IconHelpCircle size="large" strokeWidth={1.5} />}
-        title="只有返回触发器的函数才会显示在下方"
+        icon={<HelpCircle size="20" strokeWidth={1.5} />}
+        title="只有返回触发器类型的函数才会显示在下方"
         description={`您可以通过数据库函数模块来创建函数`}
         button={
           <Button asChild type="default">
@@ -144,7 +145,7 @@ const Function = ({ id, completeStatement, name, onClick }: FunctionProps) => {
       <div className="flex items-center justify-between space-x-3">
         <div className="flex items-center space-x-3">
           <div className="flex items-center justify-center rounded bg-foreground p-1 text-background">
-            <IconTerminal strokeWidth={2} size={14} />
+            <Terminal strokeWidth={2} size={14} />
           </div>
           <p className="mb-0 text-sm">{name}</p>
         </div>
@@ -154,9 +155,7 @@ const Function = ({ id, completeStatement, name, onClick }: FunctionProps) => {
             e.stopPropagation()
             setVisible(!visible)
           }}
-          icon={
-            <IconChevronDown className={visible ? 'rotate-180 transform' : 'rotate-0 transform'} />
-          }
+          icon={<ChevronDown className={visible ? 'rotate-180 transform' : 'rotate-0 transform'} />}
         >
           {visible ? '隐藏定义' : '查看定义'}
         </Button>

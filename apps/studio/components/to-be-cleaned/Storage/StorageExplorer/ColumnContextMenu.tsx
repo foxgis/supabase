@@ -1,16 +1,9 @@
 import { compact, uniqBy } from 'lodash'
 import { Item, Menu, Separator, Submenu } from 'react-contexify'
 import 'react-contexify/dist/ReactContexify.css'
-import {
-  IconChevronRight,
-  IconChevronsDown,
-  IconChevronsUp,
-  IconClipboard,
-  IconEye,
-  IconFolderPlus,
-} from 'ui'
 
 import { useStorageStore } from 'localStores/storageExplorer/StorageExplorerStore'
+import { ChevronRight, ChevronsDown, ChevronsUp, Clipboard, Eye, FolderPlus } from 'lucide-react'
 import {
   STORAGE_ROW_TYPES,
   STORAGE_SORT_BY,
@@ -65,22 +58,22 @@ const ColumnContextMenu = ({ id = '' }: ColumnContextMenuProps) => {
   return (
     <Menu id={id} animation="fade">
       <Item onClick={({ props }) => onSelectCreateFolder(props.index)}>
-        <IconFolderPlus size="tiny" />
+        <FolderPlus size="14" strokeWidth={1} />
         <span className="ml-2 text-xs">新建文件夹</span>
       </Item>
       <Separator />
       <Item onClick={({ props }) => onSelectAllItemsInColumn(props.index)}>
-        <IconClipboard size="tiny" />
+        <Clipboard size="14" strokeWidth={1} />
         <span className="ml-2 text-xs">选中所有文件</span>
       </Item>
       <Submenu
         label={
           <div className="flex items-center space-x-2">
-            <IconEye size="tiny" />
+            <Eye size="14" strokeWidth={1} />
             <span className="text-xs">查看</span>
           </div>
         }
-        arrow={<IconChevronRight size="tiny" />}
+        arrow={<ChevronRight size="14" strokeWidth={1} />}
       >
         <Item onClick={() => setView(STORAGE_VIEWS.COLUMNS)}>
           <span className="ml-2 text-xs">分栏模式</span>
@@ -92,11 +85,11 @@ const ColumnContextMenu = ({ id = '' }: ColumnContextMenuProps) => {
       <Submenu
         label={
           <div className="flex items-center space-x-2">
-            <IconChevronsDown size="tiny" />
+            <ChevronsDown size="14" strokeWidth={1} />
             <span className="ml-2 text-xs">排序方式</span>
           </div>
         }
-        arrow={<IconChevronRight size="tiny" />}
+        arrow={<ChevronRight size="14" strokeWidth={1} />}
       >
         <Item onClick={() => setSortBy(STORAGE_SORT_BY.NAME)}>
           <span className="ml-2 text-xs">名称</span>
@@ -114,11 +107,11 @@ const ColumnContextMenu = ({ id = '' }: ColumnContextMenuProps) => {
       <Submenu
         label={
           <div className="flex items-center space-x-2">
-            <IconChevronsUp size="tiny" />
+            <ChevronsUp size="14" strokeWidth={1} />
             <span className="ml-2 text-xs">排序顺序</span>
           </div>
         }
-        arrow={<IconChevronRight size="tiny" />}
+        arrow={<ChevronRight size="14" strokeWidth={1} />}
       >
         <Item onClick={() => setSortByOrder(STORAGE_SORT_BY_ORDER.ASC)}>
           <span className="ml-2 text-xs">升序</span>

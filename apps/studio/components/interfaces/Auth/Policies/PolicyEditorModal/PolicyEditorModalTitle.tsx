@@ -1,6 +1,6 @@
 import { noop } from 'lodash'
-import { FlaskConical } from 'lucide-react'
-import { Button, IconChevronLeft, IconExternalLink } from 'ui'
+import { ChevronLeft, ExternalLink, FlaskConical } from 'lucide-react'
+import { Button } from 'ui'
 import { POLICY_MODAL_VIEWS } from '../Policies.constants'
 
 interface PolicyEditorModalTitleProps {
@@ -39,7 +39,7 @@ const PolicyEditorModalTitle = ({
             onClick={onSelectBackFromTemplates}
             className="cursor-pointer text-foreground-lighter transition-colors hover:text-foreground"
           >
-            <IconChevronLeft strokeWidth={2} size={14} />
+            <ChevronLeft strokeWidth={2} size={14} />
           </span>
           <h4>请为您的新策略选择一个模板</h4>
         </div>
@@ -53,15 +53,11 @@ const PolicyEditorModalTitle = ({
       </h4>
       <div className="flex items-center gap-x-2">
         {showAssistantPreview && view === POLICY_MODAL_VIEWS.EDITOR && (
-          <Button
-            type="default"
-            icon={<FlaskConical size={14} />}
-            onClick={onToggleFeaturePreviewModal}
-          >
+          <Button type="default" icon={<FlaskConical />} onClick={onToggleFeaturePreviewModal}>
             试用 Supabase Assistant
           </Button>
         )}
-        <Button asChild type="default" icon={<IconExternalLink size={14} />}>
+        <Button asChild type="default" icon={<ExternalLink />}>
           <a
             href="https://supabase.com/docs/learn/auth-deep-dive/auth-policies"
             target="_blank"

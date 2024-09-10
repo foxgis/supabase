@@ -46,11 +46,12 @@ const LogsLayout = ({ title, children }: PropsWithChildren<LogsLayoutProps>) => 
       enabled: showWarehouse,
     }
   )
+  const collectionQueryEnabled = !!tenant
   const { data: collections, isLoading: collectionsLoading } = useWarehouseCollectionsQuery(
     {
       projectRef,
     },
-    { enabled: !!tenant }
+    { enabled: collectionQueryEnabled }
   )
 
   const canUseLogsExplorer = useCheckPermissions(PermissionAction.ANALYTICS_READ, 'logflare')
@@ -87,7 +88,7 @@ const LogsLayout = ({ title, children }: PropsWithChildren<LogsLayoutProps>) => 
                   <Menu.Group
                     title={
                       <div>
-                        数据仓库事件
+                        数据集合
                         <Badge variant="warning" size="small" className="ml-2">
                           新
                         </Badge>
@@ -99,7 +100,7 @@ const LogsLayout = ({ title, children }: PropsWithChildren<LogsLayoutProps>) => 
                   <div className="space-y-1">
                     <CreateWarehouseCollectionModal />
                     <div className="pt-3">
-                      {collectionsLoading ? (
+                      {collectionQueryEnabled && collectionsLoading ? (
                         <GenericSkeletonLoader />
                       ) : (
                         collections?.map((item) => (
@@ -114,12 +115,12 @@ const LogsLayout = ({ title, children }: PropsWithChildren<LogsLayoutProps>) => 
 
               <div className="py-6 px-3">
                 <Menu.Group
-                  title={<span className="uppercase font-mono px-3">Configuration</span>}
+                  title={<span className="uppercase font-mono px-3">配置</span>}
                 />
                 <Link href={`/project/${ref}/settings/warehouse`}>
                   <Menu.Item rounded>
                     <div className="flex px-3 items-center justify-between">
-                      <p className="truncate">数据仓库设置</p>
+                      <p className="truncate">分析设置</p>
                       <ArrowUpRight strokeWidth={1} className="h-4 w-4" />
                     </div>
                   </Menu.Item>

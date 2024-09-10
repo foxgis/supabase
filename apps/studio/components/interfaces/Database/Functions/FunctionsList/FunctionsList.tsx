@@ -97,7 +97,7 @@ const FunctionsList = ({
         </div>
       ) : (
         <div className="w-full space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center space-x-4">
               <SchemaSelector
                 className="w-[260px]"
@@ -140,9 +140,10 @@ const FunctionsList = ({
           {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="函数" />}
 
           <Table
-            className="table-fixed"
+            className="table-fixed overflow-x-auto"
             head={
               <>
+<<<<<<< HEAD
                 <Table.th key="name">名称</Table.th>
                 <Table.th key="arguments" className="hidden md:table-cell">
                   参数
@@ -152,6 +153,17 @@ const FunctionsList = ({
                 </Table.th>
                 <Table.th key="security" className="hidden lg:table-cell w-[100px]">
                   安全
+=======
+                <Table.th key="name">Name</Table.th>
+                <Table.th key="arguments" className="table-cell">
+                  Arguments
+                </Table.th>
+                <Table.th key="return_type" className="table-cell">
+                  Return type
+                </Table.th>
+                <Table.th key="security" className="table-cell w-[100px]">
+                  Security
+>>>>>>> upstream/master
                 </Table.th>
                 <Table.th key="buttons" className="w-1/6"></Table.th>
               </>

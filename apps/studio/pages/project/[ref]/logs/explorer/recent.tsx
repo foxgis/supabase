@@ -7,7 +7,8 @@ import Table from 'components/to-be-cleaned/Table'
 import LogsExplorerHeader from 'components/ui/Logs/LogsExplorerHeader'
 import { useLocalStorage } from 'hooks/misc/useLocalStorage'
 import type { LogSqlSnippets, NextPageWithLayout } from 'types'
-import { Button, IconClock } from 'ui'
+import { Button } from 'ui'
+import { Clock } from 'lucide-react'
 
 export const LogsSavedPage: NextPageWithLayout = () => {
   const { ref } = useParams()
@@ -41,8 +42,8 @@ export const LogsSavedPage: NextPageWithLayout = () => {
       {recent.length === 0 && (
         <>
           <div className="my-auto flex h-full flex-grow flex-col items-center justify-center gap-1">
-            <IconClock className="animate-bounce" />
-            <h3 className="text-lg text-foreground">暂无历史查询</h3>
+            <Clock className="animate-bounce" />
+            <h3 className="text-lg text-foreground">暂无查询历史</h3>
             <p className="text-sm text-foreground-lighter">
               在{' '}
               <Link href={`/project/${ref}/logs/explorer`}>

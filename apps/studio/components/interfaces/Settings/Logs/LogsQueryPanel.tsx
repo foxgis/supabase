@@ -7,7 +7,7 @@ import Table from 'components/to-be-cleaned/Table'
 import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { useFlag } from 'hooks/ui/useFlag'
 import { copyToClipboard } from 'lib/helpers'
-import { BookOpen, Check, ChevronDown, Clipboard } from 'lucide-react'
+import { BookOpen, Check, ChevronDown, Clipboard, ExternalLink, X } from 'lucide-react'
 import { logConstants } from 'shared-data'
 import {
   Alert,
@@ -17,8 +17,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  IconExternalLink,
-  IconX,
   Popover,
   SidePanel,
   Tabs,
@@ -104,7 +102,10 @@ const LogsQueryPanel = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button type="default" iconRight={<ChevronDown />}>
-                    数据源 <span className="ml-2 font-mono opacity-50">{dataSource}</span>
+                    数据源{' '}
+                    <span className="ml-2 font-mono opacity-50">
+                      {dataSource === 'warehouse' ? '集合' : '日志'}
+                    </span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="start">
@@ -115,10 +116,10 @@ const LogsQueryPanel = ({
                     <DropdownMenuItemContent
                       name={
                         <span>
-                          数据仓库 <Badge variant="warning">新</Badge>
+                          集合 <Badge variant="warning">新</Badge>
                         </span>
                       }
-                      desc="查询你的数据仓库集合"
+                      desc="查询您的集合"
                     />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -240,95 +241,91 @@ const LogsQueryPanel = ({
               </div>
             </div>
           </div>
-          <div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <SidePanel
-                  size="large"
-                  header={
-                    <div className="flex flex-row justify-between items-center">
-                      <h3>字段参考</h3>
-                      <Button
-                        type="text"
-                        className="px-1"
-                        onClick={() => setShowReference(false)}
-                        icon={<IconX size={18} strokeWidth={1.5} />}
-                      />
-                    </div>
-                  }
-                  visible={showReference}
-                  cancelText="Close"
-                  onCancel={() => setShowReference(false)}
-                  hideFooter
-                  triggerElement={
-                    <Button
-                      asChild // ?: we don't want a button inside a button
-                      type="default"
-                      onClick={() => setShowReference(true)}
-                      icon={<BookOpen />}
-                      className="px-2"
-                    >
-                      <span>字段参考</span>
-                    </Button>
-                  }
+          {dataSource === 'logs' && (
+            <SidePanel
+              size="large"
+              header={
+                <div className="flex flex-row justify-between items-center">
+                  <h3>字段参考</h3>
+                  <Button
+                    type="text"
+                    className="px-1"
+                    onClick={() => setShowReference(false)}
+                    icon={<X />}
+                  />
+                </div>
+              }
+              visible={showReference}
+              cancelText="关闭"
+              onCancel={() => setShowReference(false)}
+              hideFooter
+              triggerElement={
+                <Button
+                  asChild // ?: we don't want a button inside a button
+                  type="text"
+                  onClick={() => setShowReference(true)}
+                  icon={<BookOpen />}
+                  className="px-2"
                 >
-                  <SidePanel.Content>
-                    <div className="pt-4 pb-2 space-y-1">
-                      <p className="text-sm">
-                        下面的表显示了每种数据源所有可查询的字段。请注意，要访问嵌套的键，您需要使用必要的{' '}{' '}
-                        <Link
-                          href="https://supabase.com/docs/guides/platform/logs#unnesting-arrays"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-brand"
-                        >
-                          解嵌连接
-                          <IconExternalLink
-                            size="tiny"
-                            className="ml-1 inline -translate-y-[2px]"
-                            strokeWidth={1.5}
-                          />
-                        </Link>
-                      </p>
-                    </div>
-                  </SidePanel.Content>
-                  <SidePanel.Separator />
-                  <Tabs
-                    scrollable
-                    size="small"
-                    type="underlined"
-                    defaultActiveId="edge_logs"
-                    listClassNames="px-2"
+                  <span>字段参考</span>
+                </Button>
+              }
+            >
+              <SidePanel.Content>
+                <div className="pt-4 pb-2 space-y-1">
+                  <p className="text-sm">
+                    以下表格显示了可以从每个相应源查询到的所有可用路径。请注意，要访问嵌套键，您需要执行必要的
+                    <Link
+                      href="https://supabase.com/docs/guides/platform/logs#unnesting-arrays"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-brand"
+                    >
+                      解嵌连接
+                      <ExternalLink
+                        size="14"
+                        className="ml-1 inline -translate-y-[2px]"
+                        strokeWidth={1.5}
+                      />
+                    </Link>
+                  </p>
+                </div>
+              </SidePanel.Content>
+              <SidePanel.Separator />
+              <Tabs
+                scrollable
+                size="small"
+                type="underlined"
+                defaultActiveId="edge_logs"
+                listClassNames="px-2"
+              >
+                {logConstants.schemas.map((schema) => (
+                  <Tabs.Panel
+                    key={schema.reference}
+                    id={schema.reference}
+                    label={schema.name}
+                    className="px-4 pb-4"
                   >
-                    {logConstants.schemas.map((schema) => (
-                      <Tabs.Panel
-                        key={schema.reference}
-                        id={schema.reference}
-                        label={schema.name}
-                        className="px-4 pb-4"
-                      >
-                        <Table
-                          head={[
-                            <Table.th className="text-xs !p-2" key="path">
-                              路径
-                            </Table.th>,
-                            <Table.th key="type" className="text-xs !p-2">
-                              类型
-                            </Table.th>,
-                          ]}
-                          body={schema.fields
-                            .sort((a: any, b: any) => a.path - b.path)
-                            .map((field) => (
-                              <Field key={field.path} field={field} />
-                            ))}
-                        />
-                      </Tabs.Panel>
-                    ))}
-                  </Tabs>
-                </SidePanel>
-              </div>
-            </div>
-          </div>
+                    <Table
+                      head={[
+                        <Table.th className="text-xs !p-2" key="path">
+                          路径
+                        </Table.th>,
+                        <Table.th key="type" className="text-xs !p-2">
+                          类型
+                        </Table.th>,
+                      ]}
+                      body={schema.fields
+                        .sort((a: any, b: any) => a.path - b.path)
+                        .map((field) => (
+                          <Field key={field.path} field={field} />
+                        ))}
+                    />
+                  </Tabs.Panel>
+                ))}
+              </Tabs>
+            </SidePanel>
+          )}
         </div>
       </div>
     </div>

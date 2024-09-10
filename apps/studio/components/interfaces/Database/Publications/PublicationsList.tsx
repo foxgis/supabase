@@ -2,7 +2,7 @@ import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { noop } from 'lodash'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Button, IconAlertCircle, IconSearch, Input, Toggle } from 'ui'
+import { Button, Input, Toggle } from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
@@ -13,6 +13,7 @@ import { useDatabasePublicationsQuery } from 'data/database-publications/databas
 import { useDatabasePublicationUpdateMutation } from 'data/database-publications/database-publications-update-mutation'
 import { useCheckPermissions, usePermissionsLoaded } from 'hooks/misc/useCheckPermissions'
 import PublicationSkeleton from './PublicationSkeleton'
+import { Search, AlertCircle } from 'lucide-react'
 
 interface PublicationEvent {
   event: string
@@ -81,7 +82,7 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
           <div className="flex items-center">
             <Input
               size="small"
-              icon={<IconSearch size="tiny" />}
+              icon={<Search size="14" />}
               placeholder={'查找'}
               value={filterString}
               onChange={(e) => setFilterString(e.target.value)}
@@ -90,86 +91,76 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
           {isPermissionsLoaded && !canUpdatePublications && (
             <div className="w-[500px]">
               <InformationBox
-                icon={<IconAlertCircle className="text-foreground-light" strokeWidth={2} />}
-                title="您需要额外的权限才能更新数据库事件发布"
+                icon={<AlertCircle className="text-foreground-light" strokeWidth={2} />}
+                title="您需要额外的权限才能更新数据库事件发布设置"
               />
             </div>
           )}
         </div>
       </div>
 
-      <div className="overflow-hidden rounded">
-        <Table
-          head={[
-            <Table.th key="header.name" style={{ width: '25%' }}>
-              名称
-            </Table.th>,
-            <Table.th key="header.id" className="hidden lg:table-cell" style={{ width: '25%' }}>
-              系统 ID
-            </Table.th>,
-            <Table.th key="header.insert">插入</Table.th>,
-            <Table.th key="header.update">更新</Table.th>,
-            <Table.th key="header.delete">删除</Table.th>,
-            <Table.th key="header.truncate">清空</Table.th>,
-            <Table.th key="header.source" className="text-right">
-              数据源
-            </Table.th>,
-          ]}
-          body={
-            isLoading
-              ? Array.from({ length: 5 }).map((_, i) => <PublicationSkeleton key={i} index={i} />)
-              : publications.map((x) => (
-                  <Table.tr className="border-t" key={x.name}>
-                    <Table.td className="px-4 py-3" style={{ width: '25%' }}>
-                      {x.name}
+      <Table
+        head={[
+          <Table.th key="header.name">名称</Table.th>,
+          <Table.th key="header.id">系统 ID</Table.th>,
+          <Table.th key="header.insert">插入</Table.th>,
+          <Table.th key="header.update">更新</Table.th>,
+          <Table.th key="header.delete">删除</Table.th>,
+          <Table.th key="header.truncate">清空</Table.th>,
+          <Table.th key="header.source" className="text-right">
+            源
+          </Table.th>,
+        ]}
+        body={
+          isLoading
+            ? Array.from({ length: 5 }).map((_, i) => <PublicationSkeleton key={i} index={i} />)
+            : publications.map((x) => (
+                <Table.tr className="border-t" key={x.name}>
+                  <Table.td className="px-4 py-3">{x.name}</Table.td>
+                  <Table.td>{x.id}</Table.td>
+                  {publicationEvents.map((event) => (
+                    <Table.td key={event.key}>
+                      <Toggle
+                        size="tiny"
+                        checked={(x as any)[event.key]}
+                        disabled={!canUpdatePublications}
+                        onChange={() => {
+                          setToggleListenEventValue({
+                            publication: x,
+                            event,
+                            currentStatus: (x as any)[event.key],
+                          })
+                        }}
+                      />
                     </Table.td>
-                    <Table.td className="hidden lg:table-cell" style={{ width: '25%' }}>
-                      {x.id}
-                    </Table.td>
-                    {publicationEvents.map((event) => (
-                      <Table.td key={event.key}>
-                        <Toggle
-                          size="tiny"
-                          checked={(x as any)[event.key]}
-                          disabled={!canUpdatePublications}
-                          onChange={() => {
-                            setToggleListenEventValue({
-                              publication: x,
-                              event,
-                              currentStatus: (x as any)[event.key],
-                            })
-                          }}
-                        />
-                      </Table.td>
-                    ))}
-                    <Table.td className="px-4 py-3 pr-2">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          type="default"
-                          style={{ paddingTop: 3, paddingBottom: 3 }}
-                          onClick={() => onSelectPublication(x.id)}
-                        >
-                          {x.tables == null
-                            ? '所有表'
-                            : `${x.tables.length} ${
-                                x.tables.length > 1 || x.tables.length == 0 ? '张表' : '张表'
-                              }`}
-                        </Button>
-                      </div>
-                    </Table.td>
-                  </Table.tr>
-                ))
-          }
-        />
+                  ))}
+                  <Table.td className="px-4 py-3 pr-2">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        type="default"
+                        style={{ paddingTop: 3, paddingBottom: 3 }}
+                        onClick={() => onSelectPublication(x.id)}
+                      >
+                        {x.tables == null
+                          ? '所有表'
+                          : `${x.tables.length} 张${
+                              x.tables.length > 1 || x.tables.length == 0 ? '表' : '表'
+                            }`}
+                      </Button>
+                    </div>
+                  </Table.td>
+                </Table.tr>
+              ))
+        }
+      />
 
-        {!isLoading && publications.length === 0 && (
-          <NoSearchResults
-            searchString={filterString}
-            onResetFilter={() => setFilterString('')}
-            className="rounded-t-none border-t-0"
-          />
-        )}
-      </div>
+      {!isLoading && publications.length === 0 && (
+        <NoSearchResults
+          searchString={filterString}
+          onResetFilter={() => setFilterString('')}
+          className="rounded-t-none border-t-0"
+        />
+      )}
 
       <ConfirmationModal
         visible={toggleListenEventValue !== null}

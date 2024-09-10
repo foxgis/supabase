@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { Button, IconExternalLink, SidePanel, Tabs } from 'ui'
+import { Button, SidePanel, Tabs } from 'ui'
 import ActionBar from '../ActionBar'
 import type { ImportContent } from '../TableEditor/TableEditor.types'
 import SpreadSheetFileUpload from './SpreadSheetFileUpload'
@@ -18,6 +18,7 @@ import {
   parseSpreadsheetText,
 } from './SpreadsheetImport.utils'
 import SpreadsheetImportPreview from './SpreadsheetImportPreview'
+import { ExternalLink } from 'lucide-react'
 
 const MAX_CSV_SIZE = 1024 * 1024 * 100 // 100 MB
 
@@ -81,8 +82,8 @@ const SpreadsheetImport = ({
       return toast(
         <div className="space-y-1">
           <p>当前界面仅支持导入小于 100MB 的 CSV 文件。</p>
-          <p>对于大批量数据加载，我们建议您直接通过数据库进行。</p>
-          <Button asChild type="default" icon={<IconExternalLink />} className="!mt-2">
+          <p>对于大批量数据的加载，我们建议您直接通过数据库进行。</p>
+          <Button asChild type="default" icon={<ExternalLink />} className="!mt-2">
             <Link
               href="https://supabase.com/docs/guides/database/tables#bulk-data-loading"
               target="_blank"

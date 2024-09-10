@@ -11,8 +11,9 @@ import { Loading } from 'components/ui/Loading'
 import { useTablesQuery } from 'data/tables/tables-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
-import { Button, IconAlertCircle, IconChevronLeft, IconSearch, Input } from 'ui'
+import { Button, Input } from 'ui'
 import PublicationsTableItem from './PublicationsTableItem'
+import { ChevronLeft, Search, AlertCircle } from 'lucide-react'
 
 interface PublicationsTablesProps {
   selectedPublication: PostgresPublication
@@ -58,7 +59,7 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
             <Button
               type="outline"
               onClick={() => onSelectBack()}
-              icon={<IconChevronLeft />}
+              icon={<ChevronLeft />}
               style={{ padding: '5px' }}
             />
             <div>
@@ -67,15 +68,15 @@ const PublicationsTables = ({ selectedPublication, onSelectBack }: PublicationsT
                 placeholder={'查找'}
                 value={filterString}
                 onChange={(e) => setFilterString(e.target.value)}
-                icon={<IconSearch size="tiny" />}
+                icon={<Search size="14" />}
               />
             </div>
           </div>
           {!canUpdatePublications && (
             <div className="w-[500px]">
               <InformationBox
-                icon={<IconAlertCircle className="text-foreground-light" strokeWidth={2} />}
-                title="您需要额外的权限才能更新数据库复制"
+                icon={<AlertCircle className="text-foreground-light" strokeWidth={2} />}
+                title="您需要额外的权限才能更新数据库复制设置"
               />
             </div>
           )}

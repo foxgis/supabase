@@ -194,16 +194,22 @@ const TableList = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-x-4">
-          <div className="flex items-center gap-x-2">
-            <SchemaSelector
-              className="w-[260px]"
-              size="small"
-              showError={false}
-              selectedSchemaName={selectedSchema}
-              onSelectSchema={setSelectedSchema}
+      <div className="flex items-center gap-2 flex-wrap">
+        <SchemaSelector
+          className="w-[260px]"
+          size="small"
+          showError={false}
+          selectedSchemaName={selectedSchema}
+          onSelectSchema={setSelectedSchema}
+        />
+        <Popover_Shadcn_>
+          <PopoverTrigger_Shadcn_ asChild>
+            <Button
+              type={visibleTypes.length !== 5 ? 'default' : 'dashed'}
+              className="py-4 px-2"
+              icon={<Filter />}
             />
+<<<<<<< HEAD
             <Popover_Shadcn_>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button
@@ -259,14 +265,71 @@ const TableList = ({
             icon={<Search size={12} />}
           />
         </div>
+=======
+          </PopoverTrigger_Shadcn_>
+          <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
+            <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
+              <p className="text-xs">Show entity types</p>
+              <div className="flex flex-col">
+                {Object.entries(ENTITY_TYPE).map(([key, value]) => (
+                  <div key={key} className="group flex items-center justify-between py-0.5">
+                    <div className="flex items-center gap-x-2">
+                      <Checkbox_Shadcn_
+                        id={key}
+                        name={key}
+                        checked={visibleTypes.includes(value)}
+                        onCheckedChange={() => {
+                          if (visibleTypes.includes(value)) {
+                            setVisibleTypes(visibleTypes.filter((y) => y !== value))
+                          } else {
+                            setVisibleTypes(visibleTypes.concat([value]))
+                          }
+                        }}
+                      />
+                      <Label_Shadcn_ htmlFor={key} className="capitalize text-xs">
+                        {key.toLowerCase().replace('_', ' ')}
+                      </Label_Shadcn_>
+                    </div>
+                    <Button
+                      size="tiny"
+                      type="default"
+                      onClick={() => setVisibleTypes([value])}
+                      className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
+                    >
+                      Select only
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </PopoverContent_Shadcn_>
+        </Popover_Shadcn_>
+
+        <Input
+          size="small"
+          className="w-64"
+          placeholder="Search for a table"
+          value={filterString}
+          onChange={(e: any) => setFilterString(e.target.value)}
+          icon={<Search size={12} />}
+        />
+>>>>>>> upstream/master
 
         {!isLocked && (
           <ButtonTooltip
+            className="ml-auto"
             icon={<Plus />}
             disabled={!canUpdateTables}
             onClick={() => onAddTable()}
             tooltip={{
+<<<<<<< HEAD
               content: { side: 'bottom', text: '需要创建表的额外权限' },
+=======
+              content: {
+                side: 'bottom',
+                text: 'You need additional permissions to create tables',
+              },
+>>>>>>> upstream/master
             }}
           >
             新建表

@@ -141,8 +141,9 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
     if (q) {
       onSelectTemplate({
         mode: 'custom',
-        searchString: q as string,
+        searchString: q,
       })
+      setWarehouseEditorValue(q)
     }
   }, [])
 
@@ -213,9 +214,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
       const logsSourceExists = logsSources.find((source) => whQuery.includes(source))
 
       if (logsSourceExists) {
-        toast.error(
-          '不能在数据仓库查询中查询日志表。请从查询中移除日志表。'
-        )
+        toast.error('不能从当前的查询语句中查询日志表。')
         return
       }
 

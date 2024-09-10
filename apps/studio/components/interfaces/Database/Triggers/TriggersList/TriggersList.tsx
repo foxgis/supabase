@@ -2,7 +2,7 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { noop, partition } from 'lodash'
 import { useState } from 'react'
-import { Button, IconSearch, Input } from 'ui'
+import { Button, Input } from 'ui'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import AlphaPreview from 'components/to-be-cleaned/AlphaPreview'
@@ -16,6 +16,7 @@ import { useSchemasQuery } from 'data/database/schemas-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
+import { Search } from 'lucide-react'
 import ProtectedSchemaWarning from '../../ProtectedSchemaWarning'
 import TriggerList from './TriggerList'
 
@@ -83,30 +84,31 @@ const TriggersList = ({
           </ProductEmptyState>
         </div>
       ) : (
-        <div className="w-full space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <SchemaSelector
-                className="w-[260px]"
-                size="small"
-                showError={false}
-                selectedSchemaName={selectedSchema}
-                onSelectSchema={setSelectedSchema}
-              />
-              <Input
-                placeholder="查找触发器"
-                size="small"
-                icon={<IconSearch size="tiny" />}
-                value={filterString}
-                className="w-64"
-                onChange={(e) => setFilterString(e.target.value)}
-              />
-            </div>
-
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <SchemaSelector
+              className="w-[260px]"
+              size="small"
+              showError={false}
+              selectedSchemaName={selectedSchema}
+              onSelectSchema={setSelectedSchema}
+            />
+            <Input
+              placeholder="查找触发器"
+              size="small"
+              icon={<Search size="14" />}
+              value={filterString}
+              className="w-64"
+              onChange={(e) => setFilterString(e.target.value)}
+            />
             {!isLocked && (
               <Tooltip.Root delayDuration={0}>
                 <Tooltip.Trigger asChild>
-                  <Button disabled={!canCreateTriggers} onClick={() => createTrigger()}>
+                  <Button
+                    className="ml-auto"
+                    disabled={!canCreateTriggers}
+                    onClick={() => createTrigger()}
+                  >
                     创建新触发器
                   </Button>
                 </Tooltip.Trigger>
@@ -134,26 +136,15 @@ const TriggersList = ({
           {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="触发器" />}
 
           <Table
-            className="table-fixed"
             head={
               <>
-                <Table.th key="name" className="space-x-4">
-                  名称
-                </Table.th>
-                <Table.th key="table" className="hidden lg:table-cell">
-                  表
-                </Table.th>
-                <Table.th key="function" className="hidden xl:table-cell">
-                  函数
-                </Table.th>
-                <Table.th key="events" className="hidden xl:table-cell">
-                  事件
-                </Table.th>
-                <Table.th key="orientation" className="hidden xl:table-cell">
-                  触发方式
-                </Table.th>
-                <Table.th key="enabled" className="hidden w-24 xl:table-cell">
-                  是否启用
+                <Table.th key="name">名称</Table.th>
+                <Table.th key="table">表</Table.th>
+                <Table.th key="function">函数</Table.th>
+                <Table.th key="events">事件</Table.th>
+                <Table.th key="orientation">触发方式</Table.th>
+                <Table.th key="enabled" className="w-20">
+                  Enabled
                 </Table.th>
                 <Table.th key="buttons" className="w-1/12"></Table.th>
               </>
