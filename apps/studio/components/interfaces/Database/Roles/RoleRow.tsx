@@ -143,13 +143,8 @@ const RoleRow = ({ role, disabled = false, onSelectDelete }: RoleRowProps) => {
                             onSelectDelete(role)
                           }}
                         >
-<<<<<<< HEAD
-                          <IconTrash className="text-red-800" size="tiny" strokeWidth={2} />
-                          <p>删除</p>
-=======
                           <Trash className="text-red-800" size="14" strokeWidth={2} />
-                          <p>Delete</p>
->>>>>>> upstream/master
+                          <p>删除</p>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

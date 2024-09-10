@@ -99,39 +99,12 @@ const Indexes = () => {
     <>
       <div className="pb-8">
         <div className="flex flex-col gap-y-4">
-<<<<<<< HEAD
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              {isLoadingSchemas && <ShimmeringLoader className="w-[260px]" />}
-              {isErrorSchemas && (
-                <div className="w-[260px] text-foreground-light text-sm border px-3 py-1.5 rounded flex items-center space-x-2">
-                  <IconAlertCircle strokeWidth={2} size={16} />
-                  <p>加载模式失败</p>
-                </div>
-              )}
-              {isSuccessSchemas && (
-                <SchemaSelector
-                  className="w-[260px]"
-                  size="small"
-                  showError={false}
-                  selectedSchemaName={selectedSchema}
-                  onSelectSchema={setSelectedSchema}
-                />
-              )}
-              <Input
-                size="small"
-                value={search}
-                className="w-64"
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="查找索引"
-                icon={<IconSearch size={14} />}
-=======
           <div className="flex items-center gap-2 flex-wrap">
             {isLoadingSchemas && <ShimmeringLoader className="w-[260px]" />}
             {isErrorSchemas && (
               <div className="w-[260px] text-foreground-light text-sm border px-3 py-1.5 rounded flex items-center space-x-2">
                 <AlertCircle strokeWidth={2} size={16} />
-                <p>Failed to load schemas</p>
+                <p>加载模式失败</p>
               </div>
             )}
             {isSuccessSchemas && (
@@ -141,7 +114,6 @@ const Indexes = () => {
                 showError={false}
                 selectedSchemaName={selectedSchema}
                 onSelectSchema={setSelectedSchema}
->>>>>>> upstream/master
               />
             )}
             <Input
@@ -149,7 +121,7 @@ const Indexes = () => {
               value={search}
               className="w-64"
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search for an index"
+              placeholder="查找索引"
               icon={<Search size={14} />}
             />
 

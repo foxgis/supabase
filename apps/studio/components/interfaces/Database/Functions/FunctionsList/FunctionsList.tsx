@@ -143,27 +143,15 @@ const FunctionsList = ({
             className="table-fixed overflow-x-auto"
             head={
               <>
-<<<<<<< HEAD
                 <Table.th key="name">名称</Table.th>
-                <Table.th key="arguments" className="hidden md:table-cell">
+                <Table.th key="arguments" className="table-cell">
                   参数
                 </Table.th>
-                <Table.th key="return_type" className="hidden lg:table-cell">
-                  返回类型
-                </Table.th>
-                <Table.th key="security" className="hidden lg:table-cell w-[100px]">
-                  安全
-=======
-                <Table.th key="name">Name</Table.th>
-                <Table.th key="arguments" className="table-cell">
-                  Arguments
-                </Table.th>
                 <Table.th key="return_type" className="table-cell">
-                  Return type
+                  返回值类型
                 </Table.th>
                 <Table.th key="security" className="table-cell w-[100px]">
-                  Security
->>>>>>> upstream/master
+                  调用方式
                 </Table.th>
                 <Table.th key="buttons" className="w-1/6"></Table.th>
               </>
