@@ -33,7 +33,7 @@ export const ProtectedSchemaModal = ({
     >
       <Modal.Content className="space-y-2">
         <p className="text-sm">
-          以下模式由系统管理，当前被设置为只读，无法通过表编辑器进行编辑。
+          以下模式由系统管理，当前被设置为只读，无法通过本界面进行编辑。
         </p>
         <div className="flex flex-wrap gap-1">
           {EXCLUDED_SCHEMAS.map((schema) => (
@@ -63,7 +63,7 @@ const ProtectedSchemaWarning = ({ schema, entity }: { schema: string; entity: st
         <AlertTitle_Shadcn_>当前正在一个受保护的模式下查看{entity}</AlertTitle_Shadcn_>
         <AlertDescription_Shadcn_>
           <p className="mb-2">
-            模式 <code className="text-xs">{schema}</code> 是由系统管理的，当前被设置为只读，无法通过表编辑器进行编辑。
+            模式 <code className="text-xs">{schema}</code> 是由系统管理的，当前被设置为只读，无法通过本界面进行编辑。
           </p>
           <Button type="default" size="tiny" onClick={() => setShowModal(true)}>
             了解更多

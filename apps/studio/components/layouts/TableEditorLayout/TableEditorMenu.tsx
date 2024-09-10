@@ -157,7 +157,7 @@ const TableEditorMenu = () => {
                 </AlertTitle_Shadcn_>
                 <AlertDescription_Shadcn_ className="text-xs">
                   <p className="mb-2">
-                    此模式是系统模式，在表编辑器中只读
+                    此模式是系统模式，在本界面中执行只读操作
                   </p>
                   <Button type="default" size="tiny" onClick={() => setShowModal(true)}>
                     了解更多

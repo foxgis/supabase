@@ -5,32 +5,32 @@ import Link from 'next/link'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import Table from 'components/to-be-cleaned/Table'
 import { useProjectApiQuery } from 'data/config/project-api-query'
-import { useGISTilesQuery } from 'data/gis/gis-tiles-query'
+import { useGISFeaturesQuery } from 'data/gis/gis-features-query'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from 'ui'
 
-interface TileListProps {
+interface FeatureListProps {
   schema: string
   filterString: string
 }
 
-const TileList = ({
+const FeatureList = ({
   schema,
   filterString,
-}: TileListProps) => {
+}: FeatureListProps) => {
   const router = useRouter()
   const { project: selectedProject } = useProjectContext()
 
-  const { data: tiles } = useGISTilesQuery({
+  const { data: features } = useGISFeaturesQuery({
     projectRef: selectedProject?.ref
   })
 
-  const filteredTiles = (tiles ?? []).filter((x) =>
-    includes(x.name.toLowerCase(), filterString.toLowerCase())
+  const filteredFeatures = (features ?? []).filter((x) =>
+    includes(x.id.toLowerCase(), filterString.toLowerCase())
   )
-  const _tiles = sortBy(
-    filteredTiles.filter((x) => x.schema == schema),
-    (tile) => tile.name.toLocaleLowerCase()
+  const _features = sortBy(
+    filteredFeatures.filter((x) => x.id.startsWith(schema)),
+    (feature) => feature.id.toLocaleLowerCase()
   )
 
   const { data, error } = useProjectApiQuery({ projectRef: selectedProject?.ref })
@@ -48,20 +48,20 @@ const TileList = ({
     )
   }
 
-  if (_tiles.length === 0 && filterString.length === 0) {
+  if (_features.length === 0 && filterString.length === 0) {
     return (
       <Table.tr key={schema}>
         <Table.td colSpan={3}>
-          <p className="text-sm text-foreground">未找到瓦片服务</p>
+          <p className="text-sm text-foreground">未找到要素服务</p>
           <p className="text-sm text-foreground-light">
-            在模式 "{schema}" 中未找到瓦片服务
+            在模式 "{schema}" 中未找到要素服务
           </p>
         </Table.td>
       </Table.tr>
     )
   }
 
-  if (_tiles.length === 0 && filterString.length > 0) {
+  if (_features.length === 0 && filterString.length > 0) {
     return (
       <Table.tr key={schema}>
         <Table.td colSpan={3}>
@@ -76,7 +76,7 @@ const TileList = ({
 
   return (
     <>
-      {_tiles.map((x) => {
+      {_features.map((x) => {
         return (
           <Table.tr key={x.id}>
             <Table.td className="truncate">
@@ -94,12 +94,12 @@ const TileList = ({
             <Table.td className="w-1/5">
               <div className="flex justify-end items-center space-x-2">
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${apiUrl}/pg_tileserv/${x.id}.json`} target="_blank">
+                  <Link href={`${apiUrl}/pg_featureserv/collections/${x.id}.json`} target="_blank">
                     元数据
                   </Link>
                 </Button>
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${apiUrl}/pg_tileserv/${x.id}.html`} target="_blank">
+                  <Link href={`${apiUrl}/pg_featureserv/collections/${x.id}/items.html`} target="_blank">
                     查看
                   </Link>
                 </Button>
@@ -112,4 +112,4 @@ const TileList = ({
   )
 }
 
-export default TileList
+export default FeatureList

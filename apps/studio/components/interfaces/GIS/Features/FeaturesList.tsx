@@ -9,15 +9,15 @@ import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
 import SchemaSelector from 'components/ui/SchemaSelector'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
-import { useGISTilesQuery } from 'data/gis/gis-tiles-query'
+import { useGISFeaturesQuery } from 'data/gis/gis-features-query'
 import { useSchemasQuery } from 'data/database/schemas-query'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
 import { Input } from 'ui'
 import ProtectedSchemaWarning from 'components/interfaces/Database/ProtectedSchemaWarning'
-import TileList from './TileList'
+import FeatureList from './FeatureList'
 
-const TilesList = () => {
+const FeaturesList = () => {
   const { project } = useProjectContext()
   const router = useRouter()
   const { search } = useParams()
@@ -45,26 +45,26 @@ const TilesList = () => {
   const isLocked = protectedSchemas.some((s) => s.id === foundSchema?.id)
 
   const {
-    data: tiles,
+    data: features,
     error,
     isLoading,
     isError,
-  } = useGISTilesQuery({
+  } = useGISFeaturesQuery({
     projectRef: project?.ref,
   })
 
   if (isLoading) return <GenericSkeletonLoader />
-  if (isError) return <AlertError error={error} subject="获取瓦片服务列表失败" />
+  if (isError) return <AlertError error={error} subject="获取要素服务列表失败" />
 
   return (
     <>
-      {(tiles ?? []).length == 0 ? (
+      {(features ?? []).length == 0 ? (
         <div className="flex h-full w-full items-center justify-center">
           <ProductEmptyState
-            title="瓦片服务"
+            title="要素服务"
           >
             <p className="text-sm text-foreground-light">
-              瓦片服务是通过数据库动态生成的矢量切片，用户可以在地图上查看和使用。
+              要素服务是基于数据库的矢量数据服务，用户可以查询和获取空间要素。
             </p>
           </ProductEmptyState>
         </div>
@@ -85,7 +85,7 @@ const TilesList = () => {
                 }}
               />
               <Input
-                placeholder="查找瓦片服务"
+                placeholder="查找要素服务"
                 size="small"
                 icon={<Search size={14} />}
                 value={filterString}
@@ -95,7 +95,7 @@ const TilesList = () => {
             </div>
           </div>
 
-          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="瓦片服务" />}
+          {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="要素服务" />}
 
           <Table
             className="table-fixed"
@@ -109,7 +109,7 @@ const TilesList = () => {
               </>
             }
             body={
-              <TileList
+              <FeatureList
                 schema={selectedSchema}
                 filterString={filterString}
               />
@@ -121,4 +121,4 @@ const TilesList = () => {
   )
 }
 
-export default TilesList
+export default FeaturesList
