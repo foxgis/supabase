@@ -40,6 +40,7 @@ export const generateProductRoutes = (
   project?: Project,
   features?: { auth?: boolean; edgeFunctions?: boolean; storage?: boolean; realtime?: boolean }
 ): Route[] => {
+  const isProjectActive = project?.status === PROJECT_STATUS.ACTIVE_HEALTHY
   const isProjectBuilding = project?.status === PROJECT_STATUS.COMING_UP
   const buildingUrl = `/project/${ref}`
 
@@ -59,7 +60,13 @@ export const generateProductRoutes = (
       key: 'database',
       label: '数据库',
       icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-      link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/database/tables`),
+      link:
+        ref &&
+        (isProjectBuilding
+          ? buildingUrl
+          : isProjectActive
+            ? `/project/${ref}/database/tables`
+            : `/project/${ref}/database/backups/scheduled`),
     },
     ...(storageEnabled
       ? [
