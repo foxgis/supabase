@@ -103,7 +103,7 @@ const SchemaSelector = ({
               <div className="w-full flex gap-1">
                 <p className="text-foreground-lighter">模式：</p>
                 <p className="text-foreground">
-                  {selectedSchemaName === '*' ? 'All schemas' : selectedSchemaName}
+                  {selectedSchemaName === '*' ? '所有模式' : selectedSchemaName}
                 </p>
               </div>
             </Button>
@@ -128,7 +128,7 @@ const SchemaSelector = ({
                           setOpen(false)
                         }}
                       >
-                        <span>All schemas</span>
+                        <span>所有模式</span>
                         {selectedSchemaName === '*' && (
                           <Check className="text-brand" strokeWidth={2} size={16} />
                         )}
