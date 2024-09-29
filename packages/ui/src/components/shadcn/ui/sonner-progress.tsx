@@ -35,7 +35,7 @@ export const SonnerProgress = ({
       </div>
       <Progress value={progress} className="w-full" />
       <div className="flex flex-row gap-2 items-center justify-between">
-        <small className="text-foreground-lighter text-xs">Please do not close the browser</small>
+        <small className="text-foreground-lighter text-xs">请不要关闭浏览器</small>
         {action}
       </div>
     </div>
