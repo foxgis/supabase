@@ -1,11 +1,11 @@
 import type { PostgresPolicy, PostgresTable } from '@supabase/postgres-meta'
 import { noop } from 'lodash'
-import { AlertDescription_Shadcn_, AlertTitle_Shadcn_, Alert_Shadcn_ } from 'ui'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
-import { WarningIcon } from 'ui'
 import Panel from 'components/ui/Panel'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
+import { Info } from 'lucide-react'
+import { cn, Tooltip_Shadcn_, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_ } from 'ui'
 import PolicyRow from './PolicyRow'
 import PolicyTableRowHeader from './PolicyTableRowHeader'
 
@@ -47,36 +47,33 @@ const PolicyTableRow = ({
         />
       }
     >
-      {(!table.rls_enabled || policies.length === 0) && (
-        <div className="px-6 py-4 flex flex-col gap-y-3">
-          {table.rls_enabled && policies.length === 0 && (
-            <Alert_Shadcn_>
-              <WarningIcon />
-              <AlertTitle_Shadcn_>
-                这张表已启用行级安全性，但尚未设置策略
-              </AlertTitle_Shadcn_>
-              <AlertDescription_Shadcn_>
-                Select 查询可能会返回空结果。
-              </AlertDescription_Shadcn_>
-            </Alert_Shadcn_>
+      {!table.rls_enabled && !isLocked && (
+        <div
+          className={cn(
+            'dark:bg-alternative-200 bg-surface-200 px-6 py-2 text-xs flex items-center gap-2',
+            policies.length === 0 ? '' : 'border-b'
           )}
-          {!table.rls_enabled && !isLocked && (
-            <Alert_Shadcn_ variant="warning">
-              <WarningIcon />
-              <AlertTitle_Shadcn_>
-                警告：行级安全性已禁用。您的表是公开可读和可写的。
-              </AlertTitle_Shadcn_>
-              <AlertDescription_Shadcn_>
-                任何人都可以使用项目的匿名密钥修改或删除您的数据。启用 RLS 并创建访问策略以保证数据安全。
-              </AlertDescription_Shadcn_>
-            </Alert_Shadcn_>
-          )}
-          {policies.length === 0 && (
-            <p className="text-foreground-light text-sm">还未创建策略</p>
-          )}
+        >
+          <div className="w-1.5 h-1.5 bg-warning-600 rounded-full" />
+          <span className="font-bold text-warning-600">警告：</span>{' '}
+          <span className="text-foreground-light">
+            行级安全性已禁用。您的表是公开可读和可写的。
+          </span>
+          <Tooltip_Shadcn_>
+            <TooltipTrigger_Shadcn_ asChild>
+              <Info className="w-3 h-3" />
+            </TooltipTrigger_Shadcn_>
+            <TooltipContent_Shadcn_ className="w-[400px]">
+              任何人都可以使用项目的匿名密钥修改或删除您的数据。启用 RLS 并创建访问策略以保证数据安全。
+            </TooltipContent_Shadcn_>
+          </Tooltip_Shadcn_>
         </div>
       )}
-
+      {policies.length === 0 && (
+        <div className="px-6 py-4 flex flex-col gap-y-3">
+          <p className="text-foreground-lighter text-sm">还未创建策略</p>
+        </div>
+      )}
       {policies?.map((policy) => (
         <PolicyRow
           key={policy.id}

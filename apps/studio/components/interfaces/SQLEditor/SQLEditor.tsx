@@ -1,13 +1,14 @@
 import type { Monaco } from '@monaco-editor/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { ChevronUp, Loader2 } from 'lucide-react'
+import { AlertTriangle, ChevronUp, Loader2 } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { format } from 'sql-formatter'
 
+import { Separator } from '@ui/components/SidePanel/SidePanel'
 import { useParams, useTelemetryProps } from 'common'
 import { GridFooter } from 'components/ui/GridFooter'
 import { useSqlDebugMutation } from 'data/ai/sql-debug-mutation'
@@ -53,7 +54,7 @@ import {
   Tooltip_Shadcn_,
   cn,
 } from 'ui'
-import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
+import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { subscriptionHasHipaaAddon } from '../Billing/Subscription/Subscription.utils'
 import AISchemaSuggestionPopover from './AISchemaSuggestionPopover'
 import { AiAssistantPanel } from './AiAssistantPanel'
@@ -76,6 +77,7 @@ import {
   compareAsModification,
   compareAsNewSnippet,
   createSqlSnippetSkeleton,
+  isUpdateWithoutWhere,
   suffixWithLimit,
 } from './SQLEditor.utils'
 import UtilityPanel from './UtilityPanel/UtilityPanel'
@@ -131,8 +133,11 @@ const SQLEditor = () => {
   // Customers on HIPAA plans should not have access to Supabase AI
   const hasHipaaAddon = subscriptionHasHipaaAddon(subscription)
 
-  const [isAiOpen, setIsAiOpen] = useLocalStorageQuery(LOCAL_STORAGE_KEYS.SQL_EDITOR_AI_OPEN, false)
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+  const [isAiOpen, setIsAiOpen] = useLocalStorageQuery(LOCAL_STORAGE_KEYS.SQL_EDITOR_AI_OPEN, true)
+
+  const [showPotentialIssuesModal, setShowPotentialIssuesModal] = useState(false)
+  const [queryHasDestructiveOperations, setQueryHasDestructiveOperations] = useState(false)
+  const [queryHasUpdateWithoutWhere, setQueryHasUpdateWithoutWhere] = useState(false)
 
   const isOptedInToAI = useOrgOptedIntoAi()
   const [selectedSchemas] = useSchemasForAi(project?.ref!)
@@ -288,10 +293,23 @@ const SQLEditor = () => {
           ? (selectedValue || editorRef.current?.getValue()) ?? snippet.snippet.content.sql
           : selectedValue || editorRef.current?.getValue()
 
-        const containsDestructiveOperations = checkDestructiveQuery(sql)
+        let queryHasIssues = false
 
-        if (!force && containsDestructiveOperations) {
-          setIsConfirmModalOpen(true)
+        const destructiveOperations = checkDestructiveQuery(sql)
+        if (!force && destructiveOperations) {
+          setShowPotentialIssuesModal(true)
+          setQueryHasDestructiveOperations(true)
+          queryHasIssues = true
+        }
+
+        const updateWithoutWhereClause = isUpdateWithoutWhere(sql)
+        if (!force && updateWithoutWhereClause) {
+          setShowPotentialIssuesModal(true)
+          setQueryHasUpdateWithoutWhere(true)
+          queryHasIssues = true
+        }
+
+        if (queryHasIssues) {
           return
         }
 
@@ -616,22 +634,59 @@ const SQLEditor = () => {
 
   return (
     <>
-      <ConfirmModal
-        visible={isConfirmModalOpen}
-        title="危险性操作"
-        danger
-        description="检测到此查询中有潜在危险性操作。请确认您是否要执行此查询。"
-        buttonLabel="运行危险性查询"
-        onSelectCancel={() => {
-          setIsConfirmModalOpen(false)
-          // [Joshen] Somehow calling this immediately doesn't work, hence the timeout
+      <ConfirmationModal
+        visible={showPotentialIssuesModal}
+        size="large"
+        title={`检测到您的查询可能存在潜在问题${queryHasDestructiveOperations && queryHasUpdateWithoutWhere ? '' : ''}`}
+        confirmLabel="执行查询"
+        variant="warning"
+        alert={{
+          base: {
+            variant: 'warning',
+          },
+          title:
+            queryHasDestructiveOperations && queryHasUpdateWithoutWhere
+              ? '检测到以下潜在问题：'
+              : '检测到以下潜在问题：',
+          description: '请确认这些是您有意执行的查询。',
+        }}
+        onCancel={() => {
+          setShowPotentialIssuesModal(false)
+          setQueryHasDestructiveOperations(false)
+          setQueryHasUpdateWithoutWhere(false)
           setTimeout(() => editorRef.current?.focus(), 100)
         }}
-        onSelectConfirm={() => {
-          setIsConfirmModalOpen(false)
+        onConfirm={() => {
+          setShowPotentialIssuesModal(false)
           executeQuery(true)
         }}
-      />
+      >
+        <div className="text-sm">
+          <ul className="border rounded-md grid bg-surface-200">
+            {queryHasDestructiveOperations && (
+              <li className="grid pt-3 pb-2 px-4">
+                <span className="font-bold">查询具有危险性操作</span>
+                <span className="text-foreground-lighter">
+                  Make sure you are not accidentally removing something important.
+                  确保不要意外删除了重要的内容。
+                </span>
+              </li>
+            )}
+            {queryHasDestructiveOperations && queryHasUpdateWithoutWhere && <Separator />}
+            {queryHasUpdateWithoutWhere && (
+              <li className="grid pt-2 pb-3 px-4 gap-1">
+                <span className="font-bold">查询使用 update 但没有 where 子句</span>
+                <span className="text-foreground-lighter">
+                  没有 <code className="text-xs">where</code> 子句，这可能会更新表中的所有行。
+                </span>
+              </li>
+            )}
+          </ul>
+        </div>
+        <p className="mt-4 text-sm text-foreground-light">
+          请确认您要执行此查询。
+        </p>
+      </ConfirmationModal>
 
       <ResizablePanelGroup
         className="flex h-full"
@@ -773,23 +828,22 @@ const SQLEditor = () => {
                     <TooltipTrigger_Shadcn_>
                       <p className="text-xs">
                         <span className="text-foreground">
-                          {results.rows.length} row{results.rows.length > 1 ? 's' : ''}
+                          {results.rows.length} 行{results.rows.length > 1 ? '' : ''}
                         </span>
                         <span className="text-foreground-lighter ml-1">
                           {results.autoLimit !== undefined &&
-                            ` (Limited to only ${results.autoLimit} rows)`}
+                            `（最大限制 ${results.autoLimit} 行）`}
                         </span>
                       </p>
                     </TooltipTrigger_Shadcn_>
                     <TooltipContent_Shadcn_ className="max-w-xs">
                       <p className="flex flex-col gap-y-1">
                         <span>
-                          Results are automatically limited to preserve browser performance, in
-                          particular if your query returns an exceptionally large number of rows.
+                          自动限制返回结果的函数以保持浏览器性能，特别是如果您的查询返回的行数异常多。
                         </span>
 
                         <span className="text-foreground-light">
-                          You may change or remove this limit from the dropdown on the right
+                          您可以从右侧的下拉菜单更改或删除此限制。
                         </span>
                       </p>
                     </TooltipContent_Shadcn_>
@@ -798,7 +852,7 @@ const SQLEditor = () => {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button type="default" iconRight={<ChevronUp size={14} />}>
-                          Limit results to:{' '}
+                          限制最大行数为：{' '}
                           {
                             ROWS_PER_PAGE_OPTIONS.find(
                               (opt) => opt.value === (enableFolders ? snapV2.limit : snap.limit)

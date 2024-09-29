@@ -81,10 +81,10 @@ export const Users = () => {
             onKeyDown={(e) => {
               if (e.keyCode == 13) setFilterKeywords(search)
             }}
-            className="min-w-[275px]"
+            className="min-w-[300px]"
             name="email"
             id="email"
-            placeholder="通过电子邮件或电话号码查找"
+            placeholder="通过电子邮件、电话号码或 UID 搜索"
             icon={<Search size={14} />}
             actions={[
               search && (
