@@ -15,7 +15,7 @@ const PageLayout: NextPageWithLayout = () => {
     return <NoPermission isFullPage resourceText="访问项目的认证服务提供商设置" />
   } else {
     return (
-      <FormsContainer>
+      <FormsContainer className="w-full">
         <AuthProvidersForm />
       </FormsContainer>
     )

@@ -43,7 +43,10 @@ const FunctionsPage: NextPageWithLayout = () => {
       <ScaffoldContainer>
         <ScaffoldSection>
           <div className="col-span-12">
-            <FormHeader title="数据库函数" />
+            <FormHeader
+              title="数据库函数"
+              docsUrl="https://supabase.com/docs/guides/database/functions"
+            />
             <FunctionsList
               createFunction={createFunction}
               editFunction={editFunction}
@@ -66,6 +69,6 @@ const FunctionsPage: NextPageWithLayout = () => {
   )
 }
 
-FunctionsPage.getLayout = (page) => <DatabaseLayout title="Database">{page}</DatabaseLayout>
+FunctionsPage.getLayout = (page) => <DatabaseLayout title="数据库函数">{page}</DatabaseLayout>
 
 export default FunctionsPage

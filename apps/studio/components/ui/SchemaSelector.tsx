@@ -100,12 +100,18 @@ const SchemaSelector = ({
                 <ChevronsUpDown className="text-foreground-muted" strokeWidth={2} size={14} />
               }
             >
-              <div className="w-full flex gap-1">
-                <p className="text-foreground-lighter">模式：</p>
-                <p className="text-foreground">
-                  {selectedSchemaName === '*' ? '所有模式' : selectedSchemaName}
-                </p>
-              </div>
+              {selectedSchemaName ? (
+                <div className="w-full flex gap-1">
+                  <p className="text-foreground-lighter">模式：</p>
+                  <p className="text-foreground">
+                    {selectedSchemaName === '*' ? '所有模式' : selectedSchemaName}
+                  </p>
+                </div>
+              ) : (
+                <div className="w-full flex gap-1">
+                  <p className="text-foreground-lighter">选择模式…</p>
+                </div>
+              )}
             </Button>
           </PopoverTrigger_Shadcn_>
           <PopoverContent_Shadcn_ className="p-0" side="bottom" align="start" sameWidthAsTrigger>

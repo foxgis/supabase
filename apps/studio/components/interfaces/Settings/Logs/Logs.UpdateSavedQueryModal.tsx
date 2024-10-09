@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal } from 'ui'
 
-type SavedQuery = { name: string; description: string | null }
+type SavedQuery = { name: string; description?: string }
 
 export interface UpdateSavedQueryProps {
   visible: boolean
@@ -30,8 +30,8 @@ export const UpdateSavedQueryModal = ({
       visible={visible}
       onCancel={onCancel}
       hideFooter
-      header="更新已保存的查询"
-      size="small"
+      header="更新已保存的查询语句"
+      size="medium"
     >
       <Form
         onReset={onCancel}

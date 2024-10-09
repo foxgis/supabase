@@ -161,6 +161,7 @@ const ExtensionCard = ({ extension }: ExtensionCardProps) => {
         visible={isDisableModalOpen}
         title="确认禁用扩展"
         confirmLabel="禁用"
+        variant="destructive"
         confirmLabelLoading="正在禁用"
         onCancel={() => setIsDisableModalOpen(false)}
         onConfirm={() => onConfirmDisable()}

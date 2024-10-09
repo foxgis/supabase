@@ -9,10 +9,11 @@ export const generateDatabaseMenu = (
     pgNetExtensionExists: boolean
     pitrEnabled: boolean
     columnLevelPrivileges: boolean
+    cronUiEnabled: boolean
   }
 ): ProductMenuGroup[] => {
   const ref = project?.ref ?? 'default'
-  const { pgNetExtensionExists, pitrEnabled, columnLevelPrivileges } = flags || {}
+  const { pgNetExtensionExists, pitrEnabled, columnLevelPrivileges, cronUiEnabled } = flags || {}
 
   return [
     {
@@ -83,12 +84,12 @@ export const generateDatabaseMenu = (
       ],
     },
     // {
-    //   title: '平台功能',
+    //   title: 'Platform',
     //   items: [
     //     ...(IS_PLATFORM
     //       ? [
     //           {
-    //             name: '备份',
+    //             name: 'Backups',
     //             key: 'backups',
     //             url: pitrEnabled
     //               ? `/project/${ref}/database/backups/pitr`
@@ -98,13 +99,13 @@ export const generateDatabaseMenu = (
     //         ]
     //       : []),
     //     {
-    //       name: '包装器',
+    //       name: 'Wrappers',
     //       key: 'wrappers',
     //       url: `/project/${ref}/database/wrappers`,
     //       items: [],
     //     },
     //     {
-    //       name: '迁移',
+    //       name: 'Migrations',
     //       key: 'migrations',
     //       url: `/project/${ref}/database/migrations`,
     //       items: [],
@@ -115,6 +116,16 @@ export const generateDatabaseMenu = (
     //             name: 'Webhooks',
     //             key: 'hooks',
     //             url: `/project/${ref}/database/hooks`,
+    //             items: [],
+    //           },
+    //         ]
+    //       : []),
+    //     ...(!!cronUiEnabled
+    //       ? [
+    //           {
+    //             name: 'Cron Jobs',
+    //             key: 'cron-jobs',
+    //             url: `/project/${ref}/database/cron-jobs`,
     //             items: [],
     //           },
     //         ]

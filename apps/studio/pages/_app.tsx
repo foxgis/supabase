@@ -163,8 +163,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <AuthContainer>
-            <ProfileProvider>
-              <FlagProvider>
+            <FlagProvider>
+              <ProfileProvider>
                 <Head>
                   <title>数据中间件</title>
                   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -199,8 +199,8 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
                 {!isTestEnv && <HCaptchaLoadedStore />}
                 {!isTestEnv && <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />}
-              </FlagProvider>
-            </ProfileProvider>
+              </ProfileProvider>
+            </FlagProvider>
           </AuthContainer>
         </Hydrate>
       </QueryClientProvider>

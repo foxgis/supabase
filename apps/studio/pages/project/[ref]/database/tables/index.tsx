@@ -18,7 +18,7 @@ const DatabaseTables: NextPageWithLayout = () => {
     <>
       <ScaffoldContainer>
         <ScaffoldSection>
-          <div className="col-span-12 space-x-2">
+          <div className="col-span-12">
             <FormHeader title="数据库表" />
             <TableList
               onAddTable={snap.onAddTable}
@@ -45,6 +45,6 @@ const DatabaseTables: NextPageWithLayout = () => {
   )
 }
 
-DatabaseTables.getLayout = (page) => <DatabaseLayout title="Database">{page}</DatabaseLayout>
+DatabaseTables.getLayout = (page) => <DatabaseLayout title="数据库表">{page}</DatabaseLayout>
 
 export default DatabaseTables

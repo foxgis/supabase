@@ -10,10 +10,18 @@ import {
 interface TextSearchPopoverProps {
   name: string
   value: string
+  placeholder?: string
+  rows?: number
   onSaveText: (value: string) => void
 }
 
-export const TextSearchPopover = ({ name, value = '', onSaveText }: TextSearchPopoverProps) => {
+export const TextSearchPopover = ({
+  name,
+  value = '',
+  placeholder,
+  rows = 4,
+  onSaveText,
+}: TextSearchPopoverProps) => {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState<string>(value)
 
@@ -42,9 +50,9 @@ export const TextSearchPopover = ({ name, value = '', onSaveText }: TextSearchPo
           <TextArea_Shadcn_
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            rows={4}
+            rows={rows}
             className="text-xs font-mono tracking-tight"
-            placeholder="搜索查询"
+            placeholder={placeholder ?? '搜索查询'}
             onKeyDown={(event) => {
               if (event.metaKey && event.code === 'Enter') applySearch()
             }}

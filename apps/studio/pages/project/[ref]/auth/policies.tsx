@@ -4,7 +4,6 @@ import { partition } from 'lodash'
 import { ExternalLink, Search } from 'lucide-react'
 import { useState } from 'react'
 
-import { useIsRLSAIAssistantEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 import { AIPolicyEditorPanel } from 'components/interfaces/Auth/Policies/AIPolicyEditorPanel'
 import Policies from 'components/interfaces/Auth/Policies/Policies'
 import AuthLayout from 'components/layouts/AuthLayout/AuthLayout'
@@ -65,7 +64,6 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
   }>()
   const { schema = 'public', search: searchString = '' } = params
   const { project } = useProjectContext()
-  const isAiAssistantEnabled = useIsRLSAIAssistantEnabled()
 
   const [selectedTable, setSelectedTable] = useState<string>()
   const [showPolicyAiEditor, setShowPolicyAiEditor] = useState(false)
@@ -145,33 +143,13 @@ const AuthPoliciesPage: NextPageWithLayout = () => {
                 文档
               </a>
             </Button>
-
-            {isAiAssistantEnabled && (
-              <ButtonTooltip
-                type="primary"
-                disabled={!canCreatePolicies || schemaHasNoTables}
-                onClick={() => setShowPolicyAiEditor(true)}
-                tooltip={{
-                  content: {
-                    side: 'bottom',
-                    text: !canCreatePolicies
-                      ? '您需要额外的权限才能创建 RLS 策略'
-                      : schemaHasNoTables
-                        ? `${schema} 模式下没有表可用于创建策略`
-                        : undefined,
-                  },
-                }}
-              >
-                新建策略
-              </ButtonTooltip>
-            )}
           </div>
         </div>
       </div>
 
       {isLoading && <GenericSkeletonLoader />}
 
-      {isError && <AlertError error={error} subject="Failed to retrieve tables" />}
+      {isError && <AlertError error={error} subject="获取表失败" />}
 
       {isSuccess && (
         <Policies
