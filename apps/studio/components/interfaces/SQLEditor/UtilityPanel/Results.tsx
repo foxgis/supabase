@@ -73,7 +73,7 @@ const Results = ({ rows }: { rows: readonly any[] }) => {
             onFocusCapture={(e) => e.stopPropagation()}
           >
             <Clipboard size={14} />
-            Copy cell content
+            复制单元格内容
           </ContextMenuItem_Shadcn_>
           <ContextMenuItem_Shadcn_
             className="gap-x-2"
@@ -81,7 +81,7 @@ const Results = ({ rows }: { rows: readonly any[] }) => {
             onFocusCapture={(e) => e.stopPropagation()}
           >
             <Expand size={14} />
-            View cell content
+            查看单元格内容
           </ContextMenuItem_Shadcn_>
         </ContextMenuContent_Shadcn_>
       </ContextMenu_Shadcn_>

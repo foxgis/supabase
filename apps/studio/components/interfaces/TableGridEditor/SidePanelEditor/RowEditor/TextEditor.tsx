@@ -39,7 +39,7 @@ export const TextEditor = ({
   const project = useSelectedProject()
 
   const [strValue, setStrValue] = useState('')
-  const [view, setView] = useState<'edit' | 'view'>('edit')
+  const [view, setView] = useState<'编辑' | '查看'>('编辑')
   const value = row?.[column as keyof typeof row] as unknown as string
   const isTruncated = isValueTruncated(value)
 
@@ -97,7 +97,7 @@ export const TextEditor = ({
           </p>
           {(!isTruncated || (isTruncated && isSuccess)) && (
             <TwoOptionToggle
-              options={['view', 'edit']}
+              options={['查看', '编辑']}
               activeOption={view}
               borderOverride="border-muted"
               onClickOption={setView}
@@ -116,7 +116,7 @@ export const TextEditor = ({
       }
     >
       <div className="relative flex flex-auto h-full flex-col gap-y-4">
-        {view === 'edit' ? (
+        {view === '编辑' ? (
           <div className="w-full h-full flex-grow">
             <Editor
               key={value}

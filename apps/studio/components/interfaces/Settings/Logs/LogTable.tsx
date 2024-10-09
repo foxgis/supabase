@@ -411,7 +411,7 @@ const LogTable = ({
               <Menu id={LOGS_EXPLORER_CONTEXT_MENU_ID} animation={false}>
                 <Item onClick={onCopyCell}>
                   <Clipboard size={14} />
-                  <span className="ml-2 text-xs">Copy cell content</span>
+                  <span className="ml-2 text-xs">复制单元格内容</span>
                 </Item>
               </Menu>,
               document.body

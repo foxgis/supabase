@@ -832,7 +832,7 @@ const SQLEditor = () => {
                         </span>
                         <span className="text-foreground-lighter ml-1">
                           {results.autoLimit !== undefined &&
-                            `（最大限制 ${results.autoLimit} 行）`}
+                            `（限制最多 ${results.autoLimit} 行）`}
                         </span>
                       </p>
                     </TooltipTrigger_Shadcn_>

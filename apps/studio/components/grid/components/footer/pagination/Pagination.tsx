@@ -166,7 +166,7 @@ const Pagination = () => {
               disabled={page <= 1 || isLoading}
               onClick={onPreviousPage}
             />
-            <p className="text-xs text-foreground-light">Page</p>
+            <p className="text-xs text-foreground-light">第</p>
             <Input
               className="w-12"
               size="tiny"
