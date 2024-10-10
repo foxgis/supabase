@@ -258,7 +258,7 @@ test('error message handling', async () => {
 test('no results message handling', async () => {
   render(<LogTable projectRef="ref" params={{}} data={[]} />)
   await screen.findByText(/没有找到结果/)
-  await screen.findByText(/尝试使用其他搜索/)
+  await screen.findByText(/请尝试其他搜索或者调整过滤条件/)
 })
 
 test('custom error message: Resources exceeded during query execution', async () => {

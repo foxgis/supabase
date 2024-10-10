@@ -7,8 +7,8 @@ const EmptyStateRow = () => {
 }
 
 export function LogsTableEmptyState({
-  title = '未找到结果',
-  description = '请尝试其他搜索条件或者调整过滤条件',
+  title = '没有找到结果',
+  description = '请尝试其他搜索或者调整过滤条件',
 }: {
   title?: string
   description?: string
