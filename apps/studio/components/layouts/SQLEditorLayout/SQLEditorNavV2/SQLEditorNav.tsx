@@ -349,16 +349,16 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
             <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
               <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
               <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                Shared{numProjectSnippets > 0 && ` (${numProjectSnippets})`}
+                分享的查询{numProjectSnippets > 0 && ` (${numProjectSnippets}条)`}
               </span>
             </CollapsibleTrigger_Shadcn_>
             <CollapsibleContent_Shadcn_ className="pt-2">
               {numProjectSnippets === 0 ? (
                 <div className="mx-4">
                   <Alert_Shadcn_ className="p-3">
-                    <AlertTitle_Shadcn_ className="text-xs">No shared queries</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_ className="text-xs">无分享的查询</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_ className="text-xs ">
-                      Share queries with your team by right-clicking on the query.
+                      右键点击查询向团队成员分享查询。
                     </AlertDescription_Shadcn_>
                   </Alert_Shadcn_>
                 </div>
