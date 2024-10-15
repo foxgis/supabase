@@ -188,7 +188,7 @@ export const RealtimeFilterPopover = ({ config, onChangeConfig }: RealtimeFilter
           )}
           <div className="px-4 py-2 gap-2 flex justify-end">
             <Button type="default" onClick={() => setOpen(false)}>
-              Cancel
+              取消
             </Button>
             <Button onClick={() => setApplyConfigOpen(true)}>应用</Button>
           </div>
