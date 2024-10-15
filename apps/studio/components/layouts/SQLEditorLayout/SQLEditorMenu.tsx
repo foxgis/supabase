@@ -116,11 +116,11 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
               <DropdownMenuContent align="end" side="bottom" className="w-48">
                 <DropdownMenuItem className="gap-x-2" onClick={() => handleNewQuery()}>
                   <FilePlus size={14} />
-                  创建代码片段
+                  新建查询
                 </DropdownMenuItem>
                 <DropdownMenuItem className="gap-x-2" onClick={() => createNewFolder()}>
                   <FolderPlus size={14} />
-                  创建新文件夹
+                  新建文件夹
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -76,7 +76,7 @@ export function useSnippetCommands() {
     [
       {
         id: 'run-snippet',
-        name: '执行代码段',
+        name: '执行查询',
         icon: () => <Code />,
         action: () => setPage(SNIPPET_PAGE_NAME),
       },

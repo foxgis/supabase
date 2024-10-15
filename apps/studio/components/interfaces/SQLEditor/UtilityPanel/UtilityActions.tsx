@@ -227,7 +227,7 @@ const UtilityActions = ({
             variant="connected-on-right"
             onSelectId={() => snapV2.resetResult(id)}
           /> */}
-          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-both" />
+          <RoleImpersonationPopover serviceRoleLabel="postgres" variant="connected-on-right" />
           <Button
             onClick={() => executeQuery()}
             disabled={isDisabled || isExecuting}
