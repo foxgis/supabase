@@ -44,6 +44,7 @@ import { IS_PLATFORM } from 'lib/constants'
 import { lookupMime } from 'lib/mime'
 import { PROJECT_ENDPOINT_PROTOCOL } from 'pages/api/constants'
 import { Button, SONNER_DEFAULT_DURATION, SonnerProgress } from 'ui'
+import Link from 'next/link'
 
 type CachedFile = { id: string; fetchedAt: number; expiresIn: number; url: string }
 
@@ -265,7 +266,6 @@ class StorageExplorerStore {
   popOpenedFoldersAtIndex = (index: number) => {
     this.openedFolders = this.openedFolders.slice(0, index + 1)
   }
-
   clearOpenedFolders = () => {
     this.openedFolders = []
   }
@@ -566,12 +566,21 @@ class StorageExplorerStore {
           <p className="text-foreground">
             {numberOfFilesRejected} 个文件{numberOfFilesRejected > 1 ? '' : ''}上传失败，因为
             {numberOfFilesRejected > 1 ? '它们的' : '它的'}大小
-            超出了上传文件的大小限制 {value} {unit}。
+            超出了上传文件的大小限制（{value} {unit}）。
           </p>
           <p className="text-foreground-light">
-            您可以在项目设置中更改上传文件的大小限制。
+            您可以在
+            <Link
+              className="underline"
+              href={`/project/${this.projectRef}/settings/storage`}
+              target="_blank"
+            >
+              存储设置
+            </Link>
+            中更改全局上传文件大小限制.
           </p>
-        </div>
+        </div>,
+        { duration: 8000 }
       )
 
       if (numberOfFilesRejected === filesToUpload.length) return
@@ -732,26 +741,31 @@ class StorageExplorerStore {
             chunkSize,
             onShouldRetry(error) {
               const status = error.originalResponse ? error.originalResponse.getStatus() : 0
-              const doNotRetryStatuses = [400, 403, 404, 409, 415, 429]
+              const doNotRetryStatuses = [400, 403, 404, 409, 413, 415, 429]
 
               return !doNotRetryStatuses.includes(status)
             },
             onError: (error) => {
               numberOfFilesUploadedFail += 1
-              if (
-                error instanceof tus.DetailedError &&
-                error.originalResponse?.getStatus() === 415
-              ) {
-                // Unsupported mime type
-                toast.error(
-                  capitalize(
-                    error.originalResponse.getBody() ||
-                      `Failed to upload ${file.name}: ${metadata.mimetype} is not allowed`
-                  ),
-                  {
-                    description: `Allowed MIME types: ${this.selectedBucket.allowed_mime_types?.join(', ')}`,
-                  }
-                )
+              if (error instanceof tus.DetailedError) {
+                const status = error.originalResponse?.getStatus()
+                if (status === 415) {
+                  // Unsupported mime type
+                  toast.error(
+                    capitalize(
+                      error?.originalResponse?.getBody() ||
+                        `Failed to upload ${file.name}: ${metadata.mimetype} is not allowed`
+                    ),
+                    {
+                      description: `Allowed MIME types: ${this.selectedBucket.allowed_mime_types?.join(', ')}`,
+                    }
+                  )
+                } else if (status === 413) {
+                  // Payload too large
+                  toast.error(
+                    `Failed to upload ${file.name}: File size exceeds the bucket upload limit.`
+                  )
+                }
               } else {
                 toast.error(`Failed to upload ${file.name}: ${error.message}`)
               }

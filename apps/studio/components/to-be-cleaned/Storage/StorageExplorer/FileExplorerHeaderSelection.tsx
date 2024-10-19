@@ -1,8 +1,13 @@
+import { Download, Move, Trash2, X } from 'lucide-react'
+
+import { PermissionAction } from '@supabase/shared-types/out/constants'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
+import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useStorageStore } from 'localStores/storageExplorer/StorageExplorerStore'
-import { X, Download, Trash2, Move } from 'lucide-react'
 import { Button } from 'ui'
 
 const FileExplorerHeaderSelection = () => {
+  const canUpdateFiles = useCheckPermissions(PermissionAction.STORAGE_WRITE, '*')
   const storageExplorerStore = useStorageStore()
   const {
     selectedItems,
@@ -38,20 +43,34 @@ const FileExplorerHeaderSelection = () => {
           下载
         </Button>
         <div className="border-r border-green-900 py-3 opacity-50" />
-        <Button
+
+        <ButtonTooltip
           icon={<Trash2 size={16} strokeWidth={2} />}
           type="primary"
           onClick={() => setSelectedItemsToDelete(selectedItems)}
+          tooltip={{
+            content: {
+              side: 'bottom',
+              text: !canUpdateFiles ? 'You need additional permissions to delete files' : undefined,
+            },
+          }}
         >
           删除
-        </Button>
-        <Button
+        </ButtonTooltip>
+
+        <ButtonTooltip
           icon={<Move size={16} strokeWidth={2} />}
           type="primary"
           onClick={() => setSelectedItemsToMove(selectedItems)}
+          tooltip={{
+            content: {
+              side: 'bottom',
+              text: !canUpdateFiles ? 'You need additional permissions to move files' : undefined,
+            },
+          }}
         >
           移动
-        </Button>
+        </ButtonTooltip>
       </div>
     </div>
   )

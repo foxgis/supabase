@@ -199,14 +199,14 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                           {IS_PLATFORM && (
                             <div className="col-span-12">
                               <p className="text-foreground-light text-sm">
-                                注意：{' '}
+                                注意：单个存储桶上传限制仍然服从于{' '}
                                 <Link
                                   href={`/project/${ref}/settings/storage`}
-                                  className="text-brand opacity-80 hover:opacity-100 transition"
+                                  className="font-bold underline"
                                 >
                                   全局上传限制
                                 </Link>{' '}
-                                优先于此限制值（{formattedGlobalUploadLimit}）
+                                （{formattedGlobalUploadLimit}）
                               </p>
                             </div>
                           )}
