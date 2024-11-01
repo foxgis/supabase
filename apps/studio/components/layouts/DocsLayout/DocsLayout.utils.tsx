@@ -1,6 +1,6 @@
 import type { ProductMenuGroup } from 'components/ui/ProductMenu/ProductMenu.types'
 import { BASE_PATH } from 'lib/constants'
-import { Book, BookOpen } from 'lucide-react'
+import { ArrowUpRight, Book, BookOpen } from 'lucide-react'
 import SVG from 'react-inlinesvg'
 
 export const generateDocsMenu = (
@@ -66,12 +66,12 @@ export const generateDocsMenu = (
       ],
     },
     // {
-    //   title: 'GraphQL',
+    //   title: '更多资料',
     //   items: [
     //     {
     //       name: 'GraphiQL',
     //       key: 'graphiql',
-    //       url: `/project/${ref}/api/graphiql`,
+    //       url: `/project/${ref}/integrations/graphiql`,
     //       icon: (
     //         <SVG
     //           src={`${BASE_PATH}/img/graphql.svg`}
@@ -81,6 +81,7 @@ export const generateDocsMenu = (
     //         />
     //       ),
     //       items: [],
+    //       rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
     //     },
     //   ],
     // },
@@ -88,7 +89,7 @@ export const generateDocsMenu = (
       title: '更多资料',
       items: [
         {
-          name: '文档指南',
+          name: 'Guides',
           key: 'guides',
           url: `https://supabase.com/docs`,
           icon: <Book size={14} strokeWidth={2} />,

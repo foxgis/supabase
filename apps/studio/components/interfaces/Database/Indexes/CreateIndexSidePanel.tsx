@@ -1,4 +1,4 @@
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -50,7 +50,7 @@ const CreateIndexSidePanel = ({ visible, onClose }: CreateIndexSidePanelProps) =
   const [selectedIndexType, setSelectedIndexType] = useState<string>(INDEX_TYPES[0].value)
   const [schemaDropdownOpen, setSchemaDropdownOpen] = useState(false)
   const [tableDropdownOpen, setTableDropdownOpen] = useState(false)
-
+  const [searchTerm, setSearchTerm] = useState('')
   const { refetch: refetchIndexes } = useIndexesQuery({
     schema: selectedSchema,
     projectRef: project?.ref,
@@ -60,10 +60,10 @@ const CreateIndexSidePanel = ({ visible, onClose }: CreateIndexSidePanelProps) =
     projectRef: project?.ref,
     connectionString: project?.connectionString,
   })
-  const { data: entities, isLoading } = useEntityTypesQuery({
-    schema: selectedSchema,
+  const { data: entities, isLoading: isLoadingEntities } = useEntityTypesQuery({
+    schemas: [selectedSchema],
     sort: 'alphabetical',
-    search: undefined,
+    search: searchTerm,
     projectRef: project?.ref,
     connectionString: project?.connectionString,
   })
@@ -93,6 +93,10 @@ const CreateIndexSidePanel = ({ visible, onClose }: CreateIndexSidePanelProps) =
     () => entities?.pages.flatMap((page) => page.data.entities) || [],
     [entities?.pages]
   )
+
+  function handleSearchChange(value: string) {
+    setSearchTerm(value)
+  }
 
   const columns = tableColumns?.result[0]?.columns ?? []
   const columnOptions: MultiSelectOption[] = columns
@@ -181,7 +185,11 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                 sameWidthAsTrigger
               >
                 <Command_Shadcn_>
-                  <CommandInput_Shadcn_ placeholder="查找模式..." />
+                  <CommandInput_Shadcn_
+                    placeholder="查找表..."
+                    value={searchTerm}
+                    onValueChange={handleSearchChange}
+                  />
                   <CommandList_Shadcn_>
                     <CommandEmpty_Shadcn_>未找到模式</CommandEmpty_Shadcn_>
                     <CommandGroup_Shadcn_>
@@ -218,8 +226,8 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
             name="select-table"
             description={
               isSelectEntityDisabled &&
-              !isLoading &&
-              '在这个模式下，先通过表编辑器或 SQL 编辑器创建一张表'
+              !isLoadingEntities &&
+              '在这个模式下请先通过数据表面版或 SQL 编辑器面版创建一张表'
             }
             isReactForm={false}
           >
@@ -228,28 +236,27 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
               open={tableDropdownOpen}
               onOpenChange={setTableDropdownOpen}
             >
-              <PopoverTrigger_Shadcn_ asChild disabled={isSelectEntityDisabled || isLoading}>
-                {isLoading ? (
-                  <ShimmeringLoader className="h-[38px]" />
-                ) : (
-                  <Button
-                    type="default"
-                    size="medium"
-                    className={cn(
-                      'w-full [&>span]:w-full text-left',
-                      selectedEntity === '' && 'text-foreground-lighter'
-                    )}
-                    iconRight={
-                      <ChevronsUpDown className="text-foreground-muted" strokeWidth={2} size={14} />
-                    }
-                  >
-                    {selectedEntity !== undefined && selectedEntity !== ''
-                      ? selectedEntity
-                      : isSelectEntityDisabled
-                        ? '在这个模式下，没有可用的表'
-                        : '选择一张表'}
-                  </Button>
-                )}
+              <PopoverTrigger_Shadcn_
+                asChild
+                disabled={isSelectEntityDisabled || isLoadingEntities}
+              >
+                <Button
+                  type="default"
+                  size="medium"
+                  className={cn(
+                    'w-full [&>span]:w-full text-left',
+                    selectedEntity === '' && 'text-foreground-lighter'
+                  )}
+                  iconRight={
+                    <ChevronsUpDown className="text-foreground-muted" strokeWidth={2} size={14} />
+                  }
+                >
+                  {selectedEntity !== undefined && selectedEntity !== ''
+                    ? selectedEntity
+                    : isSelectEntityDisabled
+                      ? '这个模式下没有可用的表'
+                      : '选择一张表'}
+                </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_
                 className="p-0"
@@ -257,10 +264,25 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                 align="start"
                 sameWidthAsTrigger
               >
-                <Command_Shadcn_>
-                  <CommandInput_Shadcn_ placeholder="查找表..." />
+                {/* [Terry] shouldFilter context:
+                https://github.com/pacocoursey/cmdk/issues/267#issuecomment-2252717107 */}
+                <Command_Shadcn_ shouldFilter={false}>
+                  <CommandInput_Shadcn_
+                    placeholder="查找表..."
+                    value={searchTerm}
+                    onValueChange={handleSearchChange}
+                  />
                   <CommandList_Shadcn_>
-                    <CommandEmpty_Shadcn_>No tables found</CommandEmpty_Shadcn_>
+                    <CommandEmpty_Shadcn_>
+                      {isLoadingEntities ? (
+                        <div className="flex items-center gap-2 text-center justify-center">
+                          <Loader2 size={12} className="animate-spin" />
+                          Loading...
+                        </div>
+                      ) : (
+                        '未找到表'
+                      )}
+                    </CommandEmpty_Shadcn_>
                     <CommandGroup_Shadcn_>
                       <ScrollArea className={(entityTypes || []).length > 7 ? 'h-[210px]' : ''}>
                         {(entityTypes ?? []).map((entity) => (

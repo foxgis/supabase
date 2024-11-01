@@ -60,15 +60,13 @@ const ColumnContextMenu = ({ id = '' }: ColumnContextMenuProps) => {
 
   return (
     <Menu id={id} animation="fade">
-      {canUpdateFiles && (
-        <>
-          <Item onClick={({ props }) => onSelectCreateFolder(props.index)}>
-            <FolderPlus size="14" strokeWidth={1} />
-            <span className="ml-2 text-xs">新建文件夹</span>
-          </Item>
-          <Separator />
-        </>
-      )}
+      {canUpdateFiles && [
+        <Item key="create-folder" onClick={({ props }) => onSelectCreateFolder(props.index)}>
+          <FolderPlus size="14" strokeWidth={1} />
+          <span className="ml-2 text-xs">新建文件夹</span>
+        </Item>,
+        <Separator key="create-folder-separator" />,
+      ]}
       <Item onClick={({ props }) => onSelectAllItemsInColumn(props.index)}>
         <Clipboard size="14" strokeWidth={1} />
         <span className="ml-2 text-xs">选中所有文件</span>

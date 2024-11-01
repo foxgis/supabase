@@ -1,10 +1,10 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { compact, debounce, isEqual, noop } from 'lodash'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useIsAPIDocsSidePanelEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 import APIDocsButton from 'components/ui/APIDocsButton'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useStorageStore } from 'localStores/storageExplorer/StorageExplorerStore'
 import {
@@ -426,64 +426,38 @@ const FileExplorerHeader = ({
             {/* @ts-ignore */}
             <input ref={uploadButtonRef} type="file" multiple onChange={onFilesUpload} />
           </div>
-          <Tooltip.Root delayDuration={0}>
-            <Tooltip.Trigger className="w-full">
-              <Button
-                icon={<Upload size={16} strokeWidth={2} />}
-                type="text"
-                disabled={!canUpdateStorage || breadcrumbs.length === 0}
-                onClick={onSelectUpload}
-              >
-                上传文件
-              </Button>
-            </Tooltip.Trigger>
-            {!canUpdateStorage && (
-              <Tooltip.Portal>
-                <Tooltip.Content side="bottom">
-                  <Tooltip.Arrow className="radix-tooltip-arrow" />
-                  <div
-                    className={[
-                      'rounded bg-alternative py-1 px-2 leading-none shadow',
-                      'border border-background',
-                    ].join(' ')}
-                  >
-                    <span className="text-xs text-foreground">
-                      您需要额外的权限才能上传文件
-                    </span>
-                  </div>
-                </Tooltip.Content>
-              </Tooltip.Portal>
-            )}
-          </Tooltip.Root>
-          <Tooltip.Root delayDuration={0}>
-            <Tooltip.Trigger className="w-full">
-              <Button
-                icon={<FolderPlus size={16} strokeWidth={2} />}
-                type="text"
-                disabled={!canUpdateStorage || breadcrumbs.length === 0}
-                onClick={() => addNewFolderPlaceholder(-1)}
-              >
-                创建文件夹
-              </Button>
-            </Tooltip.Trigger>
-            {!canUpdateStorage && (
-              <Tooltip.Portal>
-                <Tooltip.Content side="bottom">
-                  <Tooltip.Arrow className="radix-tooltip-arrow" />
-                  <div
-                    className={[
-                      'rounded bg-alternative py-1 px-2 leading-none shadow',
-                      'border border-background',
-                    ].join(' ')}
-                  >
-                    <span className="text-xs text-foreground">
-                    您需要额外的权限才能创建文件夹
-                    </span>
-                  </div>
-                </Tooltip.Content>
-              </Tooltip.Portal>
-            )}
-          </Tooltip.Root>
+          <ButtonTooltip
+            icon={<Upload size={16} strokeWidth={2} />}
+            type="text"
+            disabled={!canUpdateStorage || breadcrumbs.length === 0}
+            onClick={onSelectUpload}
+            tooltip={{
+              content: {
+                side: 'bottom',
+                text: !canUpdateStorage
+                  ? '您需要额外的权限才能上传文件'
+                  : undefined,
+              },
+            }}
+          >
+            Upload files
+          </ButtonTooltip>
+          <ButtonTooltip
+            icon={<FolderPlus size={16} strokeWidth={2} />}
+            type="text"
+            disabled={!canUpdateStorage || breadcrumbs.length === 0}
+            onClick={() => addNewFolderPlaceholder(-1)}
+            tooltip={{
+              content: {
+                side: 'bottom',
+                text: !canUpdateStorage
+                  ? '您需要额外的权限才能创建文件夹'
+                  : undefined,
+              },
+            }}
+          >
+            Create folder
+          </ButtonTooltip>
         </div>
 
         <div className="h-6 border-r border-control" />

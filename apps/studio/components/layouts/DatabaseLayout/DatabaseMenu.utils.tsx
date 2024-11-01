@@ -84,12 +84,12 @@ export const generateDatabaseMenu = (
       ],
     },
     // {
-    //   title: 'Platform',
+    //   title: '平台',
     //   items: [
     //     ...(IS_PLATFORM
     //       ? [
     //           {
-    //             name: 'Backups',
+    //             name: '备份',
     //             key: 'backups',
     //             url: pitrEnabled
     //               ? `/project/${ref}/database/backups/pitr`
@@ -99,15 +99,16 @@ export const generateDatabaseMenu = (
     //         ]
     //       : []),
     //     {
-    //       name: 'Wrappers',
-    //       key: 'wrappers',
-    //       url: `/project/${ref}/database/wrappers`,
+    //       name: '迁移',
+    //       key: 'migrations',
+    //       url: `/project/${ref}/database/migrations`,
     //       items: [],
     //     },
     //     {
-    //       name: 'Migrations',
-    //       key: 'migrations',
-    //       url: `/project/${ref}/database/migrations`,
+    //       name: '包装器',
+    //       key: 'wrappers',
+    //       url: `/project/${ref}/integrations/wrappers`,
+    //       rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
     //       items: [],
     //     },
     //     ...(!!pgNetExtensionExists
@@ -115,17 +116,8 @@ export const generateDatabaseMenu = (
     //           {
     //             name: 'Webhooks',
     //             key: 'hooks',
-    //             url: `/project/${ref}/database/hooks`,
-    //             items: [],
-    //           },
-    //         ]
-    //       : []),
-    //     ...(!!cronUiEnabled
-    //       ? [
-    //           {
-    //             name: 'Cron Jobs',
-    //             key: 'cron-jobs',
-    //             url: `/project/${ref}/database/cron-jobs`,
+    //             url: `/project/${ref}/integrations/hooks`,
+    //             rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
     //             items: [],
     //           },
     //         ]

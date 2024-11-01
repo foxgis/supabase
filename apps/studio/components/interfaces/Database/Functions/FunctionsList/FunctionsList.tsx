@@ -17,9 +17,18 @@ import { useSchemasQuery } from 'data/database/schemas-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
-import { Input } from 'ui'
+import {
+  AiIconAnimation,
+  Button,
+  Input,
+  Tooltip_Shadcn_,
+  TooltipContent_Shadcn_,
+  TooltipTrigger_Shadcn_,
+} from 'ui'
 import ProtectedSchemaWarning from '../../ProtectedSchemaWarning'
 import FunctionList from './FunctionList'
+import { useAppStateSnapshot } from 'state/app-state'
+import { useIsDatabaseFunctionsAssistantEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 
 interface FunctionsListProps {
   createFunction: () => void
@@ -32,10 +41,13 @@ const FunctionsList = ({
   editFunction = noop,
   deleteFunction = noop,
 }: FunctionsListProps) => {
-  const { project } = useProjectContext()
   const router = useRouter()
   const { search } = useParams()
+  const { project } = useProjectContext()
+  const { setAiAssistantPanel } = useAppStateSnapshot()
+  const enableFunctionsAssistant = useIsDatabaseFunctionsAssistantEnabled()
   const { selectedSchema, setSelectedSchema } = useQuerySchemaState()
+
   const filterString = search ?? ''
 
   const setFilterString = (str: string) => {
@@ -121,20 +133,43 @@ const FunctionsList = ({
               />
             </div>
 
-            {!isLocked && (
-              <ButtonTooltip
-                disabled={!canCreateFunctions}
-                onClick={() => createFunction()}
-                tooltip={{
-                  content: {
-                    side: 'bottom',
-                    text: '您需要额外权限才能创建函数',
-                  },
-                }}
-              >
-                创建一个新函数
-              </ButtonTooltip>
-            )}
+            <div className="flex items-center gap-x-2">
+              {!isLocked && (
+                <ButtonTooltip
+                  disabled={!canCreateFunctions}
+                  onClick={() => createFunction()}
+                  tooltip={{
+                    content: {
+                      side: 'bottom',
+                      text: !canCreateFunctions
+                        ? '您需要额外权限才能创建函数'
+                        : undefined,
+                    },
+                  }}
+                >
+                  创建新函数
+                </ButtonTooltip>
+              )}
+              {enableFunctionsAssistant && (
+                <Tooltip_Shadcn_>
+                  <TooltipTrigger_Shadcn_ asChild>
+                    <Button
+                      type="default"
+                      className="px-1 pointer-events-auto"
+                      icon={
+                        <AiIconAnimation className="scale-75 [&>div>div]:border-black dark:[&>div>div]:border-white" />
+                      }
+                      onClick={() => setAiAssistantPanel({ open: true, editor: 'functions' })}
+                    />
+                  </TooltipTrigger_Shadcn_>
+                  <TooltipContent_Shadcn_ side="bottom">
+                    {!canCreateFunctions
+                      ? '您需要额外权限才能创建函数'
+                      : '使用 Supabase 助手创建'}
+                  </TooltipContent_Shadcn_>
+                </Tooltip_Shadcn_>
+              )}
+            </div>
           </div>
 
           {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="函数" />}

@@ -72,7 +72,9 @@ const ColumnList = ({
             tooltip={{
               content: {
                 side: 'bottom',
-                text: '您需要额外的权限才能创建列',
+                text: !canUpdateColumns
+                  ? '您需要额外的权限才能创建列'
+                  : undefined,
               },
             }}
           >

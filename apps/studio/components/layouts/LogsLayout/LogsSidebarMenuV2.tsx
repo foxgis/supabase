@@ -11,7 +11,7 @@ import { useContentQuery } from 'data/content/content-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { useFlag } from 'hooks/ui/useFlag'
-import { ArrowUpRight, ChevronRight, FilePlus, Plus } from 'lucide-react'
+import { ArrowUpRight, ChevronRight, DatabaseIcon, FilePlus, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -30,6 +30,7 @@ import {
   Separator,
 } from 'ui'
 import {
+  InnerSideBarEmptyPanel,
   InnerSideBarFilters,
   InnerSideBarFilterSearchInput,
   InnerSideMenuItem,
@@ -276,14 +277,16 @@ export function LogsSidebarMenuV2() {
           </div>
         )}
         {savedQueries.length === 0 && (
-          <div className="mx-4">
-            <Alert_Shadcn_ className="p-3">
-              <AlertTitle_Shadcn_ className="text-xs">还未创建查询</AlertTitle_Shadcn_>
-              <AlertDescription_Shadcn_ className="text-xs">
-                您可以使用左上角的“创建查询”按钮创建和保存查询。
-              </AlertDescription_Shadcn_>
-            </Alert_Shadcn_>
-          </div>
+          <InnerSideBarEmptyPanel
+            className="mx-4"
+            title="还未创建查询"
+            description="创建和保存查询以便在日志浏览器中使用"
+            actions={
+              <Button asChild type="default">
+                <Link href={`/project/${ref}/logs/explorer`}>创建查询</Link>
+              </Button>
+            }
+          />
         )}
         {savedQueries.map((query) => (
           <SavedQueriesItem item={query} key={query.id} />

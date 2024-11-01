@@ -1,24 +1,30 @@
 import Link from 'next/link'
 
-import type { AutoApiService } from 'data/config/project-api-query'
+import { useParams } from 'common'
+import { getAPIKeys, useProjectSettingsV2Query } from 'data/config/project-settings-v2-query'
 import CodeSnippet from './CodeSnippet'
 import Snippets from './Snippets'
 
 interface AuthenticationProps {
-  autoApiService: AutoApiService
   selectedLang: 'bash' | 'js'
   showApiKey: string
 }
 
-const Authentication = ({ autoApiService, selectedLang, showApiKey }: AuthenticationProps) => {
+const Authentication = ({ selectedLang, showApiKey }: AuthenticationProps) => {
+  const { ref: projectRef } = useParams()
+  const { data: settings } = useProjectSettingsV2Query({ projectRef })
+
+  const { anonKey, serviceKey } = getAPIKeys(settings)
+  const endpoint = settings?.app_config?.endpoint ?? ''
+
   // [Joshen] ShowApiKey should really be a boolean, its confusing
   const defaultApiKey =
     showApiKey !== 'SUPABASE_KEY'
-      ? autoApiService?.defaultApiKey ?? 'SUPABASE_CLIENT_API_KEY'
+      ? anonKey?.api_key ?? 'SUPABASE_CLIENT_API_KEY'
       : 'SUPABASE_CLIENT_API_KEY'
   const serviceApiKey =
     showApiKey !== 'SUPABASE_KEY'
-      ? autoApiService?.serviceApiKey ?? 'SUPABASE_SERVICE_KEY'
+      ? serviceKey?.api_key ?? 'SUPABASE_SERVICE_KEY'
       : 'SUPABASE_SERVICE_KEY'
 
   return (
@@ -48,9 +54,7 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
             .
           </p>
           <p>
-            我们已经提供了一个客户端 key 供您开始使用。您很快就可以添加任意数量的 key。您可以在{' '}
-            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API 设置</Link>{' '}
-            页面找到 <code>anon</code> key。
+            我们已经提供了一个客户端 key 供您使用，您可以添加任意数量的 key，您可以在<Link href={`/project/${projectRef}/settings/api`}>API 设置</Link>页面查看 <code>anon</code> key。
           </p>
         </article>
         <article className="code">
@@ -60,7 +64,7 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
           />
           <CodeSnippet
             selectedLang={selectedLang}
-            snippet={Snippets.authKeyExample(defaultApiKey, autoApiService.endpoint, {
+            snippet={Snippets.authKeyExample(defaultApiKey, endpoint, {
               showBearer: false,
             })}
           />
@@ -77,9 +81,7 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
             在本文档中，我们将使用 <code>SERVICE_KEY</code> 表示服务端 key。
           </p>
           <p>
-            我们已经提供了一个服务端 key 供您开始使用。您很快就可以添加任意数量的 key。您可以在{' '}
-            <Link href={`/project/${autoApiService.project.ref}/settings/api`}>API 设置</Link>{' '}
-            页面中找到 <code>service_role</code> key。
+            我们已经提供了一个服务端 key 供您使用，您可以添加任意数量的 key，您可以在<Link href={`/project/${projectRef}/settings/api`}>API 设置</Link>页面查看 <code>service_role</code> key。
           </p>
         </article>
         <article className="code">
@@ -89,9 +91,7 @@ const Authentication = ({ autoApiService, selectedLang, showApiKey }: Authentica
           />
           <CodeSnippet
             selectedLang={selectedLang}
-            snippet={Snippets.authKeyExample(serviceApiKey, autoApiService.endpoint, {
-              keyName: 'SERVICE_KEY',
-            })}
+            snippet={Snippets.authKeyExample(serviceApiKey, endpoint, { keyName: 'SERVICE_KEY' })}
           />
         </article>
       </div>

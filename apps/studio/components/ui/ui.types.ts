@@ -6,5 +6,5 @@ export interface Route {
   icon: ReactNode
   link?: string
   disabled?: boolean
-  target?: string
+  linkComponent?: ReactNode
 }

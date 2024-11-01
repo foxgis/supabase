@@ -12,10 +12,10 @@ import SchemaSelector from 'components/ui/SchemaSelector'
 import { useSchemasQuery } from 'data/database/schemas-query'
 import { ENTITY_TYPE, ENTITY_TYPE_LABELS } from 'data/entity-types/entity-type-constants'
 import { useEntityTypesQuery } from 'data/entity-types/entity-types-infinite-query'
-import { useTableQuery } from 'data/tables/table-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useLocalStorage } from 'hooks/misc/useLocalStorage'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
+import useTable from 'hooks/misc/useTable'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
 import {
@@ -67,7 +67,7 @@ const TableEditorMenu = () => {
     {
       projectRef: project?.ref,
       connectionString: project?.connectionString,
-      schema: selectedSchema,
+      schemas: [selectedSchema],
       search: searchText.trim() || undefined,
       sort,
       filterTypes: visibleTypes,
@@ -96,15 +96,7 @@ const TableEditorMenu = () => {
   )
   const isLocked = protectedSchemas.some((s) => s.id === schema?.id)
 
-  const { data: selectedTable } = useTableQuery(
-    {
-      projectRef: project?.ref,
-      connectionString: project?.connectionString,
-      id: Number(id),
-    },
-    // only run if we have a selected table
-    { enabled: Boolean(id) }
-  )
+  const { data: selectedTable } = useTable(id !== undefined ? Number(id) : undefined)
 
   useEffect(() => {
     if (selectedTable) {
@@ -144,7 +136,9 @@ const TableEditorMenu = () => {
                 tooltip={{
                   content: {
                     side: 'bottom',
-                    text: '您需要获取额外的权限才能新建表',
+                    text: !canCreateTables
+                      ? '您需要获取额外的权限才能新建表'
+                      : undefined,
                   },
                 }}
               >
