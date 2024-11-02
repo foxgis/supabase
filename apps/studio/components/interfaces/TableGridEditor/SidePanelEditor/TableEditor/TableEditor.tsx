@@ -2,10 +2,11 @@ import type { PostgresTable } from '@supabase/postgres-meta'
 import { isEmpty, isUndefined, noop } from 'lodash'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Alert, Badge, Button, Checkbox, Input, SidePanel } from 'ui'
+import { Badge, Checkbox, Input, SidePanel } from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
+import { DocsButton } from 'components/ui/DocsButton'
 import { useDatabasePublicationsQuery } from 'data/database-publications/database-publications-query'
 import {
   CONSTRAINT_TYPE,
@@ -21,7 +22,8 @@ import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { useUrlState } from 'hooks/ui/useUrlState'
 import { EXCLUDED_SCHEMAS_WITHOUT_EXTENSIONS } from 'lib/constants/schemas'
-import { ExternalLink } from 'lucide-react'
+import { useTableEditorStateSnapshot } from 'state/table-editor'
+import { Admonition } from 'ui-patterns'
 import ActionBar from '../ActionBar'
 import type { ForeignKey } from '../ForeignKeySelector/ForeignKeySelector.types'
 import { formatForeignKeys } from '../ForeignKeySelector/ForeignKeySelector.utils'
@@ -39,7 +41,6 @@ import {
   generateTableFieldFromPostgresTable,
   validateFields,
 } from './TableEditor.utils'
-import { useTableEditorStateSnapshot } from 'state/table-editor'
 
 export interface TableEditorProps {
   table?: PostgresTable
@@ -304,47 +305,39 @@ const TableEditor = ({
           size="medium"
         />
         {tableFields.isRLSEnabled ? (
-          <Alert
-            withIcon
-            variant="info"
-            className="!px-4 !py-3 !mt-3"
+          <Admonition
+            type="default"
+            className="!mt-3"
             title="必须设置策略才能查询表"
+            description={
+              <>
+                您必须创建访问策略后才能查询这张表的数据。
+                如果没有访问策略，查询这张表将会返回{' '}<u className="text-foreground">空数组</u>{' '}。
+                {isNewRecord ? '您可以在保存这张表之后再创建访问策略。' : ''}
+              </>
+            }
           >
-            <p>
-              您必须编写访问策略后才能查询这张表的数据。
-              如果没有访问策略，查询这张表将会返回{' '}<u className="text-foreground">空数组</u>{' '}。
-              {isNewRecord ? '您可以在保存这张表之后再创建访问策略。' : ''}
-            </p>
-            <Button asChild type="default" icon={<ExternalLink />} className="mt-4">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://supabase.com/docs/guides/auth/row-level-security"
-              >
-                RLS 文档
-              </a>
-            </Button>
-          </Alert>
+            <DocsButton
+              abbrev={false}
+              href="https://supabase.com/docs/guides/auth/row-level-security"
+            />
+          </Admonition>
         ) : (
-          <Alert
-            withIcon
-            variant="warning"
-            className="!px-4 !py-3 mt-3"
+          <Admonition
+            type="warning"
+            className="!mt-3"
             title="您当前允许匿名用户访问表"
+            description={
+              <>
+                {tableFields.name ? `数据表${tableFields.name}` : '您的数据表'}将可公开读写。
+              </>
+            }
           >
-            <p>
-              {tableFields.name ? `数据表${tableFields.name}` : '您的数据表'}将可公开读写。
-            </p>
-            <Button asChild type="default" icon={<ExternalLink />} className="mt-4">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://supabase.com/docs/guides/auth/row-level-security"
-              >
-                RLS 文档
-              </a>
-            </Button>
-          </Alert>
+            <DocsButton
+              abbrev={false}
+              href="https://supabase.com/docs/guides/auth/row-level-security"
+            />
+          </Admonition>
         )}
         {realtimeEnabled && (
           <Checkbox

@@ -23,6 +23,7 @@ import { useIsAPIDocsSidePanelEnabled } from '../App/FeaturePreview/FeaturePrevi
 import { navigateToSection } from './Content/Content.utils'
 import { DOCS_RESOURCE_CONTENT } from './ProjectAPIDocs.constants'
 import { ChevronLeft, Code, ExternalLink } from 'lucide-react'
+import { DocsButton } from 'components/ui/DocsButton'
 
 const SecondLevelNav = () => {
   const { ref } = useParams()
@@ -154,17 +155,7 @@ const SecondLevelNav = () => {
             <p className="text-xs !leading-normal">
               前往我们的文档站点查看完整的 API 文档。
             </p>
-            <Button
-              asChild
-              className="!mt-2"
-              size="tiny"
-              type="default"
-              icon={<ExternalLink strokeWidth={1.5} />}
-            >
-              <Link href={content[section].docsUrl} target="_blank" rel="noreferrer">
-                文档
-              </Link>
-            </Button>
+            <DocsButton className="!mt-2" href={content[section].docsUrl} />
           </AlertDescription_Shadcn_>
         </Alert_Shadcn_>
       </div>

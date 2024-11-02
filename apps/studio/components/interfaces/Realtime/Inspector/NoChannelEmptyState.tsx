@@ -1,3 +1,4 @@
+import { DocsButton } from 'components/ui/DocsButton'
 import { ExternalLink } from 'lucide-react'
 import { Button } from 'ui'
 
@@ -17,11 +18,7 @@ const NoChannelEmptyState = () => {
           <p className="text-foreground">不确定要怎么做？</p>
           <p className="text-foreground-lighter text-xs">请浏览我们的文档</p>
         </div>
-        <Button type="default" iconRight={<ExternalLink />}>
-          <a href="https://supabase.com/docs/guides/realtime" target="_blank" rel="noreferrer">
-            文档
-          </a>
-        </Button>
+        <DocsButton href="https://supabase.com/docs/guides/realtime" />
       </div>
     </div>
   )

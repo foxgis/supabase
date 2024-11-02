@@ -11,6 +11,7 @@ import {
 import { FormHeader } from 'components/ui/Forms/FormHeader'
 import type { NextPageWithLayout } from 'types'
 import { Button } from 'ui'
+import { DocsButton } from 'components/ui/DocsButton'
 
 const DatabaseEnumeratedTypes: NextPageWithLayout = () => {
   return (
@@ -23,18 +24,6 @@ const DatabaseEnumeratedTypes: NextPageWithLayout = () => {
             description="您可以在数据库表或函数中使用的自定义数据类型。"
           />
         </ScaffoldSectionContent>
-        <ScaffoldSectionDetail className="flex items-center justify-end">
-          <Button asChild type="default" icon={<ExternalLink strokeWidth={1.5} />}>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              className="no-underline"
-              href="https://www.postgresql.org/docs/current/datatype-enum.html"
-            >
-              文档
-            </a>
-          </Button>
-        </ScaffoldSectionDetail>
         <div className="col-span-12 mt-3">
           <EnumeratedTypes />
         </div>
