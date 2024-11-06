@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import type { PostgresTable } from '@supabase/postgres-meta'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { useParams } from 'common'
@@ -7,9 +6,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useTrackedState } from 'components/grid/store/Store'
 import { getEntityLintDetails } from 'components/interfaces/TableGridEditor/TableEntity.utils'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import APIDocsButton from 'components/ui/APIDocsButton'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
 import { useDatabasePublicationsQuery } from 'data/database-publications/database-publications-query'
 import { useDatabasePublicationUpdateMutation } from 'data/database-publications/database-publications-update-mutation'
@@ -20,7 +21,16 @@ import { useTableUpdateMutation } from 'data/tables/table-update-mutation'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
-import { Button, PopoverContent_Shadcn_, PopoverTrigger_Shadcn_, Popover_Shadcn_, cn } from 'ui'
+import {
+  Button,
+  PopoverContent_Shadcn_,
+  PopoverTrigger_Shadcn_,
+  Popover_Shadcn_,
+  TooltipContent_Shadcn_,
+  TooltipTrigger_Shadcn_,
+  Tooltip_Shadcn_,
+  cn,
+} from 'ui'
 import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { RoleImpersonationPopover } from '../RoleImpersonationSelector'
@@ -63,6 +73,10 @@ const GridHeaderActions = ({ table, entityType }: GridHeaderActionsProps) => {
   const [showEnableRealtime, setShowEnableRealtime] = useState(false)
   const [open, setOpen] = useState(false)
   const [rlsConfirmModalOpen, setRlsConfirmModalOpen] = useState(false)
+
+  const state = useTrackedState()
+  const { selectedRows } = state
+  const showHeaderActions = selectedRows.size === 0
 
   const projectRef = project?.ref
   const { data } = useDatabasePoliciesQuery({
@@ -157,253 +171,225 @@ const GridHeaderActions = ({ table, entityType }: GridHeaderActionsProps) => {
 
   return (
     <>
-      <div className="flex items-center gap-2">
-        {isReadOnly && (
-          <Tooltip.Root delayDuration={0}>
-            <Tooltip.Trigger className="w-full">
-              <div className="border border-strong rounded bg-overlay-hover px-3 py-1 text-xs">
-                以只读模式查看
-              </div>
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-              <Tooltip.Content side="bottom">
-                <Tooltip.Arrow className="radix-tooltip-arrow" />
-                <div
-                  className={[
-                    'rounded bg-alternative py-1 px-2 leading-none shadow',
-                    'border border-background',
-                  ].join(' ')}
-                >
-                  <span className="text-xs text-foreground">
-                    您需要额外的权限才能管理您的项目数据
-                  </span>
+      {showHeaderActions && (
+        <div className="flex items-center gap-x-2">
+          {isReadOnly && (
+            <Tooltip_Shadcn_>
+              <TooltipTrigger_Shadcn_ asChild>
+                <div className="border border-strong rounded bg-overlay-hover px-3 py-1 text-xs">
+                  以只读模式查看
                 </div>
-              </Tooltip.Content>
-            </Tooltip.Portal>
-          </Tooltip.Root>
-        )}
-
-        {isTable ? (
-          (table as PostgresTable).rls_enabled ? (
-            <>
-              {policies.length < 1 && !isLocked ? (
-                <Tooltip.Root delayDuration={0}>
-                  <Tooltip.Trigger asChild className="w-full">
-                    <Button
-                      asChild
-                      type="default"
-                      className="group"
-                      icon={<PlusCircle strokeWidth={1.5} className="text-foreground-muted" />}
-                    >
-                      <Link
-                        passHref
-                        href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
-                      >
-                        添加 RLS 策略
-                      </Link>
-                    </Button>
-                  </Tooltip.Trigger>
-                  <Tooltip.Portal>
-                    <Tooltip.Content side="bottom">
-                      <Tooltip.Arrow className="radix-tooltip-arrow" />
-                      <div
-                        className={[
-                          'rounded bg-alternative py-1 px-2 leading-none shadow',
-                          'border border-background',
-                        ].join(' ')}
-                      >
-                        <div className="text-xs text-foreground p-1 leading-relaxed">
-                          <p>表已启用了 RLS 但未设置任何策略。</p>
-                          <p>Select 查询可能会返回空结果。</p>
-                        </div>
-                      </div>
-                    </Tooltip.Content>
-                  </Tooltip.Portal>
-                </Tooltip.Root>
-              ) : (
-                <Button
-                  asChild
-                  type={policies.length < 1 && !isLocked ? 'warning' : 'default'}
-                  className="group"
-                  icon={
-                    isLocked || policies.length > 0 ? (
-                      <div
-                        className={cn(
-                          'flex items-center justify-center rounded-full bg-border-stronger h-[16px]',
-                          policies.length > 9 ? ' px-1' : 'w-[16px]',
-                          ''
-                        )}
-                      >
-                        <span className="text-[11px] text-foreground font-mono text-center">
-                          {policies.length}
-                        </span>
-                      </div>
-                    ) : (
-                      <PlusCircle strokeWidth={1.5} />
-                    )
-                  }
-                >
-                  <Link
-                    passHref
-                    href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
+              </TooltipTrigger_Shadcn_>
+              <TooltipContent_Shadcn_ side="bottom">
+                您需要额外的权限才能管理项目数据
+              </TooltipContent_Shadcn_>
+            </Tooltip_Shadcn_>
+          )}
+          {isTable ? (
+            (table as PostgresTable).rls_enabled ? (
+              <>
+                {policies.length < 1 && !isLocked ? (
+                  <ButtonTooltip
+                    asChild
+                    type="default"
+                    className="group"
+                    icon={<PlusCircle strokeWidth={1.5} className="text-foreground-muted" />}
+                    tooltip={{
+                      content: {
+                        side: 'bottom',
+                        className: 'w-[280px]',
+                        text: '这张表的 RLS 已启用，但未设置策略。查询这张表可能返回空结果。',
+                      },
+                    }}
                   >
-                    认证策略
-                  </Link>
-                </Button>
-              )}
-            </>
-          ) : (
+                    <Link
+                      passHref
+                      href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
+                    >
+                      添加 RLS 策略
+                    </Link>
+                  </ButtonTooltip>
+                ) : (
+                  <Button
+                    asChild
+                    type={policies.length < 1 && !isLocked ? 'warning' : 'default'}
+                    className="group"
+                    icon={
+                      isLocked || policies.length > 0 ? (
+                        <div
+                          className={cn(
+                            'flex items-center justify-center rounded-full bg-border-stronger h-[16px]',
+                            policies.length > 9 ? ' px-1' : 'w-[16px]',
+                            ''
+                          )}
+                        >
+                          <span className="text-[11px] text-foreground font-mono text-center">
+                            {policies.length}
+                          </span>
+                        </div>
+                      ) : (
+                        <PlusCircle strokeWidth={1.5} />
+                      )
+                    }
+                  >
+                    <Link
+                      passHref
+                      href={`/project/${projectRef}/auth/policies?search=${table.id}&schema=${table.schema}`}
+                    >
+                      Auth {policies.length > 1 ? 'policies' : 'policy'}
+                    </Link>
+                  </Button>
+                )}
+              </>
+            ) : (
+              <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+                <PopoverTrigger_Shadcn_ asChild>
+                  <Button type="warning" icon={<Lock strokeWidth={1.5} />}>
+                    RLS 已禁用
+                  </Button>
+                </PopoverTrigger_Shadcn_>
+                <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
+                  <h3 className="flex items-center gap-2">
+                    <Lock size={16} /> 行级安全性（RLS）
+                  </h3>
+                  <div className="grid gap-2 mt-4 text-foreground-light text-sm">
+                    <p>
+                      使用行级安全性，您可以限制谁可以读、写和更新这张表的数据。
+                    </p>
+                    <p>
+                      当 RLS 启用后，匿名用户将不能读写这张表的数据。
+                    </p>
+                    {!isLocked && (
+                      <div className="mt-2">
+                        <Button
+                          type="default"
+                          onClick={() => setRlsConfirmModalOpen(!rlsConfirmModalOpen)}
+                        >
+                          为这张表启用 RLS
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </PopoverContent_Shadcn_>
+              </Popover_Shadcn_>
+            )
+          ) : null}
+          {isView && viewHasLints && (
             <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
-                <Button type="warning" icon={<Lock strokeWidth={1.5} />}>
-                  RLS 已禁用
+                <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
+                  Security Definer 视图
                 </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
                 <h3 className="flex items-center gap-2">
-                  <Lock size={16} /> 行级安全策略（RLS）
+                  <Unlock size={16} /> 保护视图
                 </h3>
                 <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                   <p>
-                    在这张表中，您可以使用行级安全性来限制和控制谁可以读取、写入和更新数据。
+                    这个视图被定义为 Security Definer 属性，授予视图创建者角色（postgres）的权限，而不是查询用户自己的角色权限。
                   </p>
+
                   <p>
-                    启用 RLS 后，匿名用户将无法在表中读取/写入数据。
+                    当这个视图处于 public 模式，可以使用 API 访问该视图。
                   </p>
-                  {!isLocked && (
-                    <div className="mt-2">
-                      <Button
-                        type="default"
-                        onClick={() => setRlsConfirmModalOpen(!rlsConfirmModalOpen)}
+
+                  <div className="mt-2">
+                    <Button type="default" asChild>
+                      <Link
+                        target="_blank"
+                        href={`/project/${ref}/advisors/security?preset=${matchingViewLint?.level}&id=${matchingViewLint?.cache_key}`}
                       >
-                        启用此表的 RLS
-                      </Button>
-                    </div>
-                  )}
+                        了解更多
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </PopoverContent_Shadcn_>
             </Popover_Shadcn_>
-          )
-        ) : null}
+          )}
+          {isMaterializedView && materializedViewHasLints && (
+            <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+              <PopoverTrigger_Shadcn_ asChild>
+                <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
+                  Security Definer 物化视图
+                </Button>
+              </PopoverTrigger_Shadcn_>
+              <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
+                <h3 className="flex items-center gap-2">
+                  <Unlock size={16} /> 保护物化视图
+                </h3>
+                <div className="grid gap-2 mt-4 text-foreground-light text-sm">
+                  <p>
+                    这个物化视图被定义为 Security Definer 属性，授予视图创建者角色（postgres）的权限，而不是查询用户自己的角色权限。
+                  </p>
 
-        {isView && viewHasLints && (
-          <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
-            <PopoverTrigger_Shadcn_ asChild>
-              <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                Security Definer 视图
-              </Button>
-            </PopoverTrigger_Shadcn_>
-            <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
-              <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> 保护你的视图
-              </h3>
-              <div className="grid gap-2 mt-4 text-foreground-light text-sm">
-                <p>
-                  这个视图是用 Security Definer 属性定义的，它赋予了它创建者（Postgres）的权限，而不是查询用户的权限。
-                </p>
+                  <p>
+                    当这个物化视图处于 public 模式，可以使用 API 访问该视图。
+                  </p>
 
-                <p>
-                  由于这个视图在 public 模式下，所以可以通过你的项目的 API 访问。
-                </p>
-
-                <div className="mt-2">
-                  <Button type="default" asChild>
-                    <Link
-                      target="_blank"
-                      href={`/project/${ref}/advisors/security?preset=${matchingViewLint?.level}&id=${matchingViewLint?.cache_key}`}
-                    >
-                      了解更多
-                    </Link>
-                  </Button>
+                  <div className="mt-2">
+                    <Button type="default" asChild>
+                      <Link
+                        target="_blank"
+                        href={`/project/${ref}/advisors/security?preset=${matchingMaterializedViewLint?.level}&id=${matchingMaterializedViewLint?.cache_key}`}
+                      >
+                        了解更多
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </PopoverContent_Shadcn_>
-          </Popover_Shadcn_>
-        )}
+              </PopoverContent_Shadcn_>
+            </Popover_Shadcn_>
+          )}
+          {isForeignTable && entityType.schema === 'public' && (
+            <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+              <PopoverTrigger_Shadcn_ asChild>
+                <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
+                  外部表可通过 API 访问
+                </Button>
+              </PopoverTrigger_Shadcn_>
+              <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
+                <h3 className="flex items-center gap-2">
+                  <Unlock size={16} /> 保护外部表
+                </h3>
+                <div className="grid gap-2 mt-4 text-foreground-light text-sm">
+                  <p>
+                    外部表不执行 RLS。将外部表移到不被 Postgrest 公开的私有模式或者直接禁用 Postgrest。
+                  </p>
 
-        {isMaterializedView && materializedViewHasLints && (
-          <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
-            <PopoverTrigger_Shadcn_ asChild>
-              <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                Security Definer 物化视图
-              </Button>
-            </PopoverTrigger_Shadcn_>
-            <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
-              <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> 保护你的物化视图
-              </h3>
-              <div className="grid gap-2 mt-4 text-foreground-light text-sm">
-                <p>
-                  这个视图是用 Security Definer 属性定义的，它赋予了它创建者（Postgres）的权限，而不是查询用户的权限。
-                </p>
-
-                <p>
-                  由于这个视图在 public 模式下，所以可以通过你的项目的 API 访问。
-                </p>
-
-                <div className="mt-2">
-                  <Button type="default" asChild>
-                    <Link
-                      target="_blank"
-                      href={`/project/${ref}/advisors/security?preset=${matchingMaterializedViewLint?.level}&id=${matchingMaterializedViewLint?.cache_key}`}
-                    >
-                      了解更多
-                    </Link>
-                  </Button>
+                  <div className="mt-2">
+                    <Button type="default" asChild>
+                      <Link
+                        target="_blank"
+                        href="https://github.com/orgs/supabase/discussions/21647"
+                      >
+                        了解更多
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </PopoverContent_Shadcn_>
-          </Popover_Shadcn_>
-        )}
-
-        {isForeignTable && entityType.schema === 'public' && (
-          <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
-            <PopoverTrigger_Shadcn_ asChild>
-              <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                通过 API 访问外部表
-              </Button>
-            </PopoverTrigger_Shadcn_>
-            <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
-              <h3 className="flex items-center gap-2">
-                <Unlock size={16} /> 保护外部表
-              </h3>
-              <div className="grid gap-2 mt-4 text-foreground-light text-sm">
-                <p>
-                  外部表无法应用 RLS。请将它们移动到一个私有的模式，使其不被暴露给 Postgrest 或禁用 Postgrest。
-                </p>
-
-                <div className="mt-2">
-                  <Button type="default" asChild>
-                    <Link target="_blank" href="https://github.com/orgs/supabase/discussions/21647">
-                      了解更多
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </PopoverContent_Shadcn_>
-          </Popover_Shadcn_>
-        )}
-
-        <RoleImpersonationPopover serviceRoleLabel="postgres" />
-
-        {isTable && realtimeEnabled && (
-          <Button
-            type="default"
-            icon={
-              <MousePointer2
-                strokeWidth={1.5}
-                className={isRealtimeEnabled ? 'text-brand' : 'text-foreground-muted'}
-              />
-            }
-            onClick={() => setShowEnableRealtime(true)}
-          >
-            实时通信 {isRealtimeEnabled ? '已开启' : '已关闭'}
-          </Button>
-        )}
-
-        {doesHaveAutoGeneratedAPIDocs && <APIDocsButton section={['entities', table.name]} />}
-      </div>
-
+              </PopoverContent_Shadcn_>
+            </Popover_Shadcn_>
+          )}
+          <RoleImpersonationPopover serviceRoleLabel="postgres" />
+          {isTable && realtimeEnabled && (
+            <Button
+              type="default"
+              icon={
+                <MousePointer2
+                  strokeWidth={1.5}
+                  className={isRealtimeEnabled ? 'text-brand' : 'text-foreground-muted'}
+                />
+              }
+              onClick={() => setShowEnableRealtime(true)}
+            >
+              实时通信 {isRealtimeEnabled ? '已开启' : '已关闭'}
+            </Button>
+          )}
+          {doesHaveAutoGeneratedAPIDocs && <APIDocsButton section={['entities', table.name]} />}
+        </div>
+      )}
       <ConfirmationModal
         visible={showEnableRealtime}
         loading={isTogglingRealtime}
@@ -428,7 +414,6 @@ const GridHeaderActions = ({ table, entityType }: GridHeaderActionsProps) => {
           )}
         </div>
       </ConfirmationModal>
-
       {entityType?.type === ENTITY_TYPE.TABLE && (
         <ConfirmModal
           danger={(table as PostgresTable).rls_enabled}

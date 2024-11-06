@@ -9,16 +9,21 @@ export const generateDatabaseMenu = (
     pgNetExtensionExists: boolean
     pitrEnabled: boolean
     columnLevelPrivileges: boolean
-    cronUiEnabled: boolean
   }
 ): ProductMenuGroup[] => {
   const ref = project?.ref ?? 'default'
-  const { pgNetExtensionExists, pitrEnabled, columnLevelPrivileges, cronUiEnabled } = flags || {}
+  const { pgNetExtensionExists, pitrEnabled, columnLevelPrivileges } = flags || {}
 
   return [
     {
       title: '数据库管理',
       items: [
+        {
+          name: '表关系',
+          key: 'schemas',
+          url: `/project/${ref}/database/schemas`,
+          items: [],
+        },
         { name: '表', key: 'tables', url: `/project/${ref}/database/tables`, items: [] },
         {
           name: '函数',
@@ -128,18 +133,6 @@ export const generateDatabaseMenu = (
       title: '工具',
       items: [
         {
-          name: '表结构查看器',
-          key: 'schemas',
-          url: `/project/${ref}/database/schemas`,
-          items: [],
-        },
-        {
-          name: '查询优化',
-          key: 'query-performance',
-          url: `/project/${ref}/database/query-performance`,
-          items: [],
-        },
-        {
           name: '安全助手',
           key: 'security-advisor',
           url: `/project/${ref}/advisors/security`,
@@ -150,6 +143,13 @@ export const generateDatabaseMenu = (
           name: '性能助手',
           key: 'performance-advisor',
           url: `/project/${ref}/advisors/performance`,
+          rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
+          items: [],
+        },
+        {
+          name: '查询优化',
+          key: 'query-performance',
+          url: `/project/${ref}/advisors/query-performance`,
           rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
           items: [],
         },

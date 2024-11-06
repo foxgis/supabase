@@ -10,7 +10,7 @@ import {
 } from 'components/interfaces/Reports/Reports.queries'
 import { Presets } from 'components/interfaces/Reports/Reports.types'
 import { queriesFactory } from 'components/interfaces/Reports/Reports.utils'
-import DatabaseLayout from 'components/layouts/DatabaseLayout/DatabaseLayout'
+import AdvisorsLayout from 'components/layouts/AdvisorsLayout/AdvisorsLayout'
 import DatabaseSelector from 'components/ui/DatabaseSelector'
 import { FormHeader } from 'components/ui/Forms/FormHeader'
 import type { NextPageWithLayout } from 'types'
@@ -58,7 +58,7 @@ const QueryPerformanceReport: NextPageWithLayout = () => {
 }
 
 QueryPerformanceReport.getLayout = (page) => (
-  <DatabaseLayout title="查询优化">{page}</DatabaseLayout>
+  <AdvisorsLayout title="查询优化">{page}</AdvisorsLayout>
 )
 
 export default QueryPerformanceReport
