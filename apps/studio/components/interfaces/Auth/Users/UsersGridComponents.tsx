@@ -54,7 +54,7 @@ export const HeaderCell = ({
               }}
             >
               <SortDesc size={14} />
-              Sort descending
+              降序排序
             </DropdownMenuItem>
             <DropdownMenuItem
               className="flex items-center gap-x-2"
@@ -64,7 +64,7 @@ export const HeaderCell = ({
               }}
             >
               <SortAsc size={14} />
-              Sort ascending
+              升序排序
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -253,7 +253,7 @@ const Indexes = () => {
         }
         onCancel={() => setSelectedIndexToDelete(undefined)}
         alert={{
-          title: '此操作无法撤销',
+          title: '本操作无法撤销',
           description:
             '删除仍在使用的索引将会导致查询变慢，并且在某些情况下会导致显著的性能问题。',
         }}

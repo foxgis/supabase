@@ -237,7 +237,7 @@ export const QueryPerformance = ({
         visible={showResetgPgStatStatements}
         title="重置查询性能分析"
         description={
-          '此操作将重置用于计算查询性能的 `extensions.pg_stat_statements` 表。数据将在几分钟后重新填充。'
+          '本操作将重置用于计算查询性能的 `extensions.pg_stat_statements` 表。数据将在几分钟后重新填充。'
         }
         buttonLabel="清除表"
         buttonLoadingLabel="正在删除"

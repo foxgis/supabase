@@ -641,7 +641,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         }
       >
         <p className="text-sm">
-          此操作无法撤销。{' '}
+          本操作无法撤销。{' '}
           {selectedSnippets.length === 1
             ? `您确定想要删除 '${selectedSnippets[0]?.name}' 吗？`
             : `您确定想要删除选中的 ${selectedSnippets.length} 条查询吗？`}
@@ -659,7 +659,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         onCancel={() => setSelectedFolderToDelete(undefined)}
         onConfirm={onConfirmDeleteFolder}
         alert={{
-          title: '此操作无法撤销',
+          title: '本操作无法撤销',
           description:
             '此文件夹中的所有 SQL 代码段也讲会被久删除，无法恢复。',
         }}

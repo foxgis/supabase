@@ -56,12 +56,12 @@ const UserDropdown = ({
   })
   const { mutate: sendMagicLink, isLoading: isSendingLink } = useUserSendMagicLinkMutation({
     onSuccess: () => {
-      toast.success(`向 ${user.email} 发送 magic link`)
+      toast.success(`向 ${user.email} 发送登录链接`)
     },
   })
   const { mutate: sendOTP, isLoading: isSendingOTP } = useUserSendOTPMutation({
     onSuccess: () => {
-      toast.success(`向 ${user.phone} 发送一次性密码`)
+      toast.success(`向 ${user.phone} 发送验证码`)
     },
   })
   const { mutate: deleteUser, isLoading: isDeleting } = useUserDeleteMutation({
@@ -157,12 +157,12 @@ const UserDropdown = ({
                       }}
                     >
                       <Mail size={14} />
-                      <p>发送 magic link</p>
+                      <p>发送登录链接</p>
                     </DropdownMenuItem>
                   </TooltipTrigger_Shadcn_>
                   {!canSendMagicLink && (
                     <TooltipContent_Shadcn_ side="left">
-                      您需要额外的权限才能发送 magic link
+                      您需要额外的权限才能发送登录链接
                     </TooltipContent_Shadcn_>
                   )}
                 </Tooltip_Shadcn_>
@@ -179,12 +179,12 @@ const UserDropdown = ({
                     }}
                   >
                     <Mail size={14} />
-                    <p>发送一次性密码</p>
+                    <p>发送验证码</p>
                   </DropdownMenuItem>
                 </TooltipTrigger_Shadcn_>
                 {!canSendOtp && (
                   <TooltipContent_Shadcn_ side="left">
-                    您需要额外的权限才能发送一次性密码
+                    您需要额外的权限才能发送验证码
                   </TooltipContent_Shadcn_>
                 )}
               </Tooltip_Shadcn_>

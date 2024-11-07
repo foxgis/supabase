@@ -47,7 +47,7 @@ const DeleteFunction = ({ func, visible, setVisible }: DeleteFunctionProps) => {
         confirmString={name ?? '未知'}
         text={
           <>
-            <span>此操作将从模式</span>{' '}
+            <span>本操作将从模式</span>{' '}
             <span className="text-bold text-foreground">{schema}</span>{' '}
             <span>中删除函数</span>{' '}
             <span className="text-bold text-foreground">{name}</span>

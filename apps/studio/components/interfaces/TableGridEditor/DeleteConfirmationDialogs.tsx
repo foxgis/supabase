@@ -235,7 +235,7 @@ const DeleteConfirmationDialogs = ({
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground-light">
-            确定要删除所选列吗？此操作无法撤消。
+            确定要删除所选列吗？本操作无法撤消。
           </p>
           <Checkbox
             label="级联删除列？"
@@ -283,7 +283,7 @@ const DeleteConfirmationDialogs = ({
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground-light">
-            您确定要删除选中的表吗？此操作无法撤消。
+            您确定要删除选中的表吗？本操作无法撤消。
           </p>
           <Checkbox
             label="级联删除表？"
@@ -337,7 +337,7 @@ const DeleteConfirmationDialogs = ({
             <span>{numRows > 1 && `${numRows} `}</span>
             <span>行</span>
             <span>{numRows > 1 && ''}</span>
-            <span>？此操作无法撤消。</span>
+            <span>？本操作无法撤消。</span>
           </p>
         </div>
       </ConfirmationModal>

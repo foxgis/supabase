@@ -81,79 +81,79 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
   const mailerOtpExpiry = data?.MAILER_OTP_EXP ?? 0
   const minutes = Math.floor(mailerOtpExpiry / 60)
   const seconds = Math.floor(mailerOtpExpiry % 60)
-  const formattedExpiry = `${mailerOtpExpiry > 60 ? `${minutes} minute${minutes > 1 ? 's' : ''} ${seconds > 0 ? 'and' : ''} ` : ''}${seconds > 0 ? `${seconds} second${seconds > 1 ? 's' : ''}` : ''}`
+  const formattedExpiry = `${mailerOtpExpiry > 60 ? `${minutes} 分${minutes > 1 ? '' : ''} ${seconds > 0 ? '' : ''} ` : ''}${seconds > 0 ? `${seconds} 秒${seconds > 1 ? '' : ''}` : ''}`
 
   const { mutate: resetPassword, isLoading: isResettingPassword } = useUserResetPasswordMutation({
     onSuccess: (_, vars) => {
       setSuccessAction('send_recovery')
-      toast.success(`Sent password recovery to ${vars.user.email}`)
+      toast.success(`向 ${vars.user.email} 发送密码重置邮件`)
     },
     onError: (err) => {
-      toast.error(`Failed to send password recovery: ${err.message}`)
+      toast.error(`发送密码重置邮件失败：${err.message}`)
     },
   })
   const { mutate: sendMagicLink, isLoading: isSendingMagicLink } = useUserSendMagicLinkMutation({
     onSuccess: (_, vars) => {
       setSuccessAction('send_magic_link')
-      toast.success(`Sent magic link to ${vars.user.email}`)
+      toast.success(`向 ${vars.user.email} 发送登录链接`)
     },
     onError: (err) => {
-      toast.error(`Failed to send magic link: ${err.message}`)
+      toast.error(`发送登录链接失败：${err.message}`)
     },
   })
   const { mutate: sendOTP, isLoading: isSendingOTP } = useUserSendOTPMutation({
     onSuccess: (_, vars) => {
       setSuccessAction('send_otp')
-      toast.success(`Sent OTP to ${vars.user.phone}`)
+      toast.success(`向 ${vars.user.phone} 发送验证码`)
     },
     onError: (err) => {
-      toast.error(`Failed to send OTP: ${err.message}`)
+      toast.error(`发送验证码失败：${err.message}`)
     },
   })
   const { mutate: deleteUser } = useUserDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully deleted ${user?.email}`)
+      toast.success(`成功删除了 ${user?.email}`)
       setIsDeleteModalOpen(false)
       onDeleteSuccess()
     },
   })
   const { mutate: deleteUserMFAFactors } = useUserDeleteMFAFactorsMutation({
     onSuccess: () => {
-      toast.success("Successfully deleted the user's factors")
+      toast.success("成功删除了该用户的认证因素")
       setIsDeleteFactorsModalOpen(false)
     },
   })
   const { mutate: updateUser, isLoading: isUpdatingUser } = useUserUpdateMutation({
     onSuccess: () => {
-      toast.success('Successfully unbanned user')
+      toast.success('成功解禁了用户')
       setIsUnbanModalOpen(false)
     },
   })
 
   const handleDelete = async () => {
     await timeout(200)
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     deleteUser({ projectRef, user })
   }
 
   const handleDeleteFactors = async () => {
     await timeout(200)
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     deleteUserMFAFactors({ projectRef, userId: user.id as string })
   }
 
   const handleUnban = () => {
     if (!settings) {
-      return toast.error(`Failed to ban user: Error loading project config`)
+      return toast.error(`封禁用户失败：载入项目配置失败`)
     } else if (user.id === undefined) {
-      return toast.error(`Failed to ban user: User ID not found`)
+      return toast.error(`封禁用户失败：未找到用户 ID`)
     }
 
     const endpoint = settings.app_config?.endpoint
     const { serviceKey } = getAPIKeys(settings)
 
-    if (!endpoint) return toast.error(`Failed to unban user: Unable to retrieve API endpoint`)
-    if (!serviceKey?.api_key) return toast.error(`Failed to unban user: Unable to retrieve API key`)
+    if (!endpoint) return toast.error(`封禁用户失败：未能获取 API 接口地址`)
+    if (!serviceKey?.api_key) return toast.error(`封禁用户失败： 未能获取 API 密钥`)
 
     updateUser({
       projectRef,
@@ -190,21 +190,21 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         <div className={cn('flex flex-col', PANEL_PADDING)}>
           <RowData property="User UID" value={user.id} />
           <RowData
-            property="Created at"
+            property="创建时间"
             value={user.created_at ? dayjs(user.created_at).format(DATE_FORMAT) : undefined}
           />
           <RowData
-            property="Updated at"
+            property="更新时间"
             value={user.updated_at ? dayjs(user.updated_at).format(DATE_FORMAT) : undefined}
           />
-          <RowData property="Invited at" value={user.invited_at} />
-          <RowData property="Confirmation sent at" value={user.confirmation_sent_at} />
+          <RowData property="邀请时间" value={user.invited_at} />
+          <RowData property="确认邮件发送时间" value={user.confirmation_sent_at} />
           <RowData
-            property="Confirmed at"
+            property="邮件确认时间"
             value={user.confirmed_at ? dayjs(user.confirmed_at).format(DATE_FORMAT) : undefined}
           />
           <RowData
-            property="Last signed in"
+            property="最近登录时间"
             value={
               user.last_sign_in_at ? dayjs(user.last_sign_in_at).format(DATE_FORMAT) : undefined
             }
@@ -213,8 +213,8 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         </div>
 
         <div className={cn('flex flex-col !pt-0', PANEL_PADDING)}>
-          <p>Provider Information</p>
-          <p className="text-sm text-foreground-light">The user has the following providers</p>
+          <p>第三方认证信息</p>
+          <p className="text-sm text-foreground-light">该用户设置了以下第三方认证</p>
         </div>
 
         <div className={cn('flex flex-col -space-y-1 !pt-0', PANEL_PADDING)}>
@@ -242,14 +242,15 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
                 <div className="flex-grow mt-0.5">
                   <p className="capitalize">{provider.name}</p>
                   <p className="text-xs text-foreground-light">
-                    Signed in with a {providerName} account via{' '}
+                    通过{' '}
                     {providerName === 'SAML' ? 'SSO' : 'OAuth'}
+                    方式使用 {providerName} 账号登录
                   </p>
                   <Button asChild type="default" className="mt-2">
                     <Link
                       href={`/project/${projectRef}/auth/providers?provider=${provider.name === 'SAML' ? 'SAML 2.0' : provider.name}`}
                     >
-                      Configure {providerName} provider
+                      配置 {providerName} 认证
                     </Link>
                   </Button>
                 </div>
@@ -258,11 +259,11 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
                     <span className="rounded-full bg-brand p-0.5 text-xs text-brand-200">
                       <Check strokeWidth={2} size={12} />
                     </span>
-                    <span className="px-1">Enabled</span>
+                    <span className="px-1">已启用</span>
                   </div>
                 ) : (
                   <div className="rounded-md border border-strong bg-surface-100 py-1 px-3 text-xs text-foreground-lighter">
-                    Disabled
+                    已禁用
                   </div>
                 )}
               </div>
@@ -276,11 +277,11 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
           {isEmailAuth && (
             <>
               <RowAction
-                title="Reset password"
-                description="Send a password recovery email to the user"
+                title="重置密码"
+                description="给用户发送密码重置邮件"
                 button={{
                   icon: <Mail />,
-                  text: 'Send password recovery',
+                  text: '发送密码重置邮件',
                   isLoading: isResettingPassword,
                   disabled: !canSendRecovery,
                   onClick: () => {
@@ -290,18 +291,18 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
                 success={
                   successAction === 'send_recovery'
                     ? {
-                        title: 'Password recovery sent',
-                        description: `The link in the email is valid for ${formattedExpiry}`,
+                        title: '密码重置邮件已发送',
+                        description: `邮件中的重置链接在 ${formattedExpiry}之内有效`,
                       }
                     : undefined
                 }
               />
               <RowAction
-                title="Send magic link"
-                description="Passwordless login via email for the user"
+                title="发送登录链接"
+                description="通过电子邮件向用户发送无密码登录链接"
                 button={{
                   icon: <Mail />,
-                  text: 'Send magic link',
+                  text: '发送登录链接',
                   isLoading: isSendingMagicLink,
                   disabled: !canSendMagicLink,
                   onClick: () => {
@@ -311,8 +312,8 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
                 success={
                   successAction === 'send_magic_link'
                     ? {
-                        title: 'Magic link sent',
-                        description: `The link in the email is valid for ${formattedExpiry}`,
+                        title: '登录链接已发送',
+                        description: `邮件中的登录链接在 ${formattedExpiry}之内有效`,
                       }
                     : undefined
                 }
@@ -321,11 +322,11 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
           )}
           {isPhoneAuth && (
             <RowAction
-              title="Send OTP"
-              description="Passwordless login via phone for the user"
+              title="发送验证码"
+              description="通过电话发送登录验证码"
               button={{
                 icon: <Mail />,
-                text: 'Send OTP',
+                text: '发送验证码',
                 isLoading: isSendingOTP,
                 disabled: !canSendOtp,
                 onClick: () => {
@@ -335,8 +336,8 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
               success={
                 successAction === 'send_otp'
                   ? {
-                      title: 'OTP sent',
-                      description: `The link in the OTP SMS is valid for ${formattedExpiry}`,
+                      title: '验证码已发送',
+                      description: `短信验证码在 ${formattedExpiry}之内有效`,
                     }
                   : undefined
               }
@@ -347,19 +348,19 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         <Separator />
 
         <div className={cn('flex flex-col', PANEL_PADDING)}>
-          <p>Danger zone</p>
+          <p>谨慎操作区</p>
           <p className="text-sm text-foreground-light">
-            Be wary of the following features as they cannot be undone.
+            请注意以下操作将不能撤销。
           </p>
         </div>
 
         <div className={cn('flex flex-col -space-y-1 !pt-0', PANEL_PADDING)}>
           <RowAction
-            title="Remove MFA factors"
-            description="This will log the user out of all active sessions"
+            title="移除多因素认证"
+            description="本操作将使当前处于有效的会话中的用户登出"
             button={{
               icon: <ShieldOff />,
-              text: 'Remove MFA factors',
+              text: '移除多因素认证',
               disabled: !canRemoveMFAFactors,
               onClick: () => setIsDeleteFactorsModalOpen(true),
             }}
@@ -368,17 +369,17 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
           <RowAction
             title={
               isBanned
-                ? `User is banned until ${dayjs(user.banned_until).format(DATE_FORMAT)}`
-                : 'Ban user'
+                ? `已封禁用户直到 ${dayjs(user.banned_until).format(DATE_FORMAT)}`
+                : '封禁用户'
             }
             description={
               isBanned
-                ? 'User has no access to the project until after this date'
-                : 'Revoke access to the project for a set duration'
+                ? '在此日期之前用户将不能访问本项目'
+                : '设置用户不能访问本项目的持续时间'
             }
             button={{
               icon: <Ban />,
-              text: isBanned ? 'Unban user' : 'Ban user',
+              text: isBanned ? '解禁用户' : '封禁用户',
               disabled: !canRemoveMFAFactors,
               onClick: () => {
                 if (isBanned) {
@@ -391,12 +392,12 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
             className="!bg border-destructive-400"
           />
           <RowAction
-            title="Delete user"
-            description="User will no longer have access to the project"
+            title="删除用户"
+            description="用户将永远不能访问本项目"
             button={{
               icon: <Trash />,
               type: 'danger',
-              text: 'Delete user',
+              text: '删除用户',
               disabled: !canRemoveUser,
               onClick: () => setIsDeleteModalOpen(true),
             }}
@@ -408,38 +409,38 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
       <ConfirmationModal
         visible={isDeleteModalOpen}
         variant="destructive"
-        title="Confirm to delete user"
-        confirmLabel="Delete"
+        title="确认删除用户"
+        confirmLabel="删除"
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={() => handleDelete()}
         alert={{
-          title: 'Deleting a user is irreversible',
-          description: 'This will remove the user from the project and all associated data.',
+          title: '删除用户是不可逆操作',
+          description: '本操作将从本项目中移除该用户以及与之相关的数据。',
         }}
       >
         <p className="text-sm text-foreground-light">
-          This is permanent! Are you sure you want to delete the user{' '}
-          <span className="text-foreground">{user.email ?? user.phone ?? 'this user'}</span>?
+          本操作是永久性的！您确定想要删除用户{' '}
+          <span className="text-foreground">{user.email ?? user.phone ?? ''}</span>？
         </p>
       </ConfirmationModal>
 
       <ConfirmationModal
         visible={isDeleteFactorsModalOpen}
         variant="warning"
-        title="Confirm to remove MFA factors"
-        confirmLabel="Remove factors"
-        confirmLabelLoading="Removing"
+        title="确认移除多因素认证"
+        confirmLabel="移除认证因子"
+        confirmLabelLoading="正在移除"
         onCancel={() => setIsDeleteFactorsModalOpen(false)}
         onConfirm={() => handleDeleteFactors()}
         alert={{
           base: { variant: 'warning' },
-          title: 'Removing MFA factors is irreversible',
-          description: 'This will log the user out of all active sessions.',
+          title: '移除多因素认证是不可逆操作',
+          description: '本操作将使用户登出当前有效的会话。',
         }}
       >
         <p className="text-sm text-foreground-light">
-          This is permanent! Are you sure you want to remove the MFA factors for the user{' '}
-          <span className="text-foreground">{user.email ?? user.phone ?? 'this user'}</span>?
+          本操作使永久性的！您确定想要移除用户{' '}
+          <span className="text-foreground">{user.email ?? user.phone ?? ''}</span>的多因素认证吗？
         </p>
       </ConfirmationModal>
 
@@ -448,16 +449,15 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
       <ConfirmationModal
         variant="warning"
         visible={isUnbanModalOpen}
-        title="Confirm to unban user"
+        title="确认解禁用户"
         loading={isUpdatingUser}
-        confirmLabel="Unban user"
-        confirmLabelLoading="Unbanning"
+        confirmLabel="解禁用户"
+        confirmLabelLoading="正在解禁"
         onCancel={() => setIsUnbanModalOpen(false)}
         onConfirm={() => handleUnban()}
       >
         <p className="text-sm text-foreground-light">
-          The user will have access to your project again once unbanned. Are you sure you want to
-          unban this user?
+          一旦解禁，用户将再次能够访问本项目。您确定想要解禁此用户吗？
         </p>
       </ConfirmationModal>
     </>
@@ -542,7 +542,7 @@ const RowAction = ({
           content: {
             side: 'bottom',
             text: disabled
-              ? `You need additional permissions to ${button.text.toLowerCase()}`
+              ? `您需要额外的权限才能${button.text.toLowerCase()}`
               : undefined,
           },
         }}

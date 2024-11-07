@@ -39,14 +39,14 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
     onSuccess: (_, vars) => {
       const bannedUntil = dayjs()
         .add(Number(vars.banDuration), 'hours')
-        .format('DD MMM YYYY HH:mm (ZZ)')
-      toast.success(`User banned successfully until ${bannedUntil}`)
+        .format('YYYY-MM-DD HH:mm (ZZ)')
+      toast.success(`成功封禁用户到 ${bannedUntil}`)
       onClose()
     },
   })
 
   const FormSchema = z.object({
-    value: z.string().min(1, { message: 'Please provide a duration' }),
+    value: z.string().min(1, { message: '请提供封禁时间' }),
     unit: z.enum(['hours', 'days']),
   })
   type FormType = z.infer<typeof FormSchema>
@@ -59,21 +59,21 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
   })
 
   const { value, unit } = form.watch()
-  const bannedUntil = dayjs().add(Number(value), unit).format('DD MMM YYYY HH:mm (ZZ)')
+  const bannedUntil = dayjs().add(Number(value), unit).format('YYYY-MM-DD HH:mm (ZZ)')
 
   const onSubmit = (data: FormType) => {
     if (!settings) {
-      return toast.error(`Failed to ban user: Error loading project config`)
+      return toast.error(`封禁用户失败：载入项目配置失败`)
     } else if (user.id === undefined) {
-      return toast.error(`Failed to ban user: User ID not found`)
+      return toast.error(`封禁用户失败：未找到用户 ID`)
     }
 
     const durationHours = data.unit === 'hours' ? Number(data.value) : Number(data.value) * 24
     const endpoint = settings.app_config?.endpoint
     const { serviceKey } = getAPIKeys(settings)
 
-    if (!endpoint) return toast.error(`Failed to ban user: Unable to retrieve API endpoint`)
-    if (!serviceKey?.api_key) return toast.error(`Failed to ban user: Unable to retrieve API key`)
+    if (!endpoint) return toast.error(`封禁用户失败：未能获取 API 接口地址`)
+    if (!serviceKey?.api_key) return toast.error(`封禁用户失败：未能获取 API 密钥`)
 
     updateUser({
       projectRef,
@@ -95,15 +95,14 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
       hideFooter
       visible={visible}
       size="small"
-      header="Confirm to ban user"
+      header="确认封禁用户"
       onCancel={() => onClose()}
     >
       <Form_Shadcn_ {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Modal.Content className="flex flex-col gap-y-3">
             <p className="text-sm">
-              This will revoke the user's access to your project and prevent them from logging in
-              for a specified duration.
+              本操作将在指定的时间内撤销用户对本项目的访问以及禁止登录。
             </p>
             <div className="flex items-start gap-x-2 [&>div:first-child]:flex-grow">
               <FormField_Shadcn_
@@ -132,8 +131,8 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
                           {field.value}
                         </SelectTrigger_Shadcn_>
                         <SelectContent_Shadcn_>
-                          <SelectItem_Shadcn_ value="hours">Hours</SelectItem_Shadcn_>
-                          <SelectItem_Shadcn_ value="days">Days</SelectItem_Shadcn_>
+                          <SelectItem_Shadcn_ value="hours">小时</SelectItem_Shadcn_>
+                          <SelectItem_Shadcn_ value="days">天</SelectItem_Shadcn_>
                         </SelectContent_Shadcn_>
                       </Select_Shadcn_>
                     </FormControl_Shadcn_>
@@ -144,20 +143,20 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
 
             <div>
               <p className="text-sm text-foreground-lighter">
-                This user will not be able to log in until:
+                此用户将无法登录直至：
               </p>
               <p className={cn('text-sm', !value && 'text-foreground-light')}>
-                {!!value ? bannedUntil : 'Invalid duration set'}
+                {!!value ? bannedUntil : '无效的封禁时间'}
               </p>
             </div>
           </Modal.Content>
           <Separator />
           <Modal.Content className="flex justify-end gap-2">
             <Button type="default" disabled={isBanningUser} onClick={() => onClose()}>
-              Cancel
+              取消
             </Button>
             <Button type="warning" htmlType="submit" loading={isBanningUser}>
-              Confirm ban
+              确认封禁
             </Button>
           </Modal.Content>
         </form>

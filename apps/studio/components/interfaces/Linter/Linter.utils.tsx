@@ -135,7 +135,7 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'auth_otp_long_expiry',
-    title: '身份认证一次性密码（OTP）过期时间过长',
+    title: '身份认证验证码（OTP）过期时间过长',
     icon: <Clock className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/providers`,
     linkText: '查看设置',
@@ -143,7 +143,7 @@ export const lintInfoMap: LintInfo[] = [
   },
   {
     name: 'auth_otp_short_length',
-    title: '身份认证一次性密码（OTP）长度太短',
+    title: '身份认证验证码（OTP）长度太短',
     icon: <Ruler className="text-foreground-muted" size={15} strokeWidth={1} />,
     link: ({ projectRef }) => `/project/${projectRef}/auth/providers`,
     linkText: 'View settings',

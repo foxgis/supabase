@@ -52,7 +52,7 @@ const DeleteEnumeratedTypeModal = ({
       onCancel={onClose}
       onConfirm={() => onConfirmDeleteType()}
       alert={{
-        title: '此操作无法撤销',
+        title: '本操作无法撤销',
         description:
           '如果希望撤销删除，您需要重新创建此枚举类型。',
       }}

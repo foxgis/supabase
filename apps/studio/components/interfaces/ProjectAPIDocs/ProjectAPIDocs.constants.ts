@@ -109,7 +109,7 @@ curl -X POST '${endpoint}/auth/v1/token?grant_type=password' \\
   magicLinkLogin: {
     key: 'magic-link-login',
     category: 'user-management',
-    title: `通过电子邮件发送 Magic Link 登录`,
+    title: `通过电子邮件发送登录链接登录`,
     description: `
 发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。
 
@@ -774,7 +774,7 @@ let { data: ${resourceId}, error } = await supabase
       return [
         {
           key: 'insert-a-row',
-          title: 'Insert a row',
+          title: '插入一行',
           bash: `
 curl -X POST '${endpoint}/rest/v1/${resourceId}' \\
 -H "apikey: ${apikey}" \\

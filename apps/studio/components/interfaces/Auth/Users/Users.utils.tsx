@@ -46,13 +46,13 @@ export const formatUsersData = (users: User[]) => {
         .filter(Boolean),
       // I think it's alright to just check via the main provider since email and phone should be mutually exclusive
       provider_type: user.is_anonymous
-        ? 'Anonymous'
+        ? '匿名'
         : provider === 'email'
           ? '-'
           : socialProviders.includes(provider)
-            ? 'Social'
+            ? '社交账号'
             : phoneProviders.includes(provider)
-              ? 'Phone'
+              ? '电话'
               : '-',
       // [Joshen] Note that the images might not load due to CSP issues
       img: getAvatarUrl(user),
@@ -270,7 +270,7 @@ export const formatUserColumns = ({
         const user = users?.find((u) => u.id === row.id)
         const formattedValue =
           value !== null && ['created_at', 'last_sign_in_at'].includes(col.id)
-            ? dayjs(value).format('ddd DD MMM YYYY HH:mm:ss [GMT]ZZ')
+            ? dayjs(value).format('YYYY-MM-DD HH:mm:ss [GMT]ZZ')
             : Array.isArray(value)
               ? value.join(', ')
               : value
@@ -322,7 +322,7 @@ export const formatUserColumns = ({
                 )
               })}
             {col.id === 'last_sign_in_at' && !isConfirmed ? (
-              <p className="text-foreground-lighter">Waiting for verification</p>
+              <p className="text-foreground-lighter">等待验证</p>
             ) : (
               <p className={cn(col.id === 'providers' && 'ml-1')}>
                 {formattedValue === null ? '-' : formattedValue}

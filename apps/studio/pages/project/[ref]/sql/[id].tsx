@@ -171,6 +171,6 @@ const SqlEditor: NextPageWithLayout = () => {
   )
 }
 
-SqlEditor.getLayout = (page) => <SQLEditorLayout title="SQL 查询">{page}</SQLEditorLayout>
+SqlEditor.getLayout = (page) => <SQLEditorLayout title="数据查询">{page}</SQLEditorLayout>
 
 export default SqlEditor

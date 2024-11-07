@@ -66,7 +66,7 @@ const ConfirmDeleteModal = ({
       }
     >
       <Modal.Content>
-        <Alert withIcon variant="danger" title={`此操作不能被撤销。`}>
+        <Alert withIcon variant="danger" title={`本操作不能被撤销。`}>
           {description}
         </Alert>
       </Modal.Content>

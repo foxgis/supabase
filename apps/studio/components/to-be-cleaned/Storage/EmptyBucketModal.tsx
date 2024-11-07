@@ -41,7 +41,7 @@ export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBuck
       onCancel={() => onClose()}
       onConfirm={onEmptyBucket}
       alert={{
-        title: '此操作无法撤销',
+        title: '本操作无法撤销',
         description: '存储桶中的内容一旦删除，无法恢复',
       }}
     >

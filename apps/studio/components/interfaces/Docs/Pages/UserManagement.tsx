@@ -70,7 +70,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         </article>
       </div>
 
-      <h2 className="doc-heading">通过电子邮件发送的 Magic Link 登录</h2>
+      <h2 className="doc-heading">通过电子邮件发送的登录链接进行登录</h2>
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。</p>
@@ -93,7 +93,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
             可以使用电话号码代替电子邮件作为账户的确认机制。
           </p>
           <p>
-            用户将会通过短信收到一个一次性密码，用来验证该用户是否控制该电话号码。
+            用户将会通过短信收到一个验证码，用来验证该用户是否控制该电话号码。
           </p>
           <p>
             您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用短信确认。
@@ -107,11 +107,11 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         </article>
       </div>
 
-      <h2 className="doc-heading">通过一次性密码短信登录</h2>
+      <h2 className="doc-heading">通过验证码短信登录</h2>
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>
-            一次性密码（OTP）短信类似于 magic links，除了您必须为用户提供一个验证6位数字的界面。
+            验证码（OTP）短信类似于登录链接，除了您必须为用户提供一个验证6位数字的界面。
           </p>
           <p>
             您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用短信登录。
@@ -125,14 +125,14 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         </article>
       </div>
 
-      <h2 className="doc-heading">验证短信一次性密码短信</h2>
+      <h2 className="doc-heading">验证短信验证码短信</h2>
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>
-            一旦用户收到一次性密码，需要让用户在表单中输入并发送它以进行验证。
+            一旦用户收到验证码，需要让用户在表单中输入并发送它以进行验证。
           </p>
           <p>
-            您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用一次性密码短信登录。
+            您必须在身份验证设置页面上输入自己的 twilio 凭据才能启用验证码短信登录。
           </p>
         </article>
         <article className="code">

@@ -47,9 +47,9 @@ export const UserLogs = ({ user }: UserLogsProps) => {
 
       <div className={cn('flex flex-col gap-y-3', PANEL_PADDING)}>
         <div>
-          <p>Authentication logs</p>
+          <p>认证日志</p>
           <p className="text-sm text-foreground-light">
-            Latest logs from authentication for this user in the past hour
+            此用户在最近一小时的认证日志
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export const UserLogs = ({ user }: UserLogsProps) => {
               disabled={isLoadingAuthLogs}
               onClick={() => setFilters({ search_query: user.id })}
             >
-              Show all
+              显示所有
             </Button>
             <div className="border-button border border-l-0 py-3" />
             <Button
@@ -76,7 +76,7 @@ export const UserLogs = ({ user }: UserLogsProps) => {
                 })
               }
             >
-              Error only
+              只显示错误的
             </Button>
           </div>
           <Button
@@ -86,7 +86,7 @@ export const UserLogs = ({ user }: UserLogsProps) => {
             icon={<RefreshCw />}
             onClick={() => refresh()}
           >
-            Refresh
+            刷新
           </Button>
         </div>
 
@@ -95,8 +95,8 @@ export const UserLogs = ({ user }: UserLogsProps) => {
         ) : authLogs.length === 0 ? (
           <Admonition
             type="note"
-            title="No authentication logs available for this user"
-            description="Auth events such as logging in will be shown here"
+            title="此用户还没有认证日志"
+            description="认证事件如登录活动将在这里显示"
           />
         ) : (
           <div>
@@ -146,7 +146,7 @@ export const UserLogs = ({ user }: UserLogsProps) => {
               type="outline"
               className="transition rounded-t-none text-foreground-light hover:text-foreground"
             >
-              <Link href={`/project/${ref}/logs/auth-logs?s=${user.id}`}>See more logs</Link>
+              <Link href={`/project/${ref}/logs/auth-logs?s=${user.id}`}>查看更多日志</Link>
             </Button>
           </div>
         )}

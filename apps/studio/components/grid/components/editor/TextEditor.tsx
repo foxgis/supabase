@@ -217,7 +217,7 @@ export const TextEditor = <TRow, TSummaryRow = unknown>({
         }}
       >
         <p className="text-sm text-foreground-light">
-          您确定想要将值设为 NULL 吗？此操作无法撤销。
+          您确定想要将值设为 NULL 吗？本操作无法撤销。
         </p>
       </ConfirmationModal>
     </>

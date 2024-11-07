@@ -119,7 +119,7 @@ const TableDefinition = ({ entityType }: TableDefinitionProps) => {
               formattedDefinition ?? ''
             )}`}
           >
-            在 SQL 编辑中打开
+            在数据查询面版中打开
           </Link>
         </Button>
         <Editor

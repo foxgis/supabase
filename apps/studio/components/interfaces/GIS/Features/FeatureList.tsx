@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import Table from 'components/to-be-cleaned/Table'
-import { useProjectApiQuery } from 'data/config/project-api-query'
+import { useProjectSettingsV2Query } from 'data/config/project-settings-v2-query'
 import { useGISFeaturesQuery } from 'data/gis/gis-features-query'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from 'ui'
@@ -33,20 +33,8 @@ const FeatureList = ({
     (feature) => feature.id.toLocaleLowerCase()
   )
 
-  const { data, error } = useProjectApiQuery({ projectRef: selectedProject?.ref })
-  const { protocol, endpoint } = data?.autoApiService ?? {}
-  const apiUrl = endpoint ? `${protocol ?? 'http'}://${endpoint}` : undefined
-
-  if (error) {
-    return (
-      <div className="p-6 mx-auto text-center sm:w-full md:w-3/4">
-        <p className="text-foreground-light">
-          <p>连接到 API 出错</p>
-          <p>{`${error}`}</p>
-        </p>
-      </div>
-    )
-  }
+  const { data: settings } = useProjectSettingsV2Query({ projectRef: selectedProject?.ref })
+  const endpoint = `http://${settings?.app_config?.endpoint ?? ''}`
 
   if (_features.length === 0 && filterString.length === 0) {
     return (
@@ -94,12 +82,12 @@ const FeatureList = ({
             <Table.td className="w-1/5">
               <div className="flex justify-end items-center space-x-2">
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${apiUrl}/pg_featureserv/collections/${x.id}.json`} target="_blank">
+                  <Link href={`${endpoint}/pg_featureserv/collections/${x.id}.json`} target="_blank">
                     元数据
                   </Link>
                 </Button>
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${apiUrl}/pg_featureserv/collections/${x.id}/items.html`} target="_blank">
+                  <Link href={`${endpoint}/pg_featureserv/collections/${x.id}/items.html`} target="_blank">
                     查看
                   </Link>
                 </Button>

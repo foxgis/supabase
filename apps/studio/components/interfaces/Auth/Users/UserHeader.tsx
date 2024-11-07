@@ -28,7 +28,7 @@ export const UserHeader = ({ user }: { user: User }) => {
         </div>
       ) : isAnonUser ? (
         <>
-          <p>Anonymous user</p>
+          <p>匿名用户</p>
           <div className="flex items-center gap-x-1">
             <p className="text-foreground-light text-sm">{user.id}</p>
             <CopyButton

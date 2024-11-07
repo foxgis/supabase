@@ -376,7 +376,7 @@ const ColumnEditor = ({
                 </AlertTitle_Shadcn_>
                 <AlertDescription_Shadcn_>
                   <p className="!leading-normal">
-                    您仍然可以通过在 SQL 编辑器中使用{' '}
+                    您仍然可以通过在数据查询面版中使用{' '}
                     <Link
                       href={`/project/${ref}/database/extensions?filter=pgsodium`}
                       className="text-brand hover:underline"

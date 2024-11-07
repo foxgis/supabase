@@ -440,7 +440,7 @@ const FileExplorerHeader = ({
               },
             }}
           >
-            Upload files
+            上传文件
           </ButtonTooltip>
           <ButtonTooltip
             icon={<FolderPlus size={16} strokeWidth={2} />}
@@ -456,7 +456,7 @@ const FileExplorerHeader = ({
               },
             }}
           >
-            Create folder
+            创建文件夹
           </ButtonTooltip>
         </div>
 

@@ -136,7 +136,7 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                     >
                       <p className="mb-2">
                         {!bucket?.public && values.public
-                          ? `此操作将使存储桶 "${bucket?.name}" 中的所有对象公开`
+                          ? `本操作将使存储桶 "${bucket?.name}" 中的所有对象公开`
                           : bucket?.public && !values.public
                             ? `存储桶 "${bucket?.name}" 中的所有对象都将设为私有，仅可通过签名 URL 或正确的授权头进行访问`
                             : ''}

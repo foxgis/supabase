@@ -63,9 +63,9 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
     const endpoint = settings?.app_config?.endpoint
     const { serviceKey } = getAPIKeys(settings)
 
-    if (!endpoint) return toast.error(`Failed to create user: Unable to retrieve API endpoint`)
+    if (!endpoint) return toast.error(`创建用户失败：未能获取到 API 接口地址`)
     if (!serviceKey?.api_key)
-      return toast.error(`Failed to create user: Unable to retrieve API key`)
+      return toast.error(`创建用户失败：未能获取到 API 密钥`)
 
     createUser({
       projectRef,
@@ -165,7 +165,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
                       onCheckedChange={(value) => field.onChange(value)}
                     />
                   </FormControl_Shadcn_>
-                  <FormLabel_Shadcn_>Auto Confirm User?</FormLabel_Shadcn_>
+                  <FormLabel_Shadcn_>自动确认用户？</FormLabel_Shadcn_>
                 </FormItem_Shadcn_>
               )}
             />

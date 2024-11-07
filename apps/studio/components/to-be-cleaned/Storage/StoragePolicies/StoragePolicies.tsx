@@ -263,7 +263,7 @@ const StoragePolicies = () => {
         danger
         visible={!isEmpty(selectedPolicyToDelete)}
         title="确定要删除策略"
-        description={`此操作是永久性的！您确定要删除策略 "${selectedPolicyToDelete.name}" 吗？`}
+        description={`本操作是永久性的！您确定要删除策略 "${selectedPolicyToDelete.name}" 吗？`}
         buttonLabel="删除"
         buttonLoadingLabel="正在删除"
         onSelectCancel={onCancelPolicyDelete}

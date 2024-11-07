@@ -23,14 +23,14 @@ export const generateToolRoutes = (ref?: string, project?: Project): Route[] => 
   return [
     {
       key: 'editor',
-      label: '数据表',
+      label: '数据管理',
       icon: <TableEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/editor`),
       linkComponent: <EditorIndexPageLink projectRef={ref} />,
     },
     {
       key: 'sql',
-      label: 'SQL 查询',
+      label: '数据查询',
       icon: <SqlEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: !IS_PLATFORM
         ? `/project/${ref}/sql/1`

@@ -103,10 +103,10 @@ const PolicyTableRowHeader = ({
                 },
               }}
             >
-              Create policy
+              创建策略
             </ButtonTooltip>
 
-            <Tooltip_Shadcn_>
+            {/* <Tooltip_Shadcn_>
               <TooltipTrigger_Shadcn_ asChild>
                 <Button
                   type="default"
@@ -124,7 +124,7 @@ const PolicyTableRowHeader = ({
                   ? '您需要额外的权限才能创建 RLS 策略'
                   : '使用 AI 助手创建'}
               </TooltipContent_Shadcn_>
-            </Tooltip_Shadcn_>
+            </Tooltip_Shadcn_> */}
           </div>
         </div>
       )}

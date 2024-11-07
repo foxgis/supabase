@@ -172,7 +172,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
             })
         }}
       >
-        <p className="text-sm">此操作将强行终止查询运行。</p>
+        <p className="text-sm">本操作将强行终止查询运行。</p>
       </ConfirmationModal>
     </>
   )

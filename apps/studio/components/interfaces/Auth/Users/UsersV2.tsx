@@ -54,13 +54,13 @@ export type ColumnConfiguration = { id: string; width?: number }
 export const USERS_TABLE_COLUMNS: UsersTableColumn[] = [
   { id: 'img', name: '', minWidth: 65, width: 65, resizable: false },
   { id: 'id', name: 'UID', width: 280 },
-  { id: 'name', name: 'Display name', minWidth: 0, width: 150 },
-  { id: 'email', name: 'Email', width: 300 },
-  { id: 'phone', name: 'Phone' },
-  { id: 'providers', name: 'Providers', minWidth: 150 },
-  { id: 'provider_type', name: 'Provider type', minWidth: 150 },
-  { id: 'created_at', name: 'Created at', width: 260 },
-  { id: 'last_sign_in_at', name: 'Last sign in at', width: 260 },
+  { id: 'name', name: '名称', minWidth: 0, width: 150 },
+  { id: 'email', name: '电子邮箱', width: 300 },
+  { id: 'phone', name: '电话' },
+  { id: 'providers', name: '认证方式', minWidth: 150 },
+  { id: 'provider_type', name: '认证类型', minWidth: 150 },
+  { id: 'created_at', name: '创建时间', width: 260 },
+  { id: 'last_sign_in_at', name: '最近登录时间', width: 260 },
 ]
 
 // [Joshen] Just naming it as V2 as its a rewrite of the old one, to make it easier for reviews
@@ -192,7 +192,7 @@ export const UsersV2 = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <FormHeader className="py-4 px-6 !mb-0" title="Users" />
+      <FormHeader className="py-4 px-6 !mb-0" title="用户" />
       <div className="bg-surface-200 py-3 px-6 flex items-center justify-between border-t">
         <div className="flex items-center gap-x-2">
           <Input
@@ -200,7 +200,7 @@ export const UsersV2 = () => {
             className="w-52 pl-7 bg-transparent"
             iconContainerClassName="pl-2"
             icon={<Search size={14} className="text-foreground-lighter" />}
-            placeholder="Search email, phone or UID"
+            placeholder="查找电子邮件、电话或者 UID"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
@@ -232,23 +232,23 @@ export const UsersV2 = () => {
             <SelectContent_Shadcn_>
               <SelectGroup_Shadcn_>
                 <SelectItem_Shadcn_ value="all" className="text-xs">
-                  All users
+                  所有用户
                 </SelectItem_Shadcn_>
                 <SelectItem_Shadcn_ value="verified" className="text-xs">
-                  Verified users
+                  认证用户
                 </SelectItem_Shadcn_>
                 <SelectItem_Shadcn_ value="unverified" className="text-xs">
-                  Unverified users
+                  未认证用户
                 </SelectItem_Shadcn_>
                 <SelectItem_Shadcn_ value="anonymous" className="text-xs">
-                  Anonymous users
+                  匿名用户
                 </SelectItem_Shadcn_>
               </SelectGroup_Shadcn_>
             </SelectContent_Shadcn_>
           </Select_Shadcn_>
 
           <FilterPopover
-            name="Provider"
+            name="认证方式"
             options={PROVIDER_FILTER_OPTIONS}
             labelKey="name"
             valueKey="value"
@@ -262,15 +262,15 @@ export const UsersV2 = () => {
           <div className="border-r border-strong h-6" />
 
           <FilterPopover
-            name={selectedColumns.length === 0 ? 'All columns' : 'Columns'}
-            title="Select columns to show"
+            name={selectedColumns.length === 0 ? '所有列' : '列'}
+            title="选择要显示的列"
             buttonType={selectedColumns.length === 0 ? 'dashed' : 'default'}
             options={USERS_TABLE_COLUMNS.slice(1)} // Ignore user image column
             labelKey="name"
             valueKey="id"
             labelClass="text-xs"
             maxHeightClass="h-[190px]"
-            clearButtonText="Reset"
+            clearButtonText="重置"
             activeOptions={selectedColumns}
             onSaveFilters={(value) => {
               // When adding back hidden columns:
@@ -308,43 +308,43 @@ export const UsersV2 = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button icon={sortOrder === 'desc' ? <ArrowDown /> : <ArrowUp />}>
-                Sorted by {sortColumn.replaceAll('_', ' ')}
+                按{USERS_TABLE_COLUMNS.find(c => c.id === sortColumn)?.name}排序
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44" align="start">
               <DropdownMenuRadioGroup value={sortByValue} onValueChange={setSortByValue}>
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Sort by created at</DropdownMenuSubTrigger>
+                  <DropdownMenuSubTrigger>按创建时间排序</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
-                    <DropdownMenuRadioItem value="created_at:asc">Ascending</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="created_at:asc">升序</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="created_at:desc">
-                      Descending
+                      降序
                     </DropdownMenuRadioItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Sort by last sign in at</DropdownMenuSubTrigger>
+                  <DropdownMenuSubTrigger>按最近登录时间排序</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
                     <DropdownMenuRadioItem value="last_sign_in_at:asc">
-                      Ascending
+                      升序
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="last_sign_in_at:desc">
-                      Descending
+                      降序
                     </DropdownMenuRadioItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Sort by email</DropdownMenuSubTrigger>
+                  <DropdownMenuSubTrigger>按电子邮件排序</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
-                    <DropdownMenuRadioItem value="email:asc">Ascending</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="email:desc">Descending</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="email:asc">升序</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="email:desc">降序</DropdownMenuRadioItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Sort by phone</DropdownMenuSubTrigger>
+                  <DropdownMenuSubTrigger>按电话号码排序</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
-                    <DropdownMenuRadioItem value="phone:asc">Ascending</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="phone:desc">Descending</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="phone:asc">升序</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="phone:desc">降序</DropdownMenuRadioItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
               </DropdownMenuRadioGroup>
@@ -361,7 +361,7 @@ export const UsersV2 = () => {
             loading={isRefetching && !isFetchingNextPage}
             onClick={() => refetch()}
           >
-            Refresh
+            刷新
           </Button>
           <AddUserDropdown projectKpsVersion={project?.kpsVersion} />
         </div>
@@ -429,13 +429,13 @@ export const UsersV2 = () => {
                     <div className="text-center">
                       <p className="text-foreground">
                         {filter !== 'all' || filterKeywords.length > 0
-                          ? 'No users found'
-                          : 'No users in your project'}
+                          ? '未找到用户'
+                          : '本项目还没有用户'}
                       </p>
                       <p className="text-foreground-light">
                         {filter !== 'all' || filterKeywords.length > 0
-                          ? 'There are currently no users based on the filters applied'
-                          : 'There are currently no users who signed up to your project'}
+                          ? '目前没有用户满足筛选条件'
+                          : '本项目目前还没有注册用户'}
                       </p>
                     </div>
                   </div>
@@ -453,10 +453,10 @@ export const UsersV2 = () => {
       </ResizablePanelGroup>
 
       <div className="flex justify-between min-h-9 h-9 overflow-hidden items-center px-6 w-full border-t text-xs text-foreground-light">
-        {isLoading || isRefetching ? 'Loading users...' : `Total: ${totalUsers} users`}
+        {isLoading || isRefetching ? '正在加载用户...' : `总计：${totalUsers} 个用户`}
         {(isLoading || isRefetching || isFetchingNextPage) && (
           <span className="flex items-center gap-2">
-            <Loader2 size={14} className="animate-spin" /> Loading...
+            <Loader2 size={14} className="animate-spin" />正在加载中...
           </span>
         )}
       </div>

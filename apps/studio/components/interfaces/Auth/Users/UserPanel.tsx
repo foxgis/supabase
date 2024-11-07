@@ -62,19 +62,19 @@ export const UserPanel = ({ selectedUser, onClose }: UserPanelProps) => {
               value="overview"
               className="px-0 pb-0 h-full text-xs  data-[state=active]:bg-transparent !shadow-none"
             >
-              Overview
+              概览
             </TabsTrigger_Shadcn_>
             <TabsTrigger_Shadcn_
               value="logs"
               className="px-0 pb-0 h-full text-xs data-[state=active]:bg-transparent !shadow-none"
             >
-              Logs
+              日志
             </TabsTrigger_Shadcn_>
             <TabsTrigger_Shadcn_
               value="raw"
               className="px-0 pb-0 h-full text-xs data-[state=active]:bg-transparent !shadow-none"
             >
-              Raw JSON
+              JSON
             </TabsTrigger_Shadcn_>
           </TabsList_Shadcn_>
           <TabsContent_Shadcn_
@@ -97,7 +97,7 @@ export const UserPanel = ({ selectedUser, onClose }: UserPanelProps) => {
               <Input_Shadcn_
                 autoFocus
                 type="text"
-                placeholder="Filter..."
+                placeholder="过滤..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="mr-2"
@@ -108,7 +108,7 @@ export const UserPanel = ({ selectedUser, onClose }: UserPanelProps) => {
                 onClick={() => setSearchQuery('')}
                 className="text-xs"
               >
-                Clear
+                清除
               </Button>
             </div>
             <SimpleCodeBlock className="javascript">

@@ -43,7 +43,7 @@ const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
     >
       <Modal.Content>
         <p className="text-sm">
-          这将自动撤销此角色在其他角色中的成员资格，此操作无法撤消。
+          这将自动撤销此角色在其他角色中的成员资格，本操作无法撤消。
         </p>
       </Modal.Content>
     </Modal>
