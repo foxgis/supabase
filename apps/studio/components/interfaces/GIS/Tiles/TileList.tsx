@@ -34,7 +34,10 @@ const TileList = ({
   )
 
   const { data: settings } = useProjectSettingsV2Query({ projectRef: selectedProject?.ref })
-  const endpoint = `http://${settings?.app_config?.endpoint ?? ''}`
+
+  const protocol = settings?.app_config?.protocol ?? 'https'
+  const endpoint = settings?.app_config?.endpoint
+  const apiUrl = endpoint ? `${protocol}://${endpoint}` : undefined
 
   if (_tiles.length === 0 && filterString.length === 0) {
     return (
@@ -82,12 +85,12 @@ const TileList = ({
             <Table.td className="w-1/5">
               <div className="flex justify-end items-center space-x-2">
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${endpoint}/pg_tileserv/${x.id}.json`} target="_blank">
+                  <Link href={`${apiUrl}/pg_tileserv/${x.id}.json`} target="_blank">
                     元数据
                   </Link>
                 </Button>
                 <Button asChild type="default" iconRight={<ArrowUpRight strokeWidth={1} />}>
-                  <Link href={`${endpoint}/pg_tileserv/${x.id}.html`} target="_blank">
+                  <Link href={`${apiUrl}/pg_tileserv/${x.id}.html`} target="_blank">
                     查看
                   </Link>
                 </Button>

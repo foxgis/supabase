@@ -17,16 +17,16 @@ export function useApiUrlCommand() {
     { enabled: !!project }
   )
 
-  const apiUrl = settings?.app_config?.endpoint
-    ? `https://${settings.app_config.endpoint}`
-    : undefined
+  const protocol = settings?.app_config?.protocol ?? 'https'
+  const endpoint = settings?.app_config?.endpoint
+  const apiUrl = endpoint ? `${protocol}://${endpoint}` : undefined
 
   useRegisterCommands(
     COMMAND_MENU_SECTIONS.ACTIONS,
     [
       {
         id: 'api-url',
-        name: 'Copy API URL',
+        name: '复制 API 链接',
         action: () => {
           copyToClipboard(apiUrl ?? '')
           setIsOpen(false)

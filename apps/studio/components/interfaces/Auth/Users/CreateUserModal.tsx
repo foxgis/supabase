@@ -60,6 +60,7 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
     if (!isSuccess) {
       return toast.error(`创建用户失败：加载项目配置失败`)
     }
+    const protocol = settings?.app_config?.protocol ?? 'https'
     const endpoint = settings?.app_config?.endpoint
     const { serviceKey } = getAPIKeys(settings)
 
@@ -69,8 +70,8 @@ const CreateUserModal = ({ visible, setVisible }: CreateUserModalProps) => {
 
     createUser({
       projectRef,
+      protocol,
       endpoint,
-      protocol: 'https',
       serviceApiKey: serviceKey.api_key,
       user: values,
     })

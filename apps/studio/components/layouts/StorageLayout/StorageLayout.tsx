@@ -37,7 +37,8 @@ const StorageLayout = ({ title, children }: StorageLayoutProps) => {
     if (isPaused) return
 
     if (endpoint) {
-      storageExplorerStore.initStore(projectRef!, endpoint, serviceApiKey, 'https')
+      const protocol = settings?.app_config?.protocol ?? 'https'
+      storageExplorerStore.initStore(projectRef!, endpoint, serviceApiKey, protocol)
     } else {
       toast.error(
         '拉取项目配置信息失败，请尝试刷新浏览器或联系技术支持。'

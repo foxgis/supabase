@@ -379,59 +379,57 @@ const RowHeader = ({ table, sorts, filters }: RowHeaderProps) => {
   return (
     <div className="flex items-center gap-x-2">
       {editable && (
-        <>
-          <ButtonTooltip
+        <ButtonTooltip
+          type="default"
+          size="tiny"
+          icon={<Trash />}
+          onClick={onRowsDelete}
+          disabled={allRowsSelected && isImpersonatingRole}
+          tooltip={{
+            content: {
+              side: 'bottom',
+              text:
+                allRowsSelected && isImpersonatingRole
+                  ? '当处于角色切换状态时不支持表清空操作'
+                  : undefined,
+            },
+          }}
+        >
+          {allRowsSelected
+            ? `删除表中所有行`
+            : selectedRows.size > 1
+              ? `删除 ${selectedRows.size} 行`
+              : `删除 ${selectedRows.size} 行`}
+        </ButtonTooltip>
+      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
             type="default"
             size="tiny"
-            icon={<Trash />}
-            onClick={onRowsDelete}
-            disabled={allRowsSelected && isImpersonatingRole}
-            tooltip={{
-              content: {
-                side: 'bottom',
-                text:
-                  allRowsSelected && isImpersonatingRole
-                    ? '处于角色切换状态时不支持表清空操作'
-                    : undefined,
-              },
-            }}
+            iconRight={<ChevronDown />}
+            loading={isExporting}
+            disabled={isExporting}
           >
-            {allRowsSelected
-              ? `删除表中所有行`
-              : selectedRows.size > 1
-                ? `删除 ${selectedRows.size} 行`
-                : `删除 ${selectedRows.size} 行`}
-          </ButtonTooltip>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="default"
-                size="tiny"
-                iconRight={<ChevronDown />}
-                loading={isExporting}
-                disabled={isExporting}
-              >
-                导出
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40">
-              <DropdownMenuItem onClick={onRowsExportCSV}>
-                <span className="text-foreground-light">导出为 CSV</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onRowsExportSQL}>导出为 SQL</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            导出
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-40">
+          <DropdownMenuItem onClick={onRowsExportCSV}>
+            <span className="text-foreground-light">导出为 CSV</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onRowsExportSQL}>导出为 SQL</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-          {!allRowsSelected && totalRows > allRows.length && (
-            <>
-              <div className="h-6 ml-0.5">
-                <Separator orientation="vertical" />
-              </div>
-              <Button type="text" onClick={() => onSelectAllRows()}>
-                选中表中所有行
-              </Button>
-            </>
-          )}
+      {!allRowsSelected && totalRows > allRows.length && (
+        <>
+          <div className="h-6 ml-0.5">
+            <Separator orientation="vertical" />
+          </div>
+          <Button type="text" onClick={() => onSelectAllRows()}>
+            选中表中所有行
+          </Button>
         </>
       )}
     </div>

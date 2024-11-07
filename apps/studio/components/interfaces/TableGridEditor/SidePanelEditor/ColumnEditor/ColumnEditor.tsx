@@ -19,17 +19,7 @@ import {
 import { useEnumeratedTypesQuery } from 'data/enumerated-types/enumerated-types-query'
 import { EXCLUDED_SCHEMAS_WITHOUT_EXTENSIONS } from 'lib/constants/schemas'
 import type { Dictionary } from 'types'
-import {
-  AlertDescription_Shadcn_,
-  AlertTitle_Shadcn_,
-  Alert_Shadcn_,
-  Button,
-  Checkbox,
-  Input,
-  SidePanel,
-  Toggle,
-  WarningIcon,
-} from 'ui'
+import { Button, Checkbox, Input, SidePanel, Toggle } from 'ui'
 import ActionBar from '../ActionBar'
 import type { ForeignKey } from '../ForeignKeySelector/ForeignKeySelector.types'
 import { formatForeignKeys } from '../ForeignKeySelector/ForeignKeySelector.utils'
@@ -52,7 +42,7 @@ import ColumnType from './ColumnType'
 import HeaderTitle from './HeaderTitle'
 
 export interface ColumnEditorProps {
-  column?: PostgresColumn
+  column?: Readonly<PostgresColumn>
   selectedTable: PostgresTable
   visible: boolean
   closePanel: () => void
@@ -155,7 +145,7 @@ const ColumnEditor = ({
       )
     }
 
-    const updatedColumnFields = { ...columnFields, ...changes } as ColumnField
+    const updatedColumnFields: ColumnField = { ...columnFields, ...changes }
     setColumnFields(updatedColumnFields)
     updateEditorDirty()
 
@@ -361,45 +351,6 @@ const ColumnEditor = ({
           />
         </FormSectionContent>
       </FormSection>
-
-      {isNewRecord && (
-        <>
-          <SidePanel.Separator />
-          <FormSection
-            header={<FormSectionLabel className="lg:!col-span-4">安全</FormSectionLabel>}
-          >
-            <FormSectionContent loading={false} className="lg:!col-span-8">
-              <Alert_Shadcn_>
-                <WarningIcon />
-                <AlertTitle_Shadcn_>
-                  本界面已移除列加密设置功能
-                </AlertTitle_Shadcn_>
-                <AlertDescription_Shadcn_>
-                  <p className="!leading-normal">
-                    您仍然可以通过在数据查询面版中使用{' '}
-                    <Link
-                      href={`/project/${ref}/database/extensions?filter=pgsodium`}
-                      className="text-brand hover:underline"
-                    >
-                      pgsodium
-                    </Link>{' '}
-                    的透明列加密（TCE）功能加密新的列。
-                  </p>
-                  <Button asChild type="default" icon={<ExternalLink />} className="mt-2">
-                    <Link
-                      target="_blank"
-                      rel="noreferrer"
-                      href="https://github.com/orgs/supabase/discussions/18849"
-                    >
-                      了解更多
-                    </Link>
-                  </Button>
-                </AlertDescription_Shadcn_>
-              </Alert_Shadcn_>
-            </FormSectionContent>
-          </FormSection>
-        </>
-      )}
     </SidePanel>
   )
 }

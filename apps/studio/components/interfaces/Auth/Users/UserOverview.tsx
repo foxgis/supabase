@@ -149,7 +149,8 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
       return toast.error(`封禁用户失败：未找到用户 ID`)
     }
 
-    const endpoint = settings.app_config?.endpoint
+    const protocol = settings?.app_config?.protocol ?? 'https'
+    const endpoint = settings?.app_config?.endpoint
     const { serviceKey } = getAPIKeys(settings)
 
     if (!endpoint) return toast.error(`封禁用户失败：未能获取 API 接口地址`)
@@ -157,7 +158,7 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
 
     updateUser({
       projectRef,
-      protocol: 'https',
+      protocol,
       endpoint,
       serviceApiKey: serviceKey.api_key,
       userId: user.id,
