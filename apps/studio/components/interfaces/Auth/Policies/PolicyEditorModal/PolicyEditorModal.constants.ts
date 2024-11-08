@@ -175,8 +175,8 @@ for select using (
   {
     id: 'policy-9',
     preview: false,
-    templateName: 'Allow users to only view their own data',
-    description: 'Restrict users to reading only their own data.',
+    templateName: '仅允许用户查看他们自己的数据',
+    description: '限制用户仅查看自己的数据。',
     statement: `
 create policy "Enable users to view their own data only"
 on "${schema}"."${table}"

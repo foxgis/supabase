@@ -110,7 +110,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
                 control={form.control}
                 name="value"
                 render={({ field }) => (
-                  <FormItemLayout className="[&>div>div]:mt-0" label="Set a ban duration">
+                  <FormItemLayout className="[&>div>div]:mt-0" label="设置封禁时间">
                     <FormControl_Shadcn_>
                       <Input_Shadcn_ {...field} />
                     </FormControl_Shadcn_>

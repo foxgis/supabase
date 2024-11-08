@@ -135,7 +135,7 @@ export const OngoingQueriesPanel = ({ visible, onClose }: OngoingQueriesPanel) =
                     <p className="text-foreground-light text-xs">PID: {query.pid}</p>
                     <p className="text-foreground-light text-xs">•</p>
                     <p className="text-foreground-light text-xs">
-                      开始于：{dayjs(query.query_start).format('DD MMM YYYY HH:mm (ZZ)')}
+                      开始于：{dayjs(query.query_start).format('YYYY-MM-DD HH:mm (ZZ)')}
                     </p>
                   </div>
                 </div>

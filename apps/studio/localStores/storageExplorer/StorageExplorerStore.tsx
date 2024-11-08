@@ -587,9 +587,7 @@ class StorageExplorerStore {
       toast.error(
         <div className="flex flex-col gap-y-1">
           <p className="text-foreground">
-            Failed to upload {numberOfFilesRejected} file{numberOfFilesRejected > 1 ? 's' : ''} as{' '}
-            {numberOfFilesRejected > 1 ? 'their' : 'its'} size
-            {numberOfFilesRejected > 1 ? 's are' : ' is'} 0.
+            有 {numberOfFilesRejected} 个文件由于文件大小是 0 导致上传失败。
           </p>
         </div>
       )
@@ -749,20 +747,20 @@ class StorageExplorerStore {
                   toast.error(
                     capitalize(
                       error?.originalResponse?.getBody() ||
-                        `Failed to upload ${file.name}: ${metadata.mimetype} is not allowed`
+                        `上传 ${file.name} 失败：不允许上传媒体类型为 ${metadata.mimetype} 的文件`
                     ),
                     {
-                      description: `Allowed MIME types: ${this.selectedBucket.allowed_mime_types?.join(', ')}`,
+                      description: `允许上传媒体类型有：${this.selectedBucket.allowed_mime_types?.join('，')}`,
                     }
                   )
                 } else if (status === 413) {
                   // Payload too large
                   toast.error(
-                    `Failed to upload ${file.name}: File size exceeds the bucket upload limit.`
+                    `上传 ${file.name} 失败：文件大小超过了存储桶的限制。`
                   )
                 }
               } else {
-                toast.error(`Failed to upload ${file.name}: ${error.message}`)
+                toast.error(`上传 ${file.name}失败：${error.message}`)
               }
               reject(error)
             },
@@ -1550,9 +1548,9 @@ class StorageExplorerStore {
       await this.refetchAllOpenedFolders()
       this.clearSelectedItemsToDelete()
 
-      toast.success(`Successfully deleted ${folder.name}`)
+      toast.success(`成功删除了 ${folder.name}`)
     } catch (error: any) {
-      toast.error(`Failed to delete folder: ${error.message}`)
+      toast.error(`删除文件夹失败：${error.message}`)
     }
   }
 
@@ -1607,7 +1605,7 @@ class StorageExplorerStore {
               })
             } catch (error) {
               hasErrors = true
-              toast.error(`Failed to move ${fromPath} to the new folder`)
+              toast.error(`将 ${fromPath} 移动到新文件夹失败`)
             }
             resolve()
           })
@@ -1714,7 +1712,7 @@ class StorageExplorerStore {
     }
 
     if (hasError) {
-      throw new Error('Failed to retrieve all files within folder')
+      throw new Error('尝试获取文件夹内的所有文件失败')
     }
 
     const subfolders = folderContents?.filter((item) => item.id === null) ?? []

@@ -48,7 +48,7 @@ const StoragePolicies = () => {
   const { mutate: deleteDatabasePolicy } = useDatabasePolicyDeleteMutation({
     onSuccess: async () => {
       await refetch()
-      toast.success('Successfully deleted policy!')
+      toast.success('成功删除了策略！')
       setSelectedPolicyToDelete({})
     },
   })
