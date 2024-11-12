@@ -26,7 +26,7 @@ export const generateToolRoutes = (ref?: string, project?: Project): Route[] => 
       label: '数据管理',
       icon: <TableEditor size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/editor`),
-      linkComponent: <EditorIndexPageLink projectRef={ref} />,
+      linkElement: <EditorIndexPageLink projectRef={ref} />,
     },
     {
       key: 'sql',
