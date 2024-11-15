@@ -1,4 +1,4 @@
-import { ChevronRight, Eye, EyeOffIcon, Heart, Unlock } from 'lucide-react'
+import { Eye, EyeOffIcon, Heart, Unlock } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -31,18 +31,15 @@ import {
   useSnippets,
   useSqlEditorV2StateSnapshot,
 } from 'state/sql-editor-v2'
+import { Separator, Skeleton, TreeView } from 'ui'
 import {
-  AlertDescription_Shadcn_,
-  AlertTitle_Shadcn_,
-  Alert_Shadcn_,
-  CollapsibleContent_Shadcn_,
-  CollapsibleTrigger_Shadcn_,
-  Collapsible_Shadcn_,
-  Separator,
-  TreeView,
-} from 'ui'
+  InnerSideBarEmptyPanel,
+  InnerSideMenuCollapsible,
+  InnerSideMenuCollapsibleContent,
+  InnerSideMenuCollapsibleTrigger,
+  InnerSideMenuSeparator,
+} from 'ui-patterns'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
-import { GenericSkeletonLoader } from 'ui-patterns/ShimmeringLoader'
 import { ROOT_NODE, formatFolderResponseForTreeView } from './SQLEditorNav.utils'
 import { SQLEditorTreeViewItem } from './SQLEditorTreeViewItem'
 
@@ -74,11 +71,6 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
   const [selectedSnippetToRename, setSelectedSnippetToRename] = useState<Snippet>()
   const [selectedSnippetToDownload, setSelectedSnippetToDownload] = useState<Snippet>()
   const [selectedFolderToDelete, setSelectedFolderToDelete] = useState<SnippetFolder>()
-
-  const COLLAPSIBLE_TRIGGER_CLASS_NAMES =
-    'flex items-center gap-x-2 px-4 [&[data-state=open]>svg]:!rotate-90'
-  const COLLAPSIBLE_ICON_CLASS_NAMES = 'text-foreground-light transition-transform duration-200'
-  const COLLASIBLE_HEADER_CLASS_NAMES = 'text-foreground-light font-mono text-sm uppercase'
 
   // =======================================================
   // [Joshen] Set up favorites, shared, and private snippets
@@ -341,27 +333,24 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
 
   return (
     <>
-      <Separator />
-
+      <InnerSideMenuSeparator />
       {((numProjectSnippets === 0 && searchText.length === 0) || numProjectSnippets > 0) && (
         <>
-          <Collapsible_Shadcn_ open={showSharedSnippets} onOpenChange={setShowSharedSnippets}>
-            <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
-              <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
-              <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                分享的查询{numProjectSnippets > 0 && ` (${numProjectSnippets}条)`}
-              </span>
-            </CollapsibleTrigger_Shadcn_>
-            <CollapsibleContent_Shadcn_ className="pt-2">
+          <InnerSideMenuCollapsible
+            open={showSharedSnippets}
+            onOpenChange={setShowSharedSnippets}
+            className="px-0"
+          >
+            <InnerSideMenuCollapsibleTrigger
+              title={`分享的查询${numProjectSnippets > 0 ? `（${numProjectSnippets}）` : ''}`}
+            />
+            <InnerSideMenuCollapsibleContent className="group-data-[state=open]:pt-2">
               {numProjectSnippets === 0 ? (
-                <div className="mx-4">
-                  <Alert_Shadcn_ className="p-3">
-                    <AlertTitle_Shadcn_ className="text-xs">无分享的查询</AlertTitle_Shadcn_>
-                    <AlertDescription_Shadcn_ className="text-xs ">
-                      右键点击查询向团队成员分享查询。
-                    </AlertDescription_Shadcn_>
-                  </Alert_Shadcn_>
-                </div>
+                <InnerSideBarEmptyPanel
+                  className="mx-2"
+                  title="暂无分享的查询"
+                  description="通过右键点击查询向团队分享。"
+                />
               ) : (
                 <TreeView
                   data={projectSnippetsTreeState}
@@ -391,33 +380,35 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
                   )}
                 />
               )}
-            </CollapsibleContent_Shadcn_>
-          </Collapsible_Shadcn_>
-          <Separator />
+            </InnerSideMenuCollapsibleContent>
+          </InnerSideMenuCollapsible>
+          <InnerSideMenuSeparator />
         </>
       )}
 
       {((numFavoriteSnippets === 0 && searchText.length === 0) || numFavoriteSnippets > 0) && (
         <>
-          <Collapsible_Shadcn_ open={showFavouriteSnippets} onOpenChange={setShowFavouriteSnippets}>
-            <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
-              <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
-              <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-                收藏的查询{numFavoriteSnippets > 0 && `（${numFavoriteSnippets} 条）`}
-              </span>
-            </CollapsibleTrigger_Shadcn_>
-            <CollapsibleContent_Shadcn_ className="pt-2">
+          <InnerSideMenuCollapsible
+            className="px-0"
+            open={showFavouriteSnippets}
+            onOpenChange={setShowFavouriteSnippets}
+          >
+            <InnerSideMenuCollapsibleTrigger
+              title={`收藏的查询${numFavoriteSnippets > 0 ? `（${numFavoriteSnippets}）` : ''}`}
+            />
+            <InnerSideMenuCollapsibleContent className="group-data-[state=open]:pt-2">
               {numFavoriteSnippets === 0 ? (
-                <div className="mx-4">
-                  <Alert_Shadcn_ className="p-3">
-                    <AlertTitle_Shadcn_ className="text-xs">没有收藏的查询</AlertTitle_Shadcn_>
-                    <AlertDescription_Shadcn_ className="text-xs ">
-                      保存查询到收藏夹，方便日后快速访问。点击{' '}
+                <InnerSideBarEmptyPanel
+                  title="暂无收藏的查询"
+                  className="mx-2"
+                  description={
+                    <>
+                      通过点击{' '}
                       <Heart size={12} className="inline-block relative align-center -top-[1px]" />{' '}
-                      图标。
-                    </AlertDescription_Shadcn_>
-                  </Alert_Shadcn_>
-                </div>
+                      图标将查询保存到收藏以便快捷访问。
+                    </>
+                  }
+                />
               ) : (
                 <TreeView
                   data={favoritesTreeState}
@@ -448,34 +439,51 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
                   )}
                 />
               )}
-            </CollapsibleContent_Shadcn_>
-          </Collapsible_Shadcn_>
-          <Separator />
+            </InnerSideMenuCollapsibleContent>
+          </InnerSideMenuCollapsible>
+          <InnerSideMenuSeparator />
         </>
       )}
 
-      <Collapsible_Shadcn_ open={showPrivateSnippets} onOpenChange={setShowPrivateSnippets}>
-        <CollapsibleTrigger_Shadcn_ className={COLLAPSIBLE_TRIGGER_CLASS_NAMES}>
-          <ChevronRight size={16} className={COLLAPSIBLE_ICON_CLASS_NAMES} />
-          <span className={COLLASIBLE_HEADER_CLASS_NAMES}>
-            个人的查询
-            {numPrivateSnippets > 0 && `（${numPrivateSnippets}条）`}
-          </span>
-        </CollapsibleTrigger_Shadcn_>
-        <CollapsibleContent_Shadcn_ className="pt-2">
+      <InnerSideMenuCollapsible
+        open={showPrivateSnippets}
+        onOpenChange={setShowPrivateSnippets}
+        className="px-0"
+      >
+        <InnerSideMenuCollapsibleTrigger
+          title={`私有的查询
+            ${numPrivateSnippets > 0 ? ` (${numPrivateSnippets}）` : ''}`}
+        />
+        <InnerSideMenuCollapsibleContent className="group-data-[state=open]:pt-2">
           {!snapV2.loaded[projectRef as string] ? (
-            <div className="px-4">
-              <GenericSkeletonLoader />
-            </div>
+            <>
+              <div className="flex flex-row h-6 px-3 items-center gap-3">
+                <Skeleton className="h-4 w-5" />
+                <Skeleton className="w-40 h-4" />
+              </div>
+              <div className="flex flex-row h-6 px-3 items-center gap-3">
+                <Skeleton className="h-4 w-5" />
+                <Skeleton className="w-32 h-4" />
+              </div>
+              <div className="flex flex-row h-6 px-3 items-center gap-3 opacity-75">
+                <Skeleton className="h-4 w-5" />
+                <Skeleton className="w-20 h-4" />
+              </div>
+              <div className="flex flex-row h-6 px-3 items-center gap-3 opacity-50">
+                <Skeleton className="h-4 w-5" />
+                <Skeleton className="w-40 h-4" />
+              </div>
+              <div className="flex flex-row h-6 px-3 items-center gap-3 opacity-25">
+                <Skeleton className="h-4 w-5" />
+                <Skeleton className="w-20 h-4" />
+              </div>
+            </>
           ) : folders.length === 0 && numPrivateSnippets === 0 ? (
-            <div className="mx-4">
-              <Alert_Shadcn_ className="p-3">
-                <AlertTitle_Shadcn_ className="text-xs">没有创建查询</AlertTitle_Shadcn_>
-                <AlertDescription_Shadcn_ className="text-xs">
-                  当你在编辑器中开始编写查询时，查询会自动保存。
-                </AlertDescription_Shadcn_>
-              </Alert_Shadcn_>
-            </div>
+            <InnerSideBarEmptyPanel
+              className="mx-3 px-4"
+              title="还没有创建查询"
+              description="当您在编辑器中开始编写查询时，查询会自动保存。"
+            />
           ) : (
             <TreeView
               multiSelect
@@ -544,8 +552,8 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
               )}
             />
           )}
-        </CollapsibleContent_Shadcn_>
-      </Collapsible_Shadcn_>
+        </InnerSideMenuCollapsibleContent>
+      </InnerSideMenuCollapsible>
 
       <Separator />
 

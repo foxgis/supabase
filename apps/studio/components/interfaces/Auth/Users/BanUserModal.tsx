@@ -8,7 +8,6 @@ import * as z from 'zod'
 import { useParams } from 'common'
 import { useUserUpdateMutation } from 'data/auth/user-update-mutation'
 import { User } from 'data/auth/users-infinite-query'
-import { getAPIKeys, useProjectSettingsV2Query } from 'data/config/project-settings-v2-query'
 import {
   Button,
   cn,
@@ -31,10 +30,14 @@ interface BanUserModalProps {
   onClose: () => void
 }
 
+const units = {
+  days: '天',
+  hours: '小时',
+}
+
 export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
   const { ref: projectRef } = useParams()
 
-  const { data: settings } = useProjectSettingsV2Query({ projectRef })
   const { mutate: updateUser, isLoading: isBanningUser } = useUserUpdateMutation({
     onSuccess: (_, vars) => {
       const bannedUntil = dayjs()
@@ -62,25 +65,15 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
   const bannedUntil = dayjs().add(Number(value), unit).format('YYYY-MM-DD HH:mm (ZZ)')
 
   const onSubmit = (data: FormType) => {
-    if (!settings) {
-      return toast.error(`封禁用户失败：载入项目配置失败`)
-    } else if (user.id === undefined) {
+    if (projectRef === undefined) return console.error('未找到项目号')
+    if (user.id === undefined) {
       return toast.error(`封禁用户失败：未找到用户 ID`)
     }
 
     const durationHours = data.unit === 'hours' ? Number(data.value) : Number(data.value) * 24
-    const protocol = settings?.app_config?.protocol ?? 'https'
-    const endpoint = settings?.app_config?.endpoint
-    const { serviceKey } = getAPIKeys(settings)
-
-    if (!endpoint) return toast.error(`封禁用户失败：未能获取 API 接口地址`)
-    if (!serviceKey?.api_key) return toast.error(`封禁用户失败：未能获取 API 密钥`)
 
     updateUser({
       projectRef,
-      protocol,
-      endpoint,
-      serviceApiKey: serviceKey.api_key,
       userId: user.id,
       banDuration: durationHours,
     })
@@ -103,7 +96,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Modal.Content className="flex flex-col gap-y-3">
             <p className="text-sm">
-              本操作将在指定的时间内撤销用户对本项目的访问以及禁止登录。
+              本操作将在指定的时间内撤销用户对项目的访问权限以及禁止登录。
             </p>
             <div className="flex items-start gap-x-2 [&>div:first-child]:flex-grow">
               <FormField_Shadcn_
@@ -129,7 +122,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
                         onValueChange={(value) => form.setValue('unit', value as 'hours' | 'days')}
                       >
                         <SelectTrigger_Shadcn_ className="capitalize w-24">
-                          {field.value}
+                          {units[field.value]}
                         </SelectTrigger_Shadcn_>
                         <SelectContent_Shadcn_>
                           <SelectItem_Shadcn_ value="hours">小时</SelectItem_Shadcn_>
@@ -144,7 +137,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
 
             <div>
               <p className="text-sm text-foreground-lighter">
-                此用户将无法登录直至：
+                用户在此时间之前将无法登录：
               </p>
               <p className={cn('text-sm', !value && 'text-foreground-light')}>
                 {!!value ? bannedUntil : '无效的封禁时间'}

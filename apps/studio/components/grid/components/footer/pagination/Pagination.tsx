@@ -44,7 +44,6 @@ const Pagination = () => {
   const [{ filter }] = useUrlState({ arrayKeys: ['filter'] })
   const filters = formatFilterURLParams(filter as string[])
   const page = snap.page
-  const table = state.table ?? undefined
 
   const roleImpersonationState = useRoleImpersonationStateSnapshot()
   const [isConfirmNextModalOpen, setIsConfirmNextModalOpen] = useState(false)
@@ -60,10 +59,9 @@ const Pagination = () => {
 
   const { data, isLoading, isSuccess, isError, isFetching } = useTableRowsCountQuery(
     {
-      queryKey: [table?.schema, table?.name, 'count-estimate'],
       projectRef: project?.ref,
       connectionString: project?.connectionString,
-      table,
+      tableId: id,
       filters,
       enforceExactCount: snap.enforceExactCount,
       impersonatedRole: roleImpersonationState.role,
@@ -252,11 +250,12 @@ const Pagination = () => {
 
       <ConfirmationModal
         visible={isConfirmPreviousModalOpen}
-        title="确定前往上一页"
+        title="确认前往上一页"
         confirmLabel="确定"
         onCancel={() => setIsConfirmPreviousModalOpen(false)}
         onConfirm={() => {
           onConfirmPreviousPage()
+          setIsConfirmPreviousModalOpen(false)
         }}
       >
         <p className="text-sm text-foreground-light">
@@ -266,11 +265,12 @@ const Pagination = () => {
 
       <ConfirmationModal
         visible={isConfirmNextModalOpen}
-        title="确定前往下一页"
+        title="确认前往下一页"
         confirmLabel="确定"
         onCancel={() => setIsConfirmNextModalOpen(false)}
         onConfirm={() => {
           onConfirmNextPage()
+          setIsConfirmNextModalOpen(false)
         }}
       >
         <p className="text-sm text-foreground-light">
