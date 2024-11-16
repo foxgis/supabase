@@ -153,7 +153,10 @@ const SchemaSelector = ({
                           setOpen(false)
                         }}
                       >
-                        <span>{schema.name}</span>
+                        <span>
+                          {schema.name}
+                          <span className="block text-muted">{schema.comment}</span>
+                        </span>
                         {selectedSchemaName === schema.name && (
                           <Check className="text-brand" strokeWidth={2} size={16} />
                         )}

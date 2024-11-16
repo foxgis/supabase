@@ -158,9 +158,9 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
 
   const exportTableAsSQL = async () => {
     if (IS_PLATFORM && !project?.connectionString) {
-      return console.error('Connection string is required')
+      return console.error('未找到连接字符串')
     }
-    const toastId = toast.loading(`Exporting ${entity.name} as SQL...`)
+    const toastId = toast.loading(`正在将 ${entity.name} 导出为SQL...`)
 
     try {
       const table = await getTableEditor({
@@ -179,7 +179,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
       const supaTable = table && parseSupaTable(table)
 
       if (!supaTable) {
-        return toast.error(`Failed to export table: ${entity.name}`, { id: toastId })
+        return toast.error(`导出实体失败：${entity.name}`, { id: toastId })
       }
 
       const rows = await fetchAllTableRows({
@@ -202,9 +202,9 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
         saveAs(sqlData, `${entity!.name}_rows.sql`)
       }
 
-      toast.success(`Successfully exported ${entity.name} as SQL`, { id: toastId })
+      toast.success(`成功将 ${entity.name} 导出为 SQL`, { id: toastId })
     } catch (error: any) {
-      toast.error(`Failed to export table: ${error.message}`, { id: toastId })
+      toast.error(`导出表失败：${error.message}`, { id: toastId })
     }
   }
 
@@ -352,6 +352,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
           )}
         >
           {entity.name}
+          <span className="block text-muted font-normal truncate">{entity.comment}</span>
         </span>
         <EntityTooltipTrigger entity={entity} />
       </div>

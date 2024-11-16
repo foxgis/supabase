@@ -276,7 +276,7 @@ const TableEditorMenu = () => {
                       id: Number(id),
                       isLocked,
                     }}
-                    getItemSize={() => 28}
+                    getItemSize={() => 40}
                     hasNextPage={hasNextPage}
                     isLoadingNextPage={isFetchingNextPage}
                     onLoadNextPage={() => fetchNextPage()}

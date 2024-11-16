@@ -169,7 +169,7 @@ export const PolicyDetailsV2 = ({
                         <Command_Shadcn_>
                           <CommandInput_Shadcn_ placeholder="查找表..." />
                           <CommandList_Shadcn_>
-                            <CommandEmpty_Shadcn_>No tables found</CommandEmpty_Shadcn_>
+                            <CommandEmpty_Shadcn_>未找到表</CommandEmpty_Shadcn_>
                             <CommandGroup_Shadcn_>
                               <ScrollArea className={(tables ?? []).length > 7 ? 'h-[200px]' : ''}>
                                 {(tables ?? []).map((table) => (
@@ -187,7 +187,10 @@ export const PolicyDetailsV2 = ({
                                   >
                                     <span className="flex items-center gap-1.5">
                                       {field.value === table.name ? <Check size={13} /> : ''}
-                                      {table.name}
+                                      <span>
+                                        {table.name}
+                                        <span className="block text-muted font-normal truncate">{table.comment}</span>
+                                      </span>
                                     </span>
                                   </CommandItem_Shadcn_>
                                 ))}

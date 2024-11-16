@@ -75,6 +75,7 @@ export function getGridColumns(
           isEncrypted={x.isEncrypted}
           format={x.format}
           foreignKey={x.foreignKey}
+          comment={x.comment}
         />
       ),
       renderEditCell: options

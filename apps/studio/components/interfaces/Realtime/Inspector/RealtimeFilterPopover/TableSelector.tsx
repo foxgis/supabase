@@ -125,7 +125,9 @@ const TableSelector = ({
                 <>
                   <CommandGroup_Shadcn_ forceMount>
                     <ScrollArea className={(entities || []).length > 7 ? 'h-[210px]' : ''}>
-                      <CommandEmpty_Shadcn_>未找到表</CommandEmpty_Shadcn_>
+                      {entities?.length === 0 && (
+                        <CommandEmpty_Shadcn_>未找到表</CommandEmpty_Shadcn_>
+                      )}
                       {!searchInput && (
                         <CommandItem_Shadcn_
                           key="all-tables"
@@ -139,7 +141,7 @@ const TableSelector = ({
                             setOpen(false)
                           }}
                         >
-                          <span>All tables</span>
+                          <span>所有表</span>
                           {selectedSchemaName === '*' && (
                             <Check className="text-brand" strokeWidth={2} />
                           )}
@@ -158,7 +160,10 @@ const TableSelector = ({
                             setOpen(false)
                           }}
                         >
-                          <span>{table.name}</span>
+                          <span>
+                            {table.name}
+                            <span className="block w-60 text-muted font-normal truncate">{table.comment}</span>
+                          </span>
                           {selectedSchemaName === table.name && (
                             <Check className="text-brand" strokeWidth={2} />
                           )}

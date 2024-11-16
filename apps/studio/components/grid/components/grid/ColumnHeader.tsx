@@ -17,6 +17,7 @@ export function ColumnHeader<R>({
   isEncrypted,
   format,
   foreignKey,
+  comment,
 }: ColumnHeaderProps<R>) {
   const ref = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
@@ -133,12 +134,13 @@ export function ColumnHeader<R>({
                 </div>
               </TooltipTrigger_Shadcn_>
               <TooltipContent_Shadcn_ side="bottom" className="font-normal">
-                Primary key
+                主键
               </TooltipContent_Shadcn_>
             </Tooltip_Shadcn_>
           )}
           <span className="sb-grid-column-header__inner__name" title={hoverValue}>
             {column.name}
+            <span className="block text-muted font-normal truncate">{comment}</span>
           </span>
           <span className="sb-grid-column-header__inner__format">{columnFormat}</span>
           {isEncrypted && (
@@ -147,7 +149,7 @@ export function ColumnHeader<R>({
                 <Lock size={14} strokeWidth={2} />
               </TooltipTrigger_Shadcn_>
               <TooltipContent_Shadcn_ side="bottom" className="font-normal">
-                Encrypted column
+                加密列
               </TooltipContent_Shadcn_>
             </Tooltip_Shadcn_>
           )}
@@ -173,7 +175,7 @@ function renderColumnIcon(
           </TooltipTrigger_Shadcn_>
           <TooltipContent_Shadcn_ side="bottom">
             <div className="font-normal">
-              <p className="text-xs text-foreground-light">Foreign key relation:</p>
+              <p className="text-xs text-foreground-light">外键关联：</p>
               <div className="flex items-center space-x-1">
                 <p className="text-xs !text-foreground">{name}</p>
                 <ArrowRight size={14} strokeWidth={1.5} className="!text-foreground-light" />
@@ -184,12 +186,12 @@ function renderColumnIcon(
               </div>
               {foreignKey?.updateAction !== FOREIGN_KEY_CASCADE_ACTION.NO_ACTION && (
                 <p className="text-xs !text-foreground mt-1">
-                  On update: {getForeignKeyCascadeAction(foreignKey?.updateAction)}
+                  更新：{getForeignKeyCascadeAction(foreignKey?.updateAction)}
                 </p>
               )}
               {foreignKey?.deletionAction !== FOREIGN_KEY_CASCADE_ACTION.NO_ACTION && (
                 <p className="text-xs !text-foreground mt-1">
-                  On delete: {getForeignKeyCascadeAction(foreignKey?.deletionAction)}
+                  删除：{getForeignKeyCascadeAction(foreignKey?.deletionAction)}
                 </p>
               )}
             </div>
