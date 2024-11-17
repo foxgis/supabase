@@ -20,6 +20,9 @@ export interface Entity {
   type: ENTITY_TYPE
   comment: string | null
   rls_enabled: boolean
+  geometry_column: string | null
+  srid: number | null
+  geometry_type: string | null
 }
 
 export type EntityTypesResponse = {
@@ -81,6 +84,22 @@ export async function getEntityTypes(
       order by ${innerOrderBy}
       limit ${limit}
       offset ${page * limit}
+    ),
+    geometry_columns as (
+      select
+        n.nspname AS schema,
+        c.relname AS table,
+        a.attname AS geometry_column,
+        postgis_typmod_srid(a.atttypmod) AS srid,
+        postgis_typmod_type(a.atttypmod) AS geometry_type
+      from
+        pg_class c
+        JOIN pg_namespace n ON (c.relnamespace = n.oid)
+        JOIN pg_attribute a ON (a.attrelid = c.oid)
+        JOIN pg_type t ON (a.atttypid = t.oid)
+      where
+        t.typname = 'geometry'
+        and postgis_typmod_srid(a.atttypmod) > 0
     )
     select
       jsonb_build_object(
@@ -91,13 +110,18 @@ export async function getEntityTypes(
             'name', r.name,
             'type', r.type,
             'comment', r.comment,
-            'rls_enabled', r.rls_enabled
+            'rls_enabled', r.rls_enabled,
+            'geometry_column', g.geometry_column,
+            'srid', g.srid,
+            'geometry_type', g.geometry_type
           )
           order by ${outerOrderBy}
         ), '[]'::jsonb),
         'count', coalesce(min(r.count), 0)
       ) "data"
-    from records r;
+    from
+      records r
+      left join geometry_columns g on (g.schema = r.schema and g.table = r.name);
   `
 
   const { result } = await executeSql(

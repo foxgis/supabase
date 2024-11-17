@@ -10,6 +10,9 @@ import {
   Table2,
   Trash,
   Unlock,
+  Shapes,
+  Waypoints,
+  MapPin,
 } from 'lucide-react'
 import Link from 'next/link'
 import Papa from 'papaparse'
@@ -27,7 +30,7 @@ import {
   getEntityLintDetails,
 } from 'components/interfaces/TableGridEditor/TableEntity.utils'
 import type { ItemRenderer } from 'components/ui/InfiniteList'
-import { ENTITY_TYPE } from 'data/entity-types/entity-type-constants'
+import { ENTITY_TYPE, ENTITY_TYPE_LABELS } from 'data/entity-types/entity-type-constants'
 import { Entity } from 'data/entity-types/entity-types-infinite-query'
 import { useProjectLintsQuery } from 'data/lint/lint-query'
 import { EditorTablePageLink } from 'data/prefetchers/project.$ref.editor.$id'
@@ -96,11 +99,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
   ).hasLint
 
   const formatTooltipText = (entityType: string) => {
-    return Object.entries(ENTITY_TYPE)
-      .find(([, value]) => value === entityType)?.[0]
-      ?.toLowerCase()
-      ?.split('_')
-      ?.join(' ')
+    return ENTITY_TYPE_LABELS[entityType as ENTITY_TYPE]
   }
 
   const exportTableAsCSV = async () => {
@@ -125,7 +124,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
       const supaTable = table && parseSupaTable(table)
 
       if (!supaTable) {
-        return toast.error(`Failed to export table: ${entity.name}`, { id: toastId })
+        return toast.error(`导出表失败：${entity.name}`, { id: toastId })
       }
 
       const rows = await fetchAllTableRows({
@@ -286,7 +285,37 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
     >
       <Tooltip.Root delayDuration={0} disableHoverableContent={true}>
         <Tooltip.Trigger className="min-w-4" asChild>
-          {entity.type === ENTITY_TYPE.TABLE ? (
+          {entity.geometry_type?.toLowerCase().includes('point') ? (
+            <MapPin
+              size={15}
+              strokeWidth={1.5}
+              className={cn(
+                'text-foreground-muted group-hover:text-foreground-lighter',
+                isActive && 'text-foreground-lighter',
+                'transition-colors'
+              )}
+            />
+          ) : entity.geometry_type?.toLowerCase().includes('linestring') ? (
+            <Waypoints
+              size={15}
+              strokeWidth={1.5}
+              className={cn(
+                'text-foreground-muted group-hover:text-foreground-lighter',
+                isActive && 'text-foreground-lighter',
+                'transition-colors'
+              )}
+            />
+          ) : entity.geometry_type?.toLowerCase().includes('polygon') ? (
+            <Shapes
+              size={15}
+              strokeWidth={1.5}
+              className={cn(
+                'text-foreground-muted group-hover:text-foreground-lighter',
+                isActive && 'text-foreground-lighter',
+                'transition-colors'
+              )}
+            />
+          ) : entity.type === ENTITY_TYPE.TABLE ? (
             <Table2
               size={15}
               strokeWidth={1.5}
