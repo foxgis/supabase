@@ -129,7 +129,7 @@ export async function getEntityTypes(
       projectRef,
       connectionString,
       sql,
-      queryKey: ['public', 'entity-types'],
+      queryKey: ['entity-types', ...schemas, page],
     },
     signal
   )
@@ -173,7 +173,6 @@ export const useEntityTypesQuery = <TData = EntityTypesData>(
       ),
     {
       enabled: enabled && typeof projectRef !== 'undefined',
-      staleTime: 0,
       getNextPageParam(lastPage, pages) {
         const page = pages.length
         const currentTotalCount = page * limit

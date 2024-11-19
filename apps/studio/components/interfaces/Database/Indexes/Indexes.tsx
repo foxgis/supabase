@@ -53,12 +53,12 @@ const Indexes = () => {
   })
 
   const { mutate: execute, isLoading: isExecuting } = useExecuteSqlMutation({
-    onSuccess() {
-      refetchIndexes()
+    onSuccess: async () => {
+      await refetchIndexes()
       setSelectedIndexToDelete(undefined)
       toast.success('成功删除了索引')
     },
-    onError(error) {
+    onError: (error) => {
       toast.error(`删除索引失败：${error.message}`)
     },
   })
@@ -69,7 +69,7 @@ const Indexes = () => {
   const schema = schemas?.find((schema) => schema.name === selectedSchema)
   const isLocked = protectedSchemas.some((s) => s.id === schema?.id)
 
-  const sortedIndexes = sortBy(allIndexes?.result ?? [], (index) => index.name.toLocaleLowerCase())
+  const sortedIndexes = sortBy(allIndexes ?? [], (index) => index.name.toLocaleLowerCase())
   const indexes =
     search.length > 0
       ? sortedIndexes.filter((index) => index.name.includes(search) || index.table.includes(search))
