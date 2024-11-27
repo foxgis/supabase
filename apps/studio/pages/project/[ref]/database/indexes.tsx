@@ -36,7 +36,7 @@ const IndexesPage: NextPageWithLayout = () => {
               className="no-underline"
               href="https://supabase.com/docs/guides/database/extensions/index_advisor"
             >
-              使用 index_advisor 优化查询
+              索引助手
             </a>
           </Button>
         </ScaffoldSectionDetail>

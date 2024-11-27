@@ -6,7 +6,7 @@ import { useEntityTypesQuery } from 'data/entity-types/entity-types-infinite-que
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useLocalStorage } from 'hooks/misc/useLocalStorage'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
-import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
+import { PROTECTED_SCHEMAS } from 'lib/constants/schemas'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
 
 export interface EmptyStateProps {}
@@ -14,7 +14,7 @@ export interface EmptyStateProps {}
 const EmptyState = ({}: EmptyStateProps) => {
   const snap = useTableEditorStateSnapshot()
   const { selectedSchema } = useQuerySchemaState()
-  const isProtectedSchema = EXCLUDED_SCHEMAS.includes(selectedSchema)
+  const isProtectedSchema = PROTECTED_SCHEMAS.includes(selectedSchema)
   const canCreateTables =
     useCheckPermissions(PermissionAction.TENANT_SQL_ADMIN_WRITE, 'tables') && !isProtectedSchema
 
@@ -37,7 +37,7 @@ const EmptyState = ({}: EmptyStateProps) => {
     <div className="w-full h-full flex items-center justify-center">
       {totalCount === 0 ? (
         <ProductEmptyState
-          title="表编辑器"
+          title="数据表"
           ctaButtonLabel={canCreateTables ? '新建表' : undefined}
           onClickCta={canCreateTables ? snap.onAddTable : undefined}
         >
@@ -48,7 +48,7 @@ const EmptyState = ({}: EmptyStateProps) => {
       ) : (
         <div className="flex flex-col items-center space-y-4">
           <ProductEmptyState
-            title="表编辑器"
+            title="数据表"
             ctaButtonLabel={canCreateTables ? '新建表' : undefined}
             onClickCta={canCreateTables ? snap.onAddTable : undefined}
           >

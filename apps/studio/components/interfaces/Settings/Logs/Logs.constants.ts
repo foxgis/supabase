@@ -363,6 +363,7 @@ export enum LogsTableName {
   POSTGREST = 'postgrest_logs',
   SUPAVISOR = 'supavisor_logs',
   WAREHOUSE = 'warehouse_logs',
+  CRON_JOBS = 'cron_job_run_details',
 }
 
 export const LOGS_TABLES = {
@@ -376,19 +377,21 @@ export const LOGS_TABLES = {
   postgrest: LogsTableName.POSTGREST,
   supavisor: LogsTableName.SUPAVISOR,
   warehouse: LogsTableName.WAREHOUSE,
+  cron: LogsTableName.CRON_JOBS,
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
-  [LogsTableName.EDGE]: '从网络端获得的日志，包含所有 API 请求',
-  [LogsTableName.POSTGRES]: '直接从 Postgres 获得的数据库日志',
-  [LogsTableName.FUNCTIONS]: '从运行时生成的函数日志',
-  [LogsTableName.FN_EDGE]: '包含请求和响应的函数调用日志',
-  [LogsTableName.AUTH]: '来自 GoTrue 的身份验证日志',
-  [LogsTableName.REALTIME]: 'Postgres 逻辑复制时的实时通信日志',
+  [LogsTableName.EDGE]: '网络端日志，包含所有 API 请求',
+  [LogsTableName.POSTGRES]: '数据库日志',
+  [LogsTableName.FUNCTIONS]: '函数运行日志',
+  [LogsTableName.FN_EDGE]: '函数调用日志，包含请求和响应',
+  [LogsTableName.AUTH]: '身份验证日志',
+  [LogsTableName.REALTIME]: '数据库逻辑复制日志',
   [LogsTableName.STORAGE]: '文件存储日志',
-  [LogsTableName.POSTGREST]: 'RESTful API 服务器日志',
-  [LogsTableName.SUPAVISOR]: '云原生 Postgres 连接池日志',
-  [LogsTableName.WAREHOUSE]: '从数据仓库集合获得的日志',
+  [LogsTableName.POSTGREST]: '接口服务日志',
+  [LogsTableName.SUPAVISOR]: '云原生数据库连接池日志',
+  [LogsTableName.WAREHOUSE]: '数据仓库日志',
+  [LogsTableName.CRON_JOBS]: '定时任务执行的日志',
 }
 
 export const genQueryParams = (params: { [k: string]: string }) => {

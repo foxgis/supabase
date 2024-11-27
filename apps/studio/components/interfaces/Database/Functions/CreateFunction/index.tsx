@@ -13,7 +13,7 @@ import { useDatabaseExtensionsQuery } from 'data/database-extensions/database-ex
 import { useDatabaseFunctionCreateMutation } from 'data/database-functions/database-functions-create-mutation'
 import { DatabaseFunction } from 'data/database-functions/database-functions-query'
 import { useDatabaseFunctionUpdateMutation } from 'data/database-functions/database-functions-update-mutation'
-import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
+import { PROTECTED_SCHEMAS } from 'lib/constants/schemas'
 import type { FormSchema } from 'types'
 import {
   Button,
@@ -197,13 +197,13 @@ const CreateFunction = ({ func, visible, setVisible }: CreateFunctionProps) => {
                   render={({ field }) => (
                     <FormItemLayout
                       label="模式"
-                      description="在表编辑器中创建的表将在 'public' 模式中"
+                      description="在数据管理中创建的表将在 'public' 模式中"
                       layout="horizontal"
                     >
                       <FormControl_Shadcn_>
                         <SchemaSelector
                           selectedSchemaName={field.value}
-                          excludedSchemas={EXCLUDED_SCHEMAS}
+                          excludedSchemas={PROTECTED_SCHEMAS}
                           size="small"
                           onSelectSchema={(name) => field.onChange(name)}
                         />

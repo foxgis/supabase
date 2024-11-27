@@ -12,7 +12,7 @@ import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useGISFeaturesQuery } from 'data/gis/gis-features-query'
 import { useSchemasQuery } from 'data/database/schemas-query'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
-import { EXCLUDED_SCHEMAS } from 'lib/constants/schemas'
+import { PROTECTED_SCHEMAS } from 'lib/constants/schemas'
 import { Input } from 'ui'
 import ProtectedSchemaWarning from 'components/interfaces/Database/ProtectedSchemaWarning'
 import FeatureList from './FeatureList'
@@ -39,7 +39,7 @@ const FeaturesList = () => {
     connectionString: project?.connectionString,
   })
   const [protectedSchemas] = partition(schemas ?? [], (schema) =>
-    EXCLUDED_SCHEMAS.includes(schema?.name ?? '')
+    PROTECTED_SCHEMAS.includes(schema?.name ?? '')
   )
   const foundSchema = schemas?.find((schema) => schema.name === selectedSchema)
   const isLocked = protectedSchemas.some((s) => s.id === foundSchema?.id)

@@ -17,7 +17,7 @@ const DatabaseEnumeratedTypes: NextPageWithLayout = () => {
   return (
     <ScaffoldContainer>
       <ScaffoldSection>
-        <ScaffoldSectionContent>
+        <ScaffoldSectionContent className="!col-span-12">
           <FormHeader
             className="!mb-0"
             title="数据库枚举类型"
