@@ -894,7 +894,7 @@ const SQLEditor = () => {
           </ResizablePanelGroup>
         </ResizablePanel>
 
-        {!isAssistantV2Enabled && (
+        {/* {!isAssistantV2Enabled && (
           <>
             <ResizableHandle withHandle />
             <ResizablePanel
@@ -914,7 +914,7 @@ const SQLEditor = () => {
               />
             </ResizablePanel>
           </>
-        )}
+        )} */}
       </ResizablePanelGroup>
     </>
   )
