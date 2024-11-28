@@ -117,7 +117,7 @@ const TableDefinition = ({ entity }: TableDefinitionProps) => {
               formattedDefinition ?? ''
             )}`}
           >
-            在数据查询面版中打开
+            在数据查询中打开
           </Link>
         </Button>
         <Editor

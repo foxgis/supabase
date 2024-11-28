@@ -194,7 +194,7 @@ const EnableExtensionModal = ({ visible, extension, onCancel }: EnableExtensionM
                     </AlertTitle_Shadcn_>
 
                     <AlertDescription_Shadcn_>
-                      你仍然可以启用这个扩展，但由于 Fly 项目的行为，pg_cron 任务可能无法正常运行。
+                      您仍然可以启用这个扩展，但由于 Fly 项目的行为，pg_cron 任务可能无法正常运行。
                     </AlertDescription_Shadcn_>
 
                     <AlertDescription_Shadcn_ className="mt-3">

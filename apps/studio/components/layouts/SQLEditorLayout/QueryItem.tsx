@@ -201,7 +201,7 @@ const QueryItem = ({
             : undefined
         }
       >
-        <p className="text-sm">你确定要删除 '{name}' 吗？</p>
+        <p className="text-sm">您确定要删除 '{name}' 吗？</p>
       </ConfirmationModal>
       <ConfirmationModal
         title="确认分享查询"

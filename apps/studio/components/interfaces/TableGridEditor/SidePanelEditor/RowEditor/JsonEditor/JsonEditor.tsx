@@ -206,7 +206,7 @@ const JsonEdit = ({
             <div className="flex flex-col gap-y-1 w-80">
               <p>JSON 长度超过 {MAX_CHARACTERS.toLocaleString()} 个字符</p>
               <p className="text-foreground-light">
-                你可以尝试渲染整个 JSON 数据，但你的浏览器可能会遇到性能问题
+                您可以尝试渲染整个 JSON 数据，但您的浏览器可能会遇到性能问题
               </p>
             </div>
             <Button type="default" loading={isLoading} onClick={loadFullValue}>

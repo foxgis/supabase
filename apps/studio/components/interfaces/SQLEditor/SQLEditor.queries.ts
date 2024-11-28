@@ -1175,7 +1175,7 @@ $$;
     id: 22,
     type: 'template',
     title: '复制同步状态报告',
-    description: '查看你的复制槽和复制同步滞后的状态。',
+    description: '查看您的复制槽和复制同步滞后的状态。',
     sql: `-- 复制同步状态报告
 
 SELECT

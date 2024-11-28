@@ -614,7 +614,7 @@ export const SQLEditorNav = ({ searchText: _searchText }: SQLEditorNavProps) => 
         onConfirm={onConfirmUnshare}
         alert={{
           title: '此 SQL 查询不再对所有团队成员公开',
-          description: '只有你才有访问此查询的权限',
+          description: '只有您才有访问此查询的权限',
         }}
       >
         <ul className="text-sm text-foreground-light space-y-5">

@@ -264,7 +264,7 @@ export const AiAssistantPanel = ({
                 <Alert_Shadcn_>
                   <AlertDescription_Shadcn_ className="flex flex-col gap-4">
                     <span>
-                    友情提示：你在查询时并没有发送项目元数据。如果选择发送匿名数据，Supabase AI 可以提高查询结果的准确性。
+                    友情提示：您在查询时并没有发送项目元数据。如果选择发送匿名数据，Supabase AI 可以提高查询结果的准确性。
                     </span>
                     <Button
                       type="default"

@@ -146,7 +146,7 @@ const LogsQueryPanel = ({
                     <DropdownMenuItem className="hover:bg-transparent cursor-default">
                       <DropdownMenuItemContent
                         name="没有找到集合"
-                        desc="你可以在左侧边栏创建集合。"
+                        desc="您可以在左侧边栏创建集合。"
                       />
                     </DropdownMenuItem>
                   )}

@@ -23,7 +23,7 @@ const GeneralContent = ({ selectedLang, page, showApiKey }: GeneralContentProps)
     return (
       <div>
         <h2 className="m-4">未找到页面</h2>
-        <p className="m-4">看起来你来到了一个没人知道的地方。</p>
+        <p className="m-4">看起来您来到了一个没人知道的地方。</p>
       </div>
     )
 }

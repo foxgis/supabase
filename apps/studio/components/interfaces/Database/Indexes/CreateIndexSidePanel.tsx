@@ -225,7 +225,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
             description={
               isSelectEntityDisabled &&
               !isLoadingEntities &&
-              '在这个模式下请先通过数据管理面版或数据查询面版创建一张表'
+              '在这个模式下请先在数据管理或数据查询中创建一张表'
             }
             isReactForm={false}
           >
@@ -380,7 +380,7 @@ CREATE INDEX ON "${selectedSchema}"."${selectedEntity}" USING ${selectedIndexTyp
                         : '/'
                     }
                   >
-                    在数据查询面版中打开
+                    在数据查询中打开
                   </Link>
                 </Button>
               </div>

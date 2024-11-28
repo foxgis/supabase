@@ -40,7 +40,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
       label: '种子文件',
       title: '下载为种子文件',
       description:
-        '如果你的查询包含示例数据，将代码段追加到 `supabase/seed.sql` 的末尾',
+        '如果您的查询包含示例数据，将代码段追加到 `supabase/seed.sql` 的末尾',
       cli: generateSeedCliCommand(id),
       npm: generateSeedCliCommand(id, true),
     },
@@ -101,7 +101,7 @@ const DownloadSnippetModal = ({ id, ...props }: DownloadSnippetModalProps) => {
         </Tabs>
         <Modal.Content className="w-full flex items-center justify-between pt-0">
           <p className="text-xs text-lighter">
-            从你的项目目录运行此命令
+            从您的项目目录运行此命令
           </p>
           <div className="flex justify-between items-center gap-x-2">
             <Button asChild type="default" icon={<ExternalLink strokeWidth={1.5} />}>

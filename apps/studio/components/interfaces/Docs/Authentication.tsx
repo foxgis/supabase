@@ -36,7 +36,7 @@ const Authentication = ({ selectedLang, showApiKey }: AuthenticationProps) => {
         <article className="code-column text-foreground">
           <p>Supabase 混合使用 JWT 和 Key auth。</p>
           <p>
-            如果没有 <code>Authorization</code> 请求头，API 会假定你正在使用匿名用户进行请求。
+            如果没有 <code>Authorization</code> 请求头，API 会假定您正在使用匿名用户进行请求。
           </p>
           <p>
             如果包含 <code>Authorization</code> 请求头，API 会“切换”到请求用户的角色。有关更多详细信息，请参阅用户管理部分。

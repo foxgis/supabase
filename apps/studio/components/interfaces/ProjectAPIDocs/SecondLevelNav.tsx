@@ -150,7 +150,7 @@ const SecondLevelNav = () => {
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_ className="space-y-1">
             <p className="text-xs !leading-normal">
-              这里展示的 API 方法是为了让你快速入门而设计的。
+              这里展示的 API 方法是为了让您快速入门而设计的。
             </p>
             <p className="text-xs !leading-normal">
               前往我们的文档站点查看完整的 API 文档。
