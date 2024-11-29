@@ -165,7 +165,7 @@ export function LogsSidebarMenuV2() {
       items: [],
     },
     {
-      name: 'Cron Jobs',
+      name: '定时任务',
       key: 'cron-logs',
       url: `/project/${ref}/logs/cron-logs`,
       items: [],
