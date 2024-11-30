@@ -89,12 +89,12 @@ export const generateDatabaseMenu = (
       ],
     },
     // {
-    //   title: '平台',
+    //   title: 'Platform',
     //   items: [
     //     ...(IS_PLATFORM
     //       ? [
     //           {
-    //             name: '备份',
+    //             name: 'Backups',
     //             key: 'backups',
     //             url: pitrEnabled
     //               ? `/project/${ref}/database/backups/pitr`
@@ -104,15 +104,15 @@ export const generateDatabaseMenu = (
     //         ]
     //       : []),
     //     {
-    //       name: '迁移',
+    //       name: 'Migrations',
     //       key: 'migrations',
     //       url: `/project/${ref}/database/migrations`,
     //       items: [],
     //     },
     //     {
-    //       name: '包装器',
+    //       name: 'Wrappers',
     //       key: 'wrappers',
-    //       url: `/project/${ref}/integrations/wrappers`,
+    //       url: `/project/${ref}/integrations?category=wrapper`,
     //       rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
     //       items: [],
     //     },
@@ -121,7 +121,7 @@ export const generateDatabaseMenu = (
     //           {
     //             name: 'Webhooks',
     //             key: 'hooks',
-    //             url: `/project/${ref}/integrations/hooks`,
+    //             url: `/project/${ref}/integrations/webhooks/overview`,
     //             rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
     //             items: [],
     //           },

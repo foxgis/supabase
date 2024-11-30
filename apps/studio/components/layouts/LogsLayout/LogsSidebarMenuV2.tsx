@@ -166,8 +166,8 @@ export function LogsSidebarMenuV2() {
     },
     {
       name: '定时任务',
-      key: 'cron-logs',
-      url: `/project/${ref}/logs/cron-logs`,
+      key: 'pg_cron',
+      url: `/project/${ref}/logs/pgcron-logs`,
       items: [],
     },
   ]

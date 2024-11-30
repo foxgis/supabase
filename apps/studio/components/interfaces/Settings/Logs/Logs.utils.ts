@@ -212,8 +212,19 @@ limit ${limit}
   limit ${limit}
   `
 
-    case 'cron_job_run_details':
-      return `select status, start_time, end_time, jobid from ${table} ${where} ${orderBy} limit ${limit}`
+    case 'pg_cron_logs':
+      const baseWhere = `where (parsed.application_name = 'pg_cron' OR event_message LIKE '%cron job%')`
+
+      const pgCronWhere = where ? `${baseWhere} AND ${where.substring(6)}` : baseWhere
+
+      return `select identifier, postgres_logs.timestamp, id, event_message, parsed.error_severity, parsed.query
+from postgres_logs
+  cross join unnest(metadata) as m
+  cross join unnest(m.parsed) as parsed
+${pgCronWhere}
+${orderBy}
+limit ${limit}
+`
   }
 }
 

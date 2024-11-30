@@ -363,7 +363,7 @@ export enum LogsTableName {
   POSTGREST = 'postgrest_logs',
   SUPAVISOR = 'supavisor_logs',
   WAREHOUSE = 'warehouse_logs',
-  CRON_JOBS = 'cron_job_run_details',
+  PG_CRON = 'pg_cron_logs',
 }
 
 export const LOGS_TABLES = {
@@ -377,21 +377,21 @@ export const LOGS_TABLES = {
   postgrest: LogsTableName.POSTGREST,
   supavisor: LogsTableName.SUPAVISOR,
   warehouse: LogsTableName.WAREHOUSE,
-  cron: LogsTableName.CRON_JOBS,
+  pg_cron: LogsTableName.POSTGRES,
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.EDGE]: '网络端日志，包含所有 API 请求',
   [LogsTableName.POSTGRES]: '数据库日志',
-  [LogsTableName.FUNCTIONS]: '函数运行日志',
+  [LogsTableName.FUNCTIONS]: '函数执行日志',
   [LogsTableName.FN_EDGE]: '函数调用日志，包含请求和响应',
-  [LogsTableName.AUTH]: '身份验证日志',
+  [LogsTableName.AUTH]: '身份认证日志',
   [LogsTableName.REALTIME]: '数据库逻辑复制日志',
   [LogsTableName.STORAGE]: '文件存储日志',
   [LogsTableName.POSTGREST]: '接口服务日志',
-  [LogsTableName.SUPAVISOR]: '云原生数据库连接池日志',
+  [LogsTableName.SUPAVISOR]: '数据库连接池日志',
   [LogsTableName.WAREHOUSE]: '数据仓库日志',
-  [LogsTableName.CRON_JOBS]: '定时任务执行的日志',
+  [LogsTableName.PG_CRON]: '定时任务日志',
 }
 
 export const genQueryParams = (params: { [k: string]: string }) => {
