@@ -60,10 +60,10 @@ export const SecurityStatus = () => {
               <div className="grid gap-1">
                 <p className="">未发现安全问题</p>
                 <p className="text-xs text-foreground-light">
-                  随着项目增长，请持续监测安全助手的更新。
+                  随着项目的开展，请持续监测安全助手的更新。
                 </p>
                 <Button asChild type="default" className="w-min mt-2">
-                  <Link href={`/project/${ref}/database/security-advisor`}>Security Advisor</Link>
+                  <Link href={`/project/${ref}/database/security-advisor`}>安全助手</Link>
                 </Button>
               </div>
             </div>

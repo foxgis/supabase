@@ -388,7 +388,7 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.AUTH]: '身份认证日志',
   [LogsTableName.REALTIME]: '数据库逻辑复制日志',
   [LogsTableName.STORAGE]: '文件存储日志',
-  [LogsTableName.POSTGREST]: '接口服务日志',
+  [LogsTableName.POSTGREST]: 'REST 接口服务日志',
   [LogsTableName.SUPAVISOR]: '数据库连接池日志',
   [LogsTableName.WAREHOUSE]: '数据仓库日志',
   [LogsTableName.PG_CRON]: '定时任务日志',

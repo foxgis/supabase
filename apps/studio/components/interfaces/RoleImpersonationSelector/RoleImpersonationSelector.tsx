@@ -94,7 +94,7 @@ const RoleImpersonationSelector = ({
 
         {selectedOption === 'service_role' && (
           <p className="text-foreground-light text-sm">
-            默认的 Postgres/superuser 角色。此角色具有管理员权限。
+            默认的 postgres/superuser 角色。此角色具有管理员权限。
             <br />
             它会绕过行级安全策略（RLS）。
           </p>
@@ -102,7 +102,7 @@ const RoleImpersonationSelector = ({
 
         {selectedOption === 'anon' && (
           <p className="text-foreground-light text-sm">
-            用于“匿名访问”。此角色是 API（PostgREST）在用户未登录时使用的角色。
+            用于“匿名访问”。此角色是 REST 接口服务在用户未登录时使用的角色。
             <br />
             它将遵守行级安全策略（RLS）。
           </p>
@@ -110,7 +110,7 @@ const RoleImpersonationSelector = ({
 
         {selectedOption === 'authenticated' && (
           <p className="text-foreground-light text-sm">
-            用于“已认证访问”。此角色是 API（PostgREST）在用户登录时使用的角色。
+            用于“已认证访问”。此角色是 REST 接口服务在用户登录时使用的角色。
             <br />
             它将遵守行级安全策略（RLS）。
           </p>

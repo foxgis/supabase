@@ -103,7 +103,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
 
   const exportTableAsCSV = async () => {
     if (IS_PLATFORM && !project?.connectionString) {
-      return console.error('连接字符串是必需的')
+      return console.error('数据库连接字符串是必需的')
     }
     const toastId = toast.loading(`导出 ${entity.name} 为 CSV...`)
 
@@ -156,7 +156,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
 
   const exportTableAsSQL = async () => {
     if (IS_PLATFORM && !project?.connectionString) {
-      return console.error('未找到连接字符串')
+      return console.error('未找到数据库连接字符串')
     }
     const toastId = toast.loading(`正在将 ${entity.name} 导出为SQL...`)
 
