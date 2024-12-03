@@ -185,7 +185,7 @@ to authenticated
 using (
   (select auth.uid()) = user_id
 );`.trim(),
-    name: 'Enable users to view their own data only',
+    name: '仅允许用户查看他们自己的数据',
     definition: '(select auth.uid()) = user_id',
     check: '',
     command: 'SELECT',

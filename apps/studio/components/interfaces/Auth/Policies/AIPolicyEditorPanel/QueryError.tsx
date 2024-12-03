@@ -72,7 +72,8 @@ const QueryError = ({
                   {open ? '隐藏错误详情' : '显示错误详情'}
                 </Button>
               </CollapsibleTrigger_Shadcn_>
-              {!hasHipaaAddon && (
+              {/* [Joshen] Temp hidden as new assistant doesnt support this. Current assistant's UX is not great too tbh so okay to hide this */}
+              {/* {!hasHipaaAddon && (
                 <Button
                   size="tiny"
                   type="default"
@@ -91,7 +92,7 @@ const QueryError = ({
                 >
                   使用助手修复
                 </Button>
-              )}
+              )} */}
             </div>
             <CollapsibleContent_Shadcn_ className="overflow-auto">
               {formattedError.length > 0 ? (

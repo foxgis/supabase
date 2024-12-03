@@ -74,7 +74,7 @@ const UtilityPanel = ({
       snapV2.updateSnippet({ id, snippet: newSnippet as unknown as Snippet })
     },
     onError: async (err, newContent, context) => {
-      toast.error(`Failed to update chart. Please try again.`)
+      toast.error(`更新图表失败，请重试。`)
     },
   })
 

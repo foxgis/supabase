@@ -118,7 +118,7 @@ const UtilityTabResults = ({
                     href={`/project/${ref}/settings/database`}
                     className="underline transition hover:text-foreground flex items-center gap-x-1"
                   >
-                    connecting to your database directly
+                    直接连接到数据库
                     <ExternalLink size={12} />
                   </Link>
                   .
@@ -157,7 +157,7 @@ const UtilityTabResults = ({
     return (
       <div className="bg-table-header-light [[data-theme*=dark]_&]:bg-table-header-dark">
         <p className="m-0 border-0 px-6 py-4 text-sm text-foreground-light">
-          点击 <code>执行</code> 运行您的查询。
+          点击 <code>执行</code> 运行查询。
         </p>
       </div>
     )

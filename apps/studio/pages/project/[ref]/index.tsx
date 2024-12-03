@@ -13,7 +13,7 @@ import { ComputeBadgeWrapper } from 'components/ui/ComputeBadgeWrapper'
 import ProjectUpgradeFailedBanner from 'components/ui/ProjectUpgradeFailedBanner'
 import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 import { useIsOrioleDb, useSelectedProject } from 'hooks/misc/useSelectedProject'
-import { IS_PLATFORM, PROJECT_STATUS } from 'lib/constants'
+import { IS_PLATFORM, PROJECT_STATUS, BASE_PATH } from 'lib/constants'
 import { useAppStateSnapshot } from 'state/app-state'
 import type { NextPageWithLayout } from 'types'
 import {
@@ -60,7 +60,7 @@ const Home: NextPageWithLayout = () => {
               <TooltipContent_Shadcn_ side="bottom" align="start" className="max-w-80 text-center">
                 This project is using Postgres with OrioleDB which is currently in preview and not
                 suitable for production workloads. View our{' '}
-                {/* [Joshen] Make this into a reusable component to use links inline */}
+                {/* [Refactor] Make this into a reusable component to use links inline */}
                 <a
                   target="_blank"
                   rel="noreferrer noopener"
