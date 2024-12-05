@@ -68,7 +68,6 @@ const NavigationBar = () => {
 
   const signOut = useSignOut()
 
-  const navLayoutV2 = useFlag('navigationLayoutV2')
   const isNewAPIDocsEnabled = useIsAPIDocsSidePanelEnabled()
   const [userDropdownOpen, setUserDropdownOpenState] = useState(false)
 
@@ -212,19 +211,17 @@ const NavigationBar = () => {
         }}
       >
         <ul className="flex flex-col gap-y-1 justify-start px-2 relative">
-          {(!navLayoutV2 || !IS_PLATFORM) && (
-            <Link
-              href={IS_PLATFORM ? '/projects' : `/project/${projectRef}`}
-              className="flex items-center h-[40px]"
-              onClick={onCloseNavigationIconLink}
-            >
-              <img
-                alt="FoxGIS"
-                src={`${router.basePath}/img/foxgis-logo.png`}
-                className="h-[40px] cursor-pointer rounded"
-              />
-            </Link>
-          )}
+          <Link
+            href={IS_PLATFORM ? '/projects' : `/project/${projectRef}`}
+            className="flex items-center h-[40px]"
+            onClick={onCloseNavigationIconLink}
+          >
+            <img
+              alt="FoxGIS"
+              src={`${router.basePath}/img/foxgis-logo.png`}
+              className="h-[40px] cursor-pointer rounded"
+            />
+          </Link>
           <NavigationIconLink
             isActive={isUndefined(activeRoute) && !isUndefined(router.query.ref)}
             route={{
