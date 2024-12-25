@@ -132,7 +132,10 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
   const handleDelete = async () => {
     await timeout(200)
     if (!projectRef) return console.error('未找到项目号')
-    deleteUser({ projectRef, user })
+    if (user.id === undefined) {
+      return toast.error(`删除用户失败：未找到用户 ID`)
+    }
+    deleteUser({ projectRef, userId: user.id })
   }
 
   const handleDeleteFactors = async () => {

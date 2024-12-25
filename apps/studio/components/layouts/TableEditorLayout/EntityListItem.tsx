@@ -1,6 +1,7 @@
 import * as Tooltip from '@radix-ui/react-tooltip'
 import saveAs from 'file-saver'
 import {
+  Clipboard,
   Copy,
   Download,
   Edit,
@@ -50,6 +51,7 @@ import {
   DropdownMenuTrigger,
 } from 'ui'
 import { useProjectContext } from '../ProjectLayout/ProjectContext'
+import { copyToClipboard } from 'lib/helpers'
 
 export interface EntityListItemProps {
   id: number
@@ -68,6 +70,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
   const { selectedSchema } = useQuerySchemaState()
 
   const isActive = Number(id) === entity.id
+  const canEdit = isActive && !isLocked
 
   const { data: lints = [] } = useProjectLintsQuery({
     projectRef: project?.ref,
@@ -217,18 +220,16 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
         break
       case ENTITY_TYPE.VIEW:
         if (viewHasLints) {
-          tooltipContent = 'Security Definer 视图'
+          tooltipContent = 'Security definer 视图'
         }
         break
       case ENTITY_TYPE.MATERIALIZED_VIEW:
         if (materializedViewHasLints) {
-          tooltipContent = 'Security Definer 视图'
+          tooltipContent = 'Security definer 视图'
         }
-
         break
       case ENTITY_TYPE.FOREIGN_TABLE:
         tooltipContent = 'RLS 不在外部表上生效'
-
         break
       default:
         break
@@ -385,85 +386,103 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
         <EntityTooltipTrigger entity={entity} />
       </div>
 
-      {entity.type === ENTITY_TYPE.TABLE && isActive && !isLocked && (
+      {canEdit && (
         <DropdownMenu>
           <DropdownMenuTrigger className="text-foreground-lighter transition-all hover:text-foreground data-[state=open]:text-foreground">
             <MoreHorizontal size={14} strokeWidth={2} />
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="start" className="w-44">
             <DropdownMenuItem
-              key="edit-table"
+              key="copy-name"
               className="space-x-2"
               onClick={(e) => {
                 e.stopPropagation()
-                snap.onEditTable()
+                copyToClipboard(entity.name)
               }}
             >
-              <Edit size={12} />
-              <span>编辑表</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              key="duplicate-table"
-              className="space-x-2"
-              onClick={(e) => {
-                e.stopPropagation()
-                snap.onDuplicateTable()
-              }}
-            >
-              <Copy size={12} />
-              <span>复制表</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem key="view-policies" className="space-x-2" asChild>
-              <Link
-                key="view-policies"
-                href={`/project/${projectRef}/auth/policies?schema=${selectedSchema}&search=${entity.id}`}
-              >
-                <Lock size={12} />
-                <span>查看策略</span>
-              </Link>
+              <Clipboard size={12} />
+              <span>复制名称</span>
             </DropdownMenuItem>
 
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="gap-x-2">
-                <Download size={12} />
-                导出数据
-              </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
+            {entity.type === ENTITY_TYPE.TABLE && (
+              <>
+                <DropdownMenuSeparator />
+
                 <DropdownMenuItem
-                  key="download-table-csv"
+                  key="edit-table"
                   className="space-x-2"
                   onClick={(e) => {
                     e.stopPropagation()
-                    exportTableAsCSV()
+                    snap.onEditTable()
                   }}
                 >
-                  <span>导出表为 CSV</span>
+                  <Edit size={12} />
+                  <span>编辑表</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  key="download-table-sql"
+                  key="duplicate-table"
+                  className="space-x-2"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    snap.onDuplicateTable()
+                  }}
+                >
+                  <Copy size={12} />
+                  <span>复制表</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem key="view-policies" className="space-x-2" asChild>
+                  <Link
+                    key="view-policies"
+                    href={`/project/${projectRef}/auth/policies?schema=${selectedSchema}&search=${entity.id}`}
+                  >
+                    <Lock size={12} />
+                    <span>查看策略</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="gap-x-2">
+                    <Download size={12} />
+                    导出数据
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem
+                      key="download-table-csv"
+                      className="space-x-2"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        exportTableAsCSV()
+                      }}
+                    >
+                      <span>导出数据到 CSV</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      key="download-table-sql"
+                      className="gap-x-2"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        exportTableAsSQL()
+                      }}
+                    >
+                      <span>导出数据到 SQL</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  key="delete-table"
                   className="gap-x-2"
                   onClick={(e) => {
                     e.stopPropagation()
-                    exportTableAsSQL()
+                    snap.onDeleteTable()
                   }}
                 >
-                  <span>导出表为 SQL</span>
+                  <Trash size={12} />
+                  <span>删除表</span>
                 </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              key="delete-table"
-              className="gap-x-2"
-              onClick={(e) => {
-                e.stopPropagation()
-                snap.onDeleteTable()
-              }}
-            >
-              <Trash size={12} />
-              <span>删除表</span>
-            </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       )}

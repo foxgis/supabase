@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from 'ui'
+import { TelemetryActions } from 'lib/constants/telemetry'
 
 export type ResultsDropdownProps = {
   id: string
@@ -66,7 +67,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
 
   function onDownloadCSV() {
     csvRef.current?.link.click()
-    sendEvent({ category: 'sql_editor', action: 'sql_download_csv', label: '' })
+    sendEvent({ action: TelemetryActions.SQL_EDITOR_RESULT_DOWNLOAD_CSV_CLICKED })
   }
 
   function onCopyAsMarkdown() {
@@ -86,7 +87,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
 
       copyToClipboard(markdownData, () => {
         toast.success('已将结果复制到了剪贴板')
-        sendEvent({ category: 'sql_editor', action: 'sql_copy_as_markdown', label: '' })
+        sendEvent({ action: TelemetryActions.SQL_EDITOR_RESULT_COPY_MARKDOWN_CLICKED })
       })
     }
   }
@@ -99,7 +100,7 @@ const ResultsDropdown = ({ id }: ResultsDropdownProps) => {
 
       copyToClipboard(JSON.stringify(result.rows, null, 2), () => {
         toast.success('已将结果复制到了剪贴板')
-        sendEvent({ category: 'sql_editor', action: 'sql_copy_as_json', label: '' })
+        sendEvent({ action: TelemetryActions.SQL_EDITOR_RESULT_COPY_JSON_CLICKED })
       })
     }
   }

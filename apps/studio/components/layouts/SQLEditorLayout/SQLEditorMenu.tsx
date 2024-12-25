@@ -27,6 +27,7 @@ import {
   InnerSideMenuItem,
 } from 'ui-patterns/InnerSideMenu'
 import { SQLEditorNav as SQLEditorNavV2 } from './SQLEditorNavV2/SQLEditorNav'
+import { useLocalStorage } from 'hooks/misc/useLocalStorage'
 
 interface SQLEditorMenuProps {
   onViewOngoingQueries: () => void
@@ -40,6 +41,8 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
 
   const snapV2 = useSqlEditorV2StateSnapshot()
   const [searchText, setSearchText] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
+  const [sort, setSort] = useLocalStorage<'name' | 'inserted_at'>('sql-editor-sort', 'inserted_at')
 
   const canCreateSQLSnippet = useCheckPermissions(PermissionAction.CREATE, 'user_content', {
     resource: { type: 'sql', owner_id: profile?.id },
@@ -47,11 +50,8 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
   })
 
   const createNewFolder = () => {
-    // [Joshen] LEFT OFF: We need to figure out a good UX for creating folders
-    // - Modal? Directly chuck into the tree view like storage explorer?
     if (!ref) return console.error('未找到项目号')
     snapV2.addNewFolder({ projectRef: ref })
-    // createFolder({ projectRef: ref, name: 'test' })
   }
 
   const handleNewQuery = async () => {
@@ -61,17 +61,8 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
     if (!canCreateSQLSnippet) {
       return toast('您的查询历史可能会丢失，因为您没有足够的权限')
     }
-
     try {
-      const snippet = createSqlSnippetSkeletonV2({
-        id: uuidv4(),
-        name: untitledSnippetTitle,
-        owner_id: profile.id,
-        project_id: project.id,
-        sql: '',
-      })
-      snapV2.addSnippet({ projectRef: ref, snippet })
-      router.push(`/project/${ref}/sql/${snippet.id}`)
+      router.push(`/project/${ref}/sql/new?skip=true`)
       setSearchText('')
     } catch (error: any) {
       toast.error(`创建查询失败: ${error.message}`)
@@ -89,10 +80,11 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
               aria-labelledby="查找查询"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
+              isLoading={isSearching}
             >
               <InnerSideBarFilterSortDropdown
-                value={snapV2.order}
-                onValueChange={(value: any) => snapV2.setOrder(value)}
+                value={sort}
+                onValueChange={(value: any) => setSort(value)}
               >
                 <InnerSideBarFilterSortDropdownItem key="name" value="name">
                   名称
@@ -141,7 +133,7 @@ export const SQLEditorMenu = ({ onViewOngoingQueries }: SQLEditorMenuProps) => {
           </InnerSideMenuItem>
         </div>
 
-        <SQLEditorNavV2 searchText={searchText} />
+        <SQLEditorNavV2 searchText={searchText} sort={sort} setIsSearching={setIsSearching} />
       </div>
 
       <div className="p-4 border-t sticky bottom-0 bg-studio">

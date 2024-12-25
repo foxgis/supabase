@@ -46,7 +46,7 @@ const Authentication = ({ selectedLang, showApiKey }: AuthenticationProps) => {
       </div>
 
       <h2 className="doc-heading">客户端 API key</h2>
-      <div className="doc-section ">
+      <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
             客户端 key 允许“匿名访问”您的数据库，直到用户完成登录。登录后，key 会切换到用户自己的登录 token。
@@ -74,7 +74,7 @@ const Authentication = ({ selectedLang, showApiKey }: AuthenticationProps) => {
       </div>
 
       <h2 className="doc-heading">服务端 Key</h2>
-      <div className="doc-section ">
+      <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
             服务端 key 具有完全的访问权限，绕过任何安全策略。请务必小心暴露这些 key。它们只应该在服务器上使用，切勿在客户端或浏览器上使用。

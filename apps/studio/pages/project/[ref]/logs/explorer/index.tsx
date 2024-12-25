@@ -307,7 +307,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
     },
     onSuccess: (values) => {
       setSaveModalOpen(false)
-      toast.success(`“${values[0].name}”日志查询已保存`)
+      toast.success(`“${values.name}”日志查询已保存`)
     },
   })
 
@@ -320,7 +320,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
     },
     onSuccess: (values) => {
       setSaveModalOpen(false)
-      toast.success(`Updated "${values[0].name}" log query`)
+      toast.success(`Updated "${values.name}" log query`)
     },
   })
 

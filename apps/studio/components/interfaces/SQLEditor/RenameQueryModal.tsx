@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { useParams } from 'common'
 import { useSqlTitleGenerateMutation } from 'data/ai/sql-title-mutation'
 import { getContentById } from 'data/content/content-id-query'
+import { useContentUpdateMutation } from 'data/content/content-update-mutation'
 import { Snippet } from 'data/content/sql-folders-query'
 import type { SqlSnippet } from 'data/content/sql-snippets-query'
 import { useOrgSubscriptionQuery } from 'data/subscriptions/org-subscription-query'
@@ -57,7 +58,9 @@ const RenameQueryModal = ({
     } else {
       try {
         const { content } = await getContentById({ projectRef: ref, id: snippet.id })
-        titleSql({ sql: content.sql })
+        if ('sql' in content) {
+          titleSql({ sql: content.sql })
+        }
       } catch (error) {
         toast.error('未能基于查询内容生成标题')
       }
@@ -70,24 +73,44 @@ const RenameQueryModal = ({
     return errors
   }
 
+  const { mutateAsync: updateContent } = useContentUpdateMutation()
+
   const onSubmit = async (values: any, { setSubmitting }: any) => {
     if (!ref) return console.error('未找到项目号')
     if (!id) return console.error('未找到代码段 ID')
 
     setSubmitting(true)
     try {
-      // [Joshen] For SQL V2 - content is loaded on demand so we need to fetch the data if its not already loaded in the valtio state
-      if (!('content' in snippet)) {
-        // [Joshen] I feel like there's definitely some optimization we can do here but will involve changes to API
-        const snippet = await getContentById({ projectRef: ref, id })
-        snapV2.addSnippet({ projectRef: ref, snippet })
-      }
-      snapV2.renameSnippet({ id, name: nameInput, description: descriptionInput })
+      let localSnippet = snippet
 
+      // [Joshen] For SQL V2 - content is loaded on demand so we need to fetch the data if its not already loaded in the valtio state
+      if (!('content' in localSnippet)) {
+        localSnippet = await getContentById({ projectRef: ref, id })
+
+        snapV2.addSnippet({ projectRef: ref, snippet: localSnippet })
+      }
+
+      const updatedSnippet = await updateContent({
+        projectRef: ref,
+        id,
+        type: localSnippet.type,
+        content: (localSnippet as any).content,
+        name: nameInput,
+        description: descriptionInput,
+      })
+
+      snapV2.renameSnippet({
+        id,
+        name: updatedSnippet.name,
+        description: updatedSnippet.description,
+      })
+
+      toast.success('Successfully renamed snippet!')
       if (onComplete) onComplete()
     } catch (error: any) {
+      setSubmitting(false)
       // [Joshen] We probably need some rollback cause all the saving is async
-      toast.error(`查询重命名失败：${error.message}`)
+      toast.error(`查询语句重命名失败：${error.message}`)
     }
   }
 

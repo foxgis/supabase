@@ -98,7 +98,8 @@ const UserDropdown = ({
   async function handleDelete() {
     await timeout(200)
     if (!ref) return console.error('未找到项目号')
-    deleteUser({ projectRef: ref, user })
+    if (!user.id) return console.error('未找到用户 ID')
+    deleteUser({ projectRef: ref, userId: user.id })
   }
 
   async function handleDeleteFactors() {

@@ -32,7 +32,7 @@ const UserImpersonationSelector = () => {
       {
         projectRef: project?.ref,
         connectionString: project?.connectionString,
-        keywords: debouncedSearchText,
+        keywords: debouncedSearchText.trim().toLocaleLowerCase(),
       },
       {
         keepPreviousData: true,
@@ -94,8 +94,8 @@ const UserImpersonationSelector = () => {
                 <Search className="text-foreground-lighter" size={16} strokeWidth={1.5} />
               )
             }
-            placeholder="查找用户..."
-            onChange={(e) => setSearchText(e.target.value.trim())}
+            placeholder="查找用户.."
+            onChange={(e) => setSearchText(e.target.value)}
             value={searchText}
             size="small"
             actions={
