@@ -239,3 +239,29 @@ services:
       - name: basic-auth
         config:
           hide_credentials: true
+
+  ## Tiles routes
+  - name: tiles
+    _comment: 'Tiles: /pg_tileserv/* -> http://tiles:7800/pg_tileserv/*'
+    url: http://tiles:7800/pg_tileserv/
+    routes:
+      - name: tiles-all
+        strip_path: true
+        preserve_host: true
+        paths:
+          - /pg_tileserv/
+    plugins:
+      - name: cors
+
+  ## Features routes
+  - name: features
+    _comment: 'Features: /pg_featureserv/* -> http://features:9000/pg_featureserv/*'
+    url: http://features:9000/pg_featureserv/
+    routes:
+      - name: features-all
+        strip_path: true
+        preserve_host: true
+        paths:
+          - /pg_featureserv/
+    plugins:
+      - name: cors
