@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { PropsWithChildren, useEffect } from 'react'
 
+import { AppBannerWrapper } from 'components/interfaces/App'
 import PartnerIcon from 'components/ui/PartnerIcon'
 import { useOrganizationsQuery } from 'data/organizations/organizations-query'
 import { useSendResetMutation } from 'data/telemetry/send-reset-mutation'
@@ -149,7 +150,8 @@ const AccountLayout = ({ children, title, breadcrumbs }: PropsWithChildren<Accou
         <title>{title ? `${title}` : 'FoxGIS'}</title>
         <meta name="description" content="FoxGIS Studio" />
       </Head>
-      <div className="h-screen min-h-[0px] basis-0 flex-1">
+      <div className="flex flex-col h-screen w-screen">
+        <AppBannerWrapper />
         <WithSidebar title={title} breadcrumbs={breadcrumbs} sections={sectionsWithHeaders}>
           {children}
         </WithSidebar>

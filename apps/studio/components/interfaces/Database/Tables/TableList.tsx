@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import type { PostgresTable } from '@supabase/postgres-meta'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { noop } from 'lodash'
@@ -50,9 +49,9 @@ import {
   PopoverContent_Shadcn_,
   PopoverTrigger_Shadcn_,
   Popover_Shadcn_,
-  TooltipContent_Shadcn_,
-  TooltipTrigger_Shadcn_,
-  Tooltip_Shadcn_,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   cn,
 } from 'ui'
 import ProtectedSchemaWarning from '../ProtectedSchemaWarning'
@@ -200,88 +199,91 @@ const TableList = ({
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="flex items-center gap-x-2 flex-wrap">
-        <SchemaSelector
-          className="w-[180px]"
-          size="tiny"
-          showError={false}
-          selectedSchemaName={selectedSchema}
-          onSelectSchema={setSelectedSchema}
-        />
-        <Popover_Shadcn_>
-          <PopoverTrigger_Shadcn_ asChild>
-            <Button
-              size="tiny"
-              type={visibleTypes.length !== 5 ? 'default' : 'dashed'}
-              className="px-1"
-              icon={<Filter />}
-            />
-          </PopoverTrigger_Shadcn_>
-          <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
-            <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
-              <p className="text-xs">显示的实体类型</p>
-              <div className="flex flex-col">
-                {Object.entries(ENTITY_TYPE).map(([key, value]) => (
-                  <div key={key} className="group flex items-center justify-between py-0.5">
-                    <div className="flex items-center gap-x-2">
-                      <Checkbox_Shadcn_
-                        id={key}
-                        name={key}
-                        checked={visibleTypes.includes(value)}
-                        onCheckedChange={() => {
-                          if (visibleTypes.includes(value)) {
-                            setVisibleTypes(visibleTypes.filter((y) => y !== value))
-                          } else {
-                            setVisibleTypes(visibleTypes.concat([value]))
-                          }
-                        }}
-                      />
-                      <Label_Shadcn_ htmlFor={key} className="capitalize text-xs">
-                        {ENTITY_TYPE_LABELS[value]}
-                      </Label_Shadcn_>
+      <div className="flex flex-col lg:flex-row lg:items-center gap-2 flex-wrap">
+        <div className="flex gap-2 items-center">
+          <SchemaSelector
+            className="flex-grow lg:flex-grow-0 w-[180px]"
+            size="tiny"
+            showError={false}
+            selectedSchemaName={selectedSchema}
+            onSelectSchema={setSelectedSchema}
+          />
+          <Popover_Shadcn_>
+            <PopoverTrigger_Shadcn_ asChild>
+              <Button
+                size="tiny"
+                type={visibleTypes.length !== 5 ? 'default' : 'dashed'}
+                className="px-1"
+                icon={<Filter />}
+              />
+            </PopoverTrigger_Shadcn_>
+            <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
+              <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
+                <p className="text-xs">显示的表类型</p>
+                <div className="flex flex-col">
+                  {Object.entries(ENTITY_TYPE).map(([key, value]) => (
+                    <div key={key} className="group flex items-center justify-between py-0.5">
+                      <div className="flex items-center gap-x-2">
+                        <Checkbox_Shadcn_
+                          id={key}
+                          name={key}
+                          checked={visibleTypes.includes(value)}
+                          onCheckedChange={() => {
+                            if (visibleTypes.includes(value)) {
+                              setVisibleTypes(visibleTypes.filter((y) => y !== value))
+                            } else {
+                              setVisibleTypes(visibleTypes.concat([value]))
+                            }
+                          }}
+                        />
+                        <Label_Shadcn_ htmlFor={key} className="capitalize text-xs">
+                          {ENTITY_TYPE_LABELS[value]}
+                        </Label_Shadcn_>
+                      </div>
+                      <Button
+                        size="tiny"
+                        type="default"
+                        onClick={() => setVisibleTypes([value])}
+                        className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
+                      >
+                        单选
+                      </Button>
                     </div>
-                    <Button
-                      size="tiny"
-                      type="default"
-                      onClick={() => setVisibleTypes([value])}
-                      className="transition opacity-0 group-hover:opacity-100 h-auto px-1 py-0.5"
-                    >
-                      单选
-                    </Button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </PopoverContent_Shadcn_>
-        </Popover_Shadcn_>
+            </PopoverContent_Shadcn_>
+          </Popover_Shadcn_>
+        </div>
+        <div className="flex flex-grow justify-between gap-2 items-center">
+          <Input
+            size="tiny"
+            className="flex-grow lg:flex-grow-0 w-52"
+            placeholder="Search for a table"
+            value={filterString}
+            onChange={(e) => setFilterString(e.target.value)}
+            icon={<Search size={12} />}
+          />
 
-        <Input
-          size="tiny"
-          className="w-52"
-          placeholder="查找表"
-          value={filterString}
-          onChange={(e) => setFilterString(e.target.value)}
-          icon={<Search size={12} />}
-        />
-
-        {!isLocked && (
-          <ButtonTooltip
-            className="ml-auto"
-            icon={<Plus />}
-            disabled={!canUpdateTables}
-            onClick={() => onAddTable()}
-            tooltip={{
-              content: {
-                side: 'bottom',
-                text: !canUpdateTables
-                  ? '您需要额外的权限才能创建表'
-                  : undefined,
-              },
-            }}
-          >
-            新建表
-          </ButtonTooltip>
-        )}
+          {!isLocked && (
+            <ButtonTooltip
+              className="w-auto ml-auto"
+              icon={<Plus />}
+              disabled={!canUpdateTables}
+              onClick={() => onAddTable()}
+              tooltip={{
+                content: {
+                  side: 'bottom',
+                  text: !canUpdateTables
+                    ? '您需要额外的权限才能创建表'
+                    : undefined,
+                },
+              }}
+            >
+              New table
+            </ButtonTooltip>
+          )}
+        </div>
       </div>
 
       {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="表" />}
@@ -318,7 +320,7 @@ const TableList = ({
                       {visibleTypes.length === 0 ? (
                         <>
                           <p className="text-sm text-foreground">
-                            请至少选择一种实体类型进行筛选
+                            请至少选择一种表类型进行筛选
                           </p>
                           <p className="text-sm text-foreground-light">
                             根据您选择的筛选条件未找到任何表
@@ -359,8 +361,8 @@ const TableList = ({
                   entities.map((x) => (
                     <Table.tr key={x.id}>
                       <Table.td className="!pl-5 !pr-1">
-                        <Tooltip_Shadcn_>
-                          <TooltipTrigger_Shadcn_ asChild>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
                             {x.type === ENTITY_TYPE.TABLE ? (
                               <Table2
                                 size={15}
@@ -390,36 +392,25 @@ const TableList = ({
                                 {ENTITY_TYPE_LABELS[x.type]}
                               </div>
                             )}
-                          </TooltipTrigger_Shadcn_>
-                          <TooltipContent_Shadcn_ side="bottom" className="capitalize">
+                          </TooltipTrigger>
+                          <TooltipContent side="bottom" className="capitalize">
                             {formatTooltipText(x.type)}
-                          </TooltipContent_Shadcn_>
-                        </Tooltip_Shadcn_>
+                          </TooltipContent>
+                        </Tooltip>
                       </Table.td>
                       <Table.td>
                         {/* only show tooltips if required, to reduce noise */}
                         {x.name.length > 20 ? (
-                          <Tooltip.Root delayDuration={0} disableHoverableContent={true}>
-                            <Tooltip.Trigger
+                          <Tooltip disableHoverableContent={true}>
+                            <TooltipTrigger
                               asChild
                               className="max-w-[95%] overflow-hidden text-ellipsis whitespace-nowrap"
                             >
                               <p>{x.name}</p>
-                            </Tooltip.Trigger>
-                            <Tooltip.Portal>
-                              <Tooltip.Content side="bottom">
-                                <Tooltip.Arrow className="radix-tooltip-arrow" />
-                                <div
-                                  className={[
-                                    'rounded bg-scale-100 py-1 px-2 leading-none shadow',
-                                    'border border-scale-200',
-                                  ].join(' ')}
-                                >
-                                  <span className="text-xs text-foreground">{x.name}</span>
-                                </div>
-                              </Tooltip.Content>
-                            </Tooltip.Portal>
-                          </Tooltip.Root>
+                            </TooltipTrigger>
+
+                            <TooltipContent side="bottom">{x.name}</TooltipContent>
+                          </Tooltip>
                         ) : (
                           <p>{x.name}</p>
                         )}
@@ -486,8 +477,8 @@ const TableList = ({
                                 {x.type === ENTITY_TYPE.TABLE && (
                                   <>
                                     <DropdownMenuSeparator />
-                                    <Tooltip_Shadcn_>
-                                      <TooltipTrigger_Shadcn_ asChild>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
                                         <DropdownMenuItem
                                           className="!pointer-events-auto gap-x-2"
                                           disabled={!canUpdateTables}
@@ -498,13 +489,13 @@ const TableList = ({
                                           <Edit size={12} />
                                           <p>编辑表</p>
                                         </DropdownMenuItem>
-                                      </TooltipTrigger_Shadcn_>
+                                      </TooltipTrigger>
                                       {!canUpdateTables && (
-                                        <TooltipContent_Shadcn_ side="left">
-                                          您需要额外的权限才能编辑此表
-                                        </TooltipContent_Shadcn_>
+                                        <TooltipContent side="left">
+                                          您需要额外的权限才能编辑表
+                                        </TooltipContent>
                                       )}
-                                    </Tooltip_Shadcn_>
+                                    </Tooltip>
                                     <DropdownMenuItem
                                       key="duplicate-table"
                                       className="space-x-2"
@@ -518,8 +509,8 @@ const TableList = ({
                                       <Copy size={12} />
                                       <span>复制表</span>
                                     </DropdownMenuItem>
-                                    <Tooltip_Shadcn_>
-                                      <TooltipTrigger_Shadcn_ asChild>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
                                         <DropdownMenuItem
                                           disabled={!canUpdateTables || isLocked}
                                           className="!pointer-events-auto gap-x-2"
@@ -535,13 +526,13 @@ const TableList = ({
                                           <Trash stroke="red" size={12} />
                                           <p>删除表</p>
                                         </DropdownMenuItem>
-                                      </TooltipTrigger_Shadcn_>
+                                      </TooltipTrigger>
                                       {!canUpdateTables && (
-                                        <TooltipContent_Shadcn_ side="left">
-                                          您需要额外的权限才能删除此表
-                                        </TooltipContent_Shadcn_>
+                                        <TooltipContent side="left">
+                                          您需要额外的权限才能删除表
+                                        </TooltipContent>
                                       )}
-                                    </Tooltip_Shadcn_>
+                                    </Tooltip>
                                   </>
                                 )}
                               </DropdownMenuContent>

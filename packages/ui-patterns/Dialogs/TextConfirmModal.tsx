@@ -21,9 +21,9 @@ import {
   Input_Shadcn_,
   cn,
 } from 'ui'
-import { Admonition } from './../admonition'
 import { DialogHeader } from 'ui/src/components/shadcn/ui/dialog'
 import { z } from 'zod'
+import { Admonition } from './../admonition'
 
 export interface TextConfirmModalProps {
   loading: boolean
@@ -154,7 +154,10 @@ const TextConfirmModal = forwardRef<
                 render={({ field }) => (
                   <FormItem_Shadcn_ className="flex flex-col gap-y-1">
                     <FormLabel_Shadcn_ {...label}>
-                      请输入 <span className="text-foreground break-all">{confirmString}</span>{' '}
+                      请输入{' '}
+                      <span className="text-foreground break-all whitespace-pre">
+                        {confirmString}
+                      </span>{' '}
                       确认操作。
                     </FormLabel_Shadcn_>
                     <FormControl_Shadcn_>

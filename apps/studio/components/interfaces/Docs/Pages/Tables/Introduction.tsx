@@ -13,7 +13,7 @@ interface IntroductionProps {
 const Introduction = ({ selectedLang }: IntroductionProps) => {
   const { ref: projectRef } = useParams()
 
-  const { data: config } = useProjectPostgrestConfigQuery({ projectRef })
+  const { data: config, isSuccess } = useProjectPostgrestConfigQuery({ projectRef })
 
   const isPublicSchemaEnabled = config?.db_schema
     .split(',')
@@ -24,12 +24,13 @@ const Introduction = ({ selectedLang }: IntroductionProps) => {
     <>
       <h2 className="doc-heading">概述</h2>
       <div className="doc-section">
-        <article className="code-column text-foreground">
+        <article className="code-column text-foreground flex flex-col gap-y-2">
           <p>
             数据库中 <code>public</code> 模式下所有可被活动角色访问的视图和表都可以通过 API 访问。
           </p>
-
-          {!isPublicSchemaEnabled && <PublicSchemaNotEnabledAlert />}
+        </article>
+        <article className="code">
+          {isSuccess && !isPublicSchemaEnabled && <PublicSchemaNotEnabledAlert />}
         </article>
       </div>
 

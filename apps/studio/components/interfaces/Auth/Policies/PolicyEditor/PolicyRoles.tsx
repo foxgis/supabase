@@ -34,14 +34,14 @@ const PolicyRoles = ({ selectedRoles, onUpdateSelectedRoles }: PolicyRolesProps)
   })
 
   return (
-    <div className="flex space-x-12">
-      <div className="flex w-1/3 flex-col space-y-2">
+    <div className="flex flex-col md:flew-row gap-4 md:gap-12">
+      <div className="flex md:w-1/3 flex-col space-y-2">
         <label className="text-foreground-light text-base" htmlFor="policy-name">
           目标角色
         </label>
         <p className="text-foreground-lighter text-sm">将此策略应用于选定的角色</p>
       </div>
-      <div className="relative w-2/3">
+      <div className="relative md:w-2/3">
         {isLoading && <ShimmeringLoader className="py-4" />}
         {isError && <AlertError error={error as any} subject="获取数据库角色失败" />}
         {isSuccess && (

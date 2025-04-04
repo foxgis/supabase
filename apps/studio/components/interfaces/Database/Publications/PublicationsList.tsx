@@ -99,60 +99,62 @@ const PublicationsList = ({ onSelectPublication = noop }: PublicationsListProps)
         </div>
       </div>
 
-      <Table
-        head={[
-          <Table.th key="header.name">名称</Table.th>,
-          <Table.th key="header.id">系统 ID</Table.th>,
-          <Table.th key="header.insert">插入</Table.th>,
-          <Table.th key="header.update">更新</Table.th>,
-          <Table.th key="header.delete">删除</Table.th>,
-          <Table.th key="header.truncate">清空</Table.th>,
-          <Table.th key="header.source" className="text-right">
-            源
-          </Table.th>,
-        ]}
-        body={
-          isLoading
-            ? Array.from({ length: 5 }).map((_, i) => <PublicationSkeleton key={i} index={i} />)
-            : publications.map((x) => (
-                <Table.tr className="border-t" key={x.name}>
-                  <Table.td className="px-4 py-3">{x.name}</Table.td>
-                  <Table.td>{x.id}</Table.td>
-                  {publicationEvents.map((event) => (
-                    <Table.td key={event.key}>
-                      <Toggle
-                        size="tiny"
-                        checked={(x as any)[event.key]}
-                        disabled={!canUpdatePublications}
-                        onChange={() => {
-                          setToggleListenEventValue({
-                            publication: x,
-                            event,
-                            currentStatus: (x as any)[event.key],
-                          })
-                        }}
-                      />
+      <div className="w-full overflow-hidden overflow-x-auto">
+        <Table
+          head={[
+            <Table.th key="header.name">名称</Table.th>,
+            <Table.th key="header.id">系统 ID</Table.th>,
+            <Table.th key="header.insert">插入</Table.th>,
+            <Table.th key="header.update">更新</Table.th>,
+            <Table.th key="header.delete">删除</Table.th>,
+            <Table.th key="header.truncate">清空</Table.th>,
+            <Table.th key="header.source" className="text-right">
+              源
+            </Table.th>,
+          ]}
+          body={
+            isLoading
+              ? Array.from({ length: 5 }).map((_, i) => <PublicationSkeleton key={i} index={i} />)
+              : publications.map((x) => (
+                  <Table.tr className="border-t" key={x.name}>
+                    <Table.td className="px-4 py-3">{x.name}</Table.td>
+                    <Table.td>{x.id}</Table.td>
+                    {publicationEvents.map((event) => (
+                      <Table.td key={event.key}>
+                        <Toggle
+                          size="tiny"
+                          checked={(x as any)[event.key]}
+                          disabled={!canUpdatePublications}
+                          onChange={() => {
+                            setToggleListenEventValue({
+                              publication: x,
+                              event,
+                              currentStatus: (x as any)[event.key],
+                            })
+                          }}
+                        />
+                      </Table.td>
+                    ))}
+                    <Table.td className="px-4 py-3 pr-2">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          type="default"
+                          style={{ paddingTop: 3, paddingBottom: 3 }}
+                          onClick={() => onSelectPublication(x.id)}
+                        >
+                          {x.tables == null
+                            ? '所有表'
+                            : `${x.tables.length} 张${
+                                x.tables.length > 1 || x.tables.length == 0 ? '表' : '表'
+                              }`}
+                        </Button>
+                      </div>
                     </Table.td>
-                  ))}
-                  <Table.td className="px-4 py-3 pr-2">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        type="default"
-                        style={{ paddingTop: 3, paddingBottom: 3 }}
-                        onClick={() => onSelectPublication(x.id)}
-                      >
-                        {x.tables == null
-                          ? '所有表'
-                          : `${x.tables.length} 张${
-                              x.tables.length > 1 || x.tables.length == 0 ? '表' : '表'
-                            }`}
-                      </Button>
-                    </div>
-                  </Table.td>
-                </Table.tr>
-              ))
-        }
-      />
+                  </Table.tr>
+                ))
+          }
+        />
+      </div>
 
       {!isLoading && publications.length === 0 && (
         <NoSearchResults

@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import dayjs from 'dayjs'
 import { ArrowDown, ArrowUp, RefreshCw } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -6,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { LogDetailsPanel } from 'components/interfaces/AuditLogs'
 import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { DatePicker } from 'components/ui/DatePicker'
 import { FilterPopover } from 'components/ui/FilterPopover'
 import ShimmeringLoader from 'components/ui/ShimmeringLoader'
@@ -14,6 +14,7 @@ import { useOrganizationsQuery } from 'data/organizations/organizations-query'
 import { useProfileAuditLogsQuery } from 'data/profile/profile-audit-logs-query'
 import { useProjectsQuery } from 'data/projects/projects-query'
 import { Alert, Button } from 'ui'
+import { TimestampInfo } from 'ui-patterns'
 
 const AuditLogs = () => {
   const currentTime = dayjs().utc().set('millisecond', 0)
@@ -71,8 +72,8 @@ const AuditLogs = () => {
 
   return (
     <>
-      <div className="space-y-4 flex flex-col">
-        <div className="flex items-center justify-between">
+      <div className="space-y-4 flex flex-col pb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div className="flex items-center space-x-2">
             <p className="text-xs prose">Filter by</p>
             <FilterPopover
@@ -94,20 +95,43 @@ const AuditLogs = () => {
               maxDate={dayjs().toDate()}
               onChange={(value) => {
                 if (value.from !== null && value.to !== null) {
-                  const current = dayjs().utc()
+                  const current = dayjs()
                   const from = dayjs(value.from)
-                    .utc()
                     .hour(current.hour())
                     .minute(current.minute())
                     .second(current.second())
-                    .toISOString()
                   const to = dayjs(value.to)
-                    .utc()
                     .hour(current.hour())
                     .minute(current.minute())
                     .second(current.second())
-                    .toISOString()
-                  setDateRange({ from, to })
+
+                  if (from.date() === to.date()) {
+                    // [Joshen] If a single date is selected, we either set the "from" to start from 00:00
+                    // or "to" to end at 23:59 depending on which date was selected
+                    if (from.date() === current.date()) {
+                      setDateRange({
+                        from: from
+                          .set('hour', 0)
+                          .set('minute', 0)
+                          .set('second', 0)
+                          .utc()
+                          .toISOString(),
+                        to: to.utc().toISOString(),
+                      })
+                    } else {
+                      setDateRange({
+                        from: from.utc().toISOString(),
+                        to: to
+                          .set('hour', 23)
+                          .set('minute', 59)
+                          .set('second', 59)
+                          .utc()
+                          .toISOString(),
+                      })
+                    }
+                  } else {
+                    setDateRange({ from: from.utc().toISOString(), to: to.utc().toISOString() })
+                  }
                 }
               }}
               renderFooter={() => {
@@ -163,119 +187,107 @@ const AuditLogs = () => {
                 <p className="prose text-sm">No audit logs found based on the filters applied</p>
               </div>
             ) : (
-              <Table
-                head={[
-                  <Table.th key="action" className="py-2">
-                    Action
-                  </Table.th>,
-                  <Table.th key="target" className="py-2">
-                    Target
-                  </Table.th>,
-                  <Table.th key="date" className="py-2">
-                    <div className="flex items-center space-x-2">
-                      <p>Date</p>
+              <div className="overflow-hidden md:overflow-auto overflow-x-scroll">
+                <Table
+                  head={[
+                    <Table.th key="action" className="py-2">
+                      Action
+                    </Table.th>,
+                    <Table.th key="target" className="py-2">
+                      Target
+                    </Table.th>,
+                    <Table.th key="date" className="py-2">
+                      <div className="flex items-center space-x-2">
+                        <p>Date</p>
+                        <ButtonTooltip
+                          type="text"
+                          className="px-1"
+                          icon={
+                            dateSortDesc ? (
+                              <ArrowDown strokeWidth={1.5} size={14} />
+                            ) : (
+                              <ArrowUp strokeWidth={1.5} size={14} />
+                            )
+                          }
+                          onClick={() => setDateSortDesc(!dateSortDesc)}
+                          tooltip={{
+                            content: {
+                              side: 'bottom',
+                              text: dateSortDesc ? 'Sort latest first' : 'Sort earliest first',
+                            },
+                          }}
+                        />
+                      </div>
+                    </Table.th>,
+                    <Table.th key="actions" className="py-2"></Table.th>,
+                  ]}
+                  body={
+                    sortedLogs?.map((log) => {
+                      const project = projects?.find(
+                        (project) => project.ref === log.target.metadata.project_ref
+                      )
+                      const organization = organizations?.find(
+                        (org) => org.slug === log.target.metadata.org_slug
+                      )
 
-                      <Tooltip.Root delayDuration={0}>
-                        <Tooltip.Trigger asChild>
-                          <Button
-                            type="text"
-                            className="px-1"
-                            icon={
-                              dateSortDesc ? (
-                                <ArrowDown strokeWidth={1.5} size={14} />
-                              ) : (
-                                <ArrowUp strokeWidth={1.5} size={14} />
-                              )
-                            }
-                            onClick={() => setDateSortDesc(!dateSortDesc)}
-                          />
-                        </Tooltip.Trigger>
-                        <Tooltip.Portal>
-                          <Tooltip.Portal>
-                            <Tooltip.Content side="right">
-                              <Tooltip.Arrow className="radix-tooltip-arrow" />
-                              <div
-                                className={[
-                                  'rounded bg-alternative py-1 px-2 leading-none shadow',
-                                  'border border-background',
-                                ].join(' ')}
-                              >
-                                <span className="text-xs text-foreground">
-                                  {dateSortDesc ? 'Sort latest first' : 'Sort earliest first'}
-                                </span>
-                              </div>
-                            </Tooltip.Content>
-                          </Tooltip.Portal>
-                        </Tooltip.Portal>
-                      </Tooltip.Root>
-                    </div>
-                  </Table.th>,
-                  <Table.th key="actions" className="py-2"></Table.th>,
-                ]}
-                body={
-                  sortedLogs?.map((log) => {
-                    const project = projects?.find(
-                      (project) => project.ref === log.target.metadata.project_ref
-                    )
-                    const organization = organizations?.find(
-                      (org) => org.slug === log.target.metadata.org_slug
-                    )
+                      const hasStatusCode = log.action.metadata[0]?.status !== undefined
 
-                    const hasStatusCode = log.action.metadata[0]?.status !== undefined
-
-                    return (
-                      <Table.tr
-                        key={log.occurred_at}
-                        onClick={() => setSelectedLog(log)}
-                        className="cursor-pointer hover:!bg-alternative transition duration-100"
-                      >
-                        <Table.td className="max-w-[250px]">
-                          <div className="flex items-center space-x-2">
-                            {hasStatusCode && (
-                              <p className="bg-surface-200 rounded px-1 flex items-center justify-center text-xs font-mono border">
-                                {log.action.metadata[0].status}
+                      return (
+                        <Table.tr
+                          key={log.occurred_at}
+                          onClick={() => setSelectedLog(log)}
+                          className="cursor-pointer hover:!bg-alternative transition duration-100"
+                        >
+                          <Table.td className="max-w-[250px]">
+                            <div className="flex items-center space-x-2">
+                              {hasStatusCode && (
+                                <p className="bg-surface-200 rounded px-1 flex items-center justify-center text-xs font-mono border">
+                                  {log.action.metadata[0].status}
+                                </p>
+                              )}
+                              <p className="truncate" title={log.action.name}>
+                                {log.action.name}
                               </p>
-                            )}
-                            <p className="truncate" title={log.action.name}>
-                              {log.action.name}
+                            </div>
+                          </Table.td>
+                          <Table.td>
+                            <p
+                              className="text-foreground-light max-w-[230px] truncate"
+                              title={project?.name ?? organization?.name ?? '-'}
+                            >
+                              {project?.name
+                                ? 'Project: '
+                                : organization?.name
+                                  ? 'Organization: '
+                                  : null}
+                              {project?.name ?? organization?.name ?? '-'}
                             </p>
-                          </div>
-                        </Table.td>
-                        <Table.td>
-                          <p
-                            className="text-foreground-light max-w-[230px] truncate"
-                            title={project?.name ?? organization?.name ?? '-'}
-                          >
-                            {project?.name
-                              ? 'Project: '
-                              : organization?.name
-                                ? 'Organization: '
-                                : null}
-                            {project?.name ?? organization?.name ?? '-'}
-                          </p>
-                          <p
-                            className="text-foreground-light text-xs mt-0.5 truncate"
-                            title={log.target.metadata.project_ref ?? log.target.metadata.org_slug}
-                          >
-                            {log.target.metadata.project_ref
-                              ? 'Ref: '
-                              : log.target.metadata.org_slug
-                                ? 'Slug: '
-                                : null}
-                            {log.target.metadata.project_ref ?? log.target.metadata.org_slug}
-                          </p>
-                        </Table.td>
-                        <Table.td>
-                          {dayjs(log.occurred_at).format('DD MMM YYYY, HH:mm:ss')}
-                        </Table.td>
-                        <Table.td align="right">
-                          <Button type="default">View details</Button>
-                        </Table.td>
-                      </Table.tr>
-                    )
-                  }) ?? []
-                }
-              />
+                            <p
+                              className="text-foreground-light text-xs mt-0.5 truncate"
+                              title={
+                                log.target.metadata.project_ref ?? log.target.metadata.org_slug
+                              }
+                            >
+                              {log.target.metadata.project_ref
+                                ? 'Ref: '
+                                : log.target.metadata.org_slug
+                                  ? 'Slug: '
+                                  : null}
+                              {log.target.metadata.project_ref ?? log.target.metadata.org_slug}
+                            </p>
+                          </Table.td>
+                          <Table.td>
+                            <TimestampInfo className="text-sm" utcTimestamp={log.occurred_at} />
+                          </Table.td>
+                          <Table.td align="right">
+                            <Button type="default">View details</Button>
+                          </Table.td>
+                        </Table.tr>
+                      )
+                    }) ?? []
+                  }
+                />
+              </div>
             )}
           </>
         )}

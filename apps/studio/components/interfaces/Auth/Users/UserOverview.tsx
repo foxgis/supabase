@@ -10,7 +10,6 @@ import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import CopyButton from 'components/ui/CopyButton'
 import { useAuthConfigQuery } from 'data/auth/auth-config-query'
 import { useUserDeleteMFAFactorsMutation } from 'data/auth/user-delete-mfa-factors-mutation'
-import { useUserDeleteMutation } from 'data/auth/user-delete-mutation'
 import { useUserResetPasswordMutation } from 'data/auth/user-reset-password-mutation'
 import { useUserSendMagicLinkMutation } from 'data/auth/user-send-magic-link-mutation'
 import { useUserSendOTPMutation } from 'data/auth/user-send-otp-mutation'
@@ -24,6 +23,7 @@ import { Admonition } from 'ui-patterns/admonition'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { PROVIDERS_SCHEMAS } from '../AuthProvidersFormValidation'
 import { BanUserModal } from './BanUserModal'
+import { DeleteUserModal } from './DeleteUserModal'
 import { UserHeader } from './UserHeader'
 import { PANEL_PADDING } from './UserPanel'
 import { providerIconMap } from './Users.utils'
@@ -45,17 +45,19 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
   const isPhoneAuth = user.phone !== null
   const isBanned = user.banned_until !== null
 
-  const providers = (user.raw_app_meta_data?.providers ?? []).map((provider: string) => {
-    return {
-      name: provider.startsWith('sso') ? 'SAML' : provider,
-      icon:
-        provider === 'email'
-          ? `${BASE_PATH}/img/icons/email-icon2.svg`
-          : providerIconMap[provider]
-            ? `${BASE_PATH}/img/icons/${providerIconMap[provider]}.svg`
-            : undefined,
+  const providers = ((user.raw_app_meta_data?.providers as string[]) ?? []).map(
+    (provider: string) => {
+      return {
+        name: provider.startsWith('sso') ? 'SAML' : provider,
+        icon:
+          provider === 'email'
+            ? `${BASE_PATH}/img/icons/email-icon2.svg`
+            : providerIconMap[provider]
+              ? `${BASE_PATH}/img/icons/${providerIconMap[provider]}.svg`
+              : undefined,
+      }
     }
-  })
+  )
 
   const canUpdateUser = useCheckPermissions(PermissionAction.AUTH_EXECUTE, '*')
   const canSendMagicLink = useCheckPermissions(PermissionAction.AUTH_EXECUTE, 'send_magic_link')
@@ -109,13 +111,6 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
       toast.error(`发送验证码失败：${err.message}`)
     },
   })
-  const { mutate: deleteUser } = useUserDeleteMutation({
-    onSuccess: () => {
-      toast.success(`成功删除了 ${user?.email}`)
-      setIsDeleteModalOpen(false)
-      onDeleteSuccess()
-    },
-  })
   const { mutate: deleteUserMFAFactors } = useUserDeleteMFAFactorsMutation({
     onSuccess: () => {
       toast.success("成功删除了该用户的认证因素")
@@ -128,15 +123,6 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
       setIsUnbanModalOpen(false)
     },
   })
-
-  const handleDelete = async () => {
-    await timeout(200)
-    if (!projectRef) return console.error('未找到项目号')
-    if (user.id === undefined) {
-      return toast.error(`删除用户失败：未找到用户 ID`)
-    }
-    deleteUser({ projectRef, userId: user.id })
-  }
 
   const handleDeleteFactors = async () => {
     await timeout(200)
@@ -179,7 +165,7 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
           <Separator />
         )}
 
-        <div className={cn('flex flex-col gap-1.5', PANEL_PADDING)}>
+        <div className={cn('flex flex-col gap-y-1', PANEL_PADDING)}>
           <RowData property="User UID" value={user.id} />
           <RowData
             property="创建时间"
@@ -355,7 +341,7 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         <div className={cn('flex flex-col -space-y-1 !pt-0', PANEL_PADDING)}>
           <RowAction
             title="移除多因素认证"
-            description="本操作将使当前处于有效的会话中的用户登出"
+            description="移除此用户相关的所有多因素认证"
             button={{
               icon: <ShieldOff />,
               text: '移除多因素认证',
@@ -404,23 +390,15 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         </div>
       </div>
 
-      <ConfirmationModal
+      <DeleteUserModal
         visible={isDeleteModalOpen}
-        variant="destructive"
-        title="确认删除用户"
-        confirmLabel="删除"
-        onCancel={() => setIsDeleteModalOpen(false)}
-        onConfirm={() => handleDelete()}
-        alert={{
-          title: '删除用户是不可逆操作',
-          description: '本操作将从本项目中移除该用户以及与之相关的数据。',
+        selectedUser={user}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDeleteSuccess={() => {
+          setIsDeleteModalOpen(false)
+          onDeleteSuccess()
         }}
-      >
-        <p className="text-sm text-foreground-light">
-          本操作是永久性的！您确定想要删除用户{' '}
-          <span className="text-foreground">{user.email ?? user.phone ?? ''}</span>？
-        </p>
-      </ConfirmationModal>
+      />
 
       <ConfirmationModal
         visible={isDeleteFactorsModalOpen}
@@ -432,13 +410,14 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
         onConfirm={() => handleDeleteFactors()}
         alert={{
           base: { variant: 'warning' },
-          title: '移除多因素认证是不可逆操作',
-          description: '本操作将使用户登出当前有效的会话。',
+          title:
+            "移除多因素认证将会导致用户的认证安全级别（AAL）降低到 AAL1",
+          description: '注意此操作不会使用户登出',
         }}
       >
         <p className="text-sm text-foreground-light">
-          本操作使永久性的！您确定想要移除用户{' '}
-          <span className="text-foreground">{user.email ?? user.phone ?? ''}</span>的多因素认证吗？
+          您确定想要移除用户{' '}
+          <span className="text-foreground">{user.email ?? user.phone ?? ''}</span>的多因素认证吗?
         </p>
       </ConfirmationModal>
 
@@ -466,7 +445,7 @@ export const RowData = ({ property, value }: { property: string; value?: string 
   return (
     <>
       <div className="flex items-center gap-x-2 group justify-between">
-        <p className=" text-foreground-lighter text-sm">{property}</p>
+        <p className=" text-foreground-lighter text-xs">{property}</p>
         {typeof value === 'boolean' ? (
           <div className="h-[26px] flex items-center justify-center min-w-[70px]">
             {value ? (
@@ -481,7 +460,7 @@ export const RowData = ({ property, value }: { property: string; value?: string 
           </div>
         ) : (
           <div className="flex items-center gap-x-2 h-[26px] font-mono min-w-[40px]">
-            <p className="text-sm">{!value ? '-' : value}</p>
+            <p className="text-xs">{!value ? '-' : value}</p>
             {!!value && (
               <CopyButton
                 iconOnly

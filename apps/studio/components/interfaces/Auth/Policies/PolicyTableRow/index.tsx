@@ -5,7 +5,7 @@ import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectConte
 import Panel from 'components/ui/Panel'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
 import { Info } from 'lucide-react'
-import { cn, Tooltip_Shadcn_, TooltipContent_Shadcn_, TooltipTrigger_Shadcn_ } from 'ui'
+import { cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 import PolicyRow from './PolicyRow'
 import PolicyTableRowHeader from './PolicyTableRowHeader'
 
@@ -69,14 +69,14 @@ const PolicyTableRow = ({
           <span className="text-foreground-light">
             行级安全性已禁用。您的表是公开可读和可写的。
           </span>
-          <Tooltip_Shadcn_>
-            <TooltipTrigger_Shadcn_ asChild>
+          <Tooltip>
+            <TooltipTrigger asChild>
               <Info className="w-3 h-3" />
-            </TooltipTrigger_Shadcn_>
-            <TooltipContent_Shadcn_ className="w-[400px]">
-              任何人都可以使用项目的匿名密钥修改或删除您的数据。启用 RLS 并创建访问策略以保证数据安全。
-            </TooltipContent_Shadcn_>
-          </Tooltip_Shadcn_>
+            </TooltipTrigger>
+            <TooltipContent className="w-[400px]">
+              任何人都可以使用项目的匿名密钥修改或删除您的数据。请启用 RLS 并创建访问策略以保证数据安全。
+            </TooltipContent>
+          </Tooltip>
         </div>
       )}
       {policies.length === 0 && (

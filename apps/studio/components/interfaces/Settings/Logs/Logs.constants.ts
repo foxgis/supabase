@@ -365,6 +365,7 @@ export enum LogsTableName {
   STORAGE = 'storage_logs',
   POSTGREST = 'postgrest_logs',
   SUPAVISOR = 'supavisor_logs',
+  PGBOUNCER = 'pgbouncer_logs',
   WAREHOUSE = 'warehouse_logs',
   PG_CRON = 'pg_cron_logs',
 }
@@ -381,6 +382,7 @@ export const LOGS_TABLES = {
   supavisor: LogsTableName.SUPAVISOR,
   warehouse: LogsTableName.WAREHOUSE,
   pg_cron: LogsTableName.POSTGRES,
+  pgbouncer: LogsTableName.PGBOUNCER,
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
@@ -392,22 +394,11 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.REALTIME]: '数据库逻辑复制日志',
   [LogsTableName.STORAGE]: '文件存储日志',
   [LogsTableName.POSTGREST]: 'REST 接口服务日志',
-  [LogsTableName.SUPAVISOR]: '数据库连接池日志',
-  [LogsTableName.WAREHOUSE]: '数据仓库日志',
+  [LogsTableName.SUPAVISOR]: '数据库连接池（supavisor）日志',
+  [LogsTableName.PGBOUNCER]: '数据库连接池（pgbouncer）日志',
   [LogsTableName.PG_CRON]: '定时任务日志',
 }
 
-export const genQueryParams = (params: { [k: string]: string }) => {
-  // remove keys which are empty strings, null, or undefined
-  for (const k in params) {
-    const v = params[k]
-    if (v === null || v === '' || v === undefined) {
-      delete params[k]
-    }
-  }
-  const qs = new URLSearchParams(params).toString()
-  return qs
-}
 export const FILTER_OPTIONS: FilterTableSet = {
   // Postgres logs
   postgres_logs: {
@@ -673,6 +664,16 @@ export const LOGS_TAILWIND_CLASSES = {
 }
 
 export const PREVIEWER_DATEPICKER_HELPERS: DatetimeHelper[] = [
+  {
+    text: '最近 15 分钟',
+    calcFrom: () => dayjs().subtract(15, 'minute').startOf('minute').toISOString(),
+    calcTo: () => '',
+  },
+  {
+    text: '最近 30 分钟',
+    calcFrom: () => dayjs().subtract(30, 'minute').startOf('minute').toISOString(),
+    calcTo: () => '',
+  },
   {
     text: '最近 1 小时',
     calcFrom: () => dayjs().subtract(1, 'hour').startOf('hour').toISOString(),

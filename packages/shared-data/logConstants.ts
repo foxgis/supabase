@@ -1,6 +1,32 @@
-const schemas = [
+type LogTable =
+  | 'edge_logs'
+  | 'postgres_logs'
+  | 'function_logs'
+  | 'function_edge_logs'
+  | 'auth_logs'
+  | 'realtime_logs'
+  | 'storage_logs'
+  | 'postgrest_logs'
+  | 'supavisor_logs'
+  | 'pgbouncer_logs'
+  | 'pg_cron_logs'
+
+type LogSchema = {
+  name: string
+  reference: LogTable
+  fields: {
+    path: string
+    type: string
+  }[]
+}
+
+const schemas: LogSchema[] = [
   {
+<<<<<<< HEAD
     name: 'API 网关',
+=======
+    name: 'API Gateway',
+>>>>>>> upstream/master
     reference: 'edge_logs',
     fields: [
       { path: 'id', type: 'string' },
@@ -229,13 +255,42 @@ const schemas = [
     ],
   },
   {
-    name: '连接池',
+    name: 'Supavisor (共享连接池)',
     reference: 'supavisor_logs',
     fields: [
       { path: 'event_message', type: 'string' },
       { path: 'id', type: 'string' },
       { path: 'timestamp', type: 'datetime' },
+      { path: 'metadata.context.application', type: 'string' },
+      { path: 'metadata.context.domain', type: 'string[]' },
+      { path: 'metadata.context.file', type: 'string' },
+      { path: 'metadata.context.function', type: 'string' },
+      { path: 'metadata.context.gl', type: 'string' },
+      { path: 'metadata.context.line', type: 'number' },
+      { path: 'metadata.context.mfa', type: 'string[]' },
+      { path: 'metadata.context.module', type: 'string' },
+      { path: 'metadata.context.pid', type: 'string' },
+      { path: 'metadata.context.time', type: 'number' },
+      { path: 'metadata.context.vm.node', type: 'string' },
+      { path: 'metadata.db_name', type: 'string' },
+      { path: 'metadata.instance_id', type: 'string' },
+      { path: 'metadata.level', type: 'string' },
+      { path: 'metadata.project', type: 'string' },
+      { path: 'metadata.region', type: 'string' },
+      { path: 'metadata.type', type: 'string' },
+      { path: 'metadata.user', type: 'string' },
+    ],
+  },
+  {
+    name: 'PgBouncer (Dedicated Pooler)',
+    reference: 'pgbouncer_logs',
+    fields: [
+      { path: 'id', type: 'string' },
+      { path: 'event_message', type: 'string' },
+      { path: 'file', type: 'string' },
+      { path: 'timestamp', type: 'datetime' },
       { path: 'metadata.host', type: 'string' },
+      { path: 'project', type: 'string' },
     ],
   },
 ]

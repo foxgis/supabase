@@ -1,19 +1,12 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useTelemetryProps } from 'common/hooks/useTelemetryProps'
-import gaEvents from '~/lib/gaEvents'
-import Telemetry, { TelemetryEvent } from '~/lib/telemetry'
-import { Button } from 'ui'
 
+import { Button } from 'ui'
 import SectionContainer from '~/components/Layouts/SectionContainer'
-import AnnouncementBadge from '~/components/Announcement/Badge'
+import { useSendTelemetryEvent } from '~/lib/telemetry'
+import AnnouncementBadge from '../Announcement/Badge'
 
 const Hero = () => {
-  const router = useRouter()
-  const telemetryProps = useTelemetryProps()
-  const sendTelemetryEvent = async (event: TelemetryEvent) => {
-    await Telemetry.sendEvent(event, telemetryProps, router)
-  }
+  const sendTelemetryEvent = useSendTelemetryEvent()
 
   return (
     <div className="relative -mt-[65px]">
@@ -25,9 +18,14 @@ const Hero = () => {
                 <div className="flex flex-col items-center">
                   <div className="z-40 w-full flex justify-center -mt-4 lg:-mt-12 mb-8">
                     <AnnouncementBadge
-                      url="/launch-week"
-                      badge="Launch Week 13"
-                      announcement="Learn more"
+                      url="/launch-week#day-3"
+                      badge="LW14: Day 3"
+                      announcement="Realtime: Broadcast from Database"
+                      className="[&_a]:sm:gap-4 [&_.announcement-badge]:!text-xs [&_.announcement-text]:!text-xs [&_.announcement-badge]:sm:!text-sm [&_.announcement-text]:sm:!text-sm"
+                      style={{
+                        fontFamily:
+                          'Departure Mono, Source Code Pro, Office Code Pro, Menlo, monospace',
+                      }}
                     />
                   </div>
                   <h1 className="text-foreground text-4xl sm:text-5xl sm:leading-none lg:text-7xl">
@@ -46,7 +44,12 @@ const Hero = () => {
                     <Link
                       href="https://supabase.com/dashboard"
                       as="https://supabase.com/dashboard"
-                      onClick={() => sendTelemetryEvent(gaEvents['www_hp_hero_startProject'])}
+                      onClick={() =>
+                        sendTelemetryEvent({
+                          action: 'start_project_button_clicked',
+                          properties: { buttonLocation: 'Homepage Hero' },
+                        })
+                      }
                     >
                       Start your project
                     </Link>
@@ -55,7 +58,12 @@ const Hero = () => {
                     <Link
                       href="/contact/sales"
                       as="/contact/sales"
-                      onClick={() => sendTelemetryEvent(gaEvents['www_hp_hero_requestDemo'])}
+                      onClick={() =>
+                        sendTelemetryEvent({
+                          action: 'request_demo_button_clicked',
+                          properties: { buttonLocation: 'Homepage Hero' },
+                        })
+                      }
                     >
                       Request a demo
                     </Link>

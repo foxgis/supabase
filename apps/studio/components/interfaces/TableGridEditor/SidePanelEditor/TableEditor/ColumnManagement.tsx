@@ -1,4 +1,3 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import { isEmpty, noop, partition } from 'lodash'
 import { Edit, ExternalLink, HelpCircle, Key, Trash } from 'lucide-react'
 import { useState } from 'react'
@@ -10,13 +9,19 @@ import {
   DroppableProvided,
 } from 'react-beautiful-dnd'
 
+import { useParams } from 'common'
 import InformationBox from 'components/ui/InformationBox'
 import type { EnumeratedType } from 'data/enumerated-types/enumerated-types-query'
+import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
+import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 import {
   AlertDescription_Shadcn_,
   AlertTitle_Shadcn_,
   Alert_Shadcn_,
   Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   WarningIcon,
 } from 'ui'
 import { generateColumnField } from '../ColumnEditor/ColumnEditor.utils'
@@ -52,9 +57,14 @@ const ColumnManagement = ({
   onClearImportContent = noop,
   onUpdateFkRelations,
 }: ColumnManagementProps) => {
+  const { ref: projectRef } = useParams()
+  const org = useSelectedOrganization()
+
   const [open, setOpen] = useState(false)
   const [selectedColumn, setSelectedColumn] = useState<ColumnField>()
   const [selectedFk, setSelectedFk] = useState<ForeignKey>()
+
+  const { mutate: sendEvent } = useSendEventMutation()
 
   const hasImportContent = !isEmpty(importContent)
   const [primaryKeyColumns, otherColumns] = partition(
@@ -154,8 +164,21 @@ const ColumnManagement = ({
                     </Button>
                   </div>
                 ) : (
-                  <Button type="default" onClick={onSelectImportData}>
-                    通过Excel导入数据
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      onSelectImportData()
+                      sendEvent({
+                        action: 'import_data_button_clicked',
+                        properties: { tableType: '新建表' },
+                        groups: {
+                          project: projectRef ?? '未知项目',
+                          organization: org?.slug ?? '未知组织',
+                        },
+                      })
+                    }}
+                  >
+                    通过 CSV 导入数据
                   </Button>
                 )}
               </>
@@ -196,57 +219,28 @@ const ColumnManagement = ({
             {isNewRecord && <div className="w-[5%]" />}
             <div className="w-[25%] flex items-center space-x-2">
               <h5 className="text-xs text-foreground-lighter">名称</h5>
-              <Tooltip.Root delayDuration={0}>
-                <Tooltip.Trigger>
-                  <h5 className="text-xs text-foreground-lighter">
-                    <HelpCircle size={15} strokeWidth={1.5} />
-                  </h5>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content side="bottom">
-                    <Tooltip.Arrow className="radix-tooltip-arrow" />
-                    <div
-                      className={[
-                        'rounded bg-alternative py-1 px-2 leading-none shadow', // background
-                        'border border-background w-[300px]', //border
-                      ].join(' ')}
-                    >
-                      <span className="text-xs text-foreground">
-                        推荐使用小写字母和下划线分隔单词，例如column_name
-                      </span>
-                    </div>
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircle size={15} strokeWidth={1.5} className="text-foreground-lighter" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="w-[300px]">
+                  推荐使用小写字母和下划线分隔单词，例如column_name
+                </TooltipContent>
+              </Tooltip>
             </div>
             <div className="w-[25%]">
               <h5 className="text-xs text-foreground-lighter">类型</h5>
             </div>
             <div className={`${isNewRecord ? 'w-[25%]' : 'w-[30%]'} flex items-center space-x-2`}>
               <h5 className="text-xs text-foreground-lighter">默认值</h5>
-
-              <Tooltip.Root delayDuration={0}>
-                <Tooltip.Trigger>
-                  <h5 className="text-xs text-foreground-lighter">
-                    <HelpCircle size={15} strokeWidth={1.5} />
-                  </h5>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content side="bottom">
-                    <Tooltip.Arrow className="radix-tooltip-arrow" />
-                    <div
-                      className={[
-                        'rounded bg-alternative py-1 px-2 leading-none shadow', // background
-                        'border border-background w-[300px]', //border
-                      ].join(' ')}
-                    >
-                      <span className="text-xs text-foreground">
-                        可以填写字面量或者表达式，当使用表达式时，将表达式用括号括起来，例如(gen_random_uuid())
-                      </span>
-                    </div>
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircle size={15} strokeWidth={1.5} className="text-foreground-lighter" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="w-[300px]">
+                  可以填写字面量或者表达式。当使用表达式时，将表达式用括号括起来，例如(gen_random_uuid())
+                </TooltipContent>
+              </Tooltip>
             </div>
             <div className="w-[10%]">
               <h5 className="text-xs text-foreground-lighter">主键</h5>

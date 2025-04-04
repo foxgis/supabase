@@ -288,21 +288,12 @@
     "product_url": null
   },
   {
-    "name": "pg_stat_monitor",
-    "comment": "pg_stat_monitor 是 PostgreSQL 查询性能监测工具，它基于 PostgreSQL 社区贡献模块。pg_stat_monitor 提供了聚合统计、客户端信息、计划详情和直方图信息。",
-    "tags": ["工具"],
-    "link": "/guides/database/extensions/pg_stat_monitor",
-    "github_url": null,
-    "product": null,
-    "product_url": null
-  },
-  {
     "name": "pg_stat_statements",
     "comment": "跟踪所有执行 SQL 语句的执行统计信息",
     "tags": ["管理", "工具"],
     "link": "/guides/database/extensions/pg_stat_statements",
     "github_url": null,
-    "product": "Query Performance",
+    "product": "查询性能",
     "product_url": "/project/{ref}/advisors/query-performance"
   },
   {
@@ -598,6 +589,12 @@
     "github_url": "https://github.com/pgvector/pgvector",
     "product": "Supabase Vector",
     "product_url": null
+  },
+  {
+    "name": "pg_repack",
+    "comment": "Optimize physical storage and remove bloat from tables and indexes",
+    "tags": ["Admin", "Utility"],
+    "link": "/guides/database/extensions/pg_repack"
   },
   {
     "name": "wrappers",

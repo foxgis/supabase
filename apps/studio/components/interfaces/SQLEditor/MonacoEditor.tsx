@@ -8,13 +8,14 @@ import { useLocalStorageQuery } from 'hooks/misc/useLocalStorage'
 import { useSelectedProject } from 'hooks/misc/useSelectedProject'
 import { LOCAL_STORAGE_KEYS } from 'lib/constants'
 import { useProfile } from 'lib/profile'
-import { useAppStateSnapshot } from 'state/app-state'
+import { useAiAssistantStateSnapshot } from 'state/ai-assistant-state'
 import { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
 import { cn } from 'ui'
 import { Admonition } from 'ui-patterns'
 import { untitledSnippetTitle } from './SQLEditor.constants'
 import type { IStandaloneCodeEditor } from './SQLEditor.types'
 import { createSqlSnippetSkeletonV2 } from './SQLEditor.utils'
+import { makeActiveTabPermanent } from 'state/tabs'
 
 export type MonacoEditorProps = {
   id: string
@@ -49,7 +50,7 @@ const MonacoEditor = ({
   const project = useSelectedProject()
   const snapV2 = useSqlEditorV2StateSnapshot()
 
-  const { setAiAssistantPanel } = useAppStateSnapshot()
+  const aiSnap = useAiAssistantStateSnapshot()
 
   const [intellisenseEnabled] = useLocalStorageQuery(
     LOCAL_STORAGE_KEYS.SQL_EDITOR_INTELLISENSE,
@@ -92,7 +93,8 @@ const MonacoEditor = ({
     //     const selectedValue = (editorRef?.current as any)
     //       .getModel()
     //       .getValueInRange((editorRef?.current as any)?.getSelection())
-    //     setAiAssistantPanel({
+    //     aiSnap.newChat({
+    //       name: 'Explain code section',
     //       open: true,
     //       sqlSnippets: [selectedValue],
     //       initialInput: 'Can you explain this section to me in more detail?',
@@ -146,6 +148,9 @@ const MonacoEditor = ({
   const debouncedSetSql = debounce((id, value) => snapV2.setSql(id, value), 1000)
 
   function handleEditorChange(value: string | undefined) {
+    // make active tab permanent
+    makeActiveTabPermanent(ref)
+
     const snippetCheck = snapV2.snippets[id]
 
     if (id && value) {
@@ -180,8 +185,8 @@ const MonacoEditor = ({
         <Admonition
           type="default"
           className="m-0 py-2 rounded-none border-0 border-b [&>h5]:mb-0.5"
-          title="此查询是分享的查询，只能由所有者编辑分享的查询"
-          description='您可以通过右键点击查询，选择“复制为个人副本”，将查询到个人账户下'
+          title="此查询语句已被分享，只能由此查询语句的创建这才能编辑"
+          description='您可以通过右键点击查询语句，选择“复制为个人副本”，将查询语句复制到个人账户下'
         />
       )}
       <Editor

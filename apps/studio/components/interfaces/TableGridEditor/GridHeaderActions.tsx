@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { useParams } from 'common'
-import { useTrackedState } from 'components/grid/store/Store'
 import { getEntityLintDetails } from 'components/interfaces/TableGridEditor/TableEntity.utils'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import APIDocsButton from 'components/ui/APIDocsButton'
@@ -22,36 +21,38 @@ import {
   isView as isTableLikeView,
 } from 'data/table-editor/table-editor-types'
 import { useTableUpdateMutation } from 'data/tables/table-update-mutation'
+import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
+import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 import { PROTECTED_SCHEMAS } from 'lib/constants/schemas'
+import { useTableEditorTableStateSnapshot } from 'state/table-editor-table'
 import {
   Button,
   PopoverContent_Shadcn_,
   PopoverTrigger_Shadcn_,
   Popover_Shadcn_,
-  TooltipContent_Shadcn_,
-  TooltipTrigger_Shadcn_,
-  Tooltip_Shadcn_,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   cn,
 } from 'ui'
 import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { RoleImpersonationPopover } from '../RoleImpersonationSelector'
+import ViewEntityAutofixSecurityModal from './ViewEntityAutofixSecurityModal'
 
 export interface GridHeaderActionsProps {
   table: Entity
-  canEditViaTableEditor: boolean
 }
 
 const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
   const { ref } = useParams()
   const { project } = useProjectContext()
+  const org = useSelectedOrganization()
 
   // need project lints to get security status for views
-  const { data: lints = [] } = useProjectLintsQuery({
-    projectRef: project?.ref,
-  })
+  const { data: lints = [] } = useProjectLintsQuery({ projectRef: project?.ref })
 
   const isTable = isTableLike(table)
   const isForeignTable = isTableLikeForeignTable(table)
@@ -71,12 +72,11 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
   })
 
   const [showEnableRealtime, setShowEnableRealtime] = useState(false)
-  const [open, setOpen] = useState(false)
   const [rlsConfirmModalOpen, setRlsConfirmModalOpen] = useState(false)
+  const [isAutofixViewSecurityModalOpen, setIsAutofixViewSecurityModalOpen] = useState(false)
 
-  const state = useTrackedState()
-  const { selectedRows } = state
-  const showHeaderActions = selectedRows.size === 0
+  const snap = useTableEditorTableStateSnapshot()
+  const showHeaderActions = snap.selectedRows.size === 0
 
   const projectRef = project?.ref
   const { data } = useDatabasePoliciesQuery({
@@ -130,6 +130,8 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
       table.schema
     )
 
+  const { mutate: sendEvent } = useSendEventMutation()
+
   const toggleRealtime = async () => {
     if (!project) return console.error('未找到项目')
     if (!realtimePublication) return console.error('未发现实时通信发布')
@@ -142,6 +144,18 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
       : realtimeEnabledTables
           .filter((x: any) => x.id != table.id)
           .map((x: any) => `${x.schema}.${x.name}`)
+
+    sendEvent({
+      action: 'realtime_toggle_table_clicked',
+      properties: {
+        newState: exists ? 'disabled' : 'enabled',
+        origin: 'tableGridHeader',
+      },
+      groups: {
+        project: project?.ref ?? 'Unknown',
+        organization: org?.slug ?? 'Unknown',
+      },
+    })
 
     updatePublications({
       projectRef: project?.ref,
@@ -170,22 +184,22 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
   }
 
   return (
-    <>
+    <div className="sb-grid-header__inner">
       {showHeaderActions && (
         <div className="flex items-center gap-x-2">
           {isReadOnly && (
-            <Tooltip_Shadcn_>
-              <TooltipTrigger_Shadcn_ asChild>
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <div className="border border-strong rounded bg-overlay-hover px-3 py-1 text-xs">
                   以只读模式查看
                 </div>
-              </TooltipTrigger_Shadcn_>
-              <TooltipContent_Shadcn_ side="bottom">
-                您需要额外的权限才能管理项目数据
-              </TooltipContent_Shadcn_>
-            </Tooltip_Shadcn_>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                您需要额外的权限才能管理数据
+              </TooltipContent>
+            </Tooltip>
           )}
-          {isTable ? (
+          {isTable && !isLocked ? (
             table.rls_enabled ? (
               <>
                 {policies.length < 1 && !isLocked ? (
@@ -242,7 +256,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                 )}
               </>
             ) : (
-              <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+              <Popover_Shadcn_ modal={false}>
                 <PopoverTrigger_Shadcn_ asChild>
                   <Button type="warning" icon={<Lock strokeWidth={1.5} />}>
                     RLS 已禁用
@@ -275,7 +289,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             )
           ) : null}
           {isView && viewHasLints && (
-            <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+            <Popover_Shadcn_ modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
                   Security Definer 视图
@@ -294,7 +308,15 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                     当这个视图处于 public 模式，可以使用 API 访问该视图。
                   </p>
 
-                  <div className="mt-2">
+                  <div className="mt-2 flex items-center gap-2">
+                    <Button
+                      type="secondary"
+                      onClick={() => {
+                        setIsAutofixViewSecurityModalOpen(true)
+                      }}
+                    >
+                      Autofix
+                    </Button>
                     <Button type="default" asChild>
                       <Link
                         target="_blank"
@@ -309,7 +331,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             </Popover_Shadcn_>
           )}
           {isMaterializedView && materializedViewHasLints && (
-            <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+            <Popover_Shadcn_ modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
                   Security Definer 物化视图
@@ -343,7 +365,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             </Popover_Shadcn_>
           )}
           {isForeignTable && table.schema === 'public' && (
-            <Popover_Shadcn_ open={open} onOpenChange={() => setOpen(!open)} modal={false}>
+            <Popover_Shadcn_ modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
                   外部表可通过 API 访问
@@ -362,7 +384,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                     <Button type="default" asChild>
                       <Link
                         target="_blank"
-                        href="https://github.com/orgs/supabase/discussions/21647"
+                        href="https://supabase.com/docs/guides/database/extensions/wrappers/overview#security"
                       >
                         了解更多
                       </Link>
@@ -414,6 +436,13 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
           )}
         </div>
       </ConfirmationModal>
+
+      <ViewEntityAutofixSecurityModal
+        table={table}
+        isAutofixViewSecurityModalOpen={isAutofixViewSecurityModalOpen}
+        setIsAutofixViewSecurityModalOpen={setIsAutofixViewSecurityModalOpen}
+      />
+
       {isTable && (
         <ConfirmModal
           danger={table.rls_enabled}
@@ -426,7 +455,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
           onSelectConfirm={onToggleRLS}
         />
       )}
-    </>
+    </div>
   )
 }
 

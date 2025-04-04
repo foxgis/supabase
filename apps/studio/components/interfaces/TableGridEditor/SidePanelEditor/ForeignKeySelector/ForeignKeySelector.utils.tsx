@@ -1,8 +1,7 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
-
 import { FOREIGN_KEY_CASCADE_ACTION } from 'data/database/database-query-constants'
 import type { ForeignKeyConstraint } from 'data/database/foreign-key-constraints-query'
 import { HelpCircle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 import { getForeignKeyCascadeAction } from '../ColumnEditor/ColumnEditor.utils'
 import type { ForeignKey } from './ForeignKeySelector.types'
 
@@ -50,30 +49,18 @@ export const generateCascadeActionDescription = (
       return (
         <>
           <span className="text-foreground-light">{actionName}</span>
-          <Tooltip.Root delayDuration={0}>
-            <Tooltip.Trigger className="translate-y-[3px] mx-1">
+          <Tooltip>
+            <TooltipTrigger className="translate-y-[3px] mx-1">
               <HelpCircle className="text-foreground-light" size={16} strokeWidth={1.5} />
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-              <Tooltip.Content side="bottom">
-                <Tooltip.Arrow className="radix-tooltip-arrow" />
-                <div
-                  className={[
-                    'rounded bg-alternative py-1 px-2 leading-none shadow',
-                    'w-[300px] space-y-2 border border-background',
-                  ].join(' ')}
-                >
-                  <p className="text-xs text-foreground">
-                    这类似于无操作， 但这个检查不能延迟到事务之后。
-                  </p>
-                </div>
-              </Tooltip.Content>
-            </Tooltip.Portal>
-          </Tooltip.Root>
-          : {actionVerb}一条在{' '}
-          <code className="text-xs text-foreground-light">{reference}</code> 中的记录，将会{' '}
-          <span className="text-amber-900 opacity-75">阻止{actionVerb.toLowerCase()}</span>{' '}
-          表中引用它的记录。
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="w-80">
+              此选项类似于无操作，但限制检查不能延迟到事务之后
+            </TooltipContent>
+          </Tooltip>
+          : {actionVerb}一行在{' '}
+          <code className="text-xs text-foreground-light">{reference}</code>中的记录，将会{' '}
+          <span className="text-amber-900 opacity-75">阻止从表中自动{actionVerb.toLowerCase()}</span>{' '}
+          引用的行。
         </>
       )
     case FOREIGN_KEY_CASCADE_ACTION.SET_DEFAULT:

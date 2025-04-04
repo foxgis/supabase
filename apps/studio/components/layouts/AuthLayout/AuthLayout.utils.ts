@@ -19,9 +19,16 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
         ...(IS_PLATFORM
           ? [
               {
-                name: '认证方式',
-                key: 'providers',
+                name: '登录 / 退出',
+                key: 'sign-in-up',
+                pages: ['providers', 'third-party'],
                 url: `/project/${ref}/auth/providers`,
+                items: [],
+              },
+              {
+                name: '会话',
+                key: 'sessions',
+                url: `/project/${ref}/auth/sessions`,
                 items: [],
               },
               {
@@ -31,9 +38,16 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
                 items: [],
               },
               {
-                name: '电子邮件模板',
-                key: 'templates',
+                name: '电子邮件',
+                key: 'emails',
+                pages: ['templates', 'smtp'],
                 url: `/project/${ref}/auth/templates`,
+                items: [],
+              },
+              {
+                name: '多因素认证',
+                key: 'mfa',
+                url: `/project/${ref}/auth/mfa`,
                 items: [],
               },
               {
@@ -43,11 +57,23 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
                 items: [],
               },
               {
-                name: 'Hooks',
+                name: '防攻击',
+                key: 'protection',
+                url: `/project/${ref}/auth/protection`,
+                items: [],
+              },
+              {
+                name: '认证钩子s',
                 key: 'hooks',
                 url: `/project/${ref}/auth/hooks`,
                 items: [],
                 label: 'BETA',
+              },
+              {
+                name: '高级设置',
+                key: 'advanced',
+                url: `/project/${ref}/auth/advanced`,
+                items: [],
               },
             ]
           : []),

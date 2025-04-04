@@ -12,7 +12,6 @@ import {
   PopoverContent_Shadcn_,
   PopoverTrigger_Shadcn_,
   Popover_Shadcn_,
-  Separator,
   cn,
 } from 'ui'
 
@@ -266,7 +265,13 @@ const Column = ({
         <Checkbox
           label=""
           checked={column.isPrimaryKey}
-          onChange={() => onUpdateColumn({ isPrimaryKey: !column.isPrimaryKey })}
+          onChange={() => {
+            const updatedValue = !column.isPrimaryKey
+            onUpdateColumn({
+              isPrimaryKey: updatedValue,
+              isNullable: updatedValue ? false : column.isNullable,
+            })
+          }}
         />
       </div>
       <div className={`${hasImportContent ? 'w-[10%]' : 'w-[0%]'}`} />
@@ -293,16 +298,13 @@ const Column = ({
 
               <div className="flex flex-col space-y-1" key={`${column.id}_configuration`}>
                 {!column.isPrimaryKey && (
-                  <>
-                    <Checkbox
-                      label="可空"
-                      description="指定如果列在没有值的情况下可以设为 NULL 值"
-                      checked={column.isNullable}
-                      className="p-4"
-                      onChange={() => onUpdateColumn({ isNullable: !column.isNullable })}
-                    />
-                    <Separator />
-                  </>
+                  <Checkbox
+                    label="可空"
+                    description="指定如果列在没有值的情况下是否可以设为 NULL 值"
+                    checked={column.isNullable}
+                    className="p-4"
+                    onChange={() => onUpdateColumn({ isNullable: !column.isNullable })}
+                  />
                 )}
                 <Checkbox
                   label="唯一"
@@ -311,7 +313,6 @@ const Column = ({
                   className="p-4"
                   onChange={() => onUpdateColumn({ isUnique: !column.isUnique })}
                 />
-                <Separator />
                 {column.format.includes('int') && (
                   <Checkbox
                     label="自增"

@@ -1,5 +1,3 @@
-import type { PoolingConfiguration } from 'data/database/pooling-configuration-query'
-
 type ConnectionStrings = {
   psql: string
   uri: string
@@ -12,19 +10,29 @@ type ConnectionStrings = {
   sqlalchemy: string
 }
 
-export const getConnectionStrings = (
+export const getConnectionStrings = ({
+  connectionInfo,
+  poolingInfo,
+  metadata,
+}: {
   connectionInfo: {
     db_user: string
     db_port: number
     db_host: string
     db_name: string
-  },
-  poolingInfo: PoolingConfiguration,
+  }
+  poolingInfo: {
+    connectionString: string
+    db_user: string
+    db_port: number
+    db_host: string
+    db_name: string
+  }
   metadata: {
     projectRef?: string
     pgVersion?: string
   }
-): {
+}): {
   direct: ConnectionStrings
   pooler: ConnectionStrings
 } => {
@@ -51,7 +59,7 @@ export const getConnectionStrings = (
 
   const directUriString = `postgresql://${directUser}:${password}@${directHost}:${directPort}/${directName}`
 
-  const directGolangString = `DATABASE_URL=${poolingInfo.connectionString}`
+  const directGolangString = `DATABASE_URL=${directUriString}`
 
   const directJdbcString = `jdbc:postgresql://${directHost}:${directPort}/${directName}?user=${directUser}&password=${password}`
 
@@ -68,6 +76,8 @@ export const getConnectionStrings = (
     "DefaultConnection": "User Id=${poolerUser};Password=${password};Server=${poolerHost};Port=${poolerPort};Database=${poolerName}${isMd5 ? `;Options='reference=${projectRef}'` : ''}"
   }
 }`
+
+  const directNodejsString = `DATABASE_URL=${directUriString}`
 
   // Pooler connection strings
   const poolerPsqlString = isMd5
@@ -105,7 +115,7 @@ dbname=${poolerName}`
       golang: directGolangString,
       jdbc: directJdbcString,
       dotnet: directDotNetString,
-      nodejs: nodejsPoolerUriString,
+      nodejs: directNodejsString,
       php: directGolangString,
       python: directGolangString,
       sqlalchemy: sqlalchemyString,

@@ -6,18 +6,20 @@ import { toast } from 'sonner'
 import { useParams } from 'common'
 import { SQL_TEMPLATES } from 'components/interfaces/SQLEditor/SQLEditor.queries'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
+import { ActionCard } from 'components/layouts/Tabs/ActionCard'
 import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
+import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 import { uuidv4 } from 'lib/helpers'
 import { useProfile } from 'lib/profile'
 import { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
+import { cn, SQL_ICON } from 'ui'
 import { createSqlSnippetSkeletonV2 } from '../SQLEditor.utils'
-import SQLCard from './SQLCard'
-import { TelemetryActions } from 'lib/constants/telemetry'
 
 const SQLTemplates = () => {
   const router = useRouter()
   const { ref } = useParams()
+  const org = useSelectedOrganization()
   const { profile } = useProfile()
   const { project } = useProjectContext()
   const [sql] = partition(SQL_TEMPLATES, { type: 'template' })
@@ -50,6 +52,7 @@ const SQLTemplates = () => {
       })
       snapV2.addSnippet({ projectRef: ref, snippet })
       snapV2.addNeedsSaving(snippet.id)
+
       router.push(`/project/${ref}/sql/${snippet.id}`)
     } catch (error: any) {
       toast.error(`创建新查询失败: ${error.message}`)
@@ -57,28 +60,30 @@ const SQLTemplates = () => {
   }
 
   return (
-    <div className="block h-full space-y-8 overflow-y-auto p-4 md:p-6">
+    <div className="block h-full space-y-8 overflow-y-auto p-6 px-10 bg-dash-sidebar dark:bg-surface-100">
       <div>
-        <div className="mb-4">
-          <h1 className="text-foreground mb-3 text-xl">脚本</h1>
-          <p className="text-foreground-light text-sm">能够立即在数据库上运行的脚本。</p>
+        <div className="mb-6">
+          <h1 className="text-foreground mb-1 text-xl">SQL 脚本</h1>
+          <p className="text-foreground-light text-sm">能够立即在数据库上运行的 SQL 脚本。</p>
           <p className="text-foreground-light text-sm">
             点击任意脚本即可填充查询框，修改脚本，然后点击
             <span className="text-code">执行</span>。
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ">
-          {sql.map((x) => (
-            <SQLCard
-              key={x.title}
+          {sql.map((x, i) => (
+            <ActionCard
+              key={`action-card-${i}`}
               title={x.title}
               description={x.description}
-              sql={x.sql}
-              onClick={(sql, title) => {
-                handleNewQuery(sql, title)
+              bgColor="bg-alternative border"
+              icon={<SQL_ICON className={cn('fill-foreground', 'w-4 h-4')} strokeWidth={1.5} />}
+              onClick={() => {
+                handleNewQuery(x.sql, x.title)
                 sendEvent({
-                  action: TelemetryActions.SQL_EDITOR_TEMPLATE_CLICKED,
-                  properties: { title },
+                  action: 'sql_editor_template_clicked',
+                  properties: { templateName: x.title },
+                  groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
                 })
               }}
             />

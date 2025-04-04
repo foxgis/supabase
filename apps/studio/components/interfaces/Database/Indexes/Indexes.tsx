@@ -109,7 +109,7 @@ const Indexes = () => {
             )}
             {isSuccessSchemas && (
               <SchemaSelector
-                className="w-[180px]"
+                className="w-full lg:w-[180px]"
                 size="tiny"
                 showError={false}
                 selectedSchemaName={selectedSchema}
@@ -119,7 +119,7 @@ const Indexes = () => {
             <Input
               size="tiny"
               value={search}
-              className="w-52"
+              className="w-full lg:w-52"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="查找索引"
               icon={<Search size={14} />}
@@ -127,7 +127,7 @@ const Indexes = () => {
 
             {!isLocked && (
               <Button
-                className="ml-auto"
+                className="ml-auto flex-grow lg:flex-grow-0"
                 type="primary"
                 onClick={() => setShowCreateIndex(true)}
                 disabled={!isSuccessSchemas}
@@ -146,67 +146,69 @@ const Indexes = () => {
           )}
 
           {isSuccessIndexes && (
-            <Table
-              head={[
-                <Table.th key="schema">模式</Table.th>,
-                <Table.th key="table">表</Table.th>,
-                <Table.th key="name">名称</Table.th>,
-                <Table.th key="buttons"></Table.th>,
-              ]}
-              body={
-                <>
-                  {sortedIndexes.length === 0 && search.length === 0 && (
-                    <Table.tr>
-                      <Table.td colSpan={4}>
-                        <p className="text-sm text-foreground">尚未创建索引</p>
-                        <p className="text-sm text-foreground-light">
-                          在模式 "{selectedSchema}" 中未找到索引
-                        </p>
-                      </Table.td>
-                    </Table.tr>
-                  )}
-                  {sortedIndexes.length === 0 && search.length > 0 && (
-                    <Table.tr>
-                      <Table.td colSpan={4}>
-                        <p className="text-sm text-foreground">未找到结果</p>
-                        <p className="text-sm text-foreground-light">
-                          您搜索的 "{search}" 没有返回任何结果
-                        </p>
-                      </Table.td>
-                    </Table.tr>
-                  )}
-                  {indexes.length > 0 &&
-                    indexes.map((index) => (
-                      <Table.tr key={index.name}>
-                        <Table.td>
-                          <p title={index.schema}>{index.schema}</p>
-                        </Table.td>
-                        <Table.td>
-                          <p title={index.table}>{index.table}</p>
-                        </Table.td>
-                        <Table.td>
-                          <p title={index.name}>{index.name}</p>
-                        </Table.td>
-                        <Table.td>
-                          <div className="flex justify-end items-center space-x-2">
-                            <Button type="default" onClick={() => setSelectedIndex(index)}>
-                              查看定义
-                            </Button>
-                            {!isLocked && (
-                              <Button
-                                type="text"
-                                className="px-1"
-                                icon={<Trash />}
-                                onClick={() => setSelectedIndexToDelete(index)}
-                              />
-                            )}
-                          </div>
+            <div className="w-full overflow-hidden overflow-x-auto">
+              <Table
+                head={[
+                  <Table.th key="schema">模式</Table.th>,
+                  <Table.th key="table">表</Table.th>,
+                  <Table.th key="name">名称</Table.th>,
+                  <Table.th key="buttons"></Table.th>,
+                ]}
+                body={
+                  <>
+                    {sortedIndexes.length === 0 && search.length === 0 && (
+                      <Table.tr>
+                        <Table.td colSpan={4}>
+                          <p className="text-sm text-foreground">还未创建索引</p>
+                          <p className="text-sm text-foreground-light">
+                            在模式 "{selectedSchema}" 未找到任何索引
+                          </p>
                         </Table.td>
                       </Table.tr>
-                    ))}
-                </>
-              }
-            />
+                    )}
+                    {sortedIndexes.length === 0 && search.length > 0 && (
+                      <Table.tr>
+                        <Table.td colSpan={4}>
+                          <p className="text-sm text-foreground">未找到结果</p>
+                          <p className="text-sm text-foreground-light">
+                            您搜索的 "{search}" 未找到任何结果
+                          </p>
+                        </Table.td>
+                      </Table.tr>
+                    )}
+                    {indexes.length > 0 &&
+                      indexes.map((index) => (
+                        <Table.tr key={index.name}>
+                          <Table.td>
+                            <p title={index.schema}>{index.schema}</p>
+                          </Table.td>
+                          <Table.td>
+                            <p title={index.table}>{index.table}</p>
+                          </Table.td>
+                          <Table.td>
+                            <p title={index.name}>{index.name}</p>
+                          </Table.td>
+                          <Table.td>
+                            <div className="flex justify-end items-center space-x-2">
+                              <Button type="default" onClick={() => setSelectedIndex(index)}>
+                                查看定义
+                              </Button>
+                              {!isLocked && (
+                                <Button
+                                  type="text"
+                                  className="px-1"
+                                  icon={<Trash />}
+                                  onClick={() => setSelectedIndexToDelete(index)}
+                                />
+                              )}
+                            </div>
+                          </Table.td>
+                        </Table.tr>
+                      ))}
+                  </>
+                }
+              />
+            </div>
           )}
         </div>
       </div>

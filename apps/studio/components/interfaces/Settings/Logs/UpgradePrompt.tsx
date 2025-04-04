@@ -58,7 +58,11 @@ const UpgradePrompt: React.FC<Props> = ({ show, setShowUpgradePrompt }) => {
           关闭
         </Button>
         <Button asChild size="tiny">
-          <Link href={`/org/${organization?.slug}/billing?panel=subscriptionPlan`}>升级</Link>
+          <Link
+            href={`/org/${organization?.slug}/billing?panel=subscriptionPlan&source=logsRetentionUpgradePrompt`}
+          >
+            升级
+          </Link>
         </Button>
       </Modal.Content>
     </Modal>

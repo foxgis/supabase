@@ -1,23 +1,9 @@
-import * as Tooltip from '@radix-ui/react-tooltip'
 import saveAs from 'file-saver'
-import {
-  Clipboard,
-  Copy,
-  Download,
-  Edit,
-  Eye,
-  Lock,
-  MoreHorizontal,
-  Table2,
-  Trash,
-  Unlock,
-  Shapes,
-  Waypoints,
-  MapPin,
-} from 'lucide-react'
+import { Clipboard, Copy, Download, Edit, Lock, MoreHorizontal, Trash, Unlock } from 'lucide-react'
 import Link from 'next/link'
 import Papa from 'papaparse'
 import { toast } from 'sonner'
+import { useSnapshot } from 'valtio'
 
 import { IS_PLATFORM } from 'common'
 import {
@@ -25,10 +11,12 @@ import {
   MAX_EXPORT_ROW_COUNT_MESSAGE,
 } from 'components/grid/components/header/Header'
 import { parseSupaTable } from 'components/grid/SupabaseGrid.utils'
+import { useIsTableEditorTabsEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 import {
   formatTableRowsToSQL,
   getEntityLintDetails,
 } from 'components/interfaces/TableGridEditor/TableEntity.utils'
+import { EntityTypeIcon } from 'components/ui/EntityTypeIcon'
 import type { ItemRenderer } from 'components/ui/InfiniteList'
 import { ENTITY_TYPE, ENTITY_TYPE_LABELS } from 'data/entity-types/entity-type-constants'
 import { Entity } from 'data/entity-types/entity-types-infinite-query'
@@ -38,7 +26,9 @@ import { getTableEditor } from 'data/table-editor/table-editor-query'
 import { isTableLike } from 'data/table-editor/table-editor-types'
 import { fetchAllTableRows } from 'data/table-rows/table-rows-query'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
+import { copyToClipboard } from 'lib/helpers'
 import { useTableEditorStateSnapshot } from 'state/table-editor'
+import { createTabId, getTabsStore, makeTabPermanent } from 'state/tabs'
 import {
   cn,
   DropdownMenu,
@@ -49,14 +39,17 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TreeViewItemVariant,
 } from 'ui'
 import { useProjectContext } from '../ProjectLayout/ProjectContext'
-import { copyToClipboard } from 'lib/helpers'
-
 export interface EntityListItemProps {
-  id: number
+  id: number | string
   projectRef: string
   isLocked: boolean
+  isActive?: boolean
 }
 
 const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
@@ -64,11 +57,20 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
   projectRef,
   item: entity,
   isLocked,
+  isActive: _isActive,
 }) => {
   const { project } = useProjectContext()
   const snap = useTableEditorStateSnapshot()
   const { selectedSchema } = useQuerySchemaState()
 
+  // For tabs preview flag logic
+  const isTableEditorTabsEnabled = useIsTableEditorTabsEnabled()
+  const tabId = createTabId(entity.type, { id: entity.id })
+  const tabStore = getTabsStore(projectRef)
+  const isPreview = isTableEditorTabsEnabled ? tabStore.previewTabId === tabId : false
+
+  const tabs = useSnapshot(tabStore)
+  const isOpened = Object.values(tabs.tabsMap).some((tab) => tab.metadata?.tableId === entity.id)
   const isActive = Number(id) === entity.id
   const canEdit = isActive && !isLocked
 
@@ -209,285 +211,222 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
     }
   }
 
-  const EntityTooltipTrigger = ({ entity }: { entity: Entity }) => {
-    let tooltipContent = null
-
-    switch (entity.type) {
-      case ENTITY_TYPE.TABLE:
-        if (tableHasLints) {
-          tooltipContent = 'RLS 已禁用'
-        }
-        break
-      case ENTITY_TYPE.VIEW:
-        if (viewHasLints) {
-          tooltipContent = 'Security definer 视图'
-        }
-        break
-      case ENTITY_TYPE.MATERIALIZED_VIEW:
-        if (materializedViewHasLints) {
-          tooltipContent = 'Security definer 视图'
-        }
-        break
-      case ENTITY_TYPE.FOREIGN_TABLE:
-        tooltipContent = 'RLS 不在外部表上生效'
-        break
-      default:
-        break
-    }
-
-    if (tooltipContent) {
-      return (
-        <Tooltip.Root delayDuration={0} disableHoverableContent={true}>
-          <Tooltip.Trigger className="min-w-4" asChild>
-            <Unlock
-              size={14}
-              strokeWidth={2}
-              className={cn('min-w-4', isActive ? 'text-warning-600' : 'text-warning-500')}
-            />
-          </Tooltip.Trigger>
-          <Tooltip.Portal>
-            <Tooltip.Content
-              side="bottom"
-              className={[
-                'rounded bg-alternative py-1 px-2 leading-none shadow',
-                'border border-background',
-                'text-xs text-foreground',
-              ].join(' ')}
-            >
-              <Tooltip.Arrow className="radix-tooltip-arrow" />
-              {tooltipContent}
-            </Tooltip.Content>
-          </Tooltip.Portal>
-        </Tooltip.Root>
-      )
-    }
-
-    return null
-  }
-
   return (
     <EditorTablePageLink
       title={entity.name}
       id={String(entity.id)}
-      href={`/project/${projectRef}/editor/${entity.id}?schema=${selectedSchema}`}
+      href={`/project/${projectRef}/editor/${entity.id}?schema=${entity.schema}`}
       role="button"
-      aria-label={`View ${entity.name}`}
+      aria-label={`查看 ${entity.name}`}
       className={cn(
-        'w-full',
-        'flex items-center gap-2',
-        'py-1 px-2',
-        'text-light',
-        'rounded-md',
-        isActive ? 'bg-selection' : 'hover:bg-surface-200 focus:bg-surface-200',
-        'group',
-        'transition'
+        TreeViewItemVariant({
+          isSelected: isActive && !isPreview,
+          isOpened: isOpened && !isPreview,
+          isPreview,
+        }),
+        'px-4'
       )}
+      onDoubleClick={(e) => {
+        e.preventDefault()
+        const tabId = createTabId(entity.type, { id: entity.id })
+        makeTabPermanent(projectRef, tabId)
+      }}
     >
-      <Tooltip.Root delayDuration={0} disableHoverableContent={true}>
-        <Tooltip.Trigger className="min-w-4" asChild>
-          {entity.geometry_type?.toLowerCase().includes('point') ? (
-            <MapPin
-              size={15}
-              strokeWidth={1.5}
-              className={cn(
-                'text-foreground-muted group-hover:text-foreground-lighter',
-                isActive && 'text-foreground-lighter',
-                'transition-colors'
-              )}
-            />
-          ) : entity.geometry_type?.toLowerCase().includes('linestring') ? (
-            <Waypoints
-              size={15}
-              strokeWidth={1.5}
-              className={cn(
-                'text-foreground-muted group-hover:text-foreground-lighter',
-                isActive && 'text-foreground-lighter',
-                'transition-colors'
-              )}
-            />
-          ) : entity.geometry_type?.toLowerCase().includes('polygon') ? (
-            <Shapes
-              size={15}
-              strokeWidth={1.5}
-              className={cn(
-                'text-foreground-muted group-hover:text-foreground-lighter',
-                isActive && 'text-foreground-lighter',
-                'transition-colors'
-              )}
-            />
-          ) : entity.type === ENTITY_TYPE.TABLE ? (
-            <Table2
-              size={15}
-              strokeWidth={1.5}
-              className={cn(
-                'text-foreground-muted group-hover:text-foreground-lighter',
-                isActive && 'text-foreground-lighter',
-                'transition-colors'
-              )}
-            />
-          ) : entity.type === ENTITY_TYPE.VIEW ? (
-            <Eye
-              size={15}
-              strokeWidth={1.5}
-              className={cn(
-                'text-foreground-muted group-hover:text-foreground-lighter',
-                isActive && 'text-foreground-lighter',
-                'transition-colors'
-              )}
-            />
-          ) : (
-            <div
-              className={cn(
-                'flex items-center justify-center text-xs h-4 w-4 rounded-[2px] font-bold',
-                entity.type === ENTITY_TYPE.FOREIGN_TABLE && 'text-yellow-900 bg-yellow-500',
-                entity.type === ENTITY_TYPE.MATERIALIZED_VIEW && 'text-purple-1000 bg-purple-500',
-                entity.type === ENTITY_TYPE.PARTITIONED_TABLE &&
-                  'text-foreground-light bg-border-stronger'
-              )}
-            >
-              {Object.entries(ENTITY_TYPE)
-                .find(([, value]) => value === entity.type)?.[0]?.[0]
-                ?.toUpperCase()}
-            </div>
-          )}
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content
-            side="bottom"
-            className={[
-              'rounded bg-alternative py-1 px-2 leading-none shadow',
-              'border border-background',
-              'text-xs text-foreground capitalize',
-            ].join(' ')}
-          >
-            <Tooltip.Arrow className="radix-tooltip-arrow" />
-            {formatTooltipText(entity.type)}
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-      <div
-        className={cn(
-          'truncate',
-          'overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-2 relative w-full',
-          isActive && 'text-foreground'
-        )}
-      >
-        <span
+      <>
+        {isActive && <div className="absolute left-0 h-full w-0.5 bg-foreground" />}
+        <Tooltip disableHoverableContent={true}>
+          <TooltipTrigger className="min-w-4">
+            <EntityTypeIcon type={entity.type}  geometryType={entity.geometry_type?} isActive={isActive} />
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{formatTooltipText(entity.type)}</TooltipContent>
+        </Tooltip>
+        <div
           className={cn(
-            isActive ? 'text-foreground' : 'text-foreground-light group-hover:text-foreground',
-            'text-sm',
-            'transition',
-            'truncate'
+            'truncate',
+            'overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-2 relative w-full',
+            isActive && 'text-foreground'
           )}
         >
-          {entity.name}
-          <span className="block text-muted font-normal truncate">{entity.comment}</span>
-        </span>
-        <EntityTooltipTrigger entity={entity} />
-      </div>
-
-      {canEdit && (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="text-foreground-lighter transition-all hover:text-foreground data-[state=open]:text-foreground">
-            <MoreHorizontal size={14} strokeWidth={2} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="start" className="w-44">
-            <DropdownMenuItem
-              key="copy-name"
-              className="space-x-2"
-              onClick={(e) => {
-                e.stopPropagation()
-                copyToClipboard(entity.name)
-              }}
-            >
-              <Clipboard size={12} />
-              <span>复制名称</span>
-            </DropdownMenuItem>
-
-            {entity.type === ENTITY_TYPE.TABLE && (
-              <>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem
-                  key="edit-table"
-                  className="space-x-2"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    snap.onEditTable()
-                  }}
-                >
-                  <Edit size={12} />
-                  <span>编辑表</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  key="duplicate-table"
-                  className="space-x-2"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    snap.onDuplicateTable()
-                  }}
-                >
-                  <Copy size={12} />
-                  <span>复制表</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem key="view-policies" className="space-x-2" asChild>
-                  <Link
-                    key="view-policies"
-                    href={`/project/${projectRef}/auth/policies?schema=${selectedSchema}&search=${entity.id}`}
-                  >
-                    <Lock size={12} />
-                    <span>查看策略</span>
-                  </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger className="gap-x-2">
-                    <Download size={12} />
-                    导出数据
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem
-                      key="download-table-csv"
-                      className="space-x-2"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        exportTableAsCSV()
-                      }}
-                    >
-                      <span>导出数据到 CSV</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      key="download-table-sql"
-                      className="gap-x-2"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        exportTableAsSQL()
-                      }}
-                    >
-                      <span>导出数据到 SQL</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  key="delete-table"
-                  className="gap-x-2"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    snap.onDeleteTable()
-                  }}
-                >
-                  <Trash size={12} />
-                  <span>删除表</span>
-                </DropdownMenuItem>
-              </>
+          <span
+            className={cn(
+              isActive ? 'text-foreground' : 'text-foreground-light group-hover:text-foreground',
+              'text-sm',
+              'transition',
+              'truncate'
             )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+          >
+            {entity.name}
+          </span>
+          <EntityTooltipTrigger
+            entity={entity}
+            isActive={isActive}
+            tableHasLints={tableHasLints}
+            viewHasLints={viewHasLints}
+            materializedViewHasLints={materializedViewHasLints}
+          />
+        </div>
+
+        {canEdit && (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-foreground-lighter transition-all text-transparent group-hover:text-foreground data-[state=open]:text-foreground">
+              <MoreHorizontal size={14} strokeWidth={2} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="bottom" align="start" className="w-44">
+              <DropdownMenuItem
+                key="copy-name"
+                className="space-x-2"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  copyToClipboard(entity.name)
+                }}
+              >
+                <Clipboard size={12} />
+                <span>复制表名</span>
+              </DropdownMenuItem>
+
+              {entity.type === ENTITY_TYPE.TABLE && (
+                <>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    key="edit-table"
+                    className="space-x-2"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      snap.onEditTable()
+                    }}
+                  >
+                    <Edit size={12} />
+                    <span>编辑表</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    key="duplicate-table"
+                    className="space-x-2"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      snap.onDuplicateTable()
+                    }}
+                  >
+                    <Copy size={12} />
+                    <span>复制表</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem key="view-policies" className="space-x-2" asChild>
+                    <Link
+                      key="view-policies"
+                      href={`/project/${projectRef}/auth/policies?schema=${selectedSchema}&search=${entity.id}`}
+                    >
+                      <Lock size={12} />
+                      <span>查看 RLS 策略</span>
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger className="gap-x-2">
+                      <Download size={12} />
+                      导出数据
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem
+                        key="download-table-csv"
+                        className="space-x-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          exportTableAsCSV()
+                        }}
+                      >
+                        <span>导出表为 CSV</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        key="download-table-sql"
+                        className="gap-x-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          exportTableAsSQL()
+                        }}
+                      >
+                        <span>导出表为 SQL</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    key="delete-table"
+                    className="gap-x-2"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      snap.onDeleteTable()
+                    }}
+                  >
+                    <Trash size={12} />
+                    <span>删除表</span>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </>
     </EditorTablePageLink>
   )
+}
+
+const EntityTooltipTrigger = ({
+  entity,
+  isActive,
+  tableHasLints,
+  viewHasLints,
+  materializedViewHasLints,
+}: {
+  entity: Entity
+  isActive: boolean
+  tableHasLints: boolean
+  viewHasLints: boolean
+  materializedViewHasLints: boolean
+}) => {
+  let tooltipContent = ''
+
+  switch (entity.type) {
+    case ENTITY_TYPE.TABLE:
+      if (tableHasLints) {
+        tooltipContent = 'RLS disabled'
+      }
+      break
+    case ENTITY_TYPE.VIEW:
+      if (viewHasLints) {
+        tooltipContent = 'Security definer view'
+      }
+      break
+    case ENTITY_TYPE.MATERIALIZED_VIEW:
+      if (materializedViewHasLints) {
+        tooltipContent = 'Security definer view'
+      }
+      break
+    case ENTITY_TYPE.FOREIGN_TABLE:
+      tooltipContent = 'RLS is not enforced on foreign tables'
+      break
+    default:
+      break
+  }
+
+  if (tooltipContent) {
+    return (
+      <Tooltip disableHoverableContent={true}>
+        <TooltipTrigger className="min-w-4">
+          <Unlock
+            size={14}
+            strokeWidth={2}
+            className={cn('min-w-4', isActive ? 'text-warning-600' : 'text-warning-500')}
+          />
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <span>{tooltipContent}</span>
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return null
 }
 
 export default EntityListItem
