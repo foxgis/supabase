@@ -22,11 +22,7 @@ type LogSchema = {
 
 const schemas: LogSchema[] = [
   {
-<<<<<<< HEAD
     name: 'API 网关',
-=======
-    name: 'API Gateway',
->>>>>>> upstream/master
     reference: 'edge_logs',
     fields: [
       { path: 'id', type: 'string' },

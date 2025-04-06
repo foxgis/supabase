@@ -1,6 +1,6 @@
 import Link from 'next/link'
+import { PropsWithChildren } from 'react'
 
-import type { ResponseError } from 'types'
 import {
   AlertDescription_Shadcn_,
   AlertTitle_Shadcn_,
@@ -25,7 +25,8 @@ const AlertError = ({
   error,
   className,
   showIcon = true,
-}: AlertErrorProps) => {
+  children,
+}: PropsWithChildren<AlertErrorProps>) => {
   const subjectString = subject?.replace(/ /g, '%20')
   let href = `/support/new?category=dashboard_bug`
 
@@ -48,11 +49,10 @@ const AlertError = ({
             请尝试刷新浏览器，如果问题仍然存在，请联系技术支持。
           </p>
         </div>
-        {/* <div>
-          <Button asChild type="warning">
-            <Link href={href}>联系技术支持</Link>
-          </Button>
-        </div> */}
+        {children}
+        {/* <Button asChild type="warning" className="w-min">
+          <Link href={href}>联系技术支持</Link>
+        </Button> */}
       </AlertDescription_Shadcn_>
     </Alert_Shadcn_>
   )

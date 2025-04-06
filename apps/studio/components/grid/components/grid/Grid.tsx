@@ -155,7 +155,13 @@ export const Grid = memo(
                   {isLoading && <TableGridInnerLoadingState />}
                   {isError && (
                     <div className="p-2 col-span-full">
-                      <AlertError error={error} subject="从表中获取数据失败" />
+                      <AlertError error={error} subject="从表中获取数据失败">
+                        {filters.length > 0 && (
+                          <p>
+                            请检查过滤条件的值是否正确，该错误可能由无效的过滤条件引起
+                          </p>
+                        )}
+                      </AlertError>
                     </div>
                   )}
                   {isSuccess && (
