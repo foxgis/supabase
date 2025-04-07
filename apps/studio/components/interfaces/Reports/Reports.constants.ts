@@ -2,32 +2,60 @@ import dayjs from 'dayjs'
 
 import type { DatetimeHelper } from '../Settings/Logs/Logs.types'
 import { PresetConfig, Presets, ReportFilterItem } from './Reports.types'
+import { PlanId } from 'data/subscriptions/types'
 
 export const LAYOUT_COLUMN_COUNT = 2
 
-export const REPORTS_DATEPICKER_HELPERS: DatetimeHelper[] = [
+interface ReportsDatetimeHelper extends DatetimeHelper {
+  availableIn: PlanId[]
+}
+
+export const REPORTS_DATEPICKER_HELPERS: ReportsDatetimeHelper[] = [
+  {
+    text: 'Last 60 minutes',
+    calcFrom: () => dayjs().subtract(1, 'hour').startOf('day').toISOString(),
+    calcTo: () => '',
+    default: true,
+    availableIn: ['free', 'pro', 'team', 'enterprise'],
+  },
+  {
+    text: 'Last 3 hours',
+    calcFrom: () => dayjs().subtract(3, 'hour').startOf('day').toISOString(),
+    calcTo: () => '',
+    availableIn: ['free', 'pro', 'team', 'enterprise'],
+  },
   {
     text: '过去 24 小时',
     calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
     calcTo: () => '',
-    default: true,
+    availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
     text: '过去 7 天',
     calcFrom: () => dayjs().subtract(7, 'day').startOf('day').toISOString(),
     calcTo: () => '',
+    availableIn: ['pro', 'team', 'enterprise'],
   },
   {
     text: '过去 14 天',
     calcFrom: () => dayjs().subtract(14, 'day').startOf('day').toISOString(),
     calcTo: () => '',
+    availableIn: ['team', 'enterprise'],
   },
   {
-    text: '过去 30 天',
-    calcFrom: () => dayjs().subtract(30, 'day').startOf('day').toISOString(),
+    text: '过去 28 天',
+    calcFrom: () => dayjs().subtract(28, 'day').startOf('day').toISOString(),
     calcTo: () => '',
+    availableIn: ['team', 'enterprise'],
   },
 ]
+
+export const createFilteredDatePickerHelpers = (planId: PlanId) => {
+  return REPORTS_DATEPICKER_HELPERS.map((helper) => ({
+    ...helper,
+    disabled: !helper.availableIn.includes(planId),
+  }))
+}
 
 export const DEFAULT_QUERY_PARAMS = {
   iso_timestamp_start: REPORTS_DATEPICKER_HELPERS[0].calcFrom(),

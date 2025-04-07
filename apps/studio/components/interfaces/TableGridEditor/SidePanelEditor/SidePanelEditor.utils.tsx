@@ -275,6 +275,7 @@ export const createColumn = async ({
     if (!skipSuccessMessage) {
       toast.success(`成功创建了列 "${column.name}"`, { id: toastId })
     }
+    return { error: undefined }
   } catch (error: any) {
     toast.error(`创建列 "${payload.name}" 出错`, { id: toastId })
     return { error }
@@ -702,7 +703,7 @@ export const updateTable = async ({
         ...column,
         isPrimaryKey: false,
       })
-      await createColumn({
+      const { error } = await createColumn({
         projectRef: projectRef,
         connectionString: connectionString,
         payload: columnPayload,
@@ -710,6 +711,7 @@ export const updateTable = async ({
         skipSuccessMessage: true,
         toastId,
       })
+      if (!!error) hasError = true
     } else {
       const originalColumn = find(originalColumns, { id: column.id })
       if (originalColumn) {
