@@ -236,7 +236,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
         {isActive && <div className="absolute left-0 h-full w-0.5 bg-foreground" />}
         <Tooltip disableHoverableContent={true}>
           <TooltipTrigger className="min-w-4">
-            <EntityTypeIcon type={entity.type}  geometryType={entity.geometry_type?} isActive={isActive} />
+            <EntityTypeIcon type={entity.type}  geometryType={entity.geometry_type} isActive={isActive} />
           </TooltipTrigger>
           <TooltipContent side="bottom">{formatTooltipText(entity.type)}</TooltipContent>
         </Tooltip>

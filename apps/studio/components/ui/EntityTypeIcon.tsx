@@ -4,7 +4,7 @@ import { cn, SQL_ICON } from 'ui'
 
 interface EntityTypeIconProps {
   type: 'sql' | 'schema' | 'new' | 'r' | 'v' | 'm' | 'f' | 'p'
-  geometryType?: string
+  geometryType?: string | null
   size?: number
   strokeWidth?: number
   isActive?: boolean
