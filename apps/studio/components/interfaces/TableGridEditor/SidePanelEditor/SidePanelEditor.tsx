@@ -483,7 +483,7 @@ const SidePanelEditor = ({
 
         if (hasError) {
           toast.warning(
-            `表 ${table.name} 已经成功更新，但是发生了一些错误，请单独检查这些错误。
+            `表 ${table.name} 已经成功更新，但是发生了一些错误，请单独检查这些错误。`
           )
         } else {
           if (isTableEditorTabsEnabled && ref && payload.name) {
