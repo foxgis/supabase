@@ -1,6 +1,9 @@
 import { Blocks, FileText, Globe, Lightbulb, List, Settings } from 'lucide-react'
 
 import { ICON_SIZE, ICON_STROKE_WIDTH } from 'components/interfaces/Sidebar'
+import { generateAuthMenu } from 'components/layouts/AuthLayout/AuthLayout.utils'
+import { generateDatabaseMenu } from 'components/layouts/DatabaseLayout/DatabaseMenu.utils'
+import { generateSettingsMenu } from 'components/layouts/ProjectSettingsLayout/SettingsMenu.utils'
 import type { Route } from 'components/ui/ui.types'
 import { EditorIndexPageLink } from 'data/prefetchers/project.$ref.editor'
 import type { Project } from 'data/projects/project-detail-query'
@@ -58,6 +61,9 @@ export const generateProductRoutes = (
   const storageEnabled = features?.storage ?? true
   const realtimeEnabled = features?.realtime ?? true
 
+  const databaseMenu = generateDatabaseMenu(project)
+  const authMenu = generateAuthMenu(ref as string)
+
   return [
     {
       key: 'gis',
@@ -76,7 +82,19 @@ export const generateProductRoutes = (
           : isProjectActive
             ? `/project/${ref}/database/schemas`
             : `/project/${ref}/database/backups/scheduled`),
+      items: databaseMenu,
     },
+    ...(authEnabled
+      ? [
+          {
+            key: 'auth',
+            label: '认证授权',
+            icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+            link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
+            items: authMenu,
+          },
+        ]
+      : []),
     ...(storageEnabled
       ? [
           {
@@ -163,6 +181,7 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
 }
 
 export const generateSettingsRoutes = (ref?: string, project?: Project): Route[] => {
+  const settingsMenu = generateSettingsMenu(ref as string)
   return [
     ...(IS_PLATFORM
       ? [
@@ -171,6 +190,7 @@ export const generateSettingsRoutes = (ref?: string, project?: Project): Route[]
             label: '设置',
             icon: <Settings size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && `/project/${ref}/settings/general`,
+            items: settingsMenu,
           },
         ]
       : []),

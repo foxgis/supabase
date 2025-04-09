@@ -699,6 +699,11 @@ export const EXPLORER_DATEPICKER_HELPERS: DatetimeHelper[] = [
     default: true,
   },
   {
+    text: '最近 3 小时',
+    calcFrom: () => dayjs().subtract(3, 'hour').startOf('hour').toISOString(),
+    calcTo: () => '',
+  },
+  {
     text: '最近 24 小时',
     calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
     calcTo: () => '',
