@@ -368,7 +368,7 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
             <Popover_Shadcn_ modal={false}>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="warning" icon={<Unlock strokeWidth={1.5} />}>
-                  外部表可通过 API 访问
+                  通过 API 访问外部表不受保护。
                 </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ className="min-w-[395px] text-sm" align="end">
@@ -377,7 +377,8 @@ const GridHeaderActions = ({ table }: GridHeaderActionsProps) => {
                 </h3>
                 <div className="grid gap-2 mt-4 text-foreground-light text-sm">
                   <p>
-                    外部表不执行 RLS。将外部表移到不被 Postgrest 公开的私有模式或者直接禁用 Postgrest。
+                    外部表不执行 RLS，因此可以不受限制地访问。
+                    可以将外部表移到私有模式下，或者完全<a href="">禁用接口引擎</a>，以保护外部表。
                   </p>
 
                   <div className="mt-2">
