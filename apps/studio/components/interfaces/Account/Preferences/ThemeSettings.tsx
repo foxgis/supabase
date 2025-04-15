@@ -65,20 +65,20 @@ export const ThemeSettings = () => {
   }
 
   return (
-    <Panel title={<h5 key="panel-title">Appearance</h5>}>
+    <Panel title={<h5 key="panel-title">外观</h5>}>
       <Panel.Content className="grid gap-8 !py-5">
         <div className="grid grid-cols-12">
           <div className="col-span-full md:col-span-4 flex flex-col gap-5">
             <Label_Shadcn_ htmlFor="theme" className="text-light">
-              Theme mode
+              界面风格
             </Label_Shadcn_>
             <p className="text-sm text-foreground-light max-w-[220px]">
-              Choose how Supabase looks to you. Select a single theme, or sync with your system.
+              设置数据中间件界面的外观风格，可以选择一个主题，或者使用系统主题。
             </p>
           </div>
 
           <div className="col-span-full md:col-span-8 flex flex-col gap-4">
-            <p className="text-sm text-light">Supabase will use your selected theme</p>
+            <p className="text-sm text-light">数据中间件将使用您选定的主题</p>
             <SingleThemeSelection />
           </div>
         </div>
@@ -87,22 +87,22 @@ export const ThemeSettings = () => {
       <Panel.Content>
         <FormItemLayout
           isReactForm={false}
-          label="Sidebar behavior"
+          label="侧边栏设置"
           layout="flex-row-reverse"
-          description="Choose your preferred sidebar behavior: open, closed, or expand on hover."
+          description="设置侧边栏行为：展开、折叠或鼠标悬停时自动展开。"
         >
           <Select_Shadcn_
             value={sidebarBehaviour}
             onValueChange={setSidebarBehaviour}
-            aria-label="Select an option"
+            aria-label="选择"
           >
             <SelectTrigger_Shadcn_>
-              <SelectValue_Shadcn_ placeholder="Choose an option" />
+              <SelectValue_Shadcn_ placeholder="选择" />
             </SelectTrigger_Shadcn_>
             <SelectContent_Shadcn_>
-              <SelectItem_Shadcn_ value="open">Expanded</SelectItem_Shadcn_>
-              <SelectItem_Shadcn_ value="closed">Collapsed</SelectItem_Shadcn_>
-              <SelectItem_Shadcn_ value="expandable">Expand on hover</SelectItem_Shadcn_>
+              <SelectItem_Shadcn_ value="open">展开</SelectItem_Shadcn_>
+              <SelectItem_Shadcn_ value="closed">折叠</SelectItem_Shadcn_>
+              <SelectItem_Shadcn_ value="expandable">自动展开</SelectItem_Shadcn_>
             </SelectContent_Shadcn_>
           </Select_Shadcn_>
         </FormItemLayout>

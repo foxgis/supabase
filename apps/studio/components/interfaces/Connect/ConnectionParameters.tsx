@@ -43,7 +43,7 @@ export const ConnectionParameters = ({ parameters }: ConnectionParametersProps) 
             />
           }
         >
-          View parameters
+          查看参数
         </Button>
       </CollapsibleTrigger_Shadcn_>
       <CollapsibleContent_Shadcn_ className="bg-dash-sidebar rounded-b border font-mono text-sm">
@@ -82,7 +82,7 @@ export const ConnectionParameters = ({ parameters }: ConnectionParametersProps) 
         </div>
         <Separator />
         <div className="text-foreground-muted text-xs px-4 py-1 font-sans">
-          For security reasons, your database password is never shown.
+          出于安全原因，不会显示数据库密码。
         </div>
       </CollapsibleContent_Shadcn_>
     </Collapsible_Shadcn_>

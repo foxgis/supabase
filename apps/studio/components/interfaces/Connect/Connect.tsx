@@ -162,11 +162,11 @@ const Connect = () => {
         tooltip={{
           content: {
             side: 'bottom',
-            text: 'Project is currently not active and cannot be connected',
+            text: '项目当前未处于活动状态，无法连接',
           },
         }}
       >
-        Connect
+        连接
       </ButtonTooltip>
     )
   }
@@ -175,14 +175,14 @@ const Connect = () => {
     <Dialog open={showConnect} onOpenChange={(open) => setShowConnect(!open ? null : open)}>
       <DialogTrigger asChild>
         <Button type="default" className="rounded-full" icon={<Plug className="rotate-90" />}>
-          <span>Connect</span>
+          <span>连接</span>
         </Button>
       </DialogTrigger>
       <DialogContent className={cn('sm:max-w-5xl p-0')} centered={false}>
         <DialogHeader className={DIALOG_PADDING_X}>
-          <DialogTitle>Connect to your project</DialogTitle>
+          <DialogTitle>连接到项目</DialogTitle>
           <DialogDescription>
-            Get the connection strings and environment variables for your app
+            为您的应用获取连接到项目的字符串和环境变量
           </DialogDescription>
         </DialogHeader>
 
@@ -231,8 +231,8 @@ const Connect = () => {
                       updateState={handleParentChange}
                       label={
                         connectionObject === FRAMEWORKS || connectionObject === MOBILES
-                          ? 'Framework'
-                          : 'Tool'
+                          ? '框架'
+                          : '工具'
                       }
                       items={connectionObject}
                     />
@@ -240,7 +240,7 @@ const Connect = () => {
                       <ConnectDropdown
                         state={selectedChild}
                         updateState={handleChildChange}
-                        label="Using"
+                        label="使用"
                         items={getChildOptions()}
                       />
                     )}
@@ -248,7 +248,7 @@ const Connect = () => {
                       <ConnectDropdown
                         state={selectedGrandchild}
                         updateState={handleGrandchildChange}
-                        label="With"
+                        label="和"
                         items={getGrandchildrenOptions()}
                       />
                     )}
@@ -263,13 +263,13 @@ const Connect = () => {
                           ''
                         }
                       >
-                        {connectionObject.find((item) => item.key === selectedParent)?.label} guide
+                        {connectionObject.find((item) => item.key === selectedParent)?.label} 指南
                       </a>
                     </Button>
                   )}
                 </div>
                 <p className="text-xs text-foreground-lighter my-3">
-                  Add the following files below to your application
+                  在您的应用代码中添加以下文件
                 </p>
                 <ConnectTabContent
                   projectKeys={projectKeys}
@@ -278,12 +278,12 @@ const Connect = () => {
                 />
                 <Panel.Notice
                   className="border border-t-0 rounded-lg rounded-t-none"
-                  title="New API keys coming 2025"
+                  title="新 API 密钥"
                   description={`
-\`anon\` and \`service_role\` API keys will be changing to \`publishable\` and \`secret\` API keys.   
+\`anon\` 和 \`service_role\` API 密钥将会变更为 \`publishable\` 和 \`secret\` API 密钥。
 `}
                   href="https://github.com/orgs/supabase/discussions/29260"
-                  buttonText="Read the announcement"
+                  buttonText="阅读公告"
                 />
               </TabsContent_Shadcn_>
             )

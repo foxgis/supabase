@@ -113,7 +113,7 @@ const PanelNotice = forwardRef<
               className="rounded-r-none pr-2 flex-shrink-0 gap-1.5 border-dashed bg-opacity-0 bg-surface-400 text-foreground-lighter"
             >
               <Megaphone size={16} strokeWidth={1.2} />
-              <span className="text-foreground-lighter">{badgeLabel ?? 'Upcoming change'}</span>
+              <span className="text-foreground-lighter">{badgeLabel ?? '即将变更'}</span>
             </Badge>
             <Badge
               variant="default"

@@ -23,16 +23,16 @@ const SqlWarningAdmonition = ({
     >
       <p className="text-xs !mb-1">
         {warningType === 'hasWriteOperation'
-          ? 'This query contains write operations.'
-          : 'This query involves running a function.'}{' '}
-        Are you sure you want to execute it?
+          ? '查询包含写操作，'
+          : '查询需要执行函数，'}{' '}
+        您确定想要执行吗？
       </p>
       <p className="text-foreground-light text-xs">
-        Make sure you are not accidentally removing something important.
+        请确保不会误删重要数据。
       </p>
       <div className="flex justify-stretch mt-2 gap-2">
         <Button type="outline" size="tiny" className="w-full flex-1" onClick={onCancel}>
-          Cancel
+          取消
         </Button>
         <Button
           type="danger"
@@ -41,7 +41,7 @@ const SqlWarningAdmonition = ({
           className="w-full flex-1"
           onClick={onConfirm}
         >
-          Run
+          执行
         </Button>
       </div>
     </Admonition>

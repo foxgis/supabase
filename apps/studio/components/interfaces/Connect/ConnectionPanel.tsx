@@ -146,7 +146,7 @@ export const ConnectionPanel = ({
                   href={`/project/${projectRef}/settings/database#connection-pooler`}
                   className="text-xs text-light hover:text-foreground"
                 >
-                  Database Settings
+                  数据库设置
                 </Link>
               </Button>
             </Admonition>
@@ -189,8 +189,8 @@ export const ConnectionPanel = ({
                 <div className="flex flex-col pl-[52px]">
                   <span className="text-xs text-foreground">
                     {type === 'transaction'
-                      ? 'Suitable for a large number of connected clients'
-                      : 'Suitable for long-lived, persistent connections'}
+                      ? '适用于有大量的连接客户端'
+                      : '适用于持续长连接'}
                   </span>
                 </div>
               </div>
@@ -198,8 +198,8 @@ export const ConnectionPanel = ({
                 <div className="flex flex-col pl-[52px]">
                   <span className="text-xs text-foreground">
                     {type === 'transaction'
-                      ? 'Pre-warmed connection pool to Postgres'
-                      : 'Each client has a dedicated connection to Postgres'}
+                      ? '预热数据库连接池'
+                      : '每个客户端都有一个单独的数据库连接'}
                   </span>
                 </div>
               </div>
@@ -238,9 +238,9 @@ export const ConnectionPanel = ({
                 <WarningIcon />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-foreground">Only use on a IPv4 network</span>
+                <span className="text-xs text-foreground">仅在 IPv4 网络中使用</span>
                 <span className="text-xs text-foreground-lighter">
-                  Use Direct Connection if connecting via an IPv6 network
+                  在 IPv6 网络中使用直接连接
                 </span>
               </div>
             </div>
@@ -264,13 +264,13 @@ export const ConnectionPanel = ({
                     />
                   }
                 >
-                  Some platforms are IPv4-only:
+                  一些平台只支持 IPv4：
                 </Button>
               </CollapsibleTrigger_Shadcn_>
               <CollapsibleContent_Shadcn_ className="bg-dash-sidebar rounded-b border px-3 py-2">
                 <div className="flex flex-col gap-2">
                   <p className="text-xs text-foreground-light max-w-xs">
-                    A few major platforms are IPv4-only and may not work with a Direct Connection:
+                    一些主要平台只支持IPv4，因此不能使用直接连接：
                   </p>
                   <div className="flex gap-4">
                     <div className="text-foreground text-xs">Vercel</div>
@@ -279,20 +279,19 @@ export const ConnectionPanel = ({
                     <div className="text-foreground text-xs">Retool</div>
                   </div>
                   <p className="text-xs text-foreground-lighter max-w-xs">
-                    If you wish to use a Direct Connection with these, please purchase{' '}
+                    如果您想要在这些平台上使用直接连接，请购买{' '}
                     <Link
                       href={`/project/${projectRef}/settings/addons?panel=ipv4`}
                       className="text-xs text-light hover:text-foreground"
                     >
-                      IPv4 support
+                      IPv4 支持
                     </Link>
                     .
                   </p>
                   <p className="text-xs text-foreground-lighter max-w-xs">
-                    You may also use the{' '}
-                    <span className="text-foreground-light">Session Pooler</span> or{' '}
-                    <span className="text-foreground-light">Transaction Pooler</span> if you are on
-                    a IPv4 network.
+                    您也可以在 IPv4 网络中使用{' '}
+                    <span className="text-foreground-light">会话连接池</span>或{' '}
+                    <span className="text-foreground-light">事务连接池</span>。
                   </p>
                 </div>
               </CollapsibleContent_Shadcn_>

@@ -19,13 +19,13 @@ export function SqlEditorMenuStaticLinks() {
         return (
           <InnerSideMenuDataItem
             key={pageId}
-            title="Templates"
+            title="模板"
             isActive={active}
             isOpened={false}
             href={`/project/${ref}/sql/${pageId}`}
             className="capitalize"
           >
-            {pageId}
+            {pageId === 'templates' ? '查询模板' : '快速上手'}
           </InnerSideMenuDataItem>
         )
       })}

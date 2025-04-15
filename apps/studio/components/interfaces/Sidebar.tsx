@@ -120,12 +120,12 @@ export const Sidebar = ({ className, ...props }: SidebarProps) => {
                       value={sidebarBehaviour}
                       onValueChange={(value) => setSidebarBehaviour(value as SidebarBehaviourType)}
                     >
-                      <DropdownMenuLabel>Sidebar control</DropdownMenuLabel>
+                      <DropdownMenuLabel>侧边栏设置</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <DropdownMenuRadioItem value="open">Expanded</DropdownMenuRadioItem>
-                      <DropdownMenuRadioItem value="closed">Collapsed</DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem value="open">展开</DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem value="closed">折叠</DropdownMenuRadioItem>
                       <DropdownMenuRadioItem value="expandable">
-                        Expand on hover
+                        自动展开
                       </DropdownMenuRadioItem>
                     </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
@@ -284,7 +284,7 @@ function ProjectLinks() {
           active={isUndefined(activeRoute) && !isUndefined(router.query.ref)}
           route={{
             key: 'HOME',
-            label: 'Project overview',
+            label: '概览',
             icon: <Home size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: `/project/${ref}`,
             linkElement: <ProjectIndexPageLink projectRef={ref} />,

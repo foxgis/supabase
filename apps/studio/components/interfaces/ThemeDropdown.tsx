@@ -33,12 +33,12 @@ export const ThemeDropdown = () => {
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="center">
-          <span>Theme</span>
+          <span>界面风格</span>
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent side="top" align="end" className="w-32">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Theme</DropdownMenuLabel>
+          <DropdownMenuLabel>界面风格</DropdownMenuLabel>
           <DropdownMenuRadioGroup
             value={theme}
             onValueChange={(value) => {

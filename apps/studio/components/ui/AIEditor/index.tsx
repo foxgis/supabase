@@ -76,10 +76,10 @@ const AIEditor = ({
     api: aiEndpoint || '',
     body: aiMetadata,
     onResponse: (response) => {
-      if (!response.ok) throw new Error('Failed to generate completion')
+      if (!response.ok) throw new Error('生成代码补全失败')
     },
     onError: (error) => {
-      toast.error(`Failed to generate: ${error.message}`)
+      toast.error(`生成失败：${error.message}`)
     },
   })
 
@@ -141,7 +141,7 @@ const AIEditor = ({
     if (!!executeQueryRef.current) {
       editor.addAction({
         id: 'run-query',
-        label: 'Run Query',
+        label: '执行查询',
         keybindings: [monaco.KeyMod.CtrlCmd + monaco.KeyCode.Enter],
         contextMenuGroupId: 'operation',
         contextMenuOrder: 0,
@@ -151,7 +151,7 @@ const AIEditor = ({
 
     editor.addAction({
       id: 'generate-ai',
-      label: 'Generate with AI',
+      label: '使用 AI 生成',
       keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
       run: () => {
         const selection = editor.getSelection()
@@ -358,7 +358,7 @@ const AIEditor = ({
               endLineNumber={promptState.endLineNumber}
             />
           )}
-          <AnimatePresence>
+          {/* <AnimatePresence>
             {!promptState.isOpen && !currentValue && aiEndpoint && (
               <motion.p
                 initial={{ y: 5, opacity: 0 }}
@@ -366,10 +366,10 @@ const AIEditor = ({
                 exit={{ y: 5, opacity: 0 }}
                 className="text-foreground-lighter absolute bottom-4 left-4 z-10 font-mono text-xs flex items-center gap-1"
               >
-                Hit {os === 'macos' ? <Command size={12} /> : `CTRL+`}K to edit with the Assistant
+                按 {os === 'macos' ? <Command size={12} /> : `CTRL+`}K 键呼出 AI 助手
               </motion.p>
             )}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </div>
       )}
     </div>

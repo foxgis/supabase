@@ -66,12 +66,6 @@ export const generateProductRoutes = (
 
   return [
     {
-      key: 'gis',
-      label: 'GIS 服务',
-      icon: <Globe size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-      link: ref && (isProjectBuilding? buildingUrl : `/project/${ref}/gis/tiles`),
-    },
-    {
       key: 'database',
       label: '数据库',
       icon: <Database size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
@@ -84,17 +78,6 @@ export const generateProductRoutes = (
             : `/project/${ref}/database/backups/scheduled`),
       items: databaseMenu,
     },
-    ...(authEnabled
-      ? [
-          {
-            key: 'auth',
-            label: '认证授权',
-            icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-            link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
-            items: authMenu,
-          },
-        ]
-      : []),
     ...(storageEnabled
       ? [
           {
@@ -105,6 +88,12 @@ export const generateProductRoutes = (
           },
         ]
       : []),
+    {
+      key: 'gis',
+      label: 'GIS 服务',
+      icon: <Globe size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/gis/tiles`),
+    },
     ...(IS_PLATFORM && edgeFunctionsEnabled
       ? [
           {
@@ -132,6 +121,7 @@ export const generateProductRoutes = (
             label: '认证授权',
             icon: <Auth size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
             link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/auth/users`),
+            items: authMenu,
           },
         ]
       : []),

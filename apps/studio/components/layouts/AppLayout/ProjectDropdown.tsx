@@ -149,9 +149,9 @@ const ProjectDropdown = ({ isNewNav = true }: ProjectDropdownProps) => {
         </PopoverTrigger_Shadcn_>
         <PopoverContent_Shadcn_ className="p-0" side="bottom" align="start">
           <Command_Shadcn_>
-            <CommandInput_Shadcn_ placeholder="Find project..." />
+            <CommandInput_Shadcn_ placeholder="查找项目..." />
             <CommandList_Shadcn_>
-              <CommandEmpty_Shadcn_>No projects found</CommandEmpty_Shadcn_>
+              <CommandEmpty_Shadcn_>未找到项目</CommandEmpty_Shadcn_>
               <CommandGroup_Shadcn_>
                 <ScrollArea className={(projects || []).length > 7 ? 'h-[210px]' : ''}>
                   {projects?.map((project) => (
@@ -179,7 +179,7 @@ const ProjectDropdown = ({ isNewNav = true }: ProjectDropdownProps) => {
                         className="w-full flex items-center gap-2"
                       >
                         <Plus size={14} strokeWidth={1.5} />
-                        <p>New project</p>
+                        <p>新建项目</p>
                       </Link>
                     </CommandItem_Shadcn_>
                   </CommandGroup_Shadcn_>

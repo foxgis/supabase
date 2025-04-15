@@ -47,7 +47,7 @@ export function useSqlEditorGotoCommands(options?: CommandOptions) {
     [
       {
         id: 'nav-sql-editor',
-        name: 'SQL Editor',
+        name: '数据查询',
         route: `/project/${ref}/sql`,
         defaultHidden: true,
       },

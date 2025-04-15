@@ -249,7 +249,7 @@ export function LogsSidebarMenuV2() {
       </div>
       <div className="px-2">
         <InnerSideMenuItem
-          title="Templates"
+          title="模版"
           isActive={isActive(`/project/${ref}/logs/explorer/templates`)}
           href={`/project/${ref}/logs/explorer/templates`}
         >

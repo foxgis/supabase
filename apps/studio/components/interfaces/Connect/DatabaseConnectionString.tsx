@@ -133,12 +133,12 @@ export const DatabaseConnectionString = () => {
     connectionMethod: 'direct' | 'transaction_pooler' | 'session_pooler'
   ) => {
     const connectionInfo = DATABASE_CONNECTION_TYPES.find((type) => type.id === connectionTypeId)
-    const connectionType = connectionInfo?.label ?? 'Unknown'
-    const lang = connectionInfo?.lang ?? 'Unknown'
+    const connectionType = connectionInfo?.label ?? '未知连接类型'
+    const lang = connectionInfo?.lang ?? '未知编程语言'
     sendEvent({
       action: 'connection_string_copied',
       properties: { connectionType, lang, connectionMethod },
-      groups: { project: projectRef ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      groups: { project: projectRef ?? '未知项目', organization: org?.slug ?? '未知组织' },
     })
   }
 
@@ -213,21 +213,21 @@ export const DatabaseConnectionString = () => {
   let stepNumber = 0
 
   const ipv4AddOnUrl = {
-    text: 'IPv4 add-on',
+    text: 'IPv4 扩展',
     url: `/project/${projectRef}/settings/addons?panel=ipv4`,
   }
   const ipv4SettingsUrl = {
-    text: 'IPv4 settings',
+    text: 'IPv4 设置',
     url: `/project/${projectRef}/settings/addons?panel=ipv4`,
   }
   const poolerSettingsUrl = {
-    text: 'Pooler settings',
+    text: '连接池设置',
     url: `/project/${projectRef}/settings/database#connection-pooling`,
   }
   const buttonLinks = !ipv4Addon
     ? [ipv4AddOnUrl, ...(sharedPoolerPreferred ? [poolerSettingsUrl] : [])]
     : [ipv4SettingsUrl, ...(sharedPoolerPreferred ? [poolerSettingsUrl] : [])]
-  const poolerBadge = sharedPoolerPreferred ? 'Shared Pooler' : 'Dedicated Pooler'
+  const poolerBadge = sharedPoolerPreferred ? '共享连接池' : '独占连接池'
 
   return (
     <div className="flex flex-col">
@@ -239,7 +239,7 @@ export const DatabaseConnectionString = () => {
       >
         <div className="flex">
           <span className="flex items-center text-foreground-lighter px-3 rounded-lg rounded-r-none text-xs border border-button border-r-0">
-            Type
+            类型
           </span>
           <Select_Shadcn_
             value={selectedTab}
@@ -259,7 +259,7 @@ export const DatabaseConnectionString = () => {
             </SelectContent_Shadcn_>
           </Select_Shadcn_>
         </div>
-        <DatabaseSelector buttonProps={{ size: 'small' }} />
+        {/* <DatabaseSelector buttonProps={{ size: 'small' }} /> */}
       </div>
 
       {isLoading && (
@@ -270,7 +270,7 @@ export const DatabaseConnectionString = () => {
 
       {isError && (
         <div className="p-7">
-          <AlertError error={error} subject="Failed to retrieve database settings" />
+          <AlertError error={error} subject="获取数据库设置失败" />
         </div>
       )}
 
@@ -281,7 +281,7 @@ export const DatabaseConnectionString = () => {
             <div className="grid grid-cols-2 gap-x-20 w-full px-4 md:px-7 py-8">
               <div>
                 <StepLabel number={++stepNumber} className="mb-4">
-                  Install the following
+                  安装
                 </StepLabel>
                 {exampleInstallCommands?.map((cmd, i) => (
                   <CodeBlock
@@ -298,7 +298,7 @@ export const DatabaseConnectionString = () => {
               {exampleFiles && exampleFiles?.length > 0 && (
                 <div>
                   <StepLabel number={++stepNumber} className="mb-4">
-                    Add file to project
+                    添加文件
                   </StepLabel>
                   {exampleFiles?.map((file, i) => (
                     <div key={i}>
@@ -320,26 +320,26 @@ export const DatabaseConnectionString = () => {
           <div>
             {hasCodeExamples && (
               <div className="px-4 md:px-7 pt-8">
-                <StepLabel number={++stepNumber}>Choose type of connection</StepLabel>
+                <StepLabel number={++stepNumber}>选择连接类型</StepLabel>
               </div>
             )}
             <div className="divide-y divide-border-muted [&>div]:px-4 [&>div]:md:px-7 [&>div]:py-8">
               <ConnectionPanel
                 type="direct"
-                title="Direct connection"
+                title="直接连接"
                 contentType={contentType}
                 lang={lang}
                 fileTitle={fileTitle}
-                description="Ideal for applications with persistent, long-lived connections, such as those running on virtual machines or long-standing containers."
+                description="适用于需要持续长连接的应用程序，例如运行在虚拟机或长期运行的容器中的应用程序。"
                 connectionString={connectionStrings['direct'][selectedTab]}
                 ipv4Status={{
                   type: !ipv4Addon ? 'error' : 'success',
-                  title: !ipv4Addon ? 'Not IPv4 compatible' : 'IPv4 compatible',
+                  title: !ipv4Addon ? 'IPv4 不兼容' : 'IPv4 兼容',
                   description:
                     !sharedPoolerPreferred && !ipv4Addon
                       ? PGBOUNCER_ENABLED_BUT_NO_IPV4_ADDON_TEXT
                       : sharedPoolerPreferred
-                        ? 'Use Session Pooler if on a IPv4 network or purchase IPv4 add-on'
+                        ? '如果是在 IPv4 网络或购买了 IPv4 扩展功能，请使用会话连接池'
                         : IPV4_ADDON_TEXT,
                   links: buttonLinks,
                 }}
@@ -354,28 +354,28 @@ export const DatabaseConnectionString = () => {
 
               <ConnectionPanel
                 type="transaction"
-                title="Transaction pooler"
+                title="事务连接池"
                 contentType={contentType}
                 lang={lang}
                 badge={poolerBadge}
                 fileTitle={fileTitle}
-                description="Ideal for stateless applications like serverless functions where each interaction with Postgres is brief and isolated."
+                description="适用于无状态应用程序，如 serverless 函数，其中每次与数据库的交互都是短暂且独立的。"
                 connectionString={connectionStrings['pooler'][selectedTab]}
                 ipv4Status={{
                   type: !sharedPoolerPreferred && !ipv4Addon ? 'error' : 'success',
                   title:
                     !sharedPoolerPreferred && !ipv4Addon
-                      ? 'Not IPv4 compatible'
-                      : 'IPv4 compatible',
+                      ? 'IPv4 不兼容'
+                      : 'IPv4 兼容',
                   description:
                     !sharedPoolerPreferred && !ipv4Addon
                       ? PGBOUNCER_ENABLED_BUT_NO_IPV4_ADDON_TEXT
                       : sharedPoolerPreferred
-                        ? 'Transaction pooler connections are IPv4 proxied for free.'
+                        ? '事务连接池 IPv4 代理是免费的。'
                         : IPV4_ADDON_TEXT,
                   links: !sharedPoolerPreferred ? buttonLinks : undefined,
                 }}
-                notice={['Does not support PREPARE statements']}
+                notice={['不支持 PREPARE 语句']}
                 parameters={[
                   { ...CONNECTION_PARAMETERS.host, value: poolingConfiguration?.db_host ?? '' },
                   {
@@ -406,17 +406,16 @@ export const DatabaseConnectionString = () => {
                         className="text-foreground !bg-dash-sidebar justify-between"
                       >
                         <div className="text-xs flex items-center p-2">
-                          <span>Using the Shared Pooler</span>
+                          <span>使用共享连接池</span>
                           <Badge variant={'brand'} size={'small'} className="ml-2">
-                            IPv4 compatible
+                            IPv4 兼容
                           </Badge>
                         </div>
                       </Button>
                     </CollapsibleTrigger_Shadcn_>
                     <CollapsibleContent_Shadcn_ className="bg-dash-sidebar rounded-b border text-xs">
                       <p className="px-3 py-2">
-                        Only recommended when your network does not support IPv6. Added latency
-                        compared to dedicated pooler.
+                        仅当您的网络不支持 IPv6 的情况下使用这种方式，相比于独占连接池将增加延迟。
                       </p>
                       <CodeBlock
                         wrapperClassName={cn(
@@ -437,31 +436,31 @@ export const DatabaseConnectionString = () => {
               {sharedPoolerPreferred && ipv4Addon && (
                 <Admonition
                   type="warning"
-                  title="Highly recommended to not use Session Pooler"
+                  title="强烈不推荐使用会话连接池"
                   className="[&>div]:gap-0 px-8 [&>svg]:left-7 border-0 border-b rounded-none border-border-muted !py-4 mb-0"
                 >
                   <p className="text-sm text-foreground-lighter !mb-0">
-                    If you are using Session Pooler, we recommend switching to Direct Connection.
+                    如果您使用会话连接池，我们建议您切换到直接连接。
                   </p>
                 </Admonition>
               )}
 
               <ConnectionPanel
                 type="session"
-                title="Session pooler"
+                title="会话连接池"
                 contentType={contentType}
                 lang={lang}
-                badge="Shared Pooler"
+                badge="共享连接池"
                 fileTitle={fileTitle}
-                description="Only recommended as an alternative to Direct Connection, when connecting via an IPv4 network."
+                description="当通过 IPv4 网络连接时，仅推荐作为直接连接的一个备选项。"
                 connectionString={supavisorConnectionStrings['pooler'][selectedTab].replace(
                   '6543',
                   '5432'
                 )}
                 ipv4Status={{
                   type: 'success',
-                  title: 'IPv4 compatible',
-                  description: 'Session pooler connections are IPv4 proxied for free',
+                  title: 'IPv4 兼容',
+                  description: '会话连接池 IPv4 代理是免费的',
                   links: undefined,
                 }}
                 parameters={[
@@ -483,7 +482,7 @@ export const DatabaseConnectionString = () => {
             <div className="grid grid-cols-2 gap-20 w-full px-4 md:px-7 py-10">
               <div>
                 <StepLabel number={++stepNumber} className="mb-4">
-                  Add the configuration package to read the settings
+                  添加开发包读取设置
                 </StepLabel>
                 {examplePostInstallCommands?.map((cmd, i) => (
                   <CodeBlock
@@ -509,7 +508,7 @@ export const DatabaseConnectionString = () => {
             <CollapsibleTrigger_Shadcn_ className="group [&[data-state=open]>div>svg]:!-rotate-180">
               <div className="flex items-center gap-x-2 w-full">
                 <p className="text-xs text-foreground-light group-hover:text-foreground transition">
-                  Connecting to SQL Alchemy
+                  连接到 SQL Alchemy
                 </p>
                 <ChevronDown
                   className="transition-transform duration-200"
@@ -521,11 +520,10 @@ export const DatabaseConnectionString = () => {
             <CollapsibleContent_Shadcn_ className="my-2">
               <div className="text-foreground-light text-xs grid gap-2">
                 <p>
-                  Please use <code>postgresql://</code> instead of <code>postgres://</code> as your
-                  dialect when connecting via SQLAlchemy.
+                  当通过 SQLAlchemy 连接时，请使用<code>postgresql://</code>而不是<code>postgres://</code>。
                 </p>
                 <p>
-                  Example:
+                  示例：
                   <code>create_engine("postgresql+psycopg2://...")</code>
                 </p>
                 <p className="text-sm font-mono tracking-tight text-foreground-lighter"></p>

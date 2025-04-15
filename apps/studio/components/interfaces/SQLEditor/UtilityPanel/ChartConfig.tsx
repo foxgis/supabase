@@ -279,7 +279,7 @@ export const ChartConfig = ({
               checked={config.cumulative}
               onClick={() => onConfigChange({ ...config, cumulative: !config.cumulative })}
             />
-            合计
+            显示合计
           </Label_Shadcn_>
 
           <Label_Shadcn_ htmlFor="showLabels">

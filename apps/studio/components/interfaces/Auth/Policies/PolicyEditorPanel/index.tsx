@@ -515,7 +515,7 @@ export const PolicyEditorPanel = memo(function ({
                         value="templates"
                         className="px-0 data-[state=active]:bg-transparent"
                       >
-                        Templates
+                        模板
                       </TabsTrigger_Shadcn_>
                     </TabsList_Shadcn_>
 

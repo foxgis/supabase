@@ -158,7 +158,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
   return (
     <div className="flex flex-col h-full bg-surface-100">
       <div className="border-b flex shrink-0 items-center gap-x-3 px-4 h-[46px]">
-        <span className="text-sm flex-1">SQL Editor</span>
+        <span className="text-sm flex-1">数据查询</span>
         <div className="flex gap-2 items-center">
           <Popover_Shadcn_ open={isTemplatesOpen} onOpenChange={setIsTemplatesOpen}>
             <PopoverTrigger_Shadcn_ asChild>
@@ -169,14 +169,14 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
                 aria-expanded={isTemplatesOpen}
                 icon={<Book size={14} />}
               >
-                Templates
+                模版
               </Button>
             </PopoverTrigger_Shadcn_>
             <PopoverContent_Shadcn_ align="end" className="w-[300px] p-0">
               <Command_Shadcn_>
-                <CommandInput_Shadcn_ placeholder="Search templates..." />
+                <CommandInput_Shadcn_ placeholder="查找模版..." />
                 <CommandList_Shadcn_>
-                  <CommandEmpty_Shadcn_>No templates found.</CommandEmpty_Shadcn_>
+                  <CommandEmpty_Shadcn_>未找到模板。</CommandEmpty_Shadcn_>
                   <CommandGroup_Shadcn_>
                     {editorPanel.templates?.map((template) => (
                       <HoverCard_Shadcn_ key={template.name}>
@@ -221,7 +221,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
             tooltip={{
               content: {
                 side: 'bottom',
-                text: 'Save as snippet',
+                text: '保存查询',
               },
             }}
             size="tiny"
@@ -230,9 +230,9 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
             loading={isSaving}
             icon={<Save size={16} />}
             onClick={async () => {
-              if (!ref) return console.error('Project ref is required')
-              if (!project) return console.error('Project is required')
-              if (!profile) return console.error('Profile is required')
+              if (!ref) return console.error('未找到项目号')
+              if (!project) return console.error('未找到项目')
+              if (!profile) return console.error('未找到用户资料')
 
               try {
                 setIsSaving(true)
@@ -253,7 +253,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
                   </div>
                 )
               } catch (error: any) {
-                toast.error(`Failed to create new query: ${error.message}`)
+                toast.error(`创建查询失败：${error.message}`)
               } finally {
                 setIsSaving(false)
               }
@@ -302,7 +302,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
             <Admonition
               type="warning"
               className="m-0 rounded-none border-x-0 border-b-0 [&>div>div>pre]:text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-y-2"
-              title={errorHeader || 'Error running SQL query'}
+              title={errorHeader || '运行 SQL 查询出错'}
               description={
                 <div>
                   {errorContent.length > 0 ? (
@@ -341,7 +341,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
             )}
             <p className="text-xs text-foreground-light border-t py-2 px-5 flex items-center justify-between">
               <span className="font-mono">
-                {results.length} rows{results.length >= 100 && ` (Limited to only 100 rows)`}
+                {results.length} 行{results.length >= 100 && `（限制最多100行）`}
               </span>
               <Button
                 size="tiny"
@@ -349,7 +349,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
                 className="ml-2"
                 onClick={() => setShowResults((prev) => !prev)}
               >
-                {showResults ? 'Hide Results' : 'Show Results'}
+                {showResults ? '隐藏结果' : '显示结果'}
               </Button>
             </p>
           </div>
@@ -357,7 +357,7 @@ export const EditorPanel = ({ onChange }: EditorPanelProps) => {
         {results !== undefined && results.length === 0 && (
           <div className="shrink-0">
             <p className="text-xs text-foreground-light font-mono py-2 px-5">
-              Success. No rows returned.
+              执行成功，没有返回数据行。
             </p>
           </div>
         )}

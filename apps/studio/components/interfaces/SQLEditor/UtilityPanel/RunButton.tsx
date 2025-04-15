@@ -45,7 +45,7 @@ export const SqlRunButton = ({
       }
       className={className}
     >
-      {hasSelection ? 'Run selected' : 'Run'}
+      {hasSelection ? '执行选中的' : '执行'}
     </Button>
   )
 }

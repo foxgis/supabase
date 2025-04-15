@@ -65,9 +65,9 @@ const ConnectDropdown = ({
       </div>
       <PopoverContent_Shadcn_ className="p-0 max-w-48" side="bottom" align="start">
         <Command_Shadcn_>
-          <CommandInput_Shadcn_ placeholder="Search..." />
+          <CommandInput_Shadcn_ placeholder="搜索..." />
           <CommandList_Shadcn_>
-            <CommandEmpty_Shadcn_>No results found.</CommandEmpty_Shadcn_>
+            <CommandEmpty_Shadcn_>未找到结果。</CommandEmpty_Shadcn_>
             <CommandGroup_Shadcn_>
               {items.map((item) => (
                 <CommandItem_Shadcn_

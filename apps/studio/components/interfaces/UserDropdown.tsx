@@ -82,7 +82,7 @@ export function UserDropdown() {
                   }}
                 >
                   <Settings size={14} strokeWidth={1.5} className="text-foreground-lighter" />
-                  Account preferences
+                  账户设置
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -91,18 +91,18 @@ export function UserDropdown() {
                 onSelect={() => appStateSnapshot.setShowFeaturePreviewModal(true)}
               >
                 <FlaskConical size={14} strokeWidth={1.5} className="text-foreground-lighter" />
-                Feature previews
+                新功能预览
               </DropdownMenuItem>
               <DropdownMenuItem className="flex gap-2" onClick={() => setCommandMenuOpen(true)}>
                 <Command size={14} strokeWidth={1.5} className="text-foreground-lighter" />
-                Command menu
+                命令面版
               </DropdownMenuItem>
               <DropdownMenuSeparator />
             </DropdownMenuGroup>
           </>
         )}
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Theme</DropdownMenuLabel>
+          <DropdownMenuLabel>界面风格</DropdownMenuLabel>
           <DropdownMenuRadioGroup
             value={theme}
             onValueChange={(value) => {
@@ -126,7 +126,7 @@ export function UserDropdown() {
                   await router.push('/sign-in')
                 }}
               >
-                Log out
+                退出
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </>

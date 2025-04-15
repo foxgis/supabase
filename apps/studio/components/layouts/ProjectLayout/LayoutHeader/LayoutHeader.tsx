@@ -107,7 +107,7 @@ const LayoutHeader = ({
         {showProductMenu && (
           <div className="flex items-center justify-center border-r flex-0 md:hidden h-full aspect-square">
             <button
-              title="Menu dropdown button"
+              title="下拉菜单按钮"
               className={cn(
                 'group/view-toggle flex justify-center items-center border-none gap-1 !bg-transparent rounded-md min-w-[30px] w-[30px] h-[30px]'
               )}
@@ -151,7 +151,7 @@ const LayoutHeader = ({
                     {exceedingLimits && (
                       <div className="ml-2">
                         <Link href={`/org/${selectedOrganization?.slug}/usage`}>
-                          <Badge variant="destructive">Exceeding usage limits</Badge>
+                          <Badge variant="destructive">超出使用配额限制</Badge>
                         </Link>
                       </div>
                     )}
@@ -235,9 +235,9 @@ const LayoutHeader = ({
             <div className="border-r h-full flex items-center justify-center md:px-2">
               <InlineEditorButton />
             </div>
-            <div className="md:px-2">
+            {/* <div className="md:px-2">
               <AssistantButton />
-            </div>
+            </div> */}
           </motion.div>
         )}
       </AnimatePresence>
