@@ -573,13 +573,13 @@ export const DOCS_RESOURCE_CONTENT: {
       rpcName,
       rpcParams,
       endpoint,
-      apiKey,
+      apikey,
       showBearer = true,
     }: {
       rpcName: string
       rpcParams: any[]
       endpoint: string
-      apiKey: string
+      apikey: string
       showBearer: boolean
     }) => {
       let rpcList = rpcParams.map((x) => `"${x.name}": "value"`).join(', ')
@@ -602,10 +602,10 @@ export const DOCS_RESOURCE_CONTENT: {
           bash: `
   curl -X POST '${endpoint}/rest/v1/rpc/${rpcName}' \\${bashParams}
   -H "Content-Type: application/json" \\
-  -H "apikey: ${apiKey}" ${
+  -H "apikey: ${apikey}" ${
     showBearer
       ? `\\
-  -H "Authorization: Bearer ${apiKey}"`
+  -H "Authorization: Bearer ${apikey}"`
       : ''
   }
         `,

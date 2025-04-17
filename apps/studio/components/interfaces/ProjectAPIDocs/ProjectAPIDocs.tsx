@@ -134,7 +134,7 @@ const ProjectAPIDocs = () => {
           {snap.activeDocsSection[0] === 'stored-procedures' && (
             <>
               {snap.activeDocsSection[1] !== undefined ? (
-                <RPC language={language} />
+                <RPC language={language} apikey={apikey} endpoint={endpoint} />
               ) : (
                 <StoredProcedures language={language} />
               )}

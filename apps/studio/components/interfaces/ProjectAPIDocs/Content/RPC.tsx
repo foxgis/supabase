@@ -10,7 +10,7 @@ import { DOCS_RESOURCE_CONTENT } from '../ProjectAPIDocs.constants'
 import ResourceContent from '../ResourceContent'
 import type { ContentProps } from './Content.types'
 
-export const RPC = ({ language }: ContentProps) => {
+export const RPC = ({ language, apikey, endpoint }: ContentProps) => {
   const { ref } = useParams()
   const snap = useAppStateSnapshot()
 
@@ -93,8 +93,8 @@ export const RPC = ({ language }: ContentProps) => {
         codeSnippets={DOCS_RESOURCE_CONTENT.rpcSingle.code({
           rpcName,
           rpcParams: parameters,
-          endpoint: 'endpoint',
-          apiKey: 'apiKey',
+          endpoint,
+          apikey,
           showBearer: true,
         })}
       />
