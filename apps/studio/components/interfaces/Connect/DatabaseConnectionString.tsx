@@ -9,10 +9,10 @@ import ShimmeringLoader from 'components/ui/ShimmeringLoader'
 import { usePgbouncerConfigQuery } from 'data/database/pgbouncer-config-query'
 import { useSupavisorConfigurationQuery } from 'data/database/supavisor-configuration-query'
 import { useReadReplicasQuery } from 'data/read-replicas/replicas-query'
-import { useOrgSubscriptionQuery } from 'data/subscriptions/org-subscription-query'
 import { useProjectAddonsQuery } from 'data/subscriptions/project-addons-query'
 import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
 import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
+import { IS_PLATFORM } from 'lib/constants'
 import { pluckObjectFields } from 'lib/helpers'
 import { useDatabaseSelectorStateSnapshot } from 'state/database-selector'
 import {
@@ -67,10 +67,9 @@ export const DatabaseConnectionString = () => {
 
   const [selectedTab, setSelectedTab] = useState<DatabaseConnectionType>('uri')
 
-  const { data: subscription } = useOrgSubscriptionQuery({ orgSlug: org?.slug })
   const sharedPoolerPreferred = useMemo(() => {
-    return subscription?.plan?.id === 'free'
-  }, [subscription])
+    return org?.plan?.id === 'free'
+  }, [org])
 
   const {
     data: pgbouncerConfig,
@@ -96,15 +95,21 @@ export const DatabaseConnectionString = () => {
   } = useReadReplicasQuery({ projectRef })
 
   const poolerError = sharedPoolerPreferred ? pgbouncerError : supavisorConfigError
-  const isLoadingPoolerConfig = sharedPoolerPreferred
-    ? isLoadingPgbouncerConfig
-    : isLoadingSupavisorConfig
-  const isErrorPoolerConfig = sharedPoolerPreferred
-    ? isErrorPgbouncerConfig
-    : isErrorSupavisorConfig
-  const isSuccessPoolerConfig = sharedPoolerPreferred
-    ? isSuccessPgBouncerConfig
-    : isSuccessSupavisorConfig
+  const isLoadingPoolerConfig = !IS_PLATFORM
+    ? false
+    : sharedPoolerPreferred
+      ? isLoadingPgbouncerConfig
+      : isLoadingSupavisorConfig
+  const isErrorPoolerConfig = !IS_PLATFORM
+    ? undefined
+    : sharedPoolerPreferred
+      ? isErrorPgbouncerConfig
+      : isErrorSupavisorConfig
+  const isSuccessPoolerConfig = !IS_PLATFORM
+    ? true
+    : sharedPoolerPreferred
+      ? isSuccessPgBouncerConfig
+      : isSuccessSupavisorConfig
 
   const error = poolerError || readReplicasError
   const isLoading = isLoadingPoolerConfig || isLoadingReadReplicas
@@ -154,48 +159,22 @@ export const DatabaseConnectionString = () => {
     metadata: { projectRef },
   })
 
-  const connectionStrings =
-    isSuccessSupavisorConfig && poolingConfiguration !== undefined
-      ? getConnectionStrings({
-          connectionInfo,
-          poolingInfo: {
-            connectionString: isReplicaSelected
-              ? poolingConfiguration.connection_string.replace(
-                  poolingConfiguration.db_host,
-                  connectionInfo.db_host
-                )
-              : poolingConfiguration.connection_string,
-            db_host: isReplicaSelected ? connectionInfo.db_host : poolingConfiguration.db_host,
-            db_name: poolingConfiguration.db_name,
-            db_port: poolingConfiguration.db_port,
-            db_user: poolingConfiguration.db_user,
-          },
-          metadata: { projectRef },
-        })
-      : {
-          direct: {
-            uri: '',
-            psql: '',
-            golang: '',
-            jdbc: '',
-            dotnet: '',
-            nodejs: '',
-            php: '',
-            python: '',
-            sqlalchemy: '',
-          },
-          pooler: {
-            uri: '',
-            psql: '',
-            golang: '',
-            jdbc: '',
-            dotnet: '',
-            nodejs: '',
-            php: '',
-            python: '',
-            sqlalchemy: '',
-          },
-        }
+  const connectionStrings = getConnectionStrings({
+    connectionInfo,
+    poolingInfo: {
+      connectionString: isReplicaSelected
+        ? poolingConfiguration?.connection_string.replace(
+            poolingConfiguration?.db_host,
+            connectionInfo.db_host
+          ) ?? ''
+        : poolingConfiguration?.connection_string ?? '',
+      db_host: isReplicaSelected ? connectionInfo.db_host : poolingConfiguration?.db_host,
+      db_name: poolingConfiguration?.db_name ?? '',
+      db_port: poolingConfiguration?.db_port ?? 0,
+      db_user: poolingConfiguration?.db_user ?? '',
+    },
+    metadata: { projectRef },
+  })
 
   const lang = DATABASE_CONNECTION_TYPES.find((type) => type.id === selectedTab)?.lang ?? 'bash'
   const contentType =
@@ -352,129 +331,133 @@ export const DatabaseConnectionString = () => {
                 onCopyCallback={() => handleCopy(selectedTab, 'direct')}
               />
 
-              <ConnectionPanel
-                type="transaction"
-                title="事务连接池"
-                contentType={contentType}
-                lang={lang}
-                badge={poolerBadge}
-                fileTitle={fileTitle}
-                description="适用于无状态应用程序，如 serverless 函数，其中每次与数据库的交互都是短暂且独立的。"
-                connectionString={connectionStrings['pooler'][selectedTab]}
-                ipv4Status={{
-                  type: !sharedPoolerPreferred && !ipv4Addon ? 'error' : 'success',
-                  title:
-                    !sharedPoolerPreferred && !ipv4Addon
-                      ? 'IPv4 不兼容'
-                      : 'IPv4 兼容',
-                  description:
-                    !sharedPoolerPreferred && !ipv4Addon
-                      ? PGBOUNCER_ENABLED_BUT_NO_IPV4_ADDON_TEXT
-                      : sharedPoolerPreferred
-                        ? '事务连接池 IPv4 代理是免费的。'
-                        : IPV4_ADDON_TEXT,
-                  links: !sharedPoolerPreferred ? buttonLinks : undefined,
-                }}
-                notice={['不支持 PREPARE 语句']}
-                parameters={[
-                  { ...CONNECTION_PARAMETERS.host, value: poolingConfiguration?.db_host ?? '' },
-                  {
-                    ...CONNECTION_PARAMETERS.port,
-                    value: poolingConfiguration?.db_port.toString() ?? '6543',
-                  },
-                  {
-                    ...CONNECTION_PARAMETERS.database,
-                    value: poolingConfiguration?.db_name ?? '',
-                  },
-                  { ...CONNECTION_PARAMETERS.user, value: poolingConfiguration?.db_user ?? '' },
-                  { ...CONNECTION_PARAMETERS.pool_mode, value: 'transaction' },
-                ]}
-                onCopyCallback={() => handleCopy(selectedTab, 'transaction_pooler')}
-              >
-                {!sharedPoolerPreferred && !ipv4Addon && (
-                  <Collapsible_Shadcn_ className="group">
-                    <CollapsibleTrigger_Shadcn_
-                      asChild
-                      className="w-full justify-start !last:rounded-b group-data-[state=open]:rounded-b-none border-light mt-4 px-3"
+              {IS_PLATFORM && (
+                <>
+                  <ConnectionPanel
+                    type="transaction"
+                    title="事务连接池"
+                    contentType={contentType}
+                    lang={lang}
+                    badge={poolerBadge}
+                    fileTitle={fileTitle}
+                    description="适用于无状态应用程序，如 serverless 函数，其中每次与数据库的交互都是短暂且独立的。"
+                    connectionString={connectionStrings['pooler'][selectedTab]}
+                    ipv4Status={{
+                      type: !sharedPoolerPreferred && !ipv4Addon ? 'error' : 'success',
+                      title:
+                        !sharedPoolerPreferred && !ipv4Addon
+                          ? '不支持 IPv4'
+                          : '支持 IPv4',
+                      description:
+                        !sharedPoolerPreferred && !ipv4Addon
+                          ? PGBOUNCER_ENABLED_BUT_NO_IPV4_ADDON_TEXT
+                          : sharedPoolerPreferred
+                            ? '事务连接池 IPv4 代理是免费的。'
+                            : IPV4_ADDON_TEXT,
+                      links: !sharedPoolerPreferred ? buttonLinks : undefined,
+                    }}
+                    notice={['不支持 PREPARE 语句']}
+                    parameters={[
+                      { ...CONNECTION_PARAMETERS.host, value: poolingConfiguration?.db_host ?? '' },
+                      {
+                        ...CONNECTION_PARAMETERS.port,
+                        value: poolingConfiguration?.db_port.toString() ?? '6543',
+                      },
+                      {
+                        ...CONNECTION_PARAMETERS.database,
+                        value: poolingConfiguration?.db_name ?? '',
+                      },
+                      { ...CONNECTION_PARAMETERS.user, value: poolingConfiguration?.db_user ?? '' },
+                      { ...CONNECTION_PARAMETERS.pool_mode, value: 'transaction' },
+                    ]}
+                    onCopyCallback={() => handleCopy(selectedTab, 'transaction_pooler')}
+                  >
+                    {!sharedPoolerPreferred && !ipv4Addon && (
+                      <Collapsible_Shadcn_ className="group">
+                        <CollapsibleTrigger_Shadcn_
+                          asChild
+                          className="w-full justify-start !last:rounded-b group-data-[state=open]:rounded-b-none border-light mt-4 px-3"
+                        >
+                          <Button
+                            type="default"
+                            size="large"
+                            iconRight={
+                              <ChevronDown className="transition group-data-[state=open]:rotate-180" />
+                            }
+                            className="text-foreground !bg-dash-sidebar justify-between"
+                          >
+                            <div className="text-xs flex items-center p-2">
+                              <span>使用共享连接池</span>
+                              <Badge variant={'brand'} size={'small'} className="ml-2">
+                                支持 IPv4
+                              </Badge>
+                            </div>
+                          </Button>
+                        </CollapsibleTrigger_Shadcn_>
+                        <CollapsibleContent_Shadcn_ className="bg-dash-sidebar rounded-b border text-xs">
+                          <p className="px-3 py-2">
+                            仅当您的网络不支持 IPv6 的情况下使用这种方式，相比于独占连接池将增加延迟。
+                          </p>
+                          <CodeBlock
+                            wrapperClassName={cn(
+                              '[&_pre]:border-x-0 [&_pre]:border-b-0 [&_pre]:px-4 [&_pre]:py-3',
+                              '[&_pre]:rounded-t-none'
+                            )}
+                            language={lang}
+                            value={supavisorConnectionStrings['pooler'][selectedTab]}
+                            className="[&_code]:text-[12px] [&_code]:text-foreground"
+                            hideLineNumbers
+                            onCopyCallback={() => handleCopy(selectedTab, 'transaction_pooler')}
+                          />
+                        </CollapsibleContent_Shadcn_>
+                      </Collapsible_Shadcn_>
+                    )}
+                  </ConnectionPanel>
+
+                  {sharedPoolerPreferred && ipv4Addon && (
+                    <Admonition
+                      type="warning"
+                      title="Highly recommended to not use Session Pooler"
+                      className="[&>div]:gap-0 px-8 [&>svg]:left-7 border-0 border-b rounded-none border-border-muted !py-4 mb-0"
                     >
-                      <Button
-                        type="default"
-                        size="large"
-                        iconRight={
-                          <ChevronDown className="transition group-data-[state=open]:rotate-180" />
-                        }
-                        className="text-foreground !bg-dash-sidebar justify-between"
-                      >
-                        <div className="text-xs flex items-center p-2">
-                          <span>使用共享连接池</span>
-                          <Badge variant={'brand'} size={'small'} className="ml-2">
-                            IPv4 兼容
-                          </Badge>
-                        </div>
-                      </Button>
-                    </CollapsibleTrigger_Shadcn_>
-                    <CollapsibleContent_Shadcn_ className="bg-dash-sidebar rounded-b border text-xs">
-                      <p className="px-3 py-2">
-                        仅当您的网络不支持 IPv6 的情况下使用这种方式，相比于独占连接池将增加延迟。
+                      <p className="text-sm text-foreground-lighter !mb-0">
+                        如果你使用会话连接池，建议切换到数据库直连方式。
                       </p>
-                      <CodeBlock
-                        wrapperClassName={cn(
-                          '[&_pre]:border-x-0 [&_pre]:border-b-0 [&_pre]:px-4 [&_pre]:py-3',
-                          '[&_pre]:rounded-t-none'
-                        )}
-                        language={lang}
-                        value={supavisorConnectionStrings['pooler'][selectedTab]}
-                        className="[&_code]:text-[12px] [&_code]:text-foreground"
-                        hideLineNumbers
-                        onCopyCallback={() => handleCopy(selectedTab, 'transaction_pooler')}
-                      />
-                    </CollapsibleContent_Shadcn_>
-                  </Collapsible_Shadcn_>
-                )}
-              </ConnectionPanel>
+                    </Admonition>
+                  )}
 
-              {sharedPoolerPreferred && ipv4Addon && (
-                <Admonition
-                  type="warning"
-                  title="强烈不推荐使用会话连接池"
-                  className="[&>div]:gap-0 px-8 [&>svg]:left-7 border-0 border-b rounded-none border-border-muted !py-4 mb-0"
-                >
-                  <p className="text-sm text-foreground-lighter !mb-0">
-                    如果您使用会话连接池，我们建议您切换到直接连接。
-                  </p>
-                </Admonition>
+                  <ConnectionPanel
+                    type="session"
+                    title="会话连接池"
+                    contentType={contentType}
+                    lang={lang}
+                    badge="共享的连接池"
+                    fileTitle={fileTitle}
+                    description="当通过 IPv4 网络连接时，仅推荐作为数据库直连的一种备用方式。"
+                    connectionString={supavisorConnectionStrings['pooler'][selectedTab].replace(
+                      '6543',
+                      '5432'
+                    )}
+                    ipv4Status={{
+                      type: 'success',
+                      title: '支持 IPv4',
+                      description: '会话连接池 IPv4 代理是免费的',
+                      links: undefined,
+                    }}
+                    parameters={[
+                      { ...CONNECTION_PARAMETERS.host, value: sharedPoolerConfig?.db_host ?? '' },
+                      { ...CONNECTION_PARAMETERS.port, value: '5432' },
+                      {
+                        ...CONNECTION_PARAMETERS.database,
+                        value: sharedPoolerConfig?.db_name ?? '',
+                      },
+                      { ...CONNECTION_PARAMETERS.user, value: sharedPoolerConfig?.db_user ?? '' },
+                      { ...CONNECTION_PARAMETERS.pool_mode, value: 'session' },
+                    ]}
+                    onCopyCallback={() => handleCopy(selectedTab, 'session_pooler')}
+                  />
+                </>
               )}
-
-              <ConnectionPanel
-                type="session"
-                title="会话连接池"
-                contentType={contentType}
-                lang={lang}
-                badge="共享连接池"
-                fileTitle={fileTitle}
-                description="当通过 IPv4 网络连接时，仅推荐作为直接连接的一个备选项。"
-                connectionString={supavisorConnectionStrings['pooler'][selectedTab].replace(
-                  '6543',
-                  '5432'
-                )}
-                ipv4Status={{
-                  type: 'success',
-                  title: 'IPv4 兼容',
-                  description: '会话连接池 IPv4 代理是免费的',
-                  links: undefined,
-                }}
-                parameters={[
-                  { ...CONNECTION_PARAMETERS.host, value: sharedPoolerConfig?.db_host ?? '' },
-                  { ...CONNECTION_PARAMETERS.port, value: '5432' },
-                  {
-                    ...CONNECTION_PARAMETERS.database,
-                    value: sharedPoolerConfig?.db_name ?? '',
-                  },
-                  { ...CONNECTION_PARAMETERS.user, value: sharedPoolerConfig?.db_user ?? '' },
-                  { ...CONNECTION_PARAMETERS.pool_mode, value: 'session' },
-                ]}
-                onCopyCallback={() => handleCopy(selectedTab, 'session_pooler')}
-              />
             </div>
           </div>
 

@@ -25,7 +25,7 @@ test('renders warning', async () => {
       onChange={mockFn}
     />
   )
-  userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
   await screen.findByText(/内存错误/)
   await screen.findByText(RegExp(from.format('YYYY-MM')))
 })
@@ -42,7 +42,7 @@ test('renders dates in local time', async () => {
     />
   )
   // renders time locally
-  userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
   await screen.findByText(RegExp(from.format('YYYY-MM')))
 })
 
@@ -58,7 +58,7 @@ test('renders datepicker selected dates in local time', async () => {
     />
   )
   // renders time locally
-  userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DDM'))))
   // inputs with local time
   await screen.findAllByDisplayValue(from.format('HH'))
   await screen.findAllByDisplayValue(from.format('mm'))
@@ -73,20 +73,20 @@ test('datepicker onChange will return ISO string of selected dates', async () =>
   const mockFn = vi.fn()
   render(<DatePickers helpers={PREVIEWER_DATEPICKER_HELPERS} to={''} from={''} onChange={mockFn} />)
   // renders time locally
-  userEvent.click(await screen.findByText('自定义'))
+  await userEvent.click(await screen.findByText('自定义'))
   // inputs with local time
   const toHH = await screen.findByDisplayValue('23')
-  userEvent.clear(toHH)
-  userEvent.type(toHH, '12')
+  await userEvent.clear(toHH)
+  await userEvent.type(toHH, '12')
 
   // Find and click on the date elements
   const day20 = await screen.findByText('20')
-  userEvent.click(day20)
+  await userEvent.click(day20)
 
   const day21 = await screen.findByText('21')
-  userEvent.click(day21)
+  await userEvent.click(day21)
 
-  userEvent.click(await screen.findByText('应用'))
+  await userEvent.click(await screen.findByText('应用'))
   expect(mockFn).toBeCalled()
 
   const call = mockFn.mock.calls[0][0]

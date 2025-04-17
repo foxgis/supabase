@@ -6,7 +6,9 @@ import { toast } from 'sonner'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import AlertError from 'components/ui/AlertError'
 import { User, useUsersInfiniteQuery } from 'data/auth/users-infinite-query'
+import { useCustomAccessTokenHookDetails } from 'hooks/misc/useCustomAccessTokenHookDetails'
 import { useRoleImpersonationStateSnapshot } from 'state/role-impersonation-state'
+import { ResponseError } from 'types'
 import {
   Button,
   Collapsible_Shadcn_,
@@ -58,19 +60,42 @@ const UserImpersonationSelector = () => {
     state.role.userType === 'external' &&
     state.role.externalAuth
 
-  function impersonateUser(user: User) {
-    state.setRole({
-      type: 'postgrest',
-      role: 'authenticated',
-      userType: 'native',
-      user,
-      aal,
-    })
+  const customAccessTokenHookDetails = useCustomAccessTokenHookDetails(project?.ref)
+
+  const [isImpersonateLoading, setIsImpersonateLoading] = useState(false)
+
+  async function impersonateUser(user: User) {
+    setIsImpersonateLoading(true)
+
+    if (customAccessTokenHookDetails?.type === 'https') {
+      toast.info(
+        'Please note that HTTPS custom access token hooks are not yet supported in the dashboard.'
+      )
+    }
+
+    try {
+      await state.setRole(
+        {
+          type: 'postgrest',
+          role: 'authenticated',
+          userType: 'native',
+          user,
+          aal,
+        },
+        customAccessTokenHookDetails
+      )
+    } catch (error) {
+      toast.error(`Failed to impersonate user: ${(error as ResponseError).message}`)
+    }
+
+    setIsImpersonateLoading(false)
   }
 
   // Impersonates an external auth user (e.g. OAuth, SAML) by setting the sub and any additional claims
   // This allows testing RLS policies for external auth users without needing to set up the full OAuth/SAML flow
-  function impersonateExternalUser() {
+  async function impersonateExternalUser() {
+    setIsImpersonateLoading(true)
+
     let parsedClaims = {}
     try {
       parsedClaims = additionalClaims ? JSON.parse(additionalClaims) : {}
@@ -78,17 +103,25 @@ const UserImpersonationSelector = () => {
       toast.error('Invalid JSON in additional claims')
       return
     }
+    try {
+      await state.setRole(
+        {
+          type: 'postgrest',
+          role: 'authenticated',
+          userType: 'external',
+          externalAuth: {
+            sub: externalUserId,
+            additionalClaims: parsedClaims,
+          },
+          aal,
+        },
+        customAccessTokenHookDetails
+      )
+    } catch (error) {
+      toast.error(`Failed to impersonate user: ${(error as ResponseError).message}`)
+    }
 
-    state.setRole({
-      type: 'postgrest',
-      role: 'authenticated',
-      userType: 'external',
-      externalAuth: {
-        sub: externalUserId,
-        additionalClaims: parsedClaims,
-      },
-      aal,
-    })
+    setIsImpersonateLoading(false)
   }
 
   function stopImpersonating() {
@@ -259,7 +292,11 @@ const UserImpersonationSelector = () => {
                   <ul className="divide-y max-h-[150px] overflow-y-scroll" role="list">
                     {users.map((user) => (
                       <li key={user.id} role="listitem">
-                        <UserRow user={user} onClick={impersonateUser} />
+                        <UserRow
+                          user={user}
+                          onClick={impersonateUser}
+                          isLoading={isImpersonateLoading}
+                        />
                       </li>
                     ))}
                   </ul>
@@ -281,6 +318,7 @@ const UserImpersonationSelector = () => {
               onClick={stopImpersonating}
               isImpersonating={true}
               aal={aal}
+              isLoading={isImpersonateLoading}
             />
           )}
           {isExternalAuthImpersonating && (
@@ -288,6 +326,7 @@ const UserImpersonationSelector = () => {
               sub={state.role.externalAuth.sub}
               onClick={stopImpersonating}
               aal={aal}
+              isLoading={isImpersonateLoading}
             />
           )}
         </>
@@ -306,6 +345,7 @@ interface BaseImpersonatingRowProps {
   displayName: string
   avatarUrl?: string
   isImpersonating: boolean
+  isLoading?: boolean
 }
 
 const BaseImpersonatingRow = ({
@@ -314,6 +354,7 @@ const BaseImpersonatingRow = ({
   displayName,
   avatarUrl,
   isImpersonating = false,
+  isLoading = false,
 }: BaseImpersonatingRowProps) => {
   return (
     <div className="flex items-center gap-3 py-2 text-foreground">
@@ -334,7 +375,7 @@ const BaseImpersonatingRow = ({
         </span>
       </div>
 
-      <Button type="default" onClick={onClick}>
+      <Button type="default" onClick={onClick} disabled={isLoading} loading={isLoading}>
         {isImpersonating ? '停止切换' : '切换'}
       </Button>
     </div>
@@ -345,6 +386,7 @@ const UserImpersonatingRow = ({
   user,
   onClick,
   isImpersonating = false,
+  isLoading = false,
   aal,
 }: UserRowProps & { aal: AuthenticatorAssuranceLevels }) => {
   const avatarUrl = getAvatarUrl(user)
@@ -359,6 +401,7 @@ const UserImpersonatingRow = ({
       displayName={displayName}
       avatarUrl={avatarUrl}
       isImpersonating={isImpersonating}
+      isLoading={isLoading}
     />
   )
 }
@@ -367,11 +410,23 @@ interface ExternalAuthImpersonatingRowProps {
   sub: string
   onClick: () => void
   aal: AuthenticatorAssuranceLevels
+  isLoading?: boolean
 }
 
-const ExternalAuthImpersonatingRow = ({ sub, onClick, aal }: ExternalAuthImpersonatingRowProps) => {
+const ExternalAuthImpersonatingRow = ({
+  sub,
+  onClick,
+  aal,
+  isLoading = false,
+}: ExternalAuthImpersonatingRowProps) => {
   return (
-    <BaseImpersonatingRow onClick={onClick} aal={aal} displayName={sub} isImpersonating={true} />
+    <BaseImpersonatingRow
+      onClick={onClick}
+      aal={aal}
+      displayName={sub}
+      isImpersonating={true}
+      isLoading={isLoading}
+    />
   )
 }
 
@@ -379,9 +434,10 @@ interface UserRowProps {
   user: User
   onClick: (user: User) => void
   isImpersonating?: boolean
+  isLoading?: boolean
 }
 
-const UserRow = ({ user, onClick, isImpersonating = false }: UserRowProps) => {
+const UserRow = ({ user, onClick, isImpersonating = false, isLoading = false }: UserRowProps) => {
   const avatarUrl = getAvatarUrl(user)
   const displayName =
     getDisplayName(user, user.email ?? user.phone ?? user.id ?? '未知用户') +
@@ -401,7 +457,7 @@ const UserRow = ({ user, onClick, isImpersonating = false }: UserRowProps) => {
         <span className="text-sm">{displayName}</span>
       </div>
 
-      <Button type="default" onClick={() => onClick(user)}>
+      <Button type="default" onClick={() => onClick(user)} disabled={isLoading} loading={isLoading}>
         {isImpersonating ? '停止切换' : '切换'}
       </Button>
     </div>
