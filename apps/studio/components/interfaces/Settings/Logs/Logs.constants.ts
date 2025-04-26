@@ -5,7 +5,7 @@ import type { DatetimeHelper, FilterTableSet, LogTemplate } from './Logs.types'
 export const LOGS_EXPLORER_DOCS_URL =
   'https://supabase.com/docs/guides/platform/logs#querying-with-the-logs-explorer'
 
-export const LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD = 4
+export const LOGS_LARGE_DATE_RANGE_DAYS_THRESHOLD = 2 // IN DAYS
 
 export const TEMPLATES: LogTemplate[] = [
   {
@@ -350,6 +350,9 @@ export const SQL_FILTER_TEMPLATES: any = {
     ..._SQL_FILTER_COMMON,
     database: (value: string) => `m.project like '${value}%'`,
   },
+  pg_upgrade_logs: {
+    ..._SQL_FILTER_COMMON,
+  },
   pg_cron_logs: {
     ..._SQL_FILTER_COMMON,
   },
@@ -367,6 +370,7 @@ export enum LogsTableName {
   SUPAVISOR = 'supavisor_logs',
   PGBOUNCER = 'pgbouncer_logs',
   WAREHOUSE = 'warehouse_logs',
+  PG_UPGRADE = 'pg_upgrade_logs',
   PG_CRON = 'pg_cron_logs',
 }
 
@@ -381,12 +385,13 @@ export const LOGS_TABLES = {
   postgrest: LogsTableName.POSTGREST,
   supavisor: LogsTableName.SUPAVISOR,
   warehouse: LogsTableName.WAREHOUSE,
+  pg_upgrade: LogsTableName.PG_UPGRADE,
   pg_cron: LogsTableName.POSTGRES,
   pgbouncer: LogsTableName.PGBOUNCER,
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
-  [LogsTableName.EDGE]: '网络端日志，包含所有 API 请求',
+  [LogsTableName.EDGE]: '网关日志，包含所有 API 请求',
   [LogsTableName.POSTGRES]: '数据库日志',
   [LogsTableName.FUNCTIONS]: '函数执行日志',
   [LogsTableName.FN_EDGE]: '函数调用日志，包含请求和响应',
@@ -396,6 +401,8 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.POSTGREST]: 'REST 接口服务日志',
   [LogsTableName.SUPAVISOR]: '数据库连接池（supavisor）日志',
   [LogsTableName.PGBOUNCER]: '数据库连接池（pgbouncer）日志',
+  [LogsTableName.WAREHOUSE]: '数据仓库日志',
+  [LogsTableName.PG_UPGRADE]: '数据库升级日志',
   [LogsTableName.PG_CRON]: '定时任务日志',
 }
 
@@ -666,56 +673,71 @@ export const LOGS_TAILWIND_CLASSES = {
 export const PREVIEWER_DATEPICKER_HELPERS: DatetimeHelper[] = [
   {
     text: '最近 15 分钟',
-    calcFrom: () => dayjs().subtract(15, 'minute').startOf('minute').toISOString(),
+    calcFrom: () => dayjs().subtract(15, 'minute').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 30 分钟',
-    calcFrom: () => dayjs().subtract(30, 'minute').startOf('minute').toISOString(),
+    calcFrom: () => dayjs().subtract(30, 'minute').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 1 小时',
-    calcFrom: () => dayjs().subtract(1, 'hour').startOf('hour').toISOString(),
+    calcFrom: () => dayjs().subtract(1, 'hour').toISOString(),
     calcTo: () => '',
     default: true,
   },
   {
     text: '最近 3 小时',
-    calcFrom: () => dayjs().subtract(3, 'hour').startOf('hour').toISOString(),
+    calcFrom: () => dayjs().subtract(3, 'hour').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 24 小时',
-    calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
+    calcFrom: () => dayjs().subtract(1, 'day').toISOString(),
+    calcTo: () => '',
+  },
+  {
+    text: '最近 2 天',
+    calcFrom: () => dayjs().subtract(2, 'day').toISOString(),
+    calcTo: () => '',
+  },
+  {
+    text: '最近 3 天',
+    calcFrom: () => dayjs().subtract(3, 'day').toISOString(),
+    calcTo: () => '',
+  },
+  {
+    text: '最近 5 天',
+    calcFrom: () => dayjs().subtract(5, 'day').toISOString(),
     calcTo: () => '',
   },
 ]
 export const EXPLORER_DATEPICKER_HELPERS: DatetimeHelper[] = [
   {
     text: '最近 1 小时',
-    calcFrom: () => dayjs().subtract(1, 'hour').startOf('hour').toISOString(),
+    calcFrom: () => dayjs().subtract(1, 'hour').toISOString(),
     calcTo: () => '',
     default: true,
   },
   {
     text: '最近 3 小时',
-    calcFrom: () => dayjs().subtract(3, 'hour').startOf('hour').toISOString(),
+    calcFrom: () => dayjs().subtract(3, 'hour').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 24 小时',
-    calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
+    calcFrom: () => dayjs().subtract(1, 'day').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 3 天',
-    calcFrom: () => dayjs().subtract(3, 'day').startOf('day').toISOString(),
+    calcFrom: () => dayjs().subtract(3, 'day').toISOString(),
     calcTo: () => '',
   },
   {
     text: '最近 7 天',
-    calcFrom: () => dayjs().subtract(7, 'day').startOf('day').toISOString(),
+    calcFrom: () => dayjs().subtract(7, 'day').toISOString(),
     calcTo: () => '',
   },
 ]

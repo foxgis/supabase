@@ -1,15 +1,16 @@
 import { ExternalLink, Loader2 } from 'lucide-react'
-import Link from 'next/link'
+import { parseAsBoolean, useQueryState } from 'nuqs'
 import { forwardRef } from 'react'
 
 import { useParams } from 'common'
 import { subscriptionHasHipaaAddon } from 'components/interfaces/Billing/Subscription/Subscription.utils'
 import CopyButton from 'components/ui/CopyButton'
+import { InlineLink, InlineLinkClassName } from 'components/ui/InlineLink'
 import { useOrgSubscriptionQuery } from 'data/subscriptions/org-subscription-query'
 import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 import { useDatabaseSelectorStateSnapshot } from 'state/database-selector'
 import { useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
-import { AiIconAnimation, Button, Tooltip, TooltipContent, TooltipTrigger } from 'ui'
+import { AiIconAnimation, Button, cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 import Results from './Results'
 
 export type UtilityTabResultsProps = {
@@ -21,11 +22,12 @@ export type UtilityTabResultsProps = {
 }
 
 const UtilityTabResults = forwardRef<HTMLDivElement, UtilityTabResultsProps>(
-  ({ id, isExecuting, isDisabled, isDebugging, onDebug }, htmlRef) => {
+  ({ id, isExecuting, isDisabled, isDebugging, onDebug }) => {
     const { ref } = useParams()
     const state = useDatabaseSelectorStateSnapshot()
     const organization = useSelectedOrganization()
     const snapV2 = useSqlEditorV2StateSnapshot()
+    const [, setShowConnect] = useQueryState('showConnect', parseAsBoolean.withDefault(false))
 
     const result = snapV2.results[id]?.[0]
     const { data: subscription } = useOrgSubscriptionQuery({ orgSlug: organization?.slug })
@@ -35,7 +37,9 @@ const UtilityTabResults = forwardRef<HTMLDivElement, UtilityTabResultsProps>(
 
     const isTimeout =
       result?.error?.message?.includes('canceling statement due to statement timeout') ||
-      result?.error?.message?.includes('upstream request timeout')
+      result?.error?.message?.includes('upstream request timeout') ||
+      result?.error?.message?.includes('Query read timeout')
+
     const isNetWorkError = result?.error?.message?.includes('EHOSTUNREACH')
 
     if (isExecuting) {
@@ -61,27 +65,26 @@ const UtilityTabResults = forwardRef<HTMLDivElement, UtilityTabResultsProps>(
           <div className="flex flex-row justify-between items-start py-4 px-6 gap-x-4">
             {isTimeout ? (
               <div className="flex flex-col gap-y-1">
-                <p className="font-mono text-sm">SQL 查询超时</p>
-                <p className="font-mono text-sm text-foreground-light">
-                  您要么{' '}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline transition hover:text-foreground"
-                    href="https://supabase.com/docs/guides/platform/performance#examining-query-performance"
-                  >
+                <p className="font-mono text-sm tracking-tight">
+                  错误：SQL 查询超时
+                </p>
+                <p className="text-sm text-foreground-light">
+                  您可以{' '}
+                  <InlineLink href="https://supabase.com/docs/guides/platform/performance#examining-query-performance">
                     优化查询语句
-                  </a>
+                  </InlineLink>
                   ，或者{' '}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline transition hover:text-foreground"
-                    href="https://supabase.com/docs/guides/database/timeouts"
+                  <InlineLink href="https://supabase.com/docs/guides/database/timeouts">
+                    增加查询超时时间
+                  </InlineLink>
+                  {'，又或者'}
+                  <span
+                    className={cn(InlineLinkClassName, 'cursor-pointer')}
+                    onClick={() => setShowConnect(true)}
                   >
-                    增加查询最大超时时间
-                  </a>
-                  .
+                    直接连接到数据库进行查询
+                  </span>
+                  。
                 </p>
               </div>
             ) : (
@@ -109,17 +112,15 @@ const UtilityTabResults = forwardRef<HTMLDivElement, UtilityTabResultsProps>(
                 )}
                 {payloadTooLargeError && (
                   <p className="text-sm text-foreground-light flex items-center gap-x-1">
-                    您可以直接连接到数据{' '}
-                    <Link
-                      target="_blank"
-                      rel="noreferrer"
-                      href={`/project/${ref}/settings/database`}
-                      className="underline transition hover:text-foreground flex items-center gap-x-1"
+                    点击{' '}
+                    <span
+                      onClick={() => setShowConnect(true)}
+                      className={cn(InlineLinkClassName, 'flex items-center gap-x-1')}
                     >
                       执行查询
                       <ExternalLink size={12} />
-                    </Link>
-                    .
+                    </span>
+                    运行此 SQL 查询。
                   </p>
                 )}
               </div>

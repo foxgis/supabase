@@ -73,7 +73,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.170.0
+    image: supabase/gotrue:v2.171.0
     restart: unless-stopped
     healthcheck:
       test:
@@ -150,7 +150,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v12.2.8
+    image: postgrest/postgrest:v12.2.11
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD_ENCODED}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -169,7 +169,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.34.43
+    image: supabase/realtime:v2.34.47
     restart: unless-stopped
     healthcheck:
       test:
@@ -208,7 +208,7 @@ services:
   # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.19.3
+    image: supabase/storage-api:v1.22.7
     restart: unless-stopped
     volumes:
       - ./volumes/storage:/var/lib/storage:z
@@ -273,7 +273,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.87.1
+    image: supabase/postgres-meta:v0.88.9
     restart: unless-stopped
     environment:
       PG_META_PORT: 8080

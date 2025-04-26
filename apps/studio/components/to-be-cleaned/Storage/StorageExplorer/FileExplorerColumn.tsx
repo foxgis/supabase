@@ -1,15 +1,15 @@
 import { Transition } from '@headlessui/react'
 import { get, noop, sum } from 'lodash'
+import { Upload } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useContextMenu } from 'react-contexify'
-import { Checkbox } from 'ui'
 
 import InfiniteList from 'components/ui/InfiniteList'
 import ShimmeringLoader from 'components/ui/ShimmeringLoader'
 import { BASE_PATH } from 'lib/constants'
 import { formatBytes } from 'lib/helpers'
-import { Upload } from 'lucide-react'
 import { useStorageExplorerStateSnapshot } from 'state/storage-explorer'
+import { Checkbox, cn } from 'ui'
 import {
   CONTEXT_MENU_KEYS,
   STORAGE_ROW_STATUS,
@@ -142,145 +142,133 @@ const FileExplorerColumn = ({
   )
 
   return (
-    <>
-      <div
-        ref={fileExplorerColumnRef}
-        className={`
-        ${fullWidth ? 'w-full' : 'w-64 border-r border-overlay'}
-        ${view === STORAGE_VIEWS.COLUMNS ? '' : ''}
-        hide-scrollbar relative flex flex-shrink-0 flex-col overflow-auto
-      `}
-        onContextMenu={displayMenu}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        onClick={(event) => {
-          const eventTarget = get(event.target, ['className'], '')
-          if (typeof eventTarget === 'string' && eventTarget.includes('react-contexify')) return
-          onSelectColumnEmptySpace(index)
-        }}
-      >
-        {/* Checkbox selection for select all */}
-        {view === STORAGE_VIEWS.COLUMNS && (
-          <div
-            className={`sticky top-0 z-10 mb-0 flex items-center bg-table-header-light px-2.5 [[data-theme*=dark]_&]:bg-table-header-dark ${
-              haveSelectedItems ? 'h-10 py-3 opacity-100' : 'h-0 py-0 opacity-0'
-            } transition-all duration-200`}
-            onClick={(event) => event.stopPropagation()}
-          >
-            {columnFiles.length > 0 ? (
-              <>
-                <SelectAllCheckbox />
-                <p className="text-sm text-foreground-light">
-                  选择所有 {columnFiles.length} 个文件
-                </p>
-              </>
-            ) : (
-              <p className="text-sm text-foreground-light">无文件可供选择</p>
-            )}
-          </div>
-        )}
-
-        {/* List Interface Header */}
-        {view === STORAGE_VIEWS.LIST && (
-          <div
-            className="
-          sticky top-0
-          z-10 flex min-w-min items-center border-b border-overlay bg-surface-100 px-2.5
-          py-2
-        "
-          >
-            <div className="flex w-[40%] min-w-[250px] items-center">
+    <div
+      ref={fileExplorerColumnRef}
+      className={cn(
+        fullWidth ? 'w-full' : 'w-64 border-r border-overlay',
+        view === STORAGE_VIEWS.LIST && 'h-full',
+        'hide-scrollbar relative flex flex-shrink-0 flex-col overflow-auto'
+      )}
+      onContextMenu={displayMenu}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      onClick={(event) => {
+        const eventTarget = get(event.target, ['className'], '')
+        if (typeof eventTarget === 'string' && eventTarget.includes('react-contexify')) return
+        onSelectColumnEmptySpace(index)
+      }}
+    >
+      {/* Checkbox selection for select all */}
+      {view === STORAGE_VIEWS.COLUMNS && (
+        <div
+          className={cn(
+            'sticky top-0 z-10 mb-0 flex items-center bg-table-header-light px-2.5 [[data-theme*=dark]_&]:bg-table-header-dark',
+            haveSelectedItems ? 'h-10 py-3 opacity-100' : 'h-0 py-0 opacity-0',
+            'transition-all duration-200'
+          )}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {columnFiles.length > 0 ? (
+            <>
               <SelectAllCheckbox />
-              <p className="text-sm">名称</p>
-            </div>
-            <p className="w-[11%] min-w-[100px] text-sm">大小</p>
-            <p className="w-[14%] min-w-[100px] text-sm">类型</p>
-            <p className="w-[15%] min-w-[160px] text-sm">创建时间</p>
-            <p className="w-[15%] min-w-[160px] text-sm">修改时间</p>
-          </div>
-        )}
+              <p className="text-sm text-foreground-light">选择所有 {columnFiles.length} 个文件</p>
+            </>
+          ) : (
+            <p className="text-sm text-foreground-light">无文件可供选择</p>
+          )}
+        </div>
+      )}
 
-        {/* Shimmering loaders while fetching contents */}
-        {column.status === STORAGE_ROW_STATUS.LOADING && (
-          <div
-            className={`
+      {/* List Interface Header */}
+      {view === STORAGE_VIEWS.LIST && (
+        <div className="sticky top-0 py-2 z-10 flex min-w-min items-center border-b border-overlay bg-surface-100 px-2.5">
+          <div className="flex w-[40%] min-w-[250px] items-center">
+            <SelectAllCheckbox />
+            <p className="text-sm">名称</p>
+          </div>
+          <p className="w-[11%] min-w-[100px] text-sm">大小</p>
+          <p className="w-[14%] min-w-[100px] text-sm">类型</p>
+          <p className="w-[15%] min-w-[160px] text-sm">创建时间</p>
+          <p className="w-[15%] min-w-[160px] text-sm">更新时间</p>
+        </div>
+      )}
+
+      {/* Shimmering loaders while fetching contents */}
+      {column.status === STORAGE_ROW_STATUS.LOADING && (
+        <div
+          className={`
             ${fullWidth ? 'w-full' : 'w-64 border-r border-default'}
             px-2 py-1 my-1 flex flex-shrink-0 flex-col space-y-2 overflow-auto
           `}
-          >
-            <ShimmeringLoader />
-            <ShimmeringLoader />
-            <ShimmeringLoader />
+        >
+          <ShimmeringLoader />
+          <ShimmeringLoader />
+          <ShimmeringLoader />
+        </div>
+      )}
+
+      {/* Column Interface */}
+      <InfiniteList
+        items={columnItems}
+        itemProps={{
+          view,
+          columnIndex: index,
+          selectedItems,
+          openedFolders,
+        }}
+        ItemComponent={FileExplorerRow}
+        getItemSize={(index) => (index !== 0 && index === columnItems.length ? 85 : 37)}
+        hasNextPage={column.status !== STORAGE_ROW_STATUS.LOADING && column.hasMoreItems}
+        isLoadingNextPage={column.isLoadingMoreItems}
+        onLoadNextPage={() => onColumnLoadMore(index, column)}
+      />
+
+      {/* Drag drop upload CTA for when column is empty */}
+      {!(snap.isSearching && itemSearchString.length > 0) &&
+        column.items.length === 0 &&
+        column.status !== STORAGE_ROW_STATUS.LOADING && (
+          <div className="h-full w-full flex flex-col items-center justify-center">
+            <img
+              alt="storage-placeholder"
+              src={`${BASE_PATH}/img/storage-placeholder.svg`}
+              className="opacity-75 pointer-events-none"
+            />
+            <p className="text-sm my-3 opacity-75">拖拽文件到这里上传</p>
+            <p className="w-40 text-center text-xs text-foreground-light">
+              或者通过上面的“上传文件”按钮上传文件
+            </p>
           </div>
         )}
 
-        {/* Column Interface */}
-        <InfiniteList
-          items={columnItems}
-          itemProps={{
-            view,
-            columnIndex: index,
-            selectedItems,
-            openedFolders,
-          }}
-          ItemComponent={FileExplorerRow}
-          getItemSize={(index) => (index !== 0 && index === columnItems.length ? 85 : 37)}
-          hasNextPage={column.status !== STORAGE_ROW_STATUS.LOADING && column.hasMoreItems}
-          isLoadingNextPage={column.isLoadingMoreItems}
-          onLoadNextPage={() => onColumnLoadMore(index, column)}
-        />
+      {snap.isSearching &&
+        itemSearchString.length > 0 &&
+        isEmpty &&
+        column.status !== STORAGE_ROW_STATUS.LOADING && (
+          <div className="h-full w-full flex flex-col items-center justify-center">
+            <p className="text-sm my-3 text-foreground">在文件夹中未找到结果</p>
+            <p className="w-40 text-center text-sm text-foreground-light">
+              您搜索的“{itemSearchString}”未返回任何结果
+            </p>
+          </div>
+        )}
 
-        {/* Drag drop upload CTA for when column is empty */}
-        {!(snap.isSearching && itemSearchString.length > 0) &&
-          column.items.length === 0 &&
-          column.status !== STORAGE_ROW_STATUS.LOADING && (
-            <div className="h-full w-full flex flex-col items-center justify-center">
-              <img
-                alt="storage-placeholder"
-                src={`${BASE_PATH}/img/storage-placeholder.svg`}
-                className="opacity-75 pointer-events-none"
-              />
-              <p className="text-sm my-3 opacity-75">拖拽文件到这里上传</p>
-              <p className="w-40 text-center text-xs text-foreground-light">
-                或者通过“上传文件”按钮上传
-              </p>
-            </div>
-          )}
+      {/* Drag drop upload CTA for when column has files */}
+      <DragOverOverlay
+        isOpen={isDraggedOver}
+        folderIsEmpty={isEmpty}
+        onDragLeave={() => setIsDraggedOver(false)}
+        onDrop={() => setIsDraggedOver(false)}
+      />
 
-        {snap.isSearching &&
-          itemSearchString.length > 0 &&
-          isEmpty &&
-          column.status !== STORAGE_ROW_STATUS.LOADING && (
-            <div className="h-full w-full flex flex-col items-center justify-center">
-              <p className="text-sm my-3 text-foreground">在文件夹中未找到结果</p>
-              <p className="w-40 text-center text-sm text-foreground-light">
-                您搜索的“{itemSearchString}”未返回任何结果
-              </p>
-            </div>
-          )}
-
-        {/* Drag drop upload CTA for when column has files */}
-        <DragOverOverlay
-          isOpen={isDraggedOver}
-          folderIsEmpty={isEmpty}
-          onDragLeave={() => setIsDraggedOver(false)}
-          onDrop={() => setIsDraggedOver(false)}
-        />
-      </div>
       {/* List interface footer */}
       {view === STORAGE_VIEWS.LIST && (
-        <div
-          className="
-          absolute bottom-0 rounded-b-md mt-auto
-        z-10 flex min-w-min items-center bg-panel-footer-light px-2.5 py-2 [[data-theme*=dark]_&]:bg-panel-footer-dark w-full
-        "
-        >
+        <div className="shrink-0 rounded-b-md z-10 flex min-w-min items-center bg-panel-footer-light px-2.5 py-2 [[data-theme*=dark]_&]:bg-panel-footer-dark w-full">
           <p className="text-sm">
             {formatBytes(columnItemsSize)}，共 {columnItems.length} 个文件
           </p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
