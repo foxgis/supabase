@@ -35,21 +35,21 @@ export const LocalDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end" className="w-44">
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           className="flex gap-2"
           onClick={() => snap.setShowFeaturePreviewModal(true)}
           onSelect={() => snap.setShowFeaturePreviewModal(true)}
         >
           <FlaskConical size={14} strokeWidth={1.5} className="text-foreground-lighter" />
-          Feature previews
+          新功能尝鲜
         </DropdownMenuItem>
         <DropdownMenuItem className="flex gap-2" onClick={() => setCommandMenuOpen(true)}>
           <Command size={14} strokeWidth={1.5} className="text-foreground-lighter" />
-          Command menu
+          快捷命令
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Theme</DropdownMenuLabel>
+          <DropdownMenuLabel>界面风格</DropdownMenuLabel>
           <DropdownMenuRadioGroup
             value={theme}
             onValueChange={(value) => {

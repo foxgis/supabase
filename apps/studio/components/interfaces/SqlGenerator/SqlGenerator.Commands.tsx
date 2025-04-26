@@ -16,7 +16,7 @@ export function useGenerateSqlCommand() {
     [
       {
         id: 'generate-sql-ai',
-        name: 'Run SQL with Supabase AI',
+        name: '使用 AI 创建 SQL 查询',
         action: () => {
           setShowGenerateSqlModal(true)
           setQuery('')

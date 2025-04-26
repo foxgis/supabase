@@ -67,7 +67,7 @@ const RouteValidationWrapper = ({ children }: PropsWithChildren<{}>) => {
       const isValidOrg = organizations.some((org) => org.slug === slug)
 
       if (!isValidOrg) {
-        toast.error('This organization does not exist')
+        toast.error('组织不存在')
         router.push(DEFAULT_HOME)
         return
       }
@@ -92,7 +92,7 @@ const RouteValidationWrapper = ({ children }: PropsWithChildren<{}>) => {
         : true
 
       if (!isValidProject && !isValidBranch) {
-        toast.error('This project does not exist')
+        toast.error('项目不存在')
         router.push(DEFAULT_HOME)
         return
       }

@@ -37,7 +37,7 @@ export function useApiKeysCommands() {
         project &&
           anonKey && {
             id: 'anon-key',
-            name: `Copy anonymous API key`,
+            name: `复制匿名密钥`,
             action: () => {
               copyToClipboard(anonKey.api_key ?? '')
               setIsOpen(false)
@@ -53,7 +53,7 @@ export function useApiKeysCommands() {
         project &&
           serviceKey && {
             id: 'service-key',
-            name: `Copy service API key`,
+            name: `复制服务端密钥`,
             action: () => {
               copyToClipboard(serviceKey.api_key ?? '')
               setIsOpen(false)
@@ -68,7 +68,7 @@ export function useApiKeysCommands() {
           },
         !(anonKey || serviceKey) && {
           id: 'api-keys-project-settings',
-          name: 'See API keys in Project Settings',
+          name: '在设置中查看 API 密钥',
           route: `/project/${ref}/settings/api`,
           icon: () => <Key />,
         },
@@ -83,7 +83,7 @@ export function useApiKeysCommands() {
       sections: [
         {
           id: 'api-keys',
-          name: 'API keys',
+          name: 'API 密钥',
           commands,
         },
       ],
@@ -96,7 +96,7 @@ export function useApiKeysCommands() {
     [
       {
         id: 'api-keys',
-        name: 'Get API keys',
+        name: '获取 API 密钥',
         action: () => setPage(API_KEYS_PAGE_NAME),
         icon: () => <Key />,
       },

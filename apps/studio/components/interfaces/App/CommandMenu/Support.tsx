@@ -12,20 +12,20 @@ const useSupportCommands = () => {
       [
         {
           id: 'support',
-          name: 'Support',
+          name: '支持',
           route: 'https://www.supabase.com/support',
           icon: () => <LifeBuoy />,
         },
         {
           id: 'system-status',
-          name: 'System Status',
+          name: '系统状态',
           value: 'Support: System Status',
           route: 'https://status.supabase.com',
           icon: () => <LifeBuoy />,
         },
         {
           id: 'github-discussions',
-          name: 'GitHub Discussions',
+          name: 'GitHub 讨论',
           value: 'Support: GitHub Discussions',
           route: 'https://github.com/orgs/supabase/discussions',
           icon: () => <LifeBuoy />,

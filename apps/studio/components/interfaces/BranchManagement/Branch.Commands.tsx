@@ -30,7 +30,7 @@ export function useBranchCommands() {
       sections: [
         {
           id: 'switch-branch',
-          name: 'Switch branch',
+          name: '切换分支',
           commands: branches.map((branch) => ({
             id: `branch-${branch.id}`,
             name: branch.name,
@@ -48,8 +48,8 @@ export function useBranchCommands() {
     [
       {
         id: 'switch-branch',
-        name: 'Switch branch',
-        value: 'Switch branch, Change branch, Select branch',
+        name: '切换分支',
+        value: '切换分支, 变更分支, 选择分支',
         action: () => setPage(SWITCH_BRANCH_PAGE_NAME),
         icon: () => <GitBranch />,
       },

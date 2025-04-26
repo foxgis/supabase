@@ -7,8 +7,8 @@ import { PageType } from '../../api/utils'
 import { DocsAiPage } from './DocsAiPage'
 
 const DOCS_AI_COMMANDS = {
-  PAGE_NAME: 'Ask Supabase AI',
-  SECTION_NAME: 'Docs',
+  PAGE_NAME: '询问 AI',
+  SECTION_NAME: '文档',
 }
 
 const identity = <T,>(x: T) => x
@@ -26,7 +26,7 @@ const useDocsAiCommands = ({
     [
       {
         id: 'ai-docs',
-        name: 'Ask Supabase AI',
+        name: '询问 AI',
         action: () => {
           setCommandPage(DOCS_AI_COMMANDS.PAGE_NAME, true)
         },

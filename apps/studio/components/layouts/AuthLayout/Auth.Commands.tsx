@@ -11,7 +11,7 @@ export function useAuthGotoCommands(options?: CommandOptions) {
   ref ||= '_'
 
   useRegisterCommands(
-    'Actions',
+    '操作',
     [
       {
         id: 'create-rls-policy',

@@ -16,7 +16,7 @@ export function useProjectLevelTableEditorCommands(options?: CommandOptions) {
     [
       {
         id: 'create-table',
-        name: 'Create new table',
+        name: '创建表',
         route: `/project/${ref}/editor?create=table`,
         icon: () => <Table2 />,
       },
@@ -40,7 +40,7 @@ export function useTableEditorGotoCommands(options?: CommandOptions) {
     [
       {
         id: 'view-tables',
-        name: 'View your tables',
+        name: '查看表',
         route: `/project/${ref}/editor`,
         icon: () => <Table2 />,
       },
@@ -58,7 +58,7 @@ export function useTableEditorGotoCommands(options?: CommandOptions) {
     [
       {
         id: 'nav-table-editor',
-        name: 'Table Editor',
+        name: '数据管理',
         route: `/project/${ref}/editor`,
         defaultHidden: true,
       },

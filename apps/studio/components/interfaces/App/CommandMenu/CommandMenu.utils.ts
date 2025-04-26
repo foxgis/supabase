@@ -1,9 +1,9 @@
 export const COMMAND_MENU_SECTIONS = {
-  ACTIONS: 'Actions',
-  NAVIGATE: 'Navigate',
-  QUERY: 'Queries',
-  SUPPORT: 'Support',
-  TABLE: 'Table Editor',
-  SQL: 'SQL Editor',
-  DATABASE: 'Database',
+  ACTIONS: '操作',
+  NAVIGATE: '导航',
+  QUERY: '查询',
+  SUPPORT: '支持',
+  TABLE: '数据管理',
+  SQL: '数据查询',
+  DATABASE: '数据库',
 } as const

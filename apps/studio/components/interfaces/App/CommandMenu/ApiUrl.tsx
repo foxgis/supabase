@@ -32,7 +32,7 @@ export function useApiUrlCommand() {
           setIsOpen(false)
         },
         icon: () => <Link />,
-        badge: () => <Badge>Project: {project?.name}</Badge>,
+        badge: () => <Badge>项目：{project?.name}</Badge>,
       },
     ],
     {

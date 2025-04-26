@@ -26,7 +26,7 @@ export function useProjectSwitchCommand() {
       sections: [
         {
           id: 'switch-project',
-          name: 'Switch project',
+          name: '切换项目',
           commands: projects.map(({ name, ref }) => ({
             id: `project-${ref}`,
             name,
@@ -45,8 +45,8 @@ export function useProjectSwitchCommand() {
     [
       {
         id: 'switch-project',
-        name: 'Switch project',
-        value: 'Switch project, Change project, Select project',
+        name: '切换项目',
+        value: '切换项目，变更项目，选择项目',
         action: () => setPage(PROJECT_SWITCHER_PAGE_NAME),
         icon: () => <Wrench />,
       },
@@ -67,7 +67,7 @@ export function useConfigureOrganizationCommand() {
       sections: [
         {
           id: 'configure-organization',
-          name: 'Configure organization',
+          name: '配置组织',
           commands:
             organizations?.map(({ name, slug }) => ({
               id: `organization-${slug}`,
@@ -87,8 +87,8 @@ export function useConfigureOrganizationCommand() {
     [
       {
         id: 'configure-organization',
-        name: 'Configure organization',
-        value: 'Configure organization, Change organization, Select organization',
+        name: '配置组织',
+        value: '配置组织，变更组织，选择组织',
         action: () => setPage(ORGANIZATION_SWITCHER_PAGE_NAME),
         icon: () => <Building />,
       },

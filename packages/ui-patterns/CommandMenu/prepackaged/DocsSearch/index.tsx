@@ -11,8 +11,8 @@ import {
 import { DocsSearchPage } from './DocsSearchPage'
 
 const DOCS_SEARCH_COMMANDS = {
-  PAGE_NAME: 'Docs search',
-  SECTION_NAME: 'Docs',
+  PAGE_NAME: '文档搜索',
+  SECTION_NAME: '文档',
 }
 
 const identity = <T,>(x: T) => x
@@ -32,7 +32,7 @@ const useDocsSearchCommands = ({
     [
       {
         id: 'search-docs',
-        name: 'Search the docs',
+        name: '搜索文档',
         action: () => {
           setCommandPage(DOCS_SEARCH_COMMANDS.PAGE_NAME, true)
         },

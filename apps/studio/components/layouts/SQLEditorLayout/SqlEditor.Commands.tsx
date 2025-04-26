@@ -56,7 +56,7 @@ export function useSqlEditorGotoCommands(options?: CommandOptions) {
   )
 }
 
-const SNIPPET_PAGE_NAME = 'Snippets'
+const SNIPPET_PAGE_NAME = '查询语句'
 
 export function useSnippetCommands() {
   const project = useSelectedProject()
@@ -144,7 +144,7 @@ function ErrorState() {
     <div className="p-6">
       <p className="text-center">
         <AlertTriangle className="inline-block mr-2" />
-        无法加载代码段
+        无法加载查语句
       </p>
     </div>
   )
@@ -161,7 +161,7 @@ function EmptyState({
 
   return (
     <div className="p-6">
-      <p className="mb-2 text-center">未找到代码段</p>
+      <p className="mb-2 text-center">未找到查询语句</p>
       <CommandList_Shadcn_ className="py-2">
         <CommandGroup_Shadcn_>
           <CommandItem_Shadcn_
@@ -169,7 +169,7 @@ function EmptyState({
             className={generateCommandClassNames(false)}
             onSelect={() => router.push(`/project/${projectRef ?? '_'}/sql/new`)}
           >
-            {canCreateNew ? '新建代码段' : '执行新的 SQL'}
+            {canCreateNew ? '新建查询语句' : '执行查询语句'}
           </CommandItem_Shadcn_>
         </CommandGroup_Shadcn_>
       </CommandList_Shadcn_>
@@ -224,7 +224,7 @@ function SnippetSelector({
                 onSelect={() => router.push(`/project/${projectRef ?? '_'}/sql/new`)}
                 forceMount={true}
               >
-                新建代码段
+                新建查询语句
               </CommandItem_Shadcn_>
             </CommandGroup_Shadcn_>
           </div>
@@ -248,7 +248,7 @@ function snippetValue(snippet: SqlSnippet) {
   ).toLowerCase()
 }
 
-const QUERY_TABLE_PAGE_NAME = 'Query a table'
+const QUERY_TABLE_PAGE_NAME = '查询表'
 
 export function useQueryTableCommands(options?: CommandOptions) {
   const project = useSelectedProject()
@@ -283,7 +283,7 @@ export function useQueryTableCommands(options?: CommandOptions) {
     [
       {
         id: 'query-table',
-        name: 'Query a table',
+        name: '查询表',
         icon: () => <Table2 />,
         action: () => setPage(QUERY_TABLE_PAGE_NAME),
       },

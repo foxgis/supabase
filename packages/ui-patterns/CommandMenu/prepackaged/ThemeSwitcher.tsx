@@ -25,7 +25,7 @@ const useThemeSwitcherCommands = ({ options }: { options?: CommandOptions } = {}
     sections: [
       {
         id: 'switch-theme',
-        name: 'Switch theme',
+        name: '切换主题',
         commands: themes
           .filter(({ name }) => name === 'System' || name === 'Light' || name === 'Dark')
           .map((theme) => ({
@@ -36,7 +36,7 @@ const useThemeSwitcherCommands = ({ options }: { options?: CommandOptions } = {}
               setIsOpen(false)
             },
             icon: () =>
-              theme.name === 'System' ? <Monitor /> : theme.name === 'Light' ? <Sun /> : <Moon />,
+              theme.name === '系统' ? <Monitor /> : theme.name === '明亮' ? <Sun /> : <Moon />,
           })),
       },
     ],
@@ -47,7 +47,7 @@ const useThemeSwitcherCommands = ({ options }: { options?: CommandOptions } = {}
     [
       {
         id: 'switch-theme',
-        name: 'Switch theme',
+        name: '切换主题',
         action: () => setPage(THEME_SWITCHER_PAGE_NAME),
         defaultHidden: true,
         icon: () => <MonitorDot />,
