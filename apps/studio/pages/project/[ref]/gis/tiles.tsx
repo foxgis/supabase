@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import DefaultLayout from 'components/layouts/DefaultLayout'
 import GISLayout from 'components/layouts/GISLayout/GISLayout'
 import { FormHeader } from 'components/ui/Forms/FormHeader'
 import { ScaffoldContainer, ScaffoldSection } from 'components/layouts/Scaffold'
@@ -20,6 +21,10 @@ const TilesPage: NextPageWithLayout = () => {
   )
 }
 
-TilesPage.getLayout = (page) => <GISLayout title="瓦片服务">{page}</GISLayout>
+TilesPage.getLayout = (page) => (
+  <DefaultLayout>
+    <GISLayout title="瓦片服务">{page}</GISLayout>
+  </DefaultLayout>
+)
 
 export default TilesPage
