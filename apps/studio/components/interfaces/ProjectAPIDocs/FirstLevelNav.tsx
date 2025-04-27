@@ -181,7 +181,7 @@ const FirstLevelNav = () => {
         </Button>
       </div> */}
 
-      <div className="px-2 py-4">
+      {/* <div className="px-2 py-4">
         <Button block asChild type="text" size="small" icon={<Book />}>
           <Link
             href="https://supabase.com/docs"
@@ -202,7 +202,7 @@ const FirstLevelNav = () => {
             API 指南
           </Link>
         </Button>
-      </div>
+      </div> */}
     </>
   )
 }

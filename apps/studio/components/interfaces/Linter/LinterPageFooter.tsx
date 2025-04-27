@@ -43,7 +43,7 @@ const LinterPageFooter = ({
           <p>
             <span>这些建议使用</span>
             <a href="https://github.com/supabase/splinter" target="" rel="">
-              splinter (Supabase Postgres LINTER)
+              splinter
             </a>
             生成。
           </p>
@@ -52,10 +52,10 @@ const LinterPageFooter = ({
 
       {!hideDbInspectCTA && (
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>检查您的数据库以查找潜在问题</p>
+          <p>检查数据库以查找潜在问题</p>
           <Markdown
             className="text-xs"
-            content="Supabase CLI 提供了一系列工具，可帮助您检查 Postgres 实例中的潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
+            content="数据中间件提供了一系列工具，可帮助您检查数据库实例中的潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
           />
         </div>
       )}

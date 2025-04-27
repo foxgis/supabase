@@ -259,7 +259,7 @@ const TableList = ({
           <Input
             size="tiny"
             className="flex-grow lg:flex-grow-0 w-52"
-            placeholder="Search for a table"
+            placeholder="查找表"
             value={filterString}
             onChange={(e) => setFilterString(e.target.value)}
             icon={<Search size={12} />}
@@ -280,7 +280,7 @@ const TableList = ({
                 },
               }}
             >
-              New table
+              新建表
             </ButtonTooltip>
           )}
         </div>

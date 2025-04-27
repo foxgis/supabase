@@ -68,7 +68,7 @@ const PropertyRow = ({
   const handleCopy = () => {
     copyToClipboard(String(value), () => {
       setIsCopied(true)
-      toast.success('Copied to clipboard')
+      toast.success('已复制到剪贴板')
     })
 
     setTimeout(() => {
@@ -148,7 +148,7 @@ const PropertyRow = ({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem onClick={handleCopy}>Copy {keyName}</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleCopy}>复制 {keyName}</DropdownMenuItem>
         {!isObject && (
           <DropdownMenuItem
             onClick={() => {

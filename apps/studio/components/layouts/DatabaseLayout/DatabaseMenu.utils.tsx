@@ -59,7 +59,7 @@ export const generateDatabaseMenu = (
           items: [],
         },
         {
-          name: '事件发布',
+          name: '发布订阅',
           key: 'publications',
           url: `/project/${ref}/database/publications`,
           items: [],

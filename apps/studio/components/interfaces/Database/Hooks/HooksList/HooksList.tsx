@@ -48,7 +48,7 @@ const HooksList = ({ createHook = noop, editHook = noop, deleteHook = noop }: Ho
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
         <Input
-          placeholder="Search for a webhook"
+          placeholder="查找 webhook"
           size="tiny"
           icon={<Search size="14" />}
           value={filterString}

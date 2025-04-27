@@ -68,12 +68,12 @@ const LinterFilters = ({
             <RefreshCw className={`text-foreground-light ${isLoading ? 'animate-spin' : ''}`} />
           }
         >
-          Refresh
+          刷新
         </Button>
         <DownloadResultsButton
           align="end"
           results={filteredLints}
-          fileName={`Supabase Performance Security Lints (${ref})`}
+          fileName={`安全报告（${ref}）`}
         />
       </div>
     </div>

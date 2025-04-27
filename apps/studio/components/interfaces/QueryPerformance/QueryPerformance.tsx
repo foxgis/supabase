@@ -242,10 +242,10 @@ export const QueryPerformance = ({
         </div>
 
         <div className="w-[33%] flex flex-col gap-y-1 text-sm">
-          <p>检查您的数据库是否有潜在问题</p>
+          <p>检查数据库是否存在潜在问题</p>
           <Markdown
             className="text-xs"
-            content="Supabase CLI 附带了一系列工具，可帮助您检查您的 Postgres 实例是否存在潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
+            content="数据中间件附带了一系列工具，可帮助您检查数据库实例是否存在潜在问题。[从这里了解更多](https://supabase.com/docs/guides/database/inspect)."
           />
         </div>
       </div>

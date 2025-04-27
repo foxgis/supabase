@@ -71,7 +71,7 @@ const Migrations = () => {
                 <div className="w-80 mb-4">
                   <Input
                     size="small"
-                    placeholder="Search for a migration"
+                    placeholder="查找迁移版本"
                     value={search}
                     onChange={(e: any) => setSearch(e.target.value)}
                     icon={<Search size="14" />}

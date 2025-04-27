@@ -11,8 +11,8 @@ const NoTableState: React.FC<Props> = ({ message }) => {
 
   return (
     <ProductEmptyState
-      title="No public tables found"
-      ctaButtonLabel="Create a new table"
+      title="未找到公开的表"
+      ctaButtonLabel="创建表"
       onClickCta={() => {
         router.push(`/project/${ref}/editor`)
       }}

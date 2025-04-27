@@ -60,7 +60,7 @@ const NoResultAlert = ({
               </div>
               <Link href={`/project/${ref}/realtime/inspector`} target="_blank" rel="noreferrer">
                 <Button type="default" iconRight={<ExternalLink />}>
-                  打开检视器
+                  打开监听器
                 </Button>
               </Link>
             </div>
@@ -76,7 +76,7 @@ const NoResultAlert = ({
               </div>
               <Link href={`/project/${ref}/database/publications`} target="_blank" rel="noreferrer">
                 <Button type="default" iconRight={<ExternalLink />}>
-                  数据库事件发布设置
+                  数据库发布订阅设置
                 </Button>
               </Link>
             </div>

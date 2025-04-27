@@ -167,7 +167,7 @@ const TriggersList = ({
                   <Table.th key="function">函数</Table.th>
                   <Table.th key="events">事件</Table.th>
                   <Table.th key="orientation">触发级别</Table.th>
-                  <Table.th key="enabled" className="w-20">
+                  <Table.th key="enabled" className="w-24">
                     是否启用
                   </Table.th>
                   <Table.th key="buttons" className="w-1/12"></Table.th>

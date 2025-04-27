@@ -25,7 +25,7 @@ export const LogsBarChart = ({
   data,
   onBarClick,
   EmptyState,
-  DateTimeFormat = 'MMM D, YYYY, hh:mma',
+  DateTimeFormat = 'YYYY/MM/DD hh:mm A',
 }: {
   data: LogsBarChartDatum[]
   onBarClick?: (datum: LogsBarChartDatum, tooltipData?: CategoricalChartState) => void
@@ -48,13 +48,13 @@ export const LogsBarChart = ({
         config={
           {
             error_count: {
-              label: 'Errors',
+              label: '错误',
             },
             ok_count: {
-              label: 'Ok',
+              label: '成功',
             },
             warning_count: {
-              label: 'Warnings',
+              label: '警告',
             },
           } satisfies ChartConfig
         }

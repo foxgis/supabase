@@ -517,19 +517,20 @@ export const DatabaseConnectionString = () => {
         </>
       )}
 
-      <Separator />
+      {/* <Separator />
       <div className="px-8 pt-5 flex flex-col gap-y-1">
-        <p className="text-sm">Reset your database password</p>
+        <p className="text-sm">重置数据库密码</p>
         <p className="text-sm text-foreground-lighter">
-          You may reset your database password in your project's{' '}
+          您可以在{' '}
           <InlineLink
             href={`/project/${projectRef}/settings/database`}
             className="text-foreground-lighter hover:text-foreground"
           >
-            Database Settings
+            数据库设置
           </InlineLink>
+          中重置数据库密码
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

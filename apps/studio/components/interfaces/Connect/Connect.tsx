@@ -182,7 +182,7 @@ const Connect = () => {
         <DialogHeader className={DIALOG_PADDING_X}>
           <DialogTitle>连接到项目</DialogTitle>
           <DialogDescription>
-            为您的应用获取连接到项目的字符串和环境变量
+            为您的应用获取数据库连接字符串和环境变量
           </DialogDescription>
         </DialogHeader>
 
@@ -276,7 +276,7 @@ const Connect = () => {
                   filePath={filePath}
                   className="rounded-b-none"
                 />
-                <Panel.Notice
+                {/* <Panel.Notice
                   className="border border-t-0 rounded-lg rounded-t-none"
                   title="新 API 密钥"
                   description={`
@@ -284,7 +284,7 @@ const Connect = () => {
 `}
                   href="https://github.com/orgs/supabase/discussions/29260"
                   buttonText="阅读公告"
-                />
+                /> */}
               </TabsContent_Shadcn_>
             )
           })}

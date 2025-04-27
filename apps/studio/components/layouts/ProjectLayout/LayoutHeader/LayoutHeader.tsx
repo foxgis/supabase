@@ -90,7 +90,7 @@ const LayoutHeader = ({
       {showProductMenu && (
         <div className="flex items-center justify-center border-r flex-0 md:hidden h-full aspect-square">
           <button
-            title="Menu dropdown button"
+            title="下拉菜单按钮"
             className={cn(
               'group/view-toggle ml-4 flex justify-center flex-col border-none space-x-0 items-start gap-1 !bg-transparent rounded-md min-w-[30px] w-[30px] h-[30px]'
             )}
@@ -131,8 +131,9 @@ const LayoutHeader = ({
                       ease: 'easeOut',
                     }}
                   >
-                    <LayoutHeaderDivider />
-                    <ProjectDropdown />
+                    {/* <LayoutHeaderDivider />
+                    <ProjectDropdown /> */}
+                    <h1 className="text-lg">数据中间件</h1>
 
                     {exceedingLimits && (
                       <div className="ml-2">

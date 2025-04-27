@@ -262,7 +262,7 @@ export const UsersV2 = () => {
   return (
     <>
       <div className="h-full flex flex-col">
-        <FormHeader className="py-4 px-6 !mb-0" title="Users" />
+        <FormHeader className="py-4 px-6 !mb-0" title="用户" />
         <div className="bg-surface-200 py-3 px-4 md:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-2 border-t">
           {selectedUsers.size > 0 ? (
             <div className="flex items-center gap-x-2">
@@ -557,7 +557,7 @@ export const UsersV2 = () => {
         </ResizablePanelGroup>
 
         <div className="flex justify-between min-h-9 h-9 overflow-hidden items-center px-6 w-full border-t text-xs text-foreground-light">
-          {isLoading || isRefetching ? 'Loading users...' : `Total: ${totalUsers} users`}
+          {isLoading || isRefetching ? '正在加载用户...' : `合计：${totalUsers} 位用户`}
           {(isLoading || isRefetching || isFetchingNextPage) && (
             <span className="flex items-center gap-2">
               <Loader2 size={14} className="animate-spin" /> 正在加载中...

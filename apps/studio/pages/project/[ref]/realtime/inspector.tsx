@@ -19,7 +19,7 @@ export const InspectorPage: NextPageWithLayout = () => {
 
 InspectorPage.getLayout = (page) => (
   <DefaultLayout>
-    <RealtimeLayout title="实时通信检视器">{page}</RealtimeLayout>
+    <RealtimeLayout title="实时通信监听器">{page}</RealtimeLayout>
   </DefaultLayout>
 )
 

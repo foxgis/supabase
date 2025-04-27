@@ -45,7 +45,7 @@ const Home: NextPageWithLayout = () => {
   }, [enableBranching])
 
   const projectName =
-    project?.ref !== 'default' && project?.name !== undefined ? project?.name : '欢迎使用数据中间件'
+    project?.ref !== 'default' && project?.name !== undefined ? project?.name : '欢迎访问数据中间件'
 
   return (
     <div className="w-full mx-auto my-12 md:my-16 space-y-12 md:space-y-16 max-w-7xl">
@@ -83,9 +83,6 @@ const Home: NextPageWithLayout = () => {
       </div>
 
       <div className="space-y-4">
-        <div className="mx-6">
-          <h4 className="text-lg">关于数据中间件</h4>
-        </div>
         <p className="mx-6 text-sm">
           数据中间件是一款高效便捷的后端即服务（BaaS）平台，旨在为开发者提供一整套后端数据服务，使开发者能够专注于业务逻辑和用户体验，而不必花费大量时间和精力在后端基础设施的搭建和维护上，简化和加速应用程序开发流程。
           数据中间件是在开源的 Supabase 基础上打造，通过集成 FoxGIS 先进的 GIS

@@ -90,7 +90,7 @@ const HomePageActions = ({
       <div className="flex items-center gap-2">
         <Input
           size="tiny"
-          placeholder="Search for a project"
+          placeholder="查找项目"
           icon={<Search size={16} />}
           className="w-full flex-1 md:w-64 [&>div>div>div>input]:!pl-7 [&>div>div>div>div]:!pl-2"
           value={search}

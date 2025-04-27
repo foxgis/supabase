@@ -86,7 +86,7 @@ export const LogsPreviewer = ({
       return {
         to: iso_timestamp_end,
         from: iso_timestamp_start,
-        text: `${dayjs(iso_timestamp_start).format('DD MMM, HH:mm')} - ${dayjs(iso_timestamp_end).format('DD MMM, HH:mm')}`,
+        text: `${dayjs(iso_timestamp_start).format('MM-DD HH:mm')} - ${dayjs(iso_timestamp_end).format('MM-DD HH:mm')}`,
         isHelper: false,
       }
     }
@@ -259,9 +259,9 @@ export const LogsPreviewer = ({
               }}
               EmptyState={
                 <div className="flex flex-col items-center justify-center h-[67px]">
-                  <h2 className="text-foreground-light text-xs">No data</h2>
+                  <h2 className="text-foreground-light text-xs">无数据</h2>
                   <p className="text-foreground-lighter text-xs">
-                    It may take up to 24 hours for data to refresh
+                    可能最多要24小时等待数据刷新
                   </p>
                 </div>
               }
@@ -300,7 +300,7 @@ export const LogsPreviewer = ({
             载入更早的日志
           </Button>
           <div className="text-sm text-foreground-lighter">
-            Showing <span className="font-mono">{logData.length}</span> results
+            显示 <span className="font-mono">{logData.length}</span> 个结果
           </div>
           <div className="flex flex-row justify-end mt-2">
             <UpgradePrompt show={showUpgradePrompt} setShowUpgradePrompt={setShowUpgradePrompt} />

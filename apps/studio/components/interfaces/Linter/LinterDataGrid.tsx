@@ -240,7 +240,7 @@ const LinterDataGrid = ({
                       <div className="grid gap-2">
                         <h3 className="text-sm">解决方法</h3>
                         <div className="flex items-center gap-2">
-                          <Button
+                          {/* <Button
                             icon={<AiIconAnimation className="scale-75 w-3 h-3" />}
                             onClick={() => {
                               snap.newChat({
@@ -255,7 +255,7 @@ const LinterDataGrid = ({
                             }}
                           >
                             Ask Assistant
-                          </Button>
+                          </Button> */}
                           <LintCTA
                             title={selectedLint.name}
                             projectRef={ref!}

@@ -124,11 +124,11 @@ export const SchemaGraph = () => {
           a.setAttribute('download', `supabase-schema-${ref}.svg`)
           a.setAttribute('href', data)
           a.click()
-          toast.success('Successfully downloaded as SVG')
+          toast.success('成功下载为 SVG')
         })
         .catch((error) => {
-          console.error('Failed to download:', error)
-          toast.error('Failed to download current view:', error.message)
+          console.error('下载失败：', error)
+          toast.error('下载当前视图失败：', error.message)
         })
         .finally(() => {
           setIsDownloading(false)
@@ -149,11 +149,11 @@ export const SchemaGraph = () => {
           a.setAttribute('download', `supabase-schema-${ref}.png`)
           a.setAttribute('href', data)
           a.click()
-          toast.success('Successfully downloaded as PNG')
+          toast.success('成功下载为 PNG')
         })
         .catch((error) => {
-          console.error('Failed to download:', error)
-          toast.error('Failed to download current view:', error.message)
+          console.error('下载失败：', error)
+          toast.error('下载当前视图失败：', error.message)
         })
         .finally(() => {
           setIsDownloading(false)
@@ -244,12 +244,12 @@ export const SchemaGraph = () => {
           {tables.length === 0 ? (
             <div className="h-full flex items-center justify-center">
               <ProductEmptyState
-                title="No tables created yet"
-                ctaButtonLabel="Create a new table"
+                title="还未创建表"
+                ctaButtonLabel="创建表"
                 ctaUrl={`/project/${ref}/editor?create=table`}
               >
                 <p className="text-sm text-foreground-light">
-                  There are no tables found in the schema "{selectedSchema}"
+                  在“{selectedSchema}”模式中没有找到表。
                 </p>
               </ProductEmptyState>
             </div>

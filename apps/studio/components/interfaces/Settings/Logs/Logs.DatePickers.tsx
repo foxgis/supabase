@@ -311,7 +311,7 @@ export const LogsDatePicker = ({ onSubmit, helpers, value }: PropsWithChildren<P
                       className="px-1.5"
                     ></Button>
                     <span className="text-sm text-foreground-light">
-                      {dayjs(date).format('YYYY MM')}
+                      {dayjs(date).format('YYYY-MM')}
                     </span>
                     <Button
                       onClick={increaseMonth}
@@ -352,7 +352,7 @@ export const LogsDatePicker = ({ onSubmit, helpers, value }: PropsWithChildren<P
                 setEndDate(new Date())
               }}
             >
-              Today
+              今天
             </Button>
             <Button onClick={handleApply}>应用</Button>
           </div>

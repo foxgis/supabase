@@ -162,11 +162,11 @@ export const SQLEditorMenu = () => {
         )}
       </div>
 
-      <div className="p-4 border-t sticky bottom-0 bg-studio">
+      {/* <div className="p-4 border-t sticky bottom-0 bg-studio">
         <Button block type="default" onClick={() => appState.setOnGoingQueriesPanelOpen(true)}>
           查看运行中的查询
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }

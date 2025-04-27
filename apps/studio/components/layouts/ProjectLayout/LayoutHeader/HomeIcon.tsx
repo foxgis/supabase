@@ -41,9 +41,9 @@ export const HomeIcon = () => {
       <Image
         alt="数据中间件"
         src={`${router.basePath}/img/foxgis-logo.png`}
-        width={18}
-        height={18}
-        className="w-[18px] h-[18px]"
+        width={32}
+        height={32}
+        className="w-[32px] h-[32px]"
       />
     </Link>
   )

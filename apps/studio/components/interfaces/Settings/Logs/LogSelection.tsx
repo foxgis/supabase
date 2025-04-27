@@ -87,10 +87,10 @@ const LogSelection = ({ log, onClose, queryType, isLoading, error }: LogSelectio
         <Tabs_Shadcn_ defaultValue="details" className="flex flex-col h-full">
           <TabsList_Shadcn_ className="px-2 pt-2 relative">
             <TabsTrigger_Shadcn_ className="px-3" value="details">
-              详情
+              日志详情
             </TabsTrigger_Shadcn_>
             <TabsTrigger_Shadcn_ disabled={!log} className="px-3" value="raw">
-              原始
+              原始日志
             </TabsTrigger_Shadcn_>
             <div className="*:px-1.5 *:text-foreground-lighter ml-auto flex gap-1 absolute right-2 top-2">
               <ButtonTooltip
@@ -98,7 +98,7 @@ const LogSelection = ({ log, onClose, queryType, isLoading, error }: LogSelectio
                 type="text"
                 tooltip={{
                   content: {
-                    text: isLoading ? 'Loading log...' : 'Copy as JSON',
+                    text: isLoading ? '正在加载日志...' : '复制 JSON',
                   },
                 }}
                 onClick={() => {
@@ -149,8 +149,8 @@ const LogSelection = ({ log, onClose, queryType, isLoading, error }: LogSelectio
 export default LogSelection
 
 function LogDetailEmptyState({
-  title = 'Select an Event',
-  message = 'Select an Event to view the complete JSON payload',
+  title = '选择事件',
+  message = '选择一个事件查看其完整的 JSON 载荷',
 }: {
   title?: string
   message?: string
