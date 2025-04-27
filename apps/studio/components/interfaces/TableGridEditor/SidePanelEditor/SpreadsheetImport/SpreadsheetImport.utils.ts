@@ -146,7 +146,7 @@ export const inferColumnType = (column: string, rows: object[]) => {
   // Infer datetime type
   if (Date.parse(columnData)) {
     const isAllTimestamptz = columnDataAcrossRows.every((item) =>
-      dayjs(item, 'YYYY-MM-DD hh:mm:ss').isValid()
+      dayjs(item, 'YYYY/MM/DD hh:mm:ss').isValid()
     )
 
     if (isAllTimestamptz) {

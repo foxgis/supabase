@@ -25,7 +25,7 @@ export const LogsBarChart = ({
   data,
   onBarClick,
   EmptyState,
-  DateTimeFormat = 'YYYY/MM/DD hh:mm A',
+  DateTimeFormat = 'YYYY/MM/DD HH:mm',
 }: {
   data: LogsBarChartDatum[]
   onBarClick?: (datum: LogsBarChartDatum, tooltipData?: CategoricalChartState) => void
@@ -39,8 +39,8 @@ export const LogsBarChart = ({
     return null
   }
 
-  const startDate = dayjs(data[0]['timestamp']).format(DateTimeFormat)
-  const endDate = dayjs(data[data?.length - 1]?.['timestamp']).format(DateTimeFormat)
+  const startDate = dayjs(data[0]['timestamp']).local().format(DateTimeFormat)
+  const endDate = dayjs(data[data?.length - 1]?.['timestamp']).local().format(DateTimeFormat)
 
   return (
     <div className={cn('flex flex-col gap-y-3')}>

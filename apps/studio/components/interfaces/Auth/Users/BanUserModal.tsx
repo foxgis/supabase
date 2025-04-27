@@ -42,7 +42,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
     onSuccess: (_, vars) => {
       const bannedUntil = dayjs()
         .add(Number(vars.banDuration), 'hours')
-        .format('YYYY-MM-DD HH:mm (ZZ)')
+        .format('YYYY/MM/DD HH:mm (ZZ)')
       toast.success(`成功封禁用户到 ${bannedUntil}`)
       onClose()
     },
@@ -62,7 +62,7 @@ export const BanUserModal = ({ visible, user, onClose }: BanUserModalProps) => {
   })
 
   const { value, unit } = form.watch()
-  const bannedUntil = dayjs().add(Number(value), unit).format('YYYY-MM-DD HH:mm (ZZ)')
+  const bannedUntil = dayjs().add(Number(value), unit).format('YYYY/MM/DD HH:mm (ZZ)')
 
   const onSubmit = (data: FormType) => {
     if (projectRef === undefined) return console.error('未找到项目号')

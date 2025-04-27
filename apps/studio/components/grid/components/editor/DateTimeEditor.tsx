@@ -25,9 +25,9 @@ interface BaseEditorProps<TRow, TSummaryRow = unknown>
 }
 
 const FORMAT_MAP = {
-  date: 'YYYY-MM-DD',
-  datetime: 'YYYY-MM-DD HH:mm:ss',
-  datetimetz: 'YYYY-MM-DD HH:mm:ss+ZZ',
+  date: 'YYYY/MM/DD',
+  datetime: 'YYYY/MM/DD HH:mm:ss',
+  datetimetz: 'YYYY/MM/DD HH:mm:ss+ZZ',
 }
 
 function BaseEditor<TRow, TSummaryRow = unknown>({
@@ -53,10 +53,10 @@ function BaseEditor<TRow, TSummaryRow = unknown>({
   const setToNow = () => {
     const formattedNow = dayjs().format(
       type === 'date'
-        ? 'YYYY-MM-DD'
+        ? 'YYYY/MM/DD'
         : type === 'datetimetz'
-          ? 'YYYY-MM-DDTHH:mm:ssZ'
-          : 'YYYY-MM-DDTHH:mm:ss'
+          ? 'YYYY/MM/DDTHH:mm:ssZ'
+          : 'YYYY/MM/DDTHH:mm:ss'
     )
     saveChanges(formattedNow)
   }

@@ -297,7 +297,7 @@ export const formatUserColumns = ({
         const user = users?.find((u) => u.id === row.id)
         const formattedValue =
           value !== null && ['created_at', 'last_sign_in_at'].includes(col.id)
-            ? dayjs(value).format('YYYY-MM-DD HH:mm:ss [GMT]ZZ')
+            ? dayjs(value).format('YYYY/MM/DD HH:mm:ss [GMT]ZZ')
             : Array.isArray(value)
               ? col.id === 'providers'
                 ? value

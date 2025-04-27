@@ -148,7 +148,7 @@ export const ChartBlock = ({
     const color = getCellColor(attribute, x[attribute])
     return {
       ...x,
-      period_start: dayjs(x.period_start).utc().format('YYYY-MM-DD'),
+      period_start: dayjs(x.period_start).utc().format('YYYY/MM/DD'),
       [attribute]: value,
       [metricLabel]: value,
       fill: color,

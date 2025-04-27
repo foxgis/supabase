@@ -441,17 +441,17 @@ export const FILTER_OPTIONS: FilterTableSet = {
         {
           key: 'error',
           label: '错误',
-          description: '500 error codes',
+          description: '500 错误码',
         },
         {
           key: 'success',
           label: '成功',
-          description: '200 codes',
+          description: '200 响应码',
         },
         {
           key: 'warning',
           label: '警告',
-          description: '400 codes',
+          description: '400 响应码',
         },
       ],
     },

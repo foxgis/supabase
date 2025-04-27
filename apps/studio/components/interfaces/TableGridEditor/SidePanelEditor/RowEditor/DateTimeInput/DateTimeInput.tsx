@@ -72,10 +72,10 @@ const DateTimeInput = ({
                   onChange(
                     dayjs().format(
                       format === 'date'
-                        ? 'YYYY-MM-DD'
+                        ? 'YYYY/MM/DD'
                         : ['time', 'timetz'].includes(format)
                           ? 'HH:mm:ss'
-                          : 'YYYY-MM-DDTHH:mm:ss'
+                          : 'YYYY/MM/DDTHH:mm:ss'
                     )
                   )
                 }

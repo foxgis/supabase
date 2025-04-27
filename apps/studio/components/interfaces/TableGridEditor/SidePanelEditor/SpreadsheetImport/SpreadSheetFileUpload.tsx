@@ -43,7 +43,7 @@ const SpreadSheetFileUpload = ({
           <span className="text-code">-</span>）或者下划线（<span className="text-code">_</span>）之外的任何特殊字符。
         </p>
         <p className="text-sm text-foreground-light">
-          提示：日期时间列应以 YYYY-MM-DD HH:mm:ss 格式。
+          提示：日期时间列应以 YYYY/MM/DD HH:mm:ss 格式。
         </p>
       </div>
       {!uploadedFile ? (

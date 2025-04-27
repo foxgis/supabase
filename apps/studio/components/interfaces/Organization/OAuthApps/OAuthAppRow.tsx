@@ -54,7 +54,7 @@ export const OAuthAppRow = ({ app, onSelectEdit, onSelectDelete }: OAuthAppRowPr
       <Table.td>
         <TimestampInfo
           utcTimestamp={app.created_at ?? ''}
-          labelFormat="DD/MM/YYYY, HH:mm:ss"
+          labelFormat="YYYY/MM/DD HH:mm:ss"
           className="text-sm"
         />
       </Table.td>

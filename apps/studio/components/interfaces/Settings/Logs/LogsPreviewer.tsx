@@ -86,7 +86,7 @@ export const LogsPreviewer = ({
       return {
         to: iso_timestamp_end,
         from: iso_timestamp_start,
-        text: `${dayjs(iso_timestamp_start).format('MM-DD HH:mm')} - ${dayjs(iso_timestamp_end).format('MM-DD HH:mm')}`,
+        text: `${dayjs(iso_timestamp_start).format('MM/DD HH:mm')} - ${dayjs(iso_timestamp_end).format('MM/DD HH:mm')}`,
         isHelper: false,
       }
     }

@@ -79,7 +79,7 @@ export const DEFAULT_STACK_COLORS: ValidStackColor[] = [
 ]
 
 export enum DateTimeFormats {
-  FULL = 'YYYY-MM-DD hh:mma',
-  FULL_SECONDS = 'YYYY-MM-DD hh:mm:ssa',
-  DATE_ONLY = 'YYYY-MM-DD',
+  FULL = 'YYYY/MM/DD hh:mma',
+  FULL_SECONDS = 'YYYY/MM/DD hh:mm:ssa',
+  DATE_ONLY = 'YYYY/MM/DD',
 }

@@ -28,7 +28,7 @@ import { UserHeader } from './UserHeader'
 import { PANEL_PADDING } from './UserPanel'
 import { providerIconMap } from './Users.utils'
 
-const DATE_FORMAT = 'YYYY-MM-DD HH:mm'
+const DATE_FORMAT = 'YYYY/MM/DD HH:mm'
 const CONTAINER_CLASS = cn(
   'bg-surface-100 border-default text-foreground flex items-center justify-between',
   'gap-x-4 border px-5 py-4 text-sm first:rounded-tr first:rounded-tl last:rounded-br last:rounded-bl'

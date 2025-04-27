@@ -159,11 +159,11 @@ function _DatePicker({
               appliedEndDate &&
               appliedStartDate !== appliedEndDate ? (
                 <>
-                  {format(new Date(appliedStartDate), 'MM-dd')} -{' '}
-                  {format(new Date(appliedEndDate), 'MM-dd')}
+                  {format(new Date(appliedStartDate), 'MM/dd')} -{' '}
+                  {format(new Date(appliedEndDate), 'MM/dd')}
                 </>
               ) : appliedStartDate || appliedEndDate ? (
-                format(new Date((appliedStartDate || appliedEndDate)!), 'MM-dd')
+                format(new Date((appliedStartDate || appliedEndDate)!), 'MM/dd')
               ) : (
                 '自定义'
               )}
@@ -228,7 +228,7 @@ function _DatePicker({
               onChange={(dates) => {
                 handleDatePickerChange(dates)
               }}
-              dateFormat="YYYY-MM-DD h:mm aa"
+              dateFormat="YYYY/MM/DD h:mm aa"
               startDate={startDate}
               endDate={endDate}
               minDate={minDate}
@@ -255,7 +255,7 @@ function _DatePicker({
                       <ChevronLeft size={16} strokeWidth={2} />
                     </button>
                     <span className="text-sm text-foreground-light">
-                      {format(date, 'yyyy-MM')}
+                      {format(date, 'yyyy/MM')}
                     </span>
                     <button
                       onClick={increaseMonth}

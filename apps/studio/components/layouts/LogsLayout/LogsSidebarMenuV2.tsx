@@ -126,7 +126,7 @@ export function LogsSidebarMenuV2() {
       items: [],
     },
     {
-      name: '接口生成器',
+      name: '接口引擎',
       key: 'postgrest-logs',
       url: `/project/${ref}/logs/postgrest-logs`,
       items: [],

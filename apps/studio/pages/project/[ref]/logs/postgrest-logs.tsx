@@ -19,8 +19,8 @@ export const LogPage: NextPageWithLayout = () => {
       tableName={LogsTableName.POSTGREST}
       EmptyState={
         <LogsTableEmptyState
-          title="No results found"
-          description="Only errors are captured into PostgREST logs by default. Check the API Gateway logs for HTTP requests."
+          title="未找到结果"
+          description="默认只捕获接口引擎的错误日志，HTTP 请求日志请到 API 网关中查看。"
         />
       }
     />

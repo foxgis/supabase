@@ -212,7 +212,7 @@ export const LogsDatePicker = ({ onSubmit, helpers, value }: PropsWithChildren<P
         <Button type="default" icon={<Clock size={12} />}>
           {value.isHelper
             ? value.text
-            : `${dayjs(value.from).format('MM-DD, HH:mm')} - ${dayjs(value.to || new Date()).format('MM-DD, HH:mm')}`}
+            : `${dayjs(value.from).format('MM/DD, HH:mm')} - ${dayjs(value.to || new Date()).format('MM/DD, HH:mm')}`}
         </Button>
       </PopoverTrigger_Shadcn_>
       <PopoverContent_Shadcn_ side="bottom" align="start" className="flex w-full p-0">
@@ -289,7 +289,7 @@ export const LogsDatePicker = ({ onSubmit, helpers, value }: PropsWithChildren<P
               onChange={(dates) => {
                 handleDatePickerChange(dates)
               }}
-              dateFormat="YYYY-MM-DD h:mm aa"
+              dateFormat="YYYY/MM/DD h:mm aa"
               dayClassName={() => 'cursor-pointer'}
               startDate={startDate}
               endDate={endDate}
@@ -311,7 +311,7 @@ export const LogsDatePicker = ({ onSubmit, helpers, value }: PropsWithChildren<P
                       className="px-1.5"
                     ></Button>
                     <span className="text-sm text-foreground-light">
-                      {dayjs(date).format('YYYY-MM')}
+                      {dayjs(date).format('YYYY/MM')}
                     </span>
                     <Button
                       onClick={increaseMonth}

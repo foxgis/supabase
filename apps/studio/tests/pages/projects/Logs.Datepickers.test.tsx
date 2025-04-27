@@ -28,9 +28,9 @@ test('renders warning', async () => {
       }}
     />
   )
-  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM/DD'))))
   await screen.findByText(/memory errors/)
-  await screen.findByText(RegExp(from.format('MM-DD')))
+  await screen.findByText(RegExp(from.format('MM/DD')))
 })
 
 test('renders dates in local time', async () => {
@@ -47,8 +47,8 @@ test('renders dates in local time', async () => {
     />
   )
   // renders time locally
-  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DD'))))
-  await screen.findByText(RegExp(from.format('YYYY-MM')))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM/DD'))))
+  await screen.findByText(RegExp(from.format('YYYY/MM')))
 })
 
 test('renders datepicker selected dates in local time', async () => {
@@ -65,10 +65,10 @@ test('renders datepicker selected dates in local time', async () => {
     />
   )
   // renders time locally
-  await userEvent.click(await screen.findByText(RegExp(from.format('MM-DDM'))))
+  await userEvent.click(await screen.findByText(RegExp(from.format('MM/DD'))))
   // inputs with local time
   await screen.findByText(
-    `${from.format('DD MMM')}, ${from.format('HH:mm')} - ${to.format('DD MMM')}, ${to.format('HH:mm')}`
+    `${from.format('MM/DD')}, ${from.format('HH:mm')} - ${to.format('MM/DD')}, ${to.format('HH:mm')}`
   )
   // selected date should be in local time
   await screen.findByText('25', { selector: "*[class*='--range-start'" })

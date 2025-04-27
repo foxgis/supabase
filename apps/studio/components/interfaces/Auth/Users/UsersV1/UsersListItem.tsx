@@ -49,11 +49,11 @@ export const UserListItem = ({
         </span>
       </Table.td>
       <Table.td className="table-cell">
-        <span className="text-foreground">{createdAt?.format('YYYY-MM-DD HH:mm')}</span>
+        <span className="text-foreground">{createdAt?.format('YYYY/MM/DD HH:mm')}</span>
       </Table.td>
       <Table.td className="table-cell">
         {user?.last_sign_in_at ? (
-          lastSignedIn?.format('YYYY-MM-DD HH:mm')
+          lastSignedIn?.format('YYYY/MM/DD HH:mm')
         ) : !isUserConfirmed ? (
           <Badge variant="warning">等待验证...</Badge>
         ) : (

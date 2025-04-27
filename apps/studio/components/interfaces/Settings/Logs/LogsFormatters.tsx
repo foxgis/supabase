@@ -206,7 +206,7 @@ export const SeverityFormatter = ({
 
 export const timestampLocalFormatter = (value: string | number) => {
   const timestamp = isUnixMicro(value) ? unixMicroToIsoTimestamp(value) : value
-  return dayjs(timestamp).format('MM-DD HH:mm:ss')
+  return dayjs(timestamp).format('MM/DD HH:mm:ss')
 }
 
 /*

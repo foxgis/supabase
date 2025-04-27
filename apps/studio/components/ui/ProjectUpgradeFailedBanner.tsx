@@ -38,7 +38,7 @@ export const ProjectUpgradeFailedBanner = () => {
     dayjs
       .utc(latest_status_at ?? 0)
       .utcOffset(0)
-      .format('YYYY-MM-DDTHH:mm:ss')
+      .format('YYYY/MM/DDTHH:mm:ss')
   )
   const timestampFilter = `its=${initiatedAtEncoded}&ite=${latestStatusAtEncoded}`
 

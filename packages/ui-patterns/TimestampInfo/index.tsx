@@ -123,7 +123,7 @@ export const TimestampInfo = ({
           <div className="border-t w-full border-dashed z-10" />
           {copied && (
             <span className="flex items-center justify-end w-full absolute inset-0 flex items-right text-brand-600 bg-surface-100">
-              Copied!
+              已复制！
             </span>
           )}
           <span className="flex items-center gap-x-2 justify-end whitespace-nowrap">{value}</span>
@@ -146,10 +146,10 @@ export const TimestampInfo = ({
         </span>
       </TooltipTrigger>
       <TooltipContent align={align} side="right" className="font-mono p-0 py-1 min-w-80">
-        <TooltipRow label="UTC" value={utc} />
-        <TooltipRow label={localTimezone} value={local} />
-        <TooltipRow label="Relative" value={relative} />
-        <TooltipRow label="Timestamp" value={String(utcTimestamp)} />
+        <TooltipRow label="UTC时间" value={utc} />
+        <TooltipRow label="本地时间" value={local} />
+        <TooltipRow label="相对时间" value={relative} />
+        <TooltipRow label="时间戳" value={String(utcTimestamp)} />
       </TooltipContent>
     </Tooltip>
   )
