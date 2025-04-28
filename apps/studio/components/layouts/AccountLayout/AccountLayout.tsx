@@ -62,8 +62,8 @@ const AccountLayout = ({ children, title }: PropsWithChildren<AccountLayoutProps
   return (
     <>
       <Head>
-        <title>{title ? `${title}` : 'FoxGIS'}</title>
-        <meta name="description" content="FoxGIS Studio" />
+        <title>{title ? `${title}` : '数据中间件'}</title>
+        <meta name="description" content="数据中间件工作台" />
       </Head>
       <div className={cn(newLayoutPreview ? 'flex flex-col h-screen w-screen' : '')}>
         {newLayoutPreview && (

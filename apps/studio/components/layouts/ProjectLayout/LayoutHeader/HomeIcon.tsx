@@ -40,7 +40,7 @@ export const HomeIcon = () => {
     <Link href={href} className="items-center justify-center flex-shrink-0 hidden md:flex">
       <Image
         alt="数据中间件"
-        src={`${router.basePath}/img/foxgis-logo.png`}
+        src={`${router.basePath}/img/dbware-logo.png`}
         width={32}
         height={32}
         className="w-[32px] h-[32px]"
