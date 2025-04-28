@@ -105,7 +105,7 @@ describe('LogsFilterPopover', () => {
     await waitFor(() => {
       const warningButton = screen.getByText('Warning')
       fireEvent.click(warningButton)
-      fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
+      fireEvent.click(screen.getByRole('button', { name: '应用' }))
     })
 
     expect(onFiltersChange).toHaveBeenCalledWith({
@@ -130,7 +130,7 @@ describe('LogsFilterPopover', () => {
     fireEvent.click(screen.getByText('Severity'))
 
     await waitFor(() => {
-      fireEvent.click(screen.getByText('Clear'))
+      fireEvent.click(screen.getByText('清除'))
     })
 
     expect(onFiltersChange).toHaveBeenCalledWith({
