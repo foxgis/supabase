@@ -29,7 +29,7 @@ test('renders warning', async () => {
     />
   )
   await userEvent.click(await screen.findByText(RegExp(from.format('MM/DD'))))
-  await screen.findByText(/memory errors/)
+  await screen.findByText(/内存错误/)
   await screen.findByText(RegExp(from.format('MM/DD')))
 })
 
@@ -170,15 +170,15 @@ test('passing a value prop shows the correct dates in the label', async () => {
   )
 
   await screen.findByText(
-    `${from.format('DD MMM')}, ${from.format('HH:mm')} - ${to.format('DD MMM')}, ${to.format('HH:mm')}`
+    `${from.format('MM/DD')}, ${from.format('HH:mm')} - ${to.format('MM/DD')}, ${to.format('HH:mm')}`
   )
 
   // change the date
-  userEvent.click(await screen.findByText(RegExp(from.format('DD MMM'))))
-  userEvent.click(await screen.findByText(RegExp(to.format('DD MMM'))))
+  userEvent.click(await screen.findByText(RegExp(from.format('MM/DD'))))
+  userEvent.click(await screen.findByText(RegExp(to.format('MM/DD'))))
 
   await screen.findByText(
-    `${from.format('DD MMM')}, ${from.format('HH:mm')} - ${to.format('DD MMM')}, ${to.format('HH:mm')}`
+    `${from.format('MM/DD')}, ${from.format('HH:mm')} - ${to.format('MM/DD')}, ${to.format('HH:mm')}`
   )
 })
 
