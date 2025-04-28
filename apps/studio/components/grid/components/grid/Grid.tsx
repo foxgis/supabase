@@ -123,11 +123,10 @@ export const Grid = memo(
             >
               {isLoading && <GenericSkeletonLoader />}
               {isError && (
-                <AlertError error={error} subject="Failed to retrieve rows from table">
+                <AlertError error={error} subject="从表中获取数据行失败">
                   {filters.length > 0 && (
                     <p>
-                      Verify that the filter values are correct, as the error may stem from an
-                      incorrectly applied filter
+                      验证过滤条件是否正确，因为错误可能源于应用了不正确的过滤条件
                     </p>
                   )}
                 </AlertError>
@@ -136,9 +135,9 @@ export const Grid = memo(
                 <>
                   {(filters ?? []).length === 0 ? (
                     <div className="flex flex-col items-center justify-center col-span-full h-full">
-                      <p className="text-sm text-light">This table is empty</p>
+                      <p className="text-sm text-light">表是空的</p>
                       <p className="text-sm text-light mt-1">
-                        Add rows to your table to get started.
+                        向表里面添加数据行。
                       </p>
                       <div className="flex items-center space-x-2 mt-4">
                         {
@@ -148,15 +147,15 @@ export const Grid = memo(
                               tableEditorSnap.onImportData()
                               sendEvent({
                                 action: 'import_data_button_clicked',
-                                properties: { tableType: 'Existing Table' },
+                                properties: { tableType: '已有表' },
                                 groups: {
-                                  project: project?.ref ?? 'Unknown',
-                                  organization: org?.slug ?? 'Unknown',
+                                  project: project?.ref ?? '未知项目',
+                                  organization: org?.slug ?? '未知组织',
                                 },
                               })
                             }}
                           >
-                            Import data from CSV
+                            从 CSV 中导入数据
                           </Button>
                         }
                       </div>
@@ -164,11 +163,11 @@ export const Grid = memo(
                   ) : (
                     <div className="flex flex-col items-center justify-center col-span-full">
                       <p className="text-sm text-light">
-                        The filters applied have returned no results from this table
+                        表在应用过滤条件后没有返回任何结果
                       </p>
                       <div className="flex items-center space-x-2 mt-4">
                         <Button type="default" onClick={() => removeAllFilters()}>
-                          Remove all filters
+                          移除所有过滤条件
                         </Button>
                       </div>
                     </div>

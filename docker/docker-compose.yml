@@ -214,6 +214,7 @@ services:
       - ./volumes/storage:/var/lib/storage:z
       - ./volumes/db/0026-objects-prefixes.sql:/app/migrations/tenant/0026-objects-prefixes.sql:ro,z
       - ./volumes/db/0035-add-insert-trigger-prefixes.sql:/app/migrations/tenant/0035-add-insert-trigger-prefixes.sql:ro,z
+      - ./volumes/db/0036-optimise-existing-functions.sql:/app/migrations/tenant/0036-optimise-existing-functions.sql:ro,z
     healthcheck:
       test:
         [
