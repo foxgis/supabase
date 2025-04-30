@@ -1,6 +1,7 @@
 import { noop } from 'lodash'
 import { useEffect, useState } from 'react'
-import { Alert, Button, Modal } from 'ui'
+
+import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { StorageItem } from '../Storage.types'
 import { STORAGE_ROW_TYPES } from '../Storage.constants'
 
@@ -17,7 +18,7 @@ const rowTypes: Record<STORAGE_ROW_TYPES, string> = {
   BUCKET: '存储桶',
 }
 
-const ConfirmDeleteModal = ({
+export const ConfirmDeleteModal = ({
   visible = false,
   selectedItemsToDelete = [],
   onSelectCancel = noop,
@@ -49,28 +50,19 @@ const ConfirmDeleteModal = ({
   }
 
   return (
-    <Modal
+    <ConfirmationModal
       visible={visible}
-      header={<span className="break-words">{title}</span>}
+      title={<span className="break-words">{title}</span>}
       size="medium"
       onCancel={onSelectCancel}
-      customFooter={
-        <div className="flex items-center gap-2">
-          <Button type="default" disabled={deleting} onClick={onSelectCancel}>
-            取消
-          </Button>
-          <Button type="danger" disabled={deleting} loading={deleting} onClick={onConfirmDelete}>
-            {deleting ? '正在删除' : '删除'}
-          </Button>
-        </div>
-      }
-    >
-      <Modal.Content>
-        <Alert withIcon variant="danger" title={`本操作不能被撤销。`}>
-          {description}
-        </Alert>
-      </Modal.Content>
-    </Modal>
+      onConfirm={onConfirmDelete}
+      variant="destructive"
+      alert={{
+        base: { variant: 'destructive' },
+        title: '此操作不可撤回',
+        description,
+      }}
+    />
   )
 }
 
