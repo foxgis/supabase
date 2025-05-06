@@ -52,7 +52,7 @@ const ClientLibrary = ({
           )}
           <a href={gitUrl} target="_blank" rel="noreferrer">
             <Button icon={<Github />} type="default">
-              跳转到 GitHub 上<span className="hidden md:inline">查看</span>
+              在 GitHub 上<span className="hidden md:inline">查看</span>
             </Button>
           </a>
         </div>
