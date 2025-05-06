@@ -19,7 +19,7 @@ export const generateAuthMenu = (ref: string): ProductMenuGroup[] => {
         ...(IS_PLATFORM
           ? [
               {
-                name: '登录 / 退出',
+                name: '登录 / 第三方登录',
                 key: 'sign-in-up',
                 pages: ['providers', 'third-party'],
                 url: `/project/${ref}/auth/providers`,

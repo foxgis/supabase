@@ -205,7 +205,7 @@ const LayoutHeader = ({
             </>
           ) : (
             <>
-              <LocalVersionPopover />
+              {/* <LocalVersionPopover /> */}
               <LocalDropdown />
             </>
           )}

@@ -217,7 +217,7 @@ const TableList = ({
                 icon={<Filter />}
               />
             </PopoverTrigger_Shadcn_>
-            <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center">
+            <PopoverContent_Shadcn_ className="p-0 w-56" side="bottom" align="center" portal={true}>
               <div className="px-3 pt-3 pb-2 flex flex-col gap-y-2">
                 <p className="text-xs">显示的表类型</p>
                 <div className="flex flex-col">
