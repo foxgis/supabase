@@ -83,19 +83,43 @@ const Home: NextPageWithLayout = () => {
       </div>
 
       <div className="space-y-4">
+        <div className="mx-6">
+          <h4 className="text-lg">数据中间件是什么？</h4>
+        </div>
         <p className="mx-6 text-sm">
           数据中间件是一款智能数据引擎，简单连接上您的数据库，即可将数据库中的数据以 RESTful API 的形式暴露给应用。
-          数据中间件能够自动探查数据库结构，智能生成 5 大类标准数据接口，并且可以灵活配置接口权限保障安全访问。
+          数据中间件能够自动探查数据库结构，智能生成 5 大类标准数据接口，并且可以灵活配置接口权限以保障安全访问。
           应用开发者不再需要开发数据接口，只需调用数据中间件提供的标准数据接口即可快速构建多端应用。
         </p>
         <div className="flex justify-center">
           <figure className="text-center">
             <img
               className="h-96"
-              src={`${BASE_PATH}/img/architecture.png`}
+              src={`${BASE_PATH}/img/dbware-intro1.png`}
               alt="架构图"
             />
             <figcaption className="text-sm">数据中间件架构图</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="mx-6">
+          <h4 className="text-lg">数据中间件有什么用？</h4>
+        </div>
+        <p className="mx-6 text-sm">
+          在传统开发模式下，客户端通过服务端定制开发接口<b>“间接”</b>访问数据库，存在开发效率低、协作成本高和安全风险大的问题。
+          在数据中间件开发模式下，客户端通过数据中间件自动生成接口<b>“直接”</b>访问数据库，可以提高开发效率、降低协作成本和提高安全控制能力。
+          因此，数据中间件的口号是：<b>“前端变全栈，后端稳如山。要啥就有啥，上午就上线。”</b>
+        </p>
+        <div className="flex justify-center">
+          <figure className="text-center">
+            <img
+              className="h-96"
+              src={`${BASE_PATH}/img/dbware-intro2.png`}
+              alt="开发模式对比"
+            />
+            <figcaption className="text-sm">传统开发模式与数据中间件开发模式对比</figcaption>
           </figure>
         </div>
       </div>
