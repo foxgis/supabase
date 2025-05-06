@@ -6,7 +6,7 @@
 # Deploy:       docker push jingsam/supabase-studio:latest
 # Clean build:
 #    docker builder prune
-#    docker build . -f studio/Dockerfile --target production -t jingsam/supabase-studio:latest --no-cache
+#    docker build . -f apps/studio/Dockerfile --target production -t jingsam/supabase-studio:latest --no-cache
 
 FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
