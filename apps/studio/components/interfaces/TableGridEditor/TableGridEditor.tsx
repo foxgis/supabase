@@ -113,8 +113,8 @@ export const TableGridEditor = ({
         <div className="w-[400px]">
           <Admonition
             type="default"
-            title={`Unable to find your table with ID ${id}`}
-            description="This table doesn't exist in your database"
+            title={`未找到 ID 为 ${id} 的表`}
+            description="数据库中不存在此表"
           >
             {isTableEditorTabsEnabled && (
               <Button

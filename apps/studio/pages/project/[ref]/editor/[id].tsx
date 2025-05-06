@@ -59,7 +59,7 @@ const TableEditorPage: NextPageWithLayout = () => {
 
 TableEditorPage.getLayout = (page) => (
   <DefaultLayout>
-    <EditorBaseLayout productMenu={<TableEditorMenu />} product="Table Editor">
+    <EditorBaseLayout productMenu={<TableEditorMenu />} product="数据管理">
       <TableEditorLayout>{page}</TableEditorLayout>
     </EditorBaseLayout>
   </DefaultLayout>

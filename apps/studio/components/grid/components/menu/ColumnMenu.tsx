@@ -79,7 +79,7 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
           onClick={() => onSortColumn(true)}
         >
           <ArrowUp size={14} strokeWidth={currentSort?.ascending ? 3 : 1.5} />
-          <span>Sort Ascending</span>
+          <span>升序</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn(
@@ -91,7 +91,7 @@ const ColumnMenu = ({ column, isEncrypted }: ColumnMenuProps) => {
           onClick={() => onSortColumn(false)}
         >
           <ArrowDown size={14} strokeWidth={currentSort && !currentSort.ascending ? 3 : 1.5} />
-          <span>Sort Descending</span>
+          <span>降序</span>
         </DropdownMenuItem>
         {snap.editable && (
           <>
