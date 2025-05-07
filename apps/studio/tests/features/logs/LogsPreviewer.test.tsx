@@ -98,13 +98,13 @@ test('can toggle log event chart', async () => {
     <LogsPreviewer queryType="api" projectRef="default" tableName={LogsTableName.EDGE} />
   )
 
-  expect(screen.getByRole('button', { name: /Chart/i })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /图表/i })).toBeInTheDocument()
 
   await waitFor(() => {
     expect(screen.getByTestId('logs-bar-chart')).toBeInTheDocument()
   })
 
-  await userEvent.click(screen.getByRole('button', { name: /Chart/i }))
+  await userEvent.click(screen.getByRole('button', { name: /图表/i }))
 
   await waitFor(() => {
     expect(screen.queryByTestId('logs-bar-chart')).not.toBeInTheDocument()
@@ -117,7 +117,7 @@ test('can click load older', async () => {
   )
 
   const loadOlder = await waitFor(
-    async () => await screen.findByRole('button', { name: /Load older/i })
+    async () => await screen.findByRole('button', { name: /加载更早/i })
   )
 
   loadOlder.onclick = vi.fn()

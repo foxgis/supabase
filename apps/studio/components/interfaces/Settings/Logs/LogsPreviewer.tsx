@@ -297,7 +297,7 @@ export const LogsPreviewer = ({
             loading={isLoadingOlder}
             disabled={isLoadingOlder}
           >
-            载入更早的日志
+            加载更早的日志
           </Button>
           <div className="text-sm text-foreground-lighter">
             显示 <span className="font-mono">{logData.length}</span> 个结果
