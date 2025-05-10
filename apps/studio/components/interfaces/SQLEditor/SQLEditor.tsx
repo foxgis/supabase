@@ -13,7 +13,7 @@ import ResizableAIWidget from 'components/ui/AIEditor/ResizableAIWidget'
 import { GridFooter } from 'components/ui/GridFooter'
 import { useSqlTitleGenerateMutation } from 'data/ai/sql-title-mutation'
 import { useEntityDefinitionsQuery } from 'data/database/entity-definitions-query'
-import { constructHeaders } from 'data/fetchers'
+import { constructHeaders, isValidConnString } from 'data/fetchers'
 import { lintKeys } from 'data/lint/keys'
 import { useReadReplicasQuery } from 'data/read-replicas/replicas-query'
 import { useExecuteSqlMutation } from 'data/sql/execute-sql-mutation'
@@ -147,9 +147,12 @@ export const SQLEditor = () => {
   const { data: subscription } = useOrgSubscriptionQuery({ orgSlug: org?.slug })
   const hasHipaaAddon = subscriptionHasHipaaAddon(subscription)
 
-  const { data: databases, isSuccess: isSuccessReadReplicas } = useReadReplicasQuery({
-    projectRef: ref,
-  })
+  const { data: databases, isSuccess: isSuccessReadReplicas } = useReadReplicasQuery(
+    {
+      projectRef: ref,
+    },
+    { enabled: isValidConnString(project?.connectionString) }
+  )
 
   const { data, refetch: refetchEntityDefinitions } = useEntityDefinitionsQuery(
     {
@@ -157,7 +160,7 @@ export const SQLEditor = () => {
       projectRef: project?.ref,
       connectionString: project?.connectionString,
     },
-    { enabled: includeSchemaMetadata }
+    { enabled: isValidConnString(project?.connectionString) && includeSchemaMetadata }
   )
   const entityDefinitions = includeSchemaMetadata ? data?.map((def) => def.sql.trim()) : undefined
 
@@ -308,8 +311,8 @@ export const SQLEditor = () => {
         const connectionString = databases?.find(
           (db) => db.identifier === databaseSelectorState.selectedDatabaseId
         )?.connectionString
-        if (IS_PLATFORM && !connectionString) {
-          return toast.error('执行查询失败：未找到连接字符串')
+        if (!isValidConnString(connectionString)) {
+          return toast.error('执行查询失败：未找到数据库连接字符串')
         }
 
         const { appendAutoLimit } = checkIfAppendLimitRequired(sql, limit)

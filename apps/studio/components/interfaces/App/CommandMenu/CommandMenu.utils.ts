@@ -6,4 +6,5 @@ export const COMMAND_MENU_SECTIONS = {
   TABLE: '数据管理',
   SQL: '数据查询',
   DATABASE: '数据库',
+  INTEGRATIONS: '集成',
 } as const

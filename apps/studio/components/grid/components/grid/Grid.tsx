@@ -1,4 +1,4 @@
-import { forwardRef, memo, useRef } from 'react'
+import { forwardRef, memo, Ref, useRef } from 'react'
 import DataGrid, { CalculatedColumn, DataGridHandle } from 'react-data-grid'
 
 import { handleCopyCell } from 'components/grid/SupabaseGrid.utils'
@@ -48,7 +48,7 @@ export const Grid = memo(
         filters,
         onApplyFilters,
       },
-      ref: React.Ref<DataGridHandle> | undefined
+      ref: Ref<DataGridHandle> | undefined
     ) => {
       const tableEditorSnap = useTableEditorStateSnapshot()
       const snap = useTableEditorTableStateSnapshot()
@@ -119,7 +119,7 @@ export const Grid = memo(
           {(rows ?? []).length === 0 && (
             <div
               style={{ height: `calc(100% - 35px)` }}
-              className="absolute top-9 z-[2] p-2 w-full"
+              className="absolute top-9 p-2 w-full z-[1] pointer-events-none"
             >
               {isLoading && <GenericSkeletonLoader />}
               {isError && (
@@ -143,6 +143,7 @@ export const Grid = memo(
                         {
                           <Button
                             type="default"
+                            className="pointer-events-auto"
                             onClick={() => {
                               tableEditorSnap.onImportData()
                               sendEvent({
@@ -166,7 +167,11 @@ export const Grid = memo(
                         表在应用过滤条件后没有返回任何结果
                       </p>
                       <div className="flex items-center space-x-2 mt-4">
-                        <Button type="default" onClick={() => removeAllFilters()}>
+                        <Button
+                          type="default"
+                          className="pointer-events-auto"
+                          onClick={() => removeAllFilters()}
+                        >
                           移除所有过滤条件
                         </Button>
                       </div>
