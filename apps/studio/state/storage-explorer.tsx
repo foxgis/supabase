@@ -370,7 +370,7 @@ function createStorageExplorerState({
             columnIndex: index,
           })
         } else {
-          toast.error(`Failed to retrieve folder contents from "${folderName}": ${error.message}`)
+          toast.error(`从“${folderName}”获取文件夹内容失败：${error.message}`)
         }
       }
     },
@@ -420,7 +420,7 @@ function createStorageExplorerState({
         })
       } catch (error: any) {
         if (!error.message.includes('aborted')) {
-          toast.error(`Failed to retrieve more folder contents: ${error.message}`)
+          toast.error(`获取更多文件夹内容失败：${error.message}`)
         }
       }
     },
@@ -468,7 +468,7 @@ function createStorageExplorerState({
             })
             return data
           } catch (error: any) {
-            toast.error(`Failed to fetch folders: ${error.message}`)
+            toast.error(`拉取文件夹失败：${error.message}`)
             return []
           }
         })
@@ -557,9 +557,9 @@ function createStorageExplorerState({
         await state.refetchAllOpenedFolders()
         state.setSelectedItemsToDelete([])
 
-        toast.success(`Successfully deleted ${folder.name}`)
+        toast.success(`成功删除了 ${folder.name}`)
       } catch (error: any) {
-        toast.error(`Failed to delete folder: ${error.message}`)
+        toast.error(`删除文件夹失败：${error.message}`)
       }
     },
 
@@ -574,7 +574,7 @@ function createStorageExplorerState({
       }
 
       const toastId = toast(
-        <SonnerProgress progress={0} message={`Renaming folder to ${newName}`} />,
+        <SonnerProgress progress={0} message={`文件夹重命名为 ${newName}`} />,
         { closeButton: false, position: 'top-right' }
       )
 
@@ -588,7 +588,7 @@ function createStorageExplorerState({
          * todo: move this to a util file, as createFolder() uses same logic
          */
         if (newName.includes('/') || newName.includes('\\')) {
-          return toast.error(`Folder name cannot contain forward or back slashes.`)
+          return toast.error(`文件夹名称不能含有正斜杠或反斜杠。`)
         }
 
         state.updateRowStatus({
@@ -623,7 +623,7 @@ function createStorageExplorerState({
                 })
               } catch (error) {
                 hasErrors = true
-                toast.error(`Failed to move ${fromPath} to the new folder`)
+                toast.error(`移动 ${fromPath} 到新文件夹失败`)
               }
               resolve()
             })
@@ -638,19 +638,19 @@ function createStorageExplorerState({
           await previousPromise
           await Promise.all(nextBatch.map((batch) => batch()))
           toast(
-            <SonnerProgress progress={progress * 100} message={`Renaming folder to ${newName}`} />,
+            <SonnerProgress progress={progress * 100} message={`文件夹重命名为 ${newName}`} />,
             { id: toastId, closeButton: false, position: 'top-right' }
           )
         }, Promise.resolve())
 
         if (!hasErrors) {
-          toast.success(`Successfully renamed folder to ${newName}`, {
+          toast.success(`成功将文件夹重命名为 ${newName}`, {
             id: toastId,
             closeButton: true,
             duration: SONNER_DEFAULT_DURATION,
           })
         } else {
-          toast.error(`Renamed folder to ${newName} with some errors`, {
+          toast.error(`将文件件重命名为 ${newName} 时发生错误`, {
             id: toastId,
             closeButton: true,
             duration: SONNER_DEFAULT_DURATION,
@@ -665,7 +665,7 @@ function createStorageExplorerState({
 
         // TODO: Should we invalidate the file preview cache when renaming folders?
       } catch (e: any) {
-        toast.error(`Failed to rename folder to ${newName}: ${e.message}`, {
+        toast.error(`文件夹重命名为 ${newName} 失败：${e.message}`, {
           id: toastId,
           closeButton: true,
           duration: SONNER_DEFAULT_DURATION,
@@ -710,7 +710,7 @@ function createStorageExplorerState({
 
     downloadFolder: async (folder: StorageItemWithColumn) => {
       let progress = 0
-      const toastId = toast.loading('Retrieving files from folder...')
+      const toastId = toast.loading('正在从文件夹中获取文件...')
 
       try {
         const files = await state.getAllItemsAlongFolder(folder)
@@ -718,7 +718,7 @@ function createStorageExplorerState({
         toast(
           <SonnerProgress
             progress={0}
-            message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+            message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
           />,
           { id: toastId, closeButton: false, position: 'top-right' }
         )
@@ -749,7 +749,7 @@ function createStorageExplorerState({
                   blob: new Blob([blob], { type: fileMimeType }),
                 })
               } catch (error) {
-                console.error('Failed to download file', `${file.prefix}/${file.name}`)
+                console.error('下载文件失败', `${file.prefix}/${file.name}`)
                 resolve(false)
               }
             })
@@ -764,7 +764,7 @@ function createStorageExplorerState({
             toast(
               <SonnerProgress
                 progress={progress * 100}
-                message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+                message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
               />,
               { id: toastId, closeButton: false, position: 'top-right' }
             )
@@ -783,7 +783,7 @@ function createStorageExplorerState({
         const zipWriter = new ZipWriter(zipFileWriter, { bufferedWrite: true })
 
         if (downloadedFiles.length === 0) {
-          toast.error(`Failed to download files from "${folder.name}"`, {
+          toast.error(`从“${folder.name}”下载文件失败`, {
             id: toastId,
             closeButton: true,
             duration: SONNER_DEFAULT_DURATION,
@@ -804,14 +804,14 @@ function createStorageExplorerState({
 
         toast.success(
           downloadedFiles.length === files.length
-            ? `Successfully downloaded folder "${folder.name}"`
-            : `Downloaded folder "${folder.name}". However, ${
+            ? `成功下载了文件夹“${folder.name}”`
+            : `成功下载了文件夹“${folder.name}”，但是，有 ${
                 files.length - downloadedFiles.length
-              } files did not download successfully.`,
+              } 个文件没有下载成功。`,
           { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
         )
       } catch (error: any) {
-        toast.error(`Failed to download folder: ${error.message}`, {
+        toast.error(`下载文件夹失败：${error.message}`, {
           id: toastId,
           closeButton: true,
           duration: SONNER_DEFAULT_DURATION,
@@ -876,7 +876,7 @@ function createStorageExplorerState({
       }
 
       if (hasError) {
-        throw new Error('Failed to retrieve all files within folder')
+        throw new Error('获取文件夹中的所有文件失败')
       }
 
       const subfolders = folderContents?.filter((item) => item.id === null) ?? []
@@ -938,18 +938,18 @@ function createStorageExplorerState({
         toast.error(
           <div className="flex flex-col gap-y-1">
             <p className="text-foreground">
-              Failed to upload {numberOfFilesRejected} file{numberOfFilesRejected > 1 ? 's' : ''} as{' '}
-              {numberOfFilesRejected > 1 ? 'their' : 'its'} size
-              {numberOfFilesRejected > 1 ? 's are' : ' is'} beyond the global upload limit of{' '}
+              上传 {numberOfFilesRejected} 个文件{numberOfFilesRejected > 1 ? '' : ''}失败，应为{' '}
+              {numberOfFilesRejected > 1 ? '它们的' : '它们的'}文件大小
+              {numberOfFilesRejected > 1 ? '' : ''}超出了{' '}
               {value}
-              {unit}.
+              {unit} 的全局上传限制。
             </p>
             <p className="text-foreground-light">
-              You can change the global file size upload limit in{' '}
+              您可以在{' '}
               <InlineLink href={`/project/${state.projectRef}/settings/storage`}>
-                Storage settings
+                存储设置
               </InlineLink>
-              .
+              中改变上传文件大小限制的全局设置。
             </p>
           </div>,
           { duration: 8000 }
@@ -964,9 +964,9 @@ function createStorageExplorerState({
         toast.error(
           <div className="flex flex-col gap-y-1">
             <p className="text-foreground">
-              Failed to upload {numberOfFilesRejected} file{numberOfFilesRejected > 1 ? 's' : ''} as{' '}
-              {numberOfFilesRejected > 1 ? 'their' : 'its'} size
-              {numberOfFilesRejected > 1 ? 's are' : ' is'} 0.
+              上传 {numberOfFilesRejected} 个文件{numberOfFilesRejected > 1 ? '' : ''}失败，因为{' '}
+              {numberOfFilesRejected > 1 ? '它们的' : '它们的'}文件大小
+              {numberOfFilesRejected > 1 ? '为' : '为'} 0。
             </p>
           </div>
         )
@@ -1129,20 +1129,20 @@ function createStorageExplorerState({
                     toast.error(
                       capitalize(
                         error?.originalResponse?.getBody() ||
-                          `Failed to upload ${file.name}: ${metadata.mimetype} is not allowed`
+                          `上传 ${file.name} 失败：不允许上传 ${metadata.mimetype} 类型的文件`
                       ),
                       {
-                        description: `Allowed MIME types: ${state.selectedBucket.allowed_mime_types?.join(', ')}`,
+                        description: `允许上传的 MIME 类型有：${state.selectedBucket.allowed_mime_types?.join('，')}`,
                       }
                     )
                   } else if (status === 413) {
                     // Payload too large
                     toast.error(
-                      `Failed to upload ${file.name}: File size exceeds the bucket upload limit.`
+                      `上传 ${file.name} 失败：文件大小超过了存储桶上传限制。`
                     )
                   }
                 } else {
-                  toast.error(`Failed to upload ${file.name}: ${error.message}`)
+                  toast.error(`上传 ${file.name} 失败：${error.message}`)
                 }
                 reject(error)
               },
@@ -1182,7 +1182,7 @@ function createStorageExplorerState({
               } catch (error) {
                 // Ignore error
               }
-              reject(new Error('Upload aborted by user'))
+              reject(new Error('用户取消了上传'))
             })
 
             // Check if there are any previous uploads to continue.
@@ -1227,26 +1227,26 @@ function createStorageExplorerState({
           toast.dismiss(toastId)
         } else if (numberOfFilesUploadedFail === numberOfFilesToUpload) {
           toast.error(
-            `Failed to upload ${numberOfFilesToUpload} file${numberOfFilesToUpload > 1 ? 's' : ''}!`,
+            `上传 ${numberOfFilesToUpload} 个文件${numberOfFilesToUpload > 1 ? '' : ''}失败！`,
             { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
           )
         } else if (numberOfFilesUploadedSuccess === numberOfFilesToUpload) {
           toast.success(
-            `Successfully uploaded ${numberOfFilesToUpload} file${
-              numberOfFilesToUpload > 1 ? 's' : ''
-            }!`,
+            `成功上传了 ${numberOfFilesToUpload} 个文件${
+              numberOfFilesToUpload > 1 ? '' : ''
+            }！`,
             { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
           )
         } else {
           toast.success(
-            `Successfully uploaded ${numberOfFilesUploadedSuccess} out of ${numberOfFilesToUpload} file${
-              numberOfFilesToUpload > 1 ? 's' : ''
-            }!`,
+            `成功上传了 ${numberOfFilesToUpload} 个文件${
+              numberOfFilesToUpload > 1 ? '' : ''
+            }中的 ${numberOfFilesUploadedSuccess} 个文件！`,
             { id: toastId, closeButton: true, duration: SONNER_DEFAULT_DURATION }
           )
         }
       } catch (e) {
-        toast.error('Failed to upload files', {
+        toast.error('上传文件失败', {
           id: toastId,
           closeButton: true,
           duration: SONNER_DEFAULT_DURATION,
@@ -1255,7 +1255,7 @@ function createStorageExplorerState({
 
       const t2 = new Date()
       console.log(
-        `Total time taken for ${formattedFilesToUpload.length} files: ${((t2 as any) - (t1 as any)) / 1000} seconds`
+        `上传 ${formattedFilesToUpload.length} 个文件的合计时间：${((t2 as any) - (t1 as any)) / 1000} 秒`
       )
     },
 
@@ -1266,7 +1266,7 @@ function createStorageExplorerState({
       state.clearSelectedItems()
 
       const toastId = toast(
-        `Moving ${state.selectedItemsToMove.length} file${state.selectedItemsToMove.length > 1 ? 's' : ''}...`,
+        `正在移动 ${state.selectedItemsToMove.length} 个文件${state.selectedItemsToMove.length > 1 ? '' : ''}...`,
         {
           description: STORAGE_PROGRESS_INFO_TEXT,
           duration: Infinity,
@@ -1299,12 +1299,12 @@ function createStorageExplorerState({
       )
 
       if (numberOfFilesMovedFail === state.selectedItemsToMove.length) {
-        toast.error('Failed to move files')
+        toast.error('移动文件失败')
       } else {
         toast(
-          `Successfully moved ${
+          `成功移动了 ${
             state.selectedItemsToMove.length - numberOfFilesMovedFail
-          } files to ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : 'the root of your bucket'}`
+          } 个文件到 ${formattedNewPathToFile.length > 0 ? formattedNewPathToFile : '存储桶根目录'}`
         )
       }
 
@@ -1342,7 +1342,7 @@ function createStorageExplorerState({
       state.clearSelectedItems()
 
       const toastId = toast(
-        <SonnerProgress progress={0} message={`Deleting ${prefixes.length} file(s)...`} />,
+        <SonnerProgress progress={0} message={`正在删除 ${prefixes.length} 个文件...`} />,
         { closeButton: false, position: 'top-right' }
       )
 
@@ -1363,7 +1363,7 @@ function createStorageExplorerState({
         toast(
           <SonnerProgress
             progress={progress * 100}
-            message={`Deleting ${prefixes.length} file(s)...`}
+            message={`正在删除 ${prefixes.length} 个文件...`}
           />,
           {
             id: toastId,
@@ -1385,7 +1385,7 @@ function createStorageExplorerState({
           parentFolderPrefixes.map((prefix) => state.validateParentFolderEmpty(prefix))
         )
 
-        toast.success(`Successfully deleted ${prefixes.length} file(s)`, {
+        toast.success(`成功删除了 ${prefixes.length} 个文件`, {
           id: toastId,
           closeButton: true,
           duration: SONNER_DEFAULT_DURATION,
@@ -1414,7 +1414,7 @@ function createStorageExplorerState({
       let progress = 0
       const returnBlob = true
       const toastId = toast.loading(
-        `Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`
+        `正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`
       )
 
       const promises = formattedFilesWithPrefix.map((file) => {
@@ -1442,7 +1442,7 @@ function createStorageExplorerState({
         toast(
           <SonnerProgress
             progress={progress * 100}
-            message={`Downloading ${files.length} file${files.length > 1 ? 's' : ''}...`}
+            message={`正在下载 ${files.length} 个文件${files.length > 1 ? '' : ''}...`}
           />,
           { id: toastId, closeButton: false, position: 'top-right' }
         )
@@ -1463,7 +1463,7 @@ function createStorageExplorerState({
       link.click()
       link.parentNode?.removeChild(link)
 
-      toast.success(`Successfully downloaded ${downloadedFiles.length} files`, {
+      toast.success(`成功下载了 ${downloadedFiles.length} 个文件`, {
         id: toastId,
         closeButton: true,
         duration: SONNER_DEFAULT_DURATION,
@@ -1494,7 +1494,7 @@ function createStorageExplorerState({
             to: toPath,
           })
 
-          toast.success(`Successfully renamed "${originalName}" to "${newName}"`)
+          toast.success(`成功将“${originalName}”重命名为“${newName}”`)
 
           // TODO: Should we invalidate the file preview cache when renaming files?
 
@@ -1505,7 +1505,7 @@ function createStorageExplorerState({
 
           await state.refetchAllOpenedFolders()
         } catch (error: any) {
-          toast.error(`Failed to rename file: ${error.message}`)
+          toast.error(`重命名文件失败：${error.message}`)
           state.updateRowStatus({
             name: originalName,
             status: STORAGE_ROW_STATUS.READY,
@@ -1581,7 +1581,7 @@ function createStorageExplorerState({
           return fileExt ? `${updatedFileName}.${fileExt}` : updatedFileName
         } else {
           toast.error(
-            `The name ${name} already exists in the current directory. Please use a different name.`
+            `名称 ${name} 已经在当前目录存在，请使用其他的名称。`
           )
           return null
         }
@@ -1639,8 +1639,8 @@ function createStorageExplorerState({
       return toast(
         <SonnerProgress
           progress={progress}
-          message={`Uploading ${totalFiles} file${totalFiles > 1 ? 's' : ''}...`}
-          progressPrefix={`${remainingTime && !isNaN(remainingTime) && isFinite(remainingTime) && remainingTime !== 0 ? `${formatTime(remainingTime)} remaining – ` : ''}`}
+          message={`正在上传 ${totalFiles} 个文件${totalFiles > 1 ? '' : ''}...`}
+          progressPrefix={`${remainingTime && !isNaN(remainingTime) && isFinite(remainingTime) && remainingTime !== 0 ? `剩余 ${formatTime(remainingTime)}` : ''}`}
           action={
             toastId && (
               <Button
@@ -1649,7 +1649,7 @@ function createStorageExplorerState({
                 className="ml-6"
                 onClick={() => state.abortUploads(toastId)}
               >
-                Cancel
+                取消
               </Button>
             )
           }
