@@ -4,14 +4,21 @@ import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { LOCAL_STORAGE_KEYS } from 'common'
+import { useLocalStorageQuery } from 'hooks/misc/useLocalStorage'
 import { useSignOut } from 'lib/auth'
 import { Button } from 'ui'
 
 const Error500: NextPage = () => {
   const router = useRouter()
+  const signOut = useSignOut()
   const { resolvedTheme } = useTheme()
 
-  const signOut = useSignOut()
+  const [lastVisitedOrganization] = useLocalStorageQuery(
+    LOCAL_STORAGE_KEYS.LAST_VISITED_ORGANIZATION,
+    ''
+  )
+
   const onClickLogout = async () => {
     await signOut()
     await router.push('/sign-in')
@@ -47,9 +54,15 @@ const Error500: NextPage = () => {
         </p>
       </div>
       <div className="flex items-center space-x-4">
-        {router.pathname !== '/projects' ? (
+        {router.pathname !== '/organizations' ? (
           <Button asChild>
-            <Link href="/projects">回到上一页</Link>
+            <Link
+              href={
+                !!lastVisitedOrganization ? `/org/${lastVisitedOrganization}` : '/organizations'
+              }
+            >
+              回到上一页
+            </Link>
           </Button>
         ) : (
           <Button onClick={onClickLogout}>回到上一页</Button>

@@ -291,7 +291,7 @@ export const ForeignKeySelector = ({
                   从{' '}
                   <code className="text-xs">
                     {fk.schema}.{fk.table}
-                  </code>
+                  </code>{' '}
                   选择列引用
                 </label>
                 <div className="grid grid-cols-10 gap-y-2">
