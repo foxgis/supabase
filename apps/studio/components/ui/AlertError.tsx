@@ -46,7 +46,7 @@ const AlertError = ({
         <div>
           {error?.message && <p className="text-left">错误：{formattedErrorMessage}</p>}
           <p className="text-left">
-            请尝试刷新浏览器，如果问题仍然存在，请联系技术支持。
+            请尝试刷新浏览器，如果问题几分钟后仍然存在，请联系技术支持。
           </p>
         </div>
         {children}
