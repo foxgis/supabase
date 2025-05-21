@@ -22,7 +22,7 @@ const snippets = {
     title: '初始化',
     bash: {
       language: 'bash',
-      code: `# 无需客户端库即可在 Bash 中使用。`,
+      code: `# 无需客户端 SDK 即可在 Bash 中使用。`,
     },
     js: {
       language: 'js',
@@ -143,10 +143,10 @@ else console.log(data)
     }
   },
   subscribeAll: (listenerName: string, resourceId: string) => ({
-    title: '订阅所有事件',
+    title: '监听所有事件',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时通信`,
+      code: `# 只能通过客户端 SDK 支持实时通信`,
     },
     js: {
       language: 'js',
@@ -163,10 +163,10 @@ const ${listenerName} = supabase.channel('custom-all-channel')
     },
   }),
   subscribeInserts: (listenerName: string, resourceId: string) => ({
-    title: '订阅插入操作',
+    title: '监听插入操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时通信`,
+      code: `# 只能通过客户端 SDK 支持实时通信`,
     },
     js: {
       language: 'js',
@@ -183,10 +183,10 @@ const ${listenerName} = supabase.channel('custom-insert-channel')
     },
   }),
   subscribeUpdates: (listenerName: string, resourceId: string) => ({
-    title: '订阅更新操作',
+    title: '监听更新操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时通信`,
+      code: `# 只能通过客户端 SDK 支持实时通信`,
     },
     js: {
       language: 'js',
@@ -203,10 +203,10 @@ const ${listenerName} = supabase.channel('custom-update-channel')
     },
   }),
   subscribeDeletes: (listenerName: string, resourceId: string) => ({
-    title: '订阅删除操作',
+    title: '监听删除操作',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时通信`,
+      code: `# 只能通过客户端 SDK 支持实时通信`,
     },
     js: {
       language: 'js',
@@ -223,10 +223,10 @@ const ${listenerName} = supabase.channel('custom-delete-channel')
     },
   }),
   subscribeEq: (listenerName: string, resourceId: string, columnName: string, value: string) => ({
-    title: '订阅特定行',
+    title: '监听特定行',
     bash: {
       language: 'bash',
-      code: `# 只能通过客户端库支持实时通信`,
+      code: `# 只能通过客户端 SDK 支持实时通信`,
     },
     js: {
       language: 'js',

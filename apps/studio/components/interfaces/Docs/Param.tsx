@@ -48,7 +48,7 @@ const Param = ({
         <div className="flex gap-2 items-center">
           <div className="flex items-center gap-2">
             <label className="font-mono text-xs uppercase text-foreground-lighter  min-w-[55px]">
-              列
+              列名
             </label>
 
             <div className="flex items-center gap-4">
@@ -58,7 +58,7 @@ const Param = ({
         </div>
 
         <Badge variant={required ? 'warning' : 'default'}>
-          {required ? 'Required' : 'Optional'}
+          {required ? '必选' : '可选'}
         </Badge>
       </div>
       {format && (

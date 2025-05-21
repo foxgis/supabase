@@ -48,10 +48,10 @@ export default function GeneratingTypes({ selectedLang }: Props) {
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            Supabase API 是通过数据库生成的，所以我们可以使用数据库的内省功能来生成类型安全的 API 定义。
+            数据中间件的 API 是通过数据库直接生成的，所以我们可以使用数据库的内省功能来生成类型安全的 API 定义文件。
           </p>
           <p>
-            您可以通过以下方式之一从数据库生成类型定义：
+            您可以通过以下方式之一从数据库生成类型定义文件：
             <Link href="https://supabase.com/docs/guides/database/api/generating-types">
               Supabase CLI
             </Link>

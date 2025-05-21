@@ -85,26 +85,26 @@ export const generateDocsMenu = (
     //     },
     //   ],
     // },
-    {
-      title: '更多资料',
-      items: [
-        {
-          name: 'Guides',
-          key: 'guides',
-          url: `https://supabase.com/docs`,
-          icon: <Book size={14} strokeWidth={2} />,
-          items: [],
-          isExternal: true,
-        },
-        {
-          name: 'API 参考',
-          key: 'api-reference',
-          url: `https://supabase.com/docs/guides/api`,
-          icon: <BookOpen size={14} strokeWidth={2} />,
-          items: [],
-          isExternal: true,
-        },
-      ],
-    },
+    // {
+    //   title: '更多资料',
+    //   items: [
+    //     {
+    //       name: 'Guides',
+    //       key: 'guides',
+    //       url: `https://supabase.com/docs`,
+    //       icon: <Book size={14} strokeWidth={2} />,
+    //       items: [],
+    //       isExternal: true,
+    //     },
+    //     {
+    //       name: 'API 参考',
+    //       key: 'api-reference',
+    //       url: `https://supabase.com/docs/guides/api`,
+    //       icon: <BookOpen size={14} strokeWidth={2} />,
+    //       items: [],
+    //       isExternal: true,
+    //     },
+    //   ],
+    // },
   ]
 }

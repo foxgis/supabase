@@ -9,6 +9,7 @@ import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { useDatabaseFunctionsQuery } from 'data/database-functions/database-functions-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useAiAssistantStateSnapshot } from 'state/ai-assistant-state'
+import { useAppStateSnapshot } from 'state/app-state'
 import {
   Button,
   DropdownMenu,
@@ -36,6 +37,7 @@ const FunctionList = ({
   const router = useRouter()
   const { project: selectedProject } = useProjectContext()
   const aiSnap = useAiAssistantStateSnapshot()
+  const snap = useAppStateSnapshot()
 
   const { data: functions } = useDatabaseFunctionsQuery({
     projectRef: selectedProject?.ref,
@@ -105,7 +107,7 @@ const FunctionList = ({
             <Table.td className="table-cell">
               <p title={x.return_type}>{x.return_type}</p>
             </Table.td>
-            <Table.td className="table-cell">{x.security_definer ? 'Definer' : 'Invoker'}</Table.td>
+            <Table.td className="table-cell">{x.security_definer ? '定义者权限' : '调用者权限'}</Table.td>
             <Table.td className="text-right">
               {!isLocked && (
                 <div className="flex items-center justify-end">
@@ -118,10 +120,13 @@ const FunctionList = ({
                         {isApiDocumentAvailable && (
                           <DropdownMenuItem
                             className="space-x-2"
-                            onClick={() => router.push(`/project/${projectRef}/api?rpc=${x.name}`)}
+                            onClick={() => {
+                              snap.setActiveDocsSection(['stored-procedures'])
+                              snap.setShowProjectApiDocs(true)
+                            }}
                           >
                             <FileText size={14} />
-                            <p>客户端 API 文档</p>
+                            <p>API 文档</p>
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem className="space-x-2" onClick={() => editFunction(x)}>

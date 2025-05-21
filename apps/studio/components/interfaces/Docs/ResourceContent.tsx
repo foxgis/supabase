@@ -98,7 +98,7 @@ const ResourceContent = ({
                 <CodeSnippet
                   selectedLang={selectedLang}
                   snippet={Snippets.readColumns({
-                    title: `Select ${x.id}`,
+                    title: `查询列 ${x.id}`,
                     resourceId,
                     endpoint: endpoint,
                     apiKey: keyToShow,
@@ -112,7 +112,7 @@ const ResourceContent = ({
       )}
       {methods.includes('GET') && (
         <>
-          <h3 className="text-foreground mt-4 px-6">Read rows</h3>
+          <h3 className="text-foreground mt-4 px-6">读取数据行</h3>
           <div className="doc-section">
             <article className="code-column text-foreground">
               <p>
@@ -154,7 +154,7 @@ const ResourceContent = ({
           <div className="doc-section">
             <article className="code-column text-foreground">
               <h4 className="mt-0 text-white">过滤</h4>
-              <p> Supabase 提供了丰富的过滤功能。</p>
+              <p> 数据中间件提供了丰富的过滤功能。</p>
               <p>
                 <a
                   href="https://supabase.com/docs/reference/javascript/using-filters"
@@ -275,11 +275,11 @@ const ResourceContent = ({
       {realtimeEnabled &&
         (methods.includes('DELETE') || methods.includes('POST') || methods.includes('PATCH')) && (
           <>
-            <h3 className="text-foreground mt-4 px-6">订阅变更</h3>
+            <h3 className="text-foreground mt-4 px-6">监听数据表更新</h3>
             <div className="doc-section">
               <article className="code-column text-foreground">
                 <p>
-                  Supabase 提供了实时通信功能，让您可以广播数据库变更并根据行级安全性（RLS）策略将其发送给授权用户。
+                  数据中间件提供了实时通信功能，让您可以广播数据表更新事件，并根据行级安全性（RLS）策略将其发送给授权的用户。
                 </p>
                 <p>
                   <a

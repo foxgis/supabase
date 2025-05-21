@@ -39,7 +39,7 @@ group by
   },
   {
     label: 'IP 元数据',
-    description: '列出使用 Supabase API 的所有 IP 地址',
+    description: '列出使用数据中间件 API 的所有 IP 地址',
     mode: 'custom',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
@@ -54,7 +54,7 @@ where h.x_real_ip is not null
   },
   {
     label: '国家/地区的请求',
-    description: '列出使用 Supabase API 的所有 ISO 3166-1 alpha-2 国家/地区代码',
+    description: '列出使用数据中间件 API 的所有 ISO 3166-1 alpha-2 国家/地区代码',
     mode: 'custom',
     searchString: `select
   cf.country,
@@ -73,7 +73,7 @@ order by
   {
     label: '缓慢的响应时间',
     mode: 'custom',
-    description: '列出缓慢的 Supabase API 请求',
+    description: '列出缓慢的数据中间件 API 请求',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
   event_message,
@@ -91,7 +91,7 @@ limit 100
   },
   {
     label: '500 请求代码',
-    description: '列出响应 5XX 状态码的所有 Supabase API 请求',
+    description: '列出响应 5XX 状态码的所有数据中间件 API 请求',
     mode: 'custom',
     searchString: `select
   cast(timestamp as datetime) as timestamp,
@@ -110,7 +110,7 @@ limit 100
   },
   {
     label: '最多请求的路径',
-    description: '列出最多请求的 Supabase API 路径',
+    description: '列出最多请求的数据中间件 API 路径',
     mode: 'custom',
     searchString: `select
   r.path as path,

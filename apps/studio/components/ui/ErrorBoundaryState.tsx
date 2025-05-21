@@ -31,8 +31,7 @@ export const ErrorBoundaryState = ({ error, resetErrorBoundary }: FallbackProps)
     <div className="w-screen h-screen flex items-center justify-center flex-col gap-y-3">
       <div className="flex items-center flex-col gap-y-1">
         <p className="text-sm">
-          Application error: a client-side exception has occurred (see browser console for more
-          information)
+          应用错误：发生客户端异常（请查看浏览器控制台以获取更多信息）
         </p>
         <p className="text-sm text-foreground-light">Error: {errorMessage}</p>
       </div>
@@ -41,11 +40,10 @@ export const ErrorBoundaryState = ({ error, resetErrorBoundary }: FallbackProps)
         <Alert_Shadcn_ className="w-[650px]">
           <WarningIcon />
           <AlertTitle_Shadcn_>
-            This error might be caused by Google translate or third-party browser extensions
+            错误可能由 Google 翻译或第三方浏览器扩展引起
           </AlertTitle_Shadcn_>
           <AlertDescription_Shadcn_>
-            You may try to avoid using Google translate or disable certain browser extensions to
-            avoid running into the <code className="text-xs">'removeChild' on 'Node'</code> error.
+            您可以尝试避免使用 Google 翻译或禁用某些浏览器扩展以避免产生移除子节点错误。
           </AlertDescription_Shadcn_>
           <AlertDescription_Shadcn_ className="mt-3">
             <Button asChild type="default" icon={<ExternalLink />}>
@@ -54,7 +52,7 @@ export const ErrorBoundaryState = ({ error, resetErrorBoundary }: FallbackProps)
                 rel="noreferrer"
                 href="https://github.com/facebook/react/issues/17256"
               >
-                More information
+                更多信息
               </a>
             </Button>
           </AlertDescription_Shadcn_>
@@ -62,23 +60,23 @@ export const ErrorBoundaryState = ({ error, resetErrorBoundary }: FallbackProps)
       )}
 
       <div className="flex items-center justify-center gap-x-2">
-        <Button asChild type="default" icon={<ExternalLink />}>
+        {/* <Button asChild type="default" icon={<ExternalLink />}>
           <Link
             href={`/support/new?category=dashboard_bug&subject=Client%20side%20exception%20occurred%20on%20dashboard&message=${encodeURI(urlMessage)}`}
             target="_blank"
           >
-            Report to support
+            报告错误
           </Link>
-        </Button>
+        </Button> */}
         {/* [Joshen] For local and staging, allow us to escape the error boundary */}
         {/* We could actually investigate how to make this available on prod, but without being able to reliably test this, I'm not keen to do it now */}
         {process.env.NEXT_PUBLIC_ENVIRONMENT !== 'prod' ? (
           <Button type="outline" onClick={() => resetErrorBoundary()}>
-            Return to dashboard
+            返回首页
           </Button>
         ) : (
           <Button type="outline" onClick={() => router.reload()}>
-            Reload dashboard
+            重新加载
           </Button>
         )}
       </div>

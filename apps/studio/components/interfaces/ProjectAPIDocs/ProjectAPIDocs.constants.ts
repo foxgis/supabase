@@ -53,11 +53,11 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
     key: 'user-management',
     category: 'user-management',
     title: `概述`,
-    description: `Supabase 使用户管理变得容易。
+    description: `使用数据中间件轻松管理用户。
 
-  Supabase 会自动为每个用户分配一个唯一的 ID。您可以在数据库中的任何位置引用此 ID。例如，您可以创建一张 \`profiles\` 表，该表使用 \`user_id\` 字段关联到用户。
+  数据中间件会自动为每个用户分配一个唯一的 ID。您可以在数据库中的任何位置关联此 ID。例如，您可以创建一张 \`profiles\` 表，该表使用 \`user_id\` 字段关联到用户 ID。
 
-  Supabase 已经内置了用户管理的路由，包括注册、登录和注销。`,
+  数据中间件已经内置了用户管理的路由，包括注册、登录和注销。`,
     js: undefined,
     bash: undefined,
   },
@@ -67,7 +67,7 @@ const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_KEY);`,
     title: `注册`,
     description: `允许用户注册以及创建账号。
 
-  当用户完成注册后，所有使用 Supabase 客户端的交互都会被视为“该用户”。`,
+  当用户完成注册后，通过客户端 SDK 的所有交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signUp({
   email: 'someone@email.com',
@@ -89,7 +89,7 @@ curl -X POST '${endpoint}/auth/v1/signup' \\
     description: `
 如果创建了账号，用户可以登录到您的应用。
 
-当用户完成登录后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
+当用户完成登录后，通过客户端 SDK 的所有交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithPassword({
   email: 'someone@email.com',
@@ -113,7 +113,7 @@ curl -X POST '${endpoint}/auth/v1/token?grant_type=password' \\
     description: `
 发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。
 
-当用户点击链接后，所有使用 Supabase JS 客户端的交互都会被视为“该用户”。`,
+当用户点击链接后，通过客户端 SDK 的所有交互都会被视为“该用户”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { data, error } = await supabase.auth.signInWithOtp({
   email: 'someone@email.com'
@@ -211,7 +211,7 @@ curl -X POST '${endpoint}/auth/v1/verify' \\
 
 查看所有可用的 [第三方 OAuth 提供商](https://supabase.com)。
 
-登录后，使用 Supabase JS 客户端的所有交互都将被视为“该用户”。
+完成登录后，通过客户端 SDK 的所有交互都将被视为“该用户”。
 
 从 [Google](https://console.developers.google.com/apis/credentials)、[Github](https://github.com/settings/applications/new)、[Gitlab](https://gitlab.com/oauth/applications)、[Facebook](https://developers.facebook.com/apps) 和 [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud)生成您的 Client ID 和 secret `,
     js: (apikey?: string, endpoint?: string) => `
@@ -282,7 +282,7 @@ curl -X PUT '${endpoint}/auth/v1/user' \\
     key: 'log-out',
     category: 'user-management',
     title: `注销`,
-    description: `调用注销后，使用 Supabase JS 客户端的所有交互都将被视为“匿名”。`,
+    description: `完成注销后，通过客户端 SDK 的所有交互都将被视为“匿名”。`,
     js: (apikey?: string, endpoint?: string) => `
 const { error } = await supabase.auth.signOut()
     `,
@@ -300,7 +300,7 @@ curl -X POST '${endpoint}/auth/v1/logout' \\
     description: `
 向用户发送一个无密码链接，他们可以使用该链接注册和登录。
 
-用户点击链接后，使用 Supabase JS 客户端的所有交互都将被视为“该用户”。
+用户点击链接后，通过客户端 SDK 的所有交互都将被视为“该用户”。
 
 此接口需要在初始化客户端时使用 \`service_role_key\`，并且只能在服务端调用，不要在客户端调用。`,
     js: (apikey?: string, endpoint?: string) => `
@@ -395,7 +395,7 @@ supabase functions new hello-world
     category: 'entities',
     title: '生成类型',
     description: `
-Supabase API 是从您的数据库生成的，这意味着我们可以使用数据库内省来生成类型安全的 API 定义。
+数据中间件的 API 是从数据库直接生成的，这意味着我们可以使用数据库内省来生成类型安全的 API 定义文件。
 
 您可以通过 [Supabase CLI](https://supabase.com/docs/guides/database/api/generating-types) 或通过右侧的下载按钮将类型文件导入到您的应用程序的 \`src/index.ts\` 文件中。
 `,

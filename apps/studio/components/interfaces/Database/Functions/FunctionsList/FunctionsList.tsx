@@ -181,8 +181,8 @@ const FunctionsList = ({
                 <Table.th key="return_type" className="table-cell">
                   返回值类型
                 </Table.th>
-                <Table.th key="security" className="table-cell w-[100px]">
-                  调用方式
+                <Table.th key="security" className="table-cell w-[120px]">
+                  调用权限
                 </Table.th>
                 <Table.th key="buttons" className="w-1/6"></Table.th>
               </>

@@ -13,7 +13,7 @@ const CodeSnippet = ({ selectedLang, snippet }: CodeSnippetProps) => {
   if (!snippet[selectedLang]) return null
   return (
     <div className="codeblock-container">
-      <h4>{snippet.title}</h4>
+      <h5>{snippet.title}</h5>
       <SimpleCodeBlock className={snippet[selectedLang]?.language}>
         {snippet[selectedLang]?.code}
       </SimpleCodeBlock>

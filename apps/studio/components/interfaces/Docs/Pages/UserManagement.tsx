@@ -29,13 +29,13 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
       <h2 className="doc-heading">用户管理</h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
-          <p>Supabase 使管理用户变得容易。</p>
+          <p>使用数据中间件轻松管理用户。</p>
           <p>
-            Supabase 会自动为每个用户分配一个唯一的 ID。您可以在数据库的任何位置引用这个 ID。例如，您可以会创建一个<code>profiles</code>表，
-            该表使用 <code>user_id</code> 字段引用用户。
+            数据中间件会自动为每个用户分配一个唯一的 ID。您可以在数据库的任何位置关联这个 ID。例如，您可以会创建一个<code>profiles</code>表，
+            该表使用 <code>user_id</code> 字段关联用户 ID。
           </p>
           <p>
-            Supabase 已经有内置的路由，用于在您的应用和网站中管理用户的注册、登录和注销。
+            数据中间件已经有内置的路由，用于在您的应用和网站中管理用户的注册、登录和注销。
           </p>
         </article>
       </div>
@@ -45,7 +45,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         <article className="code-column text-foreground">
           <p>允许用户注册并创建新账户。</p>
           <p>
-            完成注册后，使用 Supabase JS 客户端的所有交互都会被视为“该用户”。
+            完成注册后，通过客户端 SDK 的所有交互都会被视为“该用户”。
           </p>
         </article>
         <article className="code">
@@ -61,7 +61,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         <article className="code-column text-foreground">
           <p>如果创建了账户，用户可以登录到您的应用中。</p>
           <p>
-            登录后，使用 Supabase JS 客户端的所有交互都会被视为“该用户”。
+            完成登录后，通过客户端 SDK 的所有交互都会被视为“该用户”。
           </p>
         </article>
         <article className="code">
@@ -77,7 +77,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         <article className="code-column text-foreground">
           <p>发送用户一个无密码链接，他们可以使用该链接兑换访问令牌。</p>
           <p>
-            点击链接后，使用 Supabase JS 客户端的所有交互都会被视为“该用户”。
+            点击链接后，通过客户端 SDK 的所有交互都会被视为“该用户”。
           </p>
         </article>
         <article className="code">
@@ -168,7 +168,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
             </a>
           </p>
           <p>
-            一旦他们登录，Supabase JS 客户端的所有交互都会被视为“该用户”。
+            一旦他们登录，通过客户端 SDK 的所有交互都会被视为“该用户”。
           </p>
           <p>
             从以下位置生成您的 Client ID 和 secret：{` `}
@@ -258,7 +258,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
       <div className="doc-section ">
         <article className="code-column text-foreground">
           <p>
-            调用注销后，Supabase JS 客户端的所有交互都会被视为“匿名”。
+            完成注销后，通过客户端 SDK 的所有交互都会被视为“匿名”。
           </p>
         </article>
         <article className="code">
@@ -276,7 +276,7 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
             通过电子邮件向用户发送一个无密码链接，他们可以使用该链接注册和登录。
           </p>
           <p>
-            一旦用户点击链接，Supabase JS 客户端的所有交互都会被视为“该用户”。
+            一旦用户点击了链接，之后通过客户端 SDK 的所有交互都会被视为“该用户”。
           </p>
           <p>
             此接口需要在初始化客户端时使用<code>service_role_key</code>，并且只能在服务器端调用，切勿在客户端调用。

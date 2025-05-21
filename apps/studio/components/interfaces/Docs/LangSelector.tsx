@@ -66,7 +66,7 @@ const LangSelector = ({
           <div className="flex">
             <div className="flex items-center gap-2 p-1 pl-2 text-xs text-foreground-lighter">
               <Key size={12} strokeWidth={1.5} />
-              <span>API key：</span>
+              <span>API 密钥：</span>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

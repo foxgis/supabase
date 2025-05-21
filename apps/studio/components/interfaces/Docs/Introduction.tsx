@@ -28,18 +28,16 @@ export default function Introduction({ selectedLang }: Props) {
 
   return (
     <>
-      <h2 className="doc-heading">Connect to your project</h2>
+      <h2 className="doc-heading">连接到项目</h2>
       <div className="doc-section">
         <article className="code-column text-foreground">
           <p>
-            All projects have a RESTful endpoint that you can use with your project's API key to
-            query and manage your database. These can be obtained from the{' '}
-            <InlineLink href={`/project/${projectRef}/settings/api`}>API settings</InlineLink>.
+            您可以通过 RESTful API 查询和管理数据库。API 地址和 API 密钥可以从{' '}
+            <InlineLink href={`/project/${projectRef}/settings/api`}>API 设置</InlineLink> 中获取。
           </p>
           <p>
-            You can initialize a new Supabase client using the <code>createClient()</code> method.
-            The Supabase client is your entrypoint to the rest of the Supabase functionality and is
-            the easiest way to interact with everything we offer within the Supabase ecosystem.
+            您可以通过<code>createClient()</code>方法初始化一个新的连接客户端。
+            这个客户端是数据中间件所有功能的入口点，是与我们提供的一切交互的最简单的方式。
           </p>
         </article>
         <article className="code flex flex-col gap-y-2">
