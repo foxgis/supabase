@@ -73,7 +73,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.171.0
+    image: supabase/gotrue:v2.172.1
     restart: unless-stopped
     healthcheck:
       test:
@@ -150,7 +150,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v12.2.11
+    image: postgrest/postgrest:v12.2.12
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD_ENCODED}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -208,7 +208,7 @@ services:
   # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.22.7
+    image: supabase/storage-api:v1.22.17
     restart: unless-stopped
     volumes:
       - ./volumes/storage:/var/lib/storage:z
@@ -274,7 +274,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.88.9
+    image: supabase/postgres-meta:v0.89.0
     restart: unless-stopped
     environment:
       PG_META_PORT: 8080
