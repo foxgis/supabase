@@ -160,7 +160,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
 
-      <div className="space-y-4 px-8">
+      <div className="space-y-4 px-8 py-8">
         <div className="mx-6">
           <h4 className="text-lg">数据中间件是什么？</h4>
         </div>
@@ -178,7 +178,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
 
-      <div className="space-y-4 px-8">
+      <div className="space-y-4 px-8 py-8">
         <div className="mx-6">
           <h4 className="text-lg">数据中间件有什么用？</h4>
         </div>
