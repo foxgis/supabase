@@ -54,7 +54,7 @@ const Home: NextPageWithLayout = () => {
   }, [enableBranching])
 
   const projectName =
-    project?.ref !== 'default' && project?.name !== undefined ? project?.name : '欢迎访问数据中间件'
+    project?.ref !== 'default' && project?.name !== undefined ? project?.name : '欢迎进入数据中间件'
 
   const { data: tablesData, isLoading: isLoadingTables } = useTablesQuery({
     projectRef: project?.ref,
