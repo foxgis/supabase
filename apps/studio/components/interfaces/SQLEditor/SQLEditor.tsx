@@ -818,7 +818,7 @@ export const SQLEditor = () => {
                   <TooltipTrigger>
                     <p className="text-xs">
                       <span className="text-foreground">
-                        {results.rows.length} row{results.rows.length > 1 ? 's' : ''}
+                        {results.rows.length} 行{results.rows.length > 1 ? '' : ''}
                       </span>
                       <span className="text-foreground-lighter ml-1">
                         {results.autoLimit !== undefined &&

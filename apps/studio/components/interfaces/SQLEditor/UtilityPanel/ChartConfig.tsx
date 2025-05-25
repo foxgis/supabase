@@ -201,7 +201,7 @@ export const ChartConfig = ({
           )}
         </div>
 
-        {!acknowledged && (
+        {/* {!acknowledged && (
           <Admonition showIcon={false} type="tip" className="p-2 relative group">
             <Tooltip>
               <TooltipTrigger
@@ -225,7 +225,7 @@ export const ChartConfig = ({
               <Link href={`/project/${ref}/reports`}>Head to Reports</Link>
             </Button>
           </Admonition>
-        )}
+        )} */}
 
         <div>
           <Label_Shadcn_ className="text-xs text-foreground-light">X 轴</Label_Shadcn_>
