@@ -186,7 +186,7 @@ export const TableGridEditor = ({
           key={gridKey}
           gridProps={{ height: '100%' }}
           customHeader={
-            (isViewSelected || isTableSelected) && selectedView === 'definition' ? (
+            (isViewSelected || isTableSelected) && selectedView === '定义' ? (
               <div className="flex items-center space-x-2">
                 <p>
                   表<code className="text-sm">{selectedTable.name}</code>的 SQL 定义
@@ -196,7 +196,7 @@ export const TableGridEditor = ({
             ) : null
           }
         >
-          {(isViewSelected || isTableSelected) && selectedView === 'definition' && (
+          {(isViewSelected || isTableSelected) && selectedView === '定义' && (
             <TableDefinition entity={selectedTable} />
           )}
         </SupabaseGrid>
