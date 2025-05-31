@@ -161,7 +161,7 @@ export const EditorTabs = () => {
           <div className="grow h-full border-b pr-6" />
         </TabsList_Shadcn_>
 
-        <TabsUpdateTooltip />
+        {/* <TabsUpdateTooltip /> */}
       </Tabs_Shadcn_>
 
       <DragOverlay dropAnimation={null}>
