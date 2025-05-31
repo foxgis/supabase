@@ -55,8 +55,8 @@ export function NewTab() {
   const tableEditorActions = [
     {
       icon: <Table2 className="h-4 w-4 text-foreground" strokeWidth={1.5} />,
-      title: 'Create a table',
-      description: 'Design and create a new database table',
+      title: '创建表',
+      description: '设计并创建新的数据表',
       bgColor: 'bg-blue-500',
       isBeta: false,
       onClick: snap.onAddTable,
@@ -66,8 +66,8 @@ export function NewTab() {
   const sqlEditorActions = [
     {
       icon: <SQL_ICON className={cn('fill-foreground', 'w-4 h-4')} strokeWidth={1.5} />,
-      title: 'New SQL Snippet',
-      description: 'Execute SQL queries',
+      title: '新建 SQL 查询',
+      description: '执行 SQL 查询',
       bgColor: 'bg-green-500',
       isBeta: false,
       onClick: () => router.push(`/project/${ref}/sql/new`),
@@ -77,12 +77,12 @@ export function NewTab() {
   const actions = editor === 'sql' ? sqlEditorActions : tableEditorActions
 
   const handleNewQuery = async (sql: string, name: string) => {
-    if (!ref) return console.error('Project ref is required')
-    if (!project) return console.error('Project is required')
-    if (!profile) return console.error('Profile is required')
+    if (!ref) return console.error('未找到项目号')
+    if (!project) return console.error('未找到项目')
+    if (!profile) return console.error('未找到用户信息')
 
     if (!canCreateSQLSnippet) {
-      return toast('Your queries will not be saved as you do not have sufficient permissions')
+      return toast('由于缺少足够的权限，导致查询不能被保存')
     }
 
     try {
@@ -107,14 +107,14 @@ export function NewTab() {
 
       router.push(`/project/${ref}/sql/${snippet.id}`)
     } catch (error: any) {
-      toast.error(`Failed to create new query: ${error.message}`)
+      toast.error(`执行新查询失败：${error.message}`)
     }
   }
 
   return (
     <div className="bg-surface-100 h-full overflow-y-auto py-12">
       <div className="mx-auto max-w-2xl flex flex-col gap-10 px-10">
-        <TabsUpdateCallout />
+        {/* <TabsUpdateCallout /> */}
         <div className="grid grid-cols-2 gap-4">
           {actions.map((item, i) => (
             <ActionCard key={`action-card-${i}`} {...item} />
@@ -126,8 +126,8 @@ export function NewTab() {
         <div className="flex flex-col gap-4 mx-auto py-10">
           <Tabs_Shadcn_ defaultValue="templates">
             <TabsList_Shadcn_ className="mx-auto justify-center gap-5">
-              <TabsTrigger_Shadcn_ value="templates">Templates</TabsTrigger_Shadcn_>
-              <TabsTrigger_Shadcn_ value="quickstarts">Quickstarts</TabsTrigger_Shadcn_>
+              <TabsTrigger_Shadcn_ value="templates">模板</TabsTrigger_Shadcn_>
+              <TabsTrigger_Shadcn_ value="quickstarts">快速上手</TabsTrigger_Shadcn_>
             </TabsList_Shadcn_>
             <TabsContent_Shadcn_ value="templates" className="max-w-5xl mx-auto py-5">
               <div className="grid grid-cols-3 gap-4 px-8">
@@ -138,7 +138,7 @@ export function NewTab() {
                       sendEvent({
                         action: 'sql_editor_template_clicked',
                         properties: { templateName: item.title },
-                        groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+                        groups: { project: ref ?? '未知', organization: org?.slug ?? '未知' },
                       })
                     }}
                     bgColor="bg-alternative border"
@@ -152,7 +152,7 @@ export function NewTab() {
               </div>
               <div className="flex justify-center mt-5">
                 <Button asChild type="default">
-                  <Link href={`/project/${ref}/sql/templates`}>View more templates</Link>
+                  <Link href={`/project/${ref}/sql/templates`}>查看更多模板</Link>
                 </Button>
               </div>
             </TabsContent_Shadcn_>
@@ -165,7 +165,7 @@ export function NewTab() {
                       sendEvent({
                         action: 'sql_editor_quickstart_clicked',
                         properties: { quickstartName: item.title },
-                        groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+                        groups: { project: ref ?? '未知', organization: org?.slug ?? '未知' },
                       })
                     }}
                     bgColor="bg-alternative border"
@@ -179,7 +179,7 @@ export function NewTab() {
               </div>
               <div className="flex justify-center mt-5">
                 <Button asChild type="default">
-                  <Link href={`/project/${ref}/sql/quickstarts`}>View more templates</Link>
+                  <Link href={`/project/${ref}/sql/quickstarts`}>查看更多模板</Link>
                 </Button>
               </div>
             </TabsContent_Shadcn_>

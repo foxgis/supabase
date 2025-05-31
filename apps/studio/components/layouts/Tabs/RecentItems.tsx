@@ -27,7 +27,7 @@ export function RecentItems() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-sm text-foreground">Recent items</h2>
+      <h2 className="text-sm text-foreground">最近的查看项</h2>
       <div className="flex flex-col gap-0">
         {sortedItems.length === 0 ? (
           <motion.div
@@ -37,9 +37,9 @@ export function RecentItems() {
           >
             <EntityTypeIcon type={'r' as ENTITY_TYPE} />
             <div>
-              <p className="text-xs text-foreground-light">No recent items yet</p>
+              <p className="text-xs text-foreground-light">还没有最近查看项</p>
               <p className="text-xs text-foreground-lighter">
-                Items will appear here as you browse through your project
+                您最近的查看项将会出现在这里
               </p>
             </div>
           </motion.div>

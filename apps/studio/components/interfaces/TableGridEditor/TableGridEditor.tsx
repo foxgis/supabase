@@ -189,7 +189,7 @@ export const TableGridEditor = ({
             (isViewSelected || isTableSelected) && selectedView === '定义' ? (
               <div className="flex items-center space-x-2">
                 <p>
-                  表<code className="text-sm">{selectedTable.name}</code>的 SQL 定义
+                  <code className="text-sm">{selectedTable.name}</code> 的 SQL 定义
                 </p>
                 <p className="text-foreground-light text-sm">（只读）</p>
               </div>

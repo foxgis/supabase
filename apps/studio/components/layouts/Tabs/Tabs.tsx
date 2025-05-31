@@ -111,7 +111,7 @@ export const EditorTabs = () => {
               >
                 <Plus size={16} strokeWidth={1.5} className={'text-foreground-lighter'} />
                 <div className="flex items-center gap-0">
-                  <span>New</span>
+                  <span>新建</span>
                 </div>
                 <span
                   role="button"

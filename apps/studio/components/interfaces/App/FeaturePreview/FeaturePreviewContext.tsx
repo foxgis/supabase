@@ -132,16 +132,19 @@ export const useIsColumnLevelPrivilegesEnabled = () => {
 
 export const useIsInlineEditorEnabled = () => {
   const { flags } = useFeaturePreviewContext()
-  return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_INLINE_EDITOR]
+  // return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_INLINE_EDITOR]
+  return true
 }
 
 export const useIsTableEditorTabsEnabled = () => {
   const { flags } = useFeaturePreviewContext()
-  return flags[LOCAL_STORAGE_KEYS.UI_TABLE_EDITOR_TABS]
+  // return flags[LOCAL_STORAGE_KEYS.UI_TABLE_EDITOR_TABS]
+  return true
 }
 
 export const useIsSQLEditorTabsEnabled = () => {
   const { flags } = useFeaturePreviewContext()
-  if (!IS_PLATFORM) return false
-  return flags[LOCAL_STORAGE_KEYS.UI_SQL_EDITOR_TABS]
+  // if (!IS_PLATFORM) return false
+  // return flags[LOCAL_STORAGE_KEYS.UI_SQL_EDITOR_TABS]
+  return true
 }
