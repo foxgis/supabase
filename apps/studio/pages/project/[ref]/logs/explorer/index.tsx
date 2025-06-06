@@ -338,7 +338,7 @@ export const LogsExplorerPage: NextPageWithLayout = () => {
         text: '查询大时间跨度的日志可能会很慢。请考虑指定一个更小的时间范围。',
       })
     }
-    if (editorValue && !editorValue.includes('limit')) {
+    if (editorValue && !editorValue.toLowerCase().includes('limit')) {
       newWarnings.push({ text: '当查询大时间跨度时，请包含 LIMIT 子句。' })
     }
     setWarnings(newWarnings)

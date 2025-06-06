@@ -123,7 +123,11 @@ export const Grid = memo(
             >
               {isLoading && <GenericSkeletonLoader />}
               {isError && (
-                <AlertError error={error} subject="从表中获取数据行失败">
+                <AlertError
+                  className="pointer-events-auto"
+                  error={error}
+                  subject="从表中获取数据行失败"
+                >
                   {filters.length > 0 && (
                     <p>
                       验证过滤条件是否正确，因为错误可能源于应用了不正确的过滤条件
