@@ -45,29 +45,15 @@ import { GenericSkeletonLoader } from 'ui-patterns/ShimmeringLoader'
 import AddUserDropdown from './AddUserDropdown'
 import { DeleteUserModal } from './DeleteUserModal'
 import { UserPanel } from './UserPanel'
-import { MAX_BULK_DELETE, PROVIDER_FILTER_OPTIONS } from './Users.constants'
+import {
+  ColumnConfiguration,
+  MAX_BULK_DELETE,
+  PROVIDER_FILTER_OPTIONS,
+  USERS_TABLE_COLUMNS,
+} from './Users.constants'
 import { formatUserColumns, formatUsersData, isAtBottom } from './Users.utils'
 
 export type Filter = 'all' | 'verified' | 'unverified' | 'anonymous'
-export type UsersTableColumn = {
-  id: string
-  name: string
-  minWidth?: number
-  width?: number
-  resizable?: boolean
-}
-export type ColumnConfiguration = { id: string; width?: number }
-export const USERS_TABLE_COLUMNS: UsersTableColumn[] = [
-  { id: 'img', name: '', minWidth: 95, width: 95, resizable: false },
-  { id: 'id', name: 'UID', width: 280 },
-  { id: 'name', name: '名称', minWidth: 0, width: 150 },
-  { id: 'email', name: '电子邮箱', width: 300 },
-  { id: 'phone', name: '电话' },
-  { id: 'providers', name: '认证方式', minWidth: 150 },
-  { id: 'provider_type', name: '认证类型', minWidth: 150 },
-  { id: 'created_at', name: '创建时间', width: 260 },
-  { id: 'last_sign_in_at', name: '最近登录时间', width: 260 },
-]
 
 // [Joshen] Just naming it as V2 as its a rewrite of the old one, to make it easier for reviews
 // Can change it to remove V2 thereafter
@@ -203,7 +189,7 @@ export const UsersV2 = () => {
   )
 
   const handleDeleteUsers = async () => {
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     const userIds = [...selectedUsers]
 
     setIsDeletingUsers(true)
@@ -217,14 +203,14 @@ export const UsersV2 = () => {
         queryClient.invalidateQueries(authKeys.usersCount(projectRef)),
       ])
       toast.success(
-        `Successfully deleted the selected ${selectedUsers.size} user${selectedUsers.size > 1 ? 's' : ''}`
+        `成功删除了选中的 ${selectedUsers.size} 个用户${selectedUsers.size > 1 ? '' : ''}`
       )
       setShowDeleteModal(false)
       setSelectedUsers(new Set([]))
 
       if (userIds.includes(selectedUser)) setSelectedUser(undefined)
     } catch (error: any) {
-      toast.error(`Failed to delete selected users: ${error.message}`)
+      toast.error(`删除选中的用户失败：${error.message}`)
       setIsDeletingUsers(false)
     }
   }
