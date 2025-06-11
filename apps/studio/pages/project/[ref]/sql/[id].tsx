@@ -81,7 +81,7 @@ const SqlEditor: NextPageWithLayout = () => {
       tabs.addTab({
         id: tabId,
         type: 'sql',
-        label: snippet?.name || 'Untitled Query',
+        label: snippet?.name || '未命名查询',
         metadata: {
           sqlId: id,
           name: snippet?.name,

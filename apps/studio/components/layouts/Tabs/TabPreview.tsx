@@ -20,7 +20,12 @@ export const TabPreview = ({ tab }: { tab: string }) => {
       className="flex relative items-center gap-2 px-3 text-xs bg-dash-sidebar dark:bg-surface-100 shadow-lg rounded-sm h-10"
     >
       <EntityTypeIcon type={tabData.type} />
-      <span>{tabData.label || 'Untitled'}</span>
+      <div className="text-left">
+        <span>{tabData.label || '未命名'}</span>
+        {tabData.metadata?.comment && (
+          <span className="block text-muted">{tabData.metadata.comment}</span>
+        )}
+      </div>
       <div className="absolute w-full top-0 left-0 right-0 h-px bg-foreground-muted" />
     </motion.div>
   )

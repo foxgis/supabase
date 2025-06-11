@@ -262,6 +262,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
             )}
           >
             {entity.name}
+            <span className="block text-muted">{entity.comment}</span>
           </span>
           <EntityTooltipTrigger
             entity={entity}
@@ -296,7 +297,7 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
                   className="space-x-2"
                   onClick={async (e) => {
                     e.stopPropagation()
-                    const toastId = toast.loading('Getting table schema...')
+                    const toastId = toast.loading('获取表结构...')
 
                     const tableDefinition = await getTableDefinition({
                       id: entity.id,
@@ -304,22 +305,22 @@ const EntityListItem: ItemRenderer<Entity, EntityListItemProps> = ({
                       connectionString: project?.connectionString,
                     })
                     if (!tableDefinition) {
-                      return toast.error('Failed to get table schema', { id: toastId })
+                      return toast.error('获取表结构失败', { id: toastId })
                     }
 
                     try {
                       const formatted = formatSql(tableDefinition)
                       await copyToClipboard(formatted)
-                      toast.success('Table schema copied to clipboard', { id: toastId })
+                      toast.success('表结构已复制到剪贴板', { id: toastId })
                     } catch (err: any) {
-                      toast.error('Failed to copy schema: ' + (err.message || err), {
+                      toast.error('复制表结构失败：' + (err.message || err), {
                         id: toastId,
                       })
                     }
                   }}
                 >
                   <Clipboard size={12} />
-                  <span>Copy table schema</span>
+                  <span>复制表结构</span>
                 </DropdownMenuItem>
               )}
 

@@ -22,7 +22,7 @@ export const InlineEditorButton = () => {
         content: {
           text: (
             <div className="flex items-center gap-4">
-              <span>SQL Editor</span>
+              <span>数据查询</span>
               <KeyboardShortcut keys={['Meta', 'e']} />
             </div>
           ),

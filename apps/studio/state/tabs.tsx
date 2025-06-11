@@ -37,6 +37,7 @@ export interface Tab {
     tableId?: number
     sqlId?: string
     scrollTop?: number
+    comment?: string
   }
   isPreview?: boolean
   createdAt?: Date
@@ -55,6 +56,7 @@ export interface RecentItem {
     name?: string
     tableId?: number
     sqlId?: string
+    comment?: string
   }
 }
 
@@ -131,7 +133,7 @@ function createTabsState(projectRef: string) {
       const recentItem: RecentItem = {
         id: tab.id, // Set the ID
         type: tab.type, // Set the type
-        label: tab.label || 'Untitled', // Set the label or default to 'Untitled'
+        label: tab.label || '未命名', // Set the label or default to 'Untitled'
         timestamp: Date.now(), // Set the current timestamp
         metadata: tab.metadata, // Set the metadata
       }

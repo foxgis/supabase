@@ -99,7 +99,12 @@ export const SortableTab = ({
               </motion.span>
             )}
           </AnimatePresence>
-          <span>{tab.label || 'Untitled'}</span>
+          <div className="text-left">
+            <span>{tab.label || '未命名'}</span>
+            {tab.metadata?.comment && (
+              <span className="block text-muted">{tab.metadata.comment}</span>
+            )}
+          </div>
         </div>
         <span
           role="button"

@@ -27,7 +27,7 @@ const SqlQuickstarts: NextPageWithLayout = () => {
       tabs.addTab({
         id: tabId,
         type: 'sql',
-        label: 'Quickstarts',
+        label: '快速上手',
         metadata: {
           sqlId: 'quickstarts',
           name: 'quickstarts',

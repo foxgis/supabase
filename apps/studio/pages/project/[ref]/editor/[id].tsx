@@ -45,6 +45,7 @@ const TableEditorPage: NextPageWithLayout = () => {
             schema: selectedTable.schema,
             name: selectedTable.name,
             tableId: id,
+            comment: selectedTable.comment ?? undefined,
           },
         })
       } else {

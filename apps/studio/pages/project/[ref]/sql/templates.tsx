@@ -27,7 +27,7 @@ const SqlTemplates: NextPageWithLayout = () => {
       tabs.addTab({
         id: tabId,
         type: 'sql',
-        label: 'Templates',
+        label: '查询模板',
         metadata: {
           sqlId: 'templates',
           name: 'templates',

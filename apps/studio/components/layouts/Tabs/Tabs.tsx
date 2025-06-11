@@ -155,16 +155,16 @@ export const EditorTabs = () => {
                 </ContextMenuTrigger_Shadcn_>
                 <ContextMenuContent_Shadcn_>
                   <ContextMenuItem_Shadcn_ onClick={() => handleClose(tab.id)}>
-                    Close
+                    关闭
                   </ContextMenuItem_Shadcn_>
                   <ContextMenuItem_Shadcn_ onClick={() => handleCloseOthers(tab.id)}>
-                    Close Others
+                    关闭其他
                   </ContextMenuItem_Shadcn_>
                   <ContextMenuItem_Shadcn_ onClick={() => handleCloseRight(tab.id)}>
-                    Close to the Right
+                    关闭右侧标签页
                   </ContextMenuItem_Shadcn_>
                   <ContextMenuItem_Shadcn_ onClick={handleCloseAll}>
-                    Close All
+                    关闭所有
                   </ContextMenuItem_Shadcn_>
                 </ContextMenuContent_Shadcn_>
               </ContextMenu_Shadcn_>

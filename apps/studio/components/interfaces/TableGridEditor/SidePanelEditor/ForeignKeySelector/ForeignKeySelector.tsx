@@ -257,7 +257,7 @@ export const ForeignKeySelector = ({
 
           <Listbox
             id="table"
-            label="选择引用的表"
+            label="选择关联表"
             value={selectedTable?.id ?? 1}
             onChange={(value: string) => updateSelectedTable(Number(value))}
           >
