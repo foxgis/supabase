@@ -11,9 +11,9 @@ import { useInstalledIntegrations } from './useInstalledIntegrations'
 
 type IntegrationCategory = 'all' | 'wrapper' | 'postgres_extensions' | 'custom'
 const CATEGORIES = [
-  { key: 'all', label: 'All Integrations' },
-  { key: 'wrapper', label: 'Wrappers' },
-  { key: 'postgres_extension', label: 'Postgres Modules' },
+  { key: 'all', label: '所有工具' },
+  // { key: 'wrapper', label: 'Wrappers' },
+  // { key: 'postgres_extension', label: 'Postgres Modules' },
 ] as const
 
 export const AvailableIntegrations = () => {
@@ -82,7 +82,7 @@ export const AvailableIntegrations = () => {
             }
             iconContainerClassName="p-0"
             className="pl-7 rounded-none !border-0 border-transparent bg-transparent !shadow-none !ring-0 !ring-offset-0"
-            placeholder="Search..."
+            placeholder="查找..."
           />
         </TabsList_Shadcn_>
       </Tabs_Shadcn_>
@@ -118,8 +118,8 @@ export const AvailableIntegrations = () => {
                 showIcon={false}
                 className="xl:col-span-3 2xl:col-span-4"
                 type="default"
-                title="All integrations in this category are currently in use"
-                description="Manage your installed integrations in the section above"
+                title="所有工具已启用"
+                description="在上方管理已安装的集成工具"
               />
             )}
         </div>

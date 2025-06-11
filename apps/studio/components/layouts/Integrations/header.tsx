@@ -97,7 +97,7 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(({ scroll }, ref) 
                         padding: iconPadding,
                       }}
                     >
-                      Integrations
+                      工具集成
                     </motion.span>
                   ) : (
                     <motion.span
@@ -106,7 +106,7 @@ export const Header = forwardRef<HTMLDivElement, HeaderProps>(({ scroll }, ref) 
                       transition={layoutTransition}
                       className="text-xs text-foreground-light hover:text-foreground !p-0"
                     >
-                      <Link href={`/project/${project?.ref}/integrations`}>Integrations</Link>
+                      <Link href={`/project/${project?.ref}/integrations`}>工具集成</Link>
                     </motion.span>
                   )}
                 </div>

@@ -65,12 +65,12 @@ const HooksList = ({ createHook = noop, editHook = noop, deleteHook = noop }: Ho
                 side: 'bottom',
                 text:
                   isPermissionsLoaded && !canCreateWebhooks
-                    ? 'You need additional permissions to create webhooks'
+                    ? '您需要有额外的权限才能创建 webhooks'
                     : undefined,
               },
             }}
           >
-            Create a new hook
+            新建 webhook
           </ButtonTooltip>
         </div>
       </div>
@@ -81,7 +81,7 @@ const HooksList = ({ createHook = noop, editHook = noop, deleteHook = noop }: Ho
         </div>
       )}
 
-      {isError && <AlertError error={error} subject="Failed to retrieve database webhooks" />}
+      {isError && <AlertError error={error} subject="获取 webhooks 失败" />}
 
       {isSuccess &&
         (hooks.length <= 0 ? (

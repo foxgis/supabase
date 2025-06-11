@@ -14,7 +14,7 @@ const OrgIntegrationSettings: NextPageWithLayout = () => {
     <>
       <ScaffoldContainer>
         <ScaffoldHeader>
-          <ScaffoldTitle>Integrations</ScaffoldTitle>
+          <ScaffoldTitle>工具集成</ScaffoldTitle>
         </ScaffoldHeader>
       </ScaffoldContainer>
       <ScaffoldDivider />

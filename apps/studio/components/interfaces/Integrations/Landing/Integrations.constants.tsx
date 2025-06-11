@@ -56,12 +56,12 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     id: 'queues',
     type: 'postgres_extension' as const,
     requiredExtensions: ['pgmq'],
-    missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
-    name: `Queues`,
+    // missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
+    name: `消息队列`,
     icon: ({ className, ...props } = {}) => (
       <Layers className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
     ),
-    description: 'Lightweight message queue in Postgres',
+    description: '数据库中的轻量级消息队列',
     docsUrl: 'https://github.com/tembo-io/pgmq',
     author: {
       name: 'pgmq',
@@ -70,11 +70,11 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     navigation: [
       {
         route: 'overview',
-        label: 'Overview',
+        label: '概览',
       },
       {
         route: 'queues',
-        label: 'Queues',
+        label: '消息队列',
         hasChild: true,
         childIcon: (
           <Layers size={12} strokeWidth={1.5} className={cn('text-foreground w-full h-full')} />
@@ -82,7 +82,7 @@ const supabaseIntegrations: IntegrationDefinition[] = [
       },
       {
         route: 'settings',
-        label: 'Settings',
+        label: '设置',
       },
     ],
     navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
@@ -117,11 +117,11 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     id: 'cron',
     type: 'postgres_extension' as const,
     requiredExtensions: ['pg_cron'],
-    name: `Cron`,
+    name: `定时任务`,
     icon: ({ className, ...props } = {}) => (
       <Clock5 className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
     ),
-    description: 'Schedule recurring Jobs in Postgres.',
+    description: '数据库中设置定时任务。',
     docsUrl: 'https://github.com/citusdata/pg_cron',
     author: {
       name: 'Citus Data',
@@ -130,11 +130,11 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     navigation: [
       {
         route: 'overview',
-        label: 'Overview',
+        label: '概览',
       },
       {
         route: 'jobs',
-        label: 'Jobs',
+        label: '任务',
         hasChild: true,
         childIcon: (
           <Timer size={12} strokeWidth={1.5} className={cn('text-foreground w-full h-full')} />
@@ -169,68 +169,68 @@ const supabaseIntegrations: IntegrationDefinition[] = [
       return null
     },
   },
-  {
-    id: 'vault',
-    type: 'postgres_extension' as const,
-    requiredExtensions: ['supabase_vault'],
-    missingExtensionsAlert: <UpgradeDatabaseAlert />,
-    name: `Vault`,
-    status: 'alpha',
-    icon: ({ className, ...props } = {}) => (
-      <Vault className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
-    ),
-    description: 'Application level encryption for your project',
-    docsUrl: 'https://supabase.com/docs',
-    author: authorSupabase,
-    navigation: [
-      {
-        route: 'overview',
-        label: 'Overview',
-      },
-      {
-        route: 'secrets',
-        label: 'Secrets',
-      },
-    ],
-    navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
-      switch (pageId) {
-        case 'overview':
-          return dynamic(
-            () =>
-              import('components/interfaces/Integrations/Integration/IntegrationOverviewTab').then(
-                (mod) => mod.IntegrationOverviewTab
-              ),
-            {
-              loading: Loading,
-            }
-          )
-        case 'secrets':
-          return dynamic(
-            () => import('../Vault/Secrets/SecretsManagement').then((mod) => mod.SecretsManagement),
-            {
-              loading: Loading,
-            }
-          )
-      }
-      return null
-    },
-  },
+  // {
+  //   id: 'vault',
+  //   type: 'postgres_extension' as const,
+  //   requiredExtensions: ['supabase_vault'],
+  //   missingExtensionsAlert: <UpgradeDatabaseAlert />,
+  //   name: `Vault`,
+  //   status: 'alpha',
+  //   icon: ({ className, ...props } = {}) => (
+  //     <Vault className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
+  //   ),
+  //   description: 'Application level encryption for your project',
+  //   docsUrl: 'https://supabase.com/docs',
+  //   author: authorSupabase,
+  //   navigation: [
+  //     {
+  //       route: 'overview',
+  //       label: 'Overview',
+  //     },
+  //     {
+  //       route: 'secrets',
+  //       label: 'Secrets',
+  //     },
+  //   ],
+  //   navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
+  //     switch (pageId) {
+  //       case 'overview':
+  //         return dynamic(
+  //           () =>
+  //             import('components/interfaces/Integrations/Integration/IntegrationOverviewTab').then(
+  //               (mod) => mod.IntegrationOverviewTab
+  //             ),
+  //           {
+  //             loading: Loading,
+  //           }
+  //         )
+  //       case 'secrets':
+  //         return dynamic(
+  //           () => import('../Vault/Secrets/SecretsManagement').then((mod) => mod.SecretsManagement),
+  //           {
+  //             loading: Loading,
+  //           }
+  //         )
+  //     }
+  //     return null
+  //   },
+  // },
   {
     id: 'webhooks',
     type: 'postgres_extension' as const,
-    name: `Database Webhooks`,
+    name: `Webhooks`,
     icon: ({ className, ...props } = {}) => (
       <Webhook className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
     ),
     description:
-      'Send real-time data from your database to another system when a table event occurs',
+      '从数据库向外部系统实时发送表变更事件',
     docsUrl: 'https://supabase.com/docs',
     author: authorSupabase,
     requiredExtensions: [],
     navigation: [
       {
         route: 'overview',
-        label: 'Overview',
+        label: '概览',
       },
       {
         route: 'webhooks',
@@ -263,59 +263,59 @@ const supabaseIntegrations: IntegrationDefinition[] = [
       return null
     },
   },
-  {
-    id: 'graphiql',
-    type: 'postgres_extension' as const,
-    requiredExtensions: ['pg_graphql'],
-    name: `GraphQL`,
-    icon: ({ className, ...props } = {}) => (
-      <Image
-        fill
-        src={`${BASE_PATH}/img/graphql.svg`}
-        alt="GraphiQL"
-        className={cn('p-2', className)}
-        {...props}
-      />
-    ),
-    description: 'Run GraphQL queries through our interactive in-browser IDE',
-    docsUrl: 'https://supabase.com/docs',
-    author: authorSupabase,
-    navigation: [
-      {
-        route: 'overview',
-        label: 'Overview',
-      },
-      {
-        route: 'graphiql',
-        label: 'GraphiQL',
-      },
-    ],
-    navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
-      switch (pageId) {
-        case 'overview':
-          return dynamic(
-            () =>
-              import('components/interfaces/Integrations/Integration/IntegrationOverviewTab').then(
-                (mod) => mod.IntegrationOverviewTab
-              ),
-            {
-              loading: Loading,
-            }
-          )
-        case 'graphiql':
-          return dynamic(
-            () =>
-              import('components/interfaces/Integrations/GraphQL/GraphiQLTab').then(
-                (mod) => mod.GraphiQLTab
-              ),
-            {
-              loading: Loading,
-            }
-          )
-      }
-      return null
-    },
-  },
+  // {
+  //   id: 'graphiql',
+  //   type: 'postgres_extension' as const,
+  //   requiredExtensions: ['pg_graphql'],
+  //   name: `GraphQL`,
+  //   icon: ({ className, ...props } = {}) => (
+  //     <Image
+  //       fill
+  //       src={`${BASE_PATH}/img/graphql.svg`}
+  //       alt="GraphiQL"
+  //       className={cn('p-2', className)}
+  //       {...props}
+  //     />
+  //   ),
+  //   description: 'Run GraphQL queries through our interactive in-browser IDE',
+  //   docsUrl: 'https://supabase.com/docs',
+  //   author: authorSupabase,
+  //   navigation: [
+  //     {
+  //       route: 'overview',
+  //       label: 'Overview',
+  //     },
+  //     {
+  //       route: 'graphiql',
+  //       label: 'GraphiQL',
+  //     },
+  //   ],
+  //   navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
+  //     switch (pageId) {
+  //       case 'overview':
+  //         return dynamic(
+  //           () =>
+  //             import('components/interfaces/Integrations/Integration/IntegrationOverviewTab').then(
+  //               (mod) => mod.IntegrationOverviewTab
+  //             ),
+  //           {
+  //             loading: Loading,
+  //           }
+  //         )
+  //       case 'graphiql':
+  //         return dynamic(
+  //           () =>
+  //             import('components/interfaces/Integrations/GraphQL/GraphiQLTab').then(
+  //               (mod) => mod.GraphiQLTab
+  //             ),
+  //           {
+  //             loading: Loading,
+  //           }
+  //         )
+  //     }
+  //     return null
+  //   },
+  // },
 ] as const
 
 const wrapperIntegrations: IntegrationDefinition[] = WRAPPERS.map((w) => {
@@ -370,6 +370,6 @@ const wrapperIntegrations: IntegrationDefinition[] = WRAPPERS.map((w) => {
 })
 
 export const INTEGRATIONS: IntegrationDefinition[] = [
-  ...wrapperIntegrations,
+  // ...wrapperIntegrations,
   ...supabaseIntegrations,
 ]

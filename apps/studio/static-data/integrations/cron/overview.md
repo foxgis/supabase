@@ -1,1 +1,1 @@
-Supabase Cron uses the `pg_cron` Postgres extension, which is a recurring job scheduler in Postgres. It uses the same syntax as a regular cron, but it allows you to schedule Postgres SQL commands directly from the database.
+数据中间件使用 `pg_cron` 这个数据库扩展调度定时任务。它采用与常规 cron 相同的语法，但允许你直接从数据库中调度 SQL 命令。

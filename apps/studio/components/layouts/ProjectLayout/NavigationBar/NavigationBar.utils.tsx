@@ -161,12 +161,12 @@ export const generateOtherRoutes = (ref?: string, project?: Project): Route[] =>
       icon: <FileText size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/api`),
     },
-    // {
-    //   key: 'integrations',
-    //   label: 'Integrations',
-    //   icon: <Blocks size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-    //   link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/integrations`),
-    // },
+    {
+      key: 'integrations',
+      label: '工具集成',
+      icon: <Blocks size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
+      link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/integrations`),
+    },
   ]
 }
 

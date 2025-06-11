@@ -1,3 +1,1 @@
-Database Webhooks allow you to send real-time data from your database to another system whenever a table event occurs.
-
-You can hook into three table events: `INSERT`, `UPDATE`, and `DELETE`. All events are fired after a database row is changed.
+Webhooks 可以在发生数据表事件时实时发送数据到另一个系统。您可以监听三种数据表事件：`INSERT`、`UPDATE` 和 `DELETE`，当数据行发生变更后触发事件。

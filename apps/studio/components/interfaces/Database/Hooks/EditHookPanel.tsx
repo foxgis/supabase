@@ -53,24 +53,24 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { mutate: createDatabaseTrigger } = useDatabaseTriggerCreateMutation({
     onSuccess: (res) => {
-      toast.success(`Successfully created new webhook "${res.name}"`)
+      toast.success(`成功创建了新的 webhook "${res.name}"`)
       setIsSubmitting(false)
       onClose()
     },
     onError: (error) => {
       setIsSubmitting(false)
-      toast.error(`Failed to create webhook: ${error.message}`)
+      toast.error(`创建 webhook 失败: ${error.message}`)
     },
   })
   const { mutate: updateDatabaseTrigger } = useDatabaseTriggerUpdateMutation({
     onSuccess: (res) => {
       setIsSubmitting(false)
-      toast.success(`Successfully updated webhook "${res.name}"`)
+      toast.success(`成功更新了 webhook "${res.name}"`)
       onClose()
     },
     onError: (error) => {
       setIsSubmitting(false)
-      toast.error(`Failed to update webhook: ${error.message}`)
+      toast.error(`更新 webhook 失败: ${error.message}`)
     },
   })
 
@@ -161,30 +161,30 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
     const errors: any = {}
 
     if (!values.name) {
-      errors['name'] = 'Please provide a name for your webhook'
+      errors['name'] = '请提供 webhook 的名称'
     }
     if (!values.table_id) {
-      errors['table_id'] = 'Please select a table for which your webhook will trigger from'
+      errors['table_id'] = '请选择 webhook 触发的数据表'
     }
 
     if (values.function_type === 'http_request') {
       // For HTTP requests
       if (!values.http_url) {
-        errors['http_url'] = 'Please provide a URL'
+        errors['http_url'] = '请提供 URL'
       } else if (!values.http_url.startsWith('http')) {
-        errors['http_url'] = 'Please include HTTP/HTTPs to your URL'
+        errors['http_url'] = '请在 URL 中包含 HTTP/HTTPs'
       } else if (!isValidHttpUrl(values.http_url)) {
-        errors['http_url'] = 'Please provide a valid URL'
+        errors['http_url'] = '请提供一个有效的 URL'
       }
     } else if (values.function_type === 'supabase_function') {
       // For Supabase Edge Functions
-      if (values.http_url.includes('undefined')) {
-        errors['http_url'] = 'No edge functions available for selection'
+      if (functions?.length === 0) {
+        errors['http_url'] = '无云函数可供选择'
       }
     }
 
     if (values.timeout_ms < 1000 || values.timeout_ms > 10_000) {
-      errors['timeout_ms'] = 'Timeout should be between 1000ms and 10,000ms'
+      errors['timeout_ms'] = '超时时间应设置为 1000ms 到 10,000ms 之间'
     }
 
     if (JSON.stringify(values) !== JSON.stringify(initialValues)) setIsEdited(true)
@@ -194,10 +194,10 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
   const onSubmit = async (values: any) => {
     setIsSubmitting(true)
     if (!project?.ref) {
-      return console.error('Project ref is required')
+      return console.error('未找到项目号码')
     }
     if (events.length === 0) {
-      return setEventsError('Please select at least one event')
+      return setEventsError('请至少选择一个事件')
     }
 
     const selectedTable = await getTableEditor({
@@ -273,10 +273,10 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
         visible={visible}
         header={
           selectedHook === undefined ? (
-            'Create a new database webhook'
+            '新建 webhook'
           ) : (
             <>
-              Update webhook <code className="text-sm">{selectedHook.name}</code>
+              更新 webhook <code className="text-sm">{selectedHook.name}</code>
             </>
           )
         }
@@ -292,7 +292,7 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
               onClick={onClosePanel}
               disabled={isSubmitting}
             >
-              Cancel
+              取消
             </Button>
             <Button
               size="tiny"
@@ -302,7 +302,7 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
               loading={isSubmitting}
               onClick={() => submitRef?.current?.click()}
             >
-              {selectedHook === undefined ? 'Create webhook' : 'Update webhook'}
+              {selectedHook === undefined ? '创建 webhook' : '更新 webhook'}
             </Button>
           </div>
         }
@@ -335,8 +335,8 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
       </SidePanel>
       <ConfirmationModal
         visible={isClosingPanel}
-        title="Discard changes"
-        confirmLabel="Discard"
+        title="撤销更改"
+        confirmLabel="撤销"
         onCancel={() => setIsClosingPanel(false)}
         onConfirm={() => {
           setIsClosingPanel(false)
@@ -345,8 +345,7 @@ const EditHookPanel = ({ visible, selectedHook, onClose }: EditHookPanelProps) =
         }}
       >
         <p className="text-sm text-foreground-light">
-          There are unsaved changes. Are you sure you want to close the panel? Your changes will be
-          lost.
+          存在未保存的变更。您确定想要关闭面板吗？您的变更将会丢失。
         </p>
       </ConfirmationModal>
     </>
@@ -417,13 +416,13 @@ const FormContents = ({
 
   return (
     <div>
-      <FormSection header={<FormSectionLabel className="lg:!col-span-4">General</FormSectionLabel>}>
+      <FormSection header={<FormSectionLabel className="lg:!col-span-4">一般设置</FormSectionLabel>}>
         <FormSectionContent loading={false} className="lg:!col-span-8">
           <Input
             id="name"
             name="name"
-            label="Name"
-            descriptionText="Do not use spaces/whitespaces"
+            label="名称"
+            descriptionText="不要使用空格或空白字符。"
           />
         </FormSectionContent>
       </FormSection>
@@ -434,11 +433,11 @@ const FormContents = ({
             className="lg:!col-span-4"
             description={
               <p className="text-sm text-foreground-light">
-                Select which table and events will trigger your webhook
+                选择要触发 webhook 的表和事件
               </p>
             }
           >
-            Conditions to fire webhook
+            触发条件
           </FormSectionLabel>
         }
       >
@@ -447,8 +446,8 @@ const FormContents = ({
             size="medium"
             id="table_id"
             name="table_id"
-            label="Table"
-            descriptionText="This is the table the trigger will watch for changes. You can only select 1 table for a trigger."
+            label="表"
+            descriptionText="选择要触发 webhook 的表。您只能为一个触发器选择 1 张表。"
           >
             <Listbox.Option
               key={'table-no-selection'}
@@ -475,9 +474,9 @@ const FormContents = ({
           <Checkbox.Group
             id="events"
             name="events"
-            label="Events"
+            label="事件"
             error={eventsError}
-            descriptionText="These are the events that are watched by the webhook, only the events selected above will fire the webhook on the table you've selected."
+            descriptionText="这些事件是由 webhook 触发的，只有您选择的事件才会在选择的表上触发 webhook。"
           >
             {HOOK_EVENTS.map((event) => (
               <Checkbox
@@ -495,11 +494,11 @@ const FormContents = ({
       <SidePanel.Separator />
       <FormSection
         header={
-          <FormSectionLabel className="lg:!col-span-4">Webhook configuration</FormSectionLabel>
+          <FormSectionLabel className="lg:!col-span-4">Webhook 配置</FormSectionLabel>
         }
       >
         <FormSectionContent loading={false} className="lg:!col-span-8">
-          <Radio.Group id="function_type" name="function_type" label="Type of webhook" type="cards">
+          <Radio.Group id="function_type" name="function_type" label="webhook 类型" type="cards">
             {AVAILABLE_WEBHOOK_TYPES.map((webhook) => (
               <Radio
                 key={webhook.value}

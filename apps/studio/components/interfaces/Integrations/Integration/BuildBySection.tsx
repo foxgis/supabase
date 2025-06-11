@@ -24,13 +24,13 @@ export const BuiltBySection = forwardRef<ElementRef<'div'>, BuiltBySectionProps>
       >
         {name && (
           <div>
-            <div className="text-foreground-lighter font-mono text-xs mb-1">BUILT BY</div>
+            <div className="text-foreground-lighter font-mono text-xs mb-1">开发者</div>
             <div className="text-foreground-light text-sm">{name}</div>
           </div>
         )}
         {docsUrl && (
           <div>
-            <div className="text-foreground-lighter font-mono text-xs mb-1">DOCS</div>
+            <div className="text-foreground-lighter font-mono text-xs mb-1">文档</div>
             <Link
               href={docsUrl}
               target="_blank"
@@ -39,16 +39,16 @@ export const BuiltBySection = forwardRef<ElementRef<'div'>, BuiltBySectionProps>
             >
               <Book size={16} />
               {docsUrl.includes('supabase.com/docs')
-                ? 'Supabase Docs'
+                ? '查看文档'
                 : docsUrl.includes('github.com')
-                  ? 'GitHub Docs'
-                  : 'Documentation'}
+                  ? '查看文档'
+                  : '查看文档'}
             </Link>
           </div>
         )}
         {websiteUrl && (
           <div>
-            <div className="text-foreground-lighter font-mono text-xs mb-1">WEBSITE</div>
+            <div className="text-foreground-lighter font-mono text-xs mb-1">网站</div>
             <Link
               href={websiteUrl}
               target="_blank"

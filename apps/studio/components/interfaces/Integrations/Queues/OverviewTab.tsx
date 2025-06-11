@@ -21,17 +21,15 @@ export const QueuesOverviewTab = () => {
         !isExposed ? (
           <Admonition
             type="default"
-            title="Queues can be managed via any Supabase client library or PostgREST endpoints"
+            title="消息队列可以通过客户端 SDK 或者 API 接口进行管理"
           >
-            <p>
-              You may choose to toggle the exposure of Queues through Data APIs via the queues
-              settings
-            </p>
+            您可以在
             <Button asChild type="default">
               <Link href={`/project/${ref}/integrations/queues/settings`}>
-                Manage queues settings
+                管理消息队列设置
               </Link>
             </Button>
+            中选择是否允许使用 API 接口管理消息队列
           </Admonition>
         ) : null
       }

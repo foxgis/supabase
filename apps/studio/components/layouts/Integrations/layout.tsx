@@ -105,8 +105,8 @@ const IntegrationTopHeaderLayout = ({ ...props }: PropsWithChildren) => {
   return (
     <ProjectLayout
       ref={mainElementRef}
-      title={'Integrations'}
-      product="Integrations"
+      title={'工具集成'}
+      product="工具集成"
       isBlocking={false}
       productMenu={
         <>
@@ -116,7 +116,7 @@ const IntegrationTopHeaderLayout = ({ ...props }: PropsWithChildren) => {
             <Menu.Group
               title={
                 <div className="flex flex-col space-y-2 uppercase font-mono">
-                  <span>Installed integrations</span>
+                  <span>已安装的工具</span>
                 </div>
               }
             />
@@ -125,7 +125,7 @@ const IntegrationTopHeaderLayout = ({ ...props }: PropsWithChildren) => {
               <AlertError
                 showIcon={false}
                 error={error}
-                subject="Failed to retrieve installed integrations"
+                subject="获取已集成工具失败"
               />
             )}
             {isSuccess && (
@@ -181,7 +181,7 @@ const IntegrationsLayoutSide = ({ ...props }: PropsWithChildren) => {
   return (
     <ProjectLayout
       isLoading={false}
-      product="Integrations"
+      product="工具集成"
       productMenu={
         <>
           <ProductMenu page={page} menu={generateIntegrationsMenu({ projectRef: project?.ref })} />
@@ -190,7 +190,7 @@ const IntegrationsLayoutSide = ({ ...props }: PropsWithChildren) => {
             <Menu.Group
               title={
                 <div className="flex flex-col space-y-2 uppercase font-mono">
-                  <span>Installed integrations</span>
+                  <span>已安装的工具</span>
                 </div>
               }
             />
@@ -199,7 +199,7 @@ const IntegrationsLayoutSide = ({ ...props }: PropsWithChildren) => {
               <AlertError
                 showIcon={false}
                 error={error}
-                subject="Failed to retrieve installed integrations"
+                subject="获取已集成工具失败"
               />
             )}
             {isSuccess && (
@@ -231,10 +231,10 @@ export default withAuth(IntegrationsLayout)
 const generateIntegrationsMenu = ({ projectRef }: { projectRef?: string }): ProductMenuGroup[] => {
   return [
     {
-      title: 'All Integrations',
+      title: '所有工具',
       items: [
         {
-          name: 'All Integrations',
+          name: '所有工具',
           key: 'integrations',
           url: `/project/${projectRef}/integrations`,
           items: [],

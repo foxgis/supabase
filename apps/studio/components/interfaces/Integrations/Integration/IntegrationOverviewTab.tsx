@@ -58,17 +58,16 @@ export const IntegrationOverviewTab = ({
           >
             <Badge className="bg-surface-300 bg-opacity-100 flex items-center gap-x-2 w-max">
               <img
-                alt="Supabase"
-                src={`${router.basePath}/img/supabase-logo.svg`}
+                alt="数据中间件"
+                src={`${router.basePath}/img/dbware-logo.png`}
                 className=" h-2.5 cursor-pointer rounded"
               />
-              <span>Postgres Module</span>
+              <span>数据库扩展</span>
             </Badge>
             <Markdown
               className="max-w-full"
-              content={`This integration uses the ${integration.requiredExtensions.map((x) => `\`${x}\``).join(', ')}
-              extension${integration.requiredExtensions.length > 1 ? 's' : ''} directly in your Postgres database.
-              ${hasToInstallExtensions && !hasMissingExtensions ? `Install ${integration.requiredExtensions.length > 1 ? 'these' : 'this'} database extension${integration.requiredExtensions.length > 1 ? 's' : ''} to use ${integration.name} in your project.` : ''}
+              content={`此工具需要使用数据库扩展${integration.requiredExtensions.map((x) => `\`${x}\``).join('、')}。
+              ${hasToInstallExtensions && !hasMissingExtensions ? `安装${integration.requiredExtensions.length > 1 ? '此' : '此'}数据库库扩展${integration.requiredExtensions.length > 1 ? '' : ''}以启用${integration.name}。` : ''}
               `}
             />
 

@@ -61,12 +61,12 @@ export const IntegrationCard = ({
           </div>
           <div className="flex items-center gap-x-4">
             <Badge className="bg-opacity-100 bg-surface-300 flex items-center gap-x-1.5">
-              <span>Official</span>
+              <span>官方工具</span>
             </Badge>
             {isInstalled && (
               <div className="flex items-center gap-x-1">
                 <BadgeCheck size={14} className="text-brand-600" />
-                <span className=" text-brand-600 text-xs">Installed</span>
+                <span className=" text-brand-600 text-xs">已安装</span>
               </div>
             )}
           </div>

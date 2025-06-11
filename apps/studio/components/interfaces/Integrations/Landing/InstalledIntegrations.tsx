@@ -7,7 +7,7 @@ export const InstalledIntegrations = () => {
 
   return (
     <div className="px-4 md:px-10 py-6 flex flex-col gap-y-5">
-      <h2>Installed integrations</h2>
+      <h2>已安装的工具</h2>
       <div className="grid xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 gap-y-3">
         {isLoading &&
           new Array(3)
@@ -16,7 +16,7 @@ export const InstalledIntegrations = () => {
         {isError && (
           <AlertError
             className="xl:col-span-3 2xl:col-span-4"
-            subject="Failed to retrieve installed integrations"
+            subject="获取已集成工具失败"
             error={error}
           />
         )}
