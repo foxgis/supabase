@@ -207,7 +207,16 @@ const LayoutHeader = ({
           ) : (
             <>
               {/* <LocalVersionPopover /> */}
-              <InlineEditorButton />
+              <div className="overflow-hidden flex items-center rounded-full border">
+                <AnimatePresence initial={false}>
+                  {!!projectRef && (
+                    <>
+                      <InlineEditorButton />
+                      {/* <AssistantButton /> */}
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
               <LocalDropdown />
             </>
           )}

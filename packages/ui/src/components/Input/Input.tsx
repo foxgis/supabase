@@ -8,6 +8,7 @@ import InputErrorIcon from '../../lib/Layout/InputErrorIcon'
 import InputIconContainer from '../../lib/Layout/InputIconContainer'
 import { HIDDEN_PLACEHOLDER } from '../../lib/constants'
 import styleHandler from '../../lib/theme/styleHandler'
+import { copyToClipboard } from '../../lib/utils'
 import { cn } from '../../lib/utils/cn'
 import { Button } from '../Button'
 import { useFormContext } from '../Form/FormContext'
@@ -115,20 +116,13 @@ function Input({
   // }, [errors, touched])
 
   function _onCopy(value: any) {
-    navigator.clipboard.writeText(value)?.then(
-      function () {
-        /* clipboard successfully set */
-        setCopyLabel('已复制')
-        setTimeout(function () {
-          setCopyLabel('复制')
-        }, 3000)
-        onCopy?.()
-      },
-      function () {
-        /* clipboard write failed */
-        setCopyLabel('复制失败')
-      }
-    )
+    copyToClipboard(value, () => {
+      setCopyLabel('已复制')
+      setTimeout(() => {
+        setCopyLabel('复制')
+      }, 3000)
+      onCopy?.()
+    })
   }
 
   function onReveal() {
@@ -256,20 +250,14 @@ function TextArea({
   const [copyLabel, setCopyLabel] = useState('复制')
 
   function _onCopy(value: any) {
-    navigator.clipboard.writeText(value).then(
-      function () {
-        /* clipboard successfully set */
-        setCopyLabel('已复制')
-        setTimeout(function () {
-          setCopyLabel('复制')
-        }, 3000)
-        onCopy?.()
-      },
-      function () {
-        /* clipboard write failed */
-        setCopyLabel('复制失败')
-      }
-    )
+    copyToClipboard(value, () => {
+      /* clipboard successfully set */
+      setCopyLabel('已复制')
+      setTimeout(() => {
+        setCopyLabel('复制')
+      }, 3000)
+      onCopy?.()
+    })
   }
 
   const { formContextOnChange, values, errors, handleBlur, touched, fieldLevelValidation } =
