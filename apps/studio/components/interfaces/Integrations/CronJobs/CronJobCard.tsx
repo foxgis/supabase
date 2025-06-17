@@ -60,8 +60,8 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
     sendEvent({
       action: 'cron_job_update_clicked',
       groups: {
-        project: selectedProject?.ref ?? 'Unknown',
-        organization: org?.slug ?? 'Unknown',
+        project: selectedProject?.ref ?? '未知项目',
+        organization: org?.slug ?? '未知组织',
       },
     })
     onEditCronJob(job)
@@ -91,7 +91,7 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                   htmlFor={`cron-job-active-${job.jobid}`}
                   className="text-foreground-light text-xs"
                 >
-                  {job.active ? 'Active' : 'Inactive'}
+                  {job.active ? '生效' : '未生效'}
                 </Label_Shadcn_>
               )}
               <Switch
@@ -109,8 +109,8 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                   sendEvent({
                     action: 'cron_job_history_clicked',
                     groups: {
-                      project: selectedProject?.ref ?? 'Unknown',
-                      organization: org?.slug ?? 'Unknown',
+                      project: selectedProject?.ref ?? '未知项目',
+                      organization: org?.slug ?? '未知组织',
                     },
                   })
                 }}
@@ -118,7 +118,7 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                 <Link
                   href={`/project/${ref}/integrations/cron/jobs/${encodeURIComponent(job.jobid)}?child-label=${encodeURIComponent(job.jobname || `Job #${job.jobid}`)}`}
                 >
-                  History
+                  执行历史
                 </Link>
               </Button>
               <DropdownMenu>
@@ -127,17 +127,16 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-36">
                   {job.jobname ? (
-                    <DropdownMenuItem onClick={onEdit}>Edit cron job</DropdownMenuItem>
+                    <DropdownMenuItem onClick={onEdit}>编辑定时任务</DropdownMenuItem>
                   ) : (
                     <Tooltip>
                       <TooltipTrigger className="w-full">
                         <DropdownMenuItem onClick={onEdit} disabled>
-                          Edit cron job
+                          编辑定时任务
                         </DropdownMenuItem>
                       </TooltipTrigger>
                       <TooltipContent>
-                        This cron job doesn’t have a name and can’t be edited. Create a new one and
-                        delete this job.
+                        由于此定时任务没有名称导致不能编辑，请删除后重新创建一个定时任务。
                       </TooltipContent>
                     </Tooltip>
                   )}
@@ -147,14 +146,14 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                       sendEvent({
                         action: 'cron_job_delete_clicked',
                         groups: {
-                          project: selectedProject?.ref ?? 'Unknown',
-                          organization: org?.slug ?? 'Unknown',
+                          project: selectedProject?.ref ?? '未知项目',
+                          organization: org?.slug ?? '未知组织',
                         },
                       })
                       onDeleteCronJob(job)
                     }}
                   >
-                    Delete cron job
+                    删除定时任务
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -163,13 +162,13 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
           <div className="text-sm flex flex-row space-x-5 py-4">
             <div className="flex flex-col w-full space-y-2">
               <div className="grid grid-cols-10 gap-3 items-center">
-                <span className="text-foreground-light col-span-1">Schedule</span>
+                <span className="text-foreground-light col-span-1">执行计划</span>
                 <div className="col-span-9">
                   <Input readOnly title={schedule} value={schedule} className="w-96" />
                 </div>
               </div>
               <div className="grid grid-cols-10 gap-3 items-center">
-                <span className="text-foreground-light col-span-1">Last run</span>
+                <span className="text-foreground-light col-span-1">上次执行</span>
                 <div className="col-span-9">
                   <div
                     className={cn(
@@ -181,7 +180,7 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                       <>
                         <TimestampInfo
                           utcTimestamp={lastRun}
-                          labelFormat="DD MMM YYYY HH:mm:ss (ZZ)"
+                          labelFormat="YYYY/MM/DD HH:mm:ss (ZZ)"
                           className="font-sans text-sm"
                         />
                         {data?.status && (
@@ -194,13 +193,13 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                         )}
                       </>
                     ) : (
-                      'Job has not been run yet'
+                      '定时任务还未执行过'
                     )}
                   </div>
                 </div>
               </div>
               <div className="grid grid-cols-10 gap-3 items-center">
-                <span className="text-foreground-light col-span-1">Next run</span>
+                <span className="text-foreground-light col-span-1">下次执行</span>
                 <div className="col-span-9">
                   <div
                     className={cn(
@@ -211,17 +210,17 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
                     {nextRun ? (
                       <TimestampInfo
                         utcTimestamp={nextRun}
-                        labelFormat="DD MMM YYYY HH:mm:ss (ZZ)"
+                        labelFormat="YYYY/MM/DD HH:mm:ss (ZZ)"
                         className="font-sans text-sm"
                       />
                     ) : (
-                      'Unable to parse next run for job'
+                      '无法解析此定时任务的下次执行时间'
                     )}
                   </div>
                 </div>
               </div>
               <div className="grid grid-cols-10 gap-3">
-                <span className="text-foreground-light col-span-1">Command</span>
+                <span className="text-foreground-light col-span-1">命令</span>
                 <div className="col-span-9">
                   <CodeBlock
                     hideLineNumbers
@@ -240,9 +239,9 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
       </div>
       <ConfirmationModal
         visible={toggleConfirmationModalShown}
-        title={job.active ? 'Disable cron job' : 'Enable cron job'}
+        title={job.active ? '禁用定时任务' : '启用定时任务'}
         loading={isLoading}
-        confirmLabel={job.active ? 'Disable' : 'Enable'}
+        confirmLabel={job.active ? '禁用' : '启用'}
         onCancel={() => showToggleConfirmationModal(false)}
         variant={job.active ? 'destructive' : undefined}
         onConfirm={() => {
@@ -256,9 +255,9 @@ export const CronJobCard = ({ job, onEditCronJob, onDeleteCronJob }: CronJobCard
         }}
       >
         <p className="text-sm text-foreground-light">
-          <span>{`Are you sure you want to ${job.active ? 'disable' : 'enable'} the`}</span>{' '}
+          <span>{`您确定想要${job.active ? '禁用' : '启用'}`}</span>{'定时任务'}
           <span className="font-bold">{`${job?.jobname}`}</span>
-          <span> cron job?</span>
+          <span>？</span>
         </p>
       </ConfirmationModal>
     </>

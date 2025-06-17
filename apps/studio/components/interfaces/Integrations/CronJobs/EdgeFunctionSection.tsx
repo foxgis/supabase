@@ -59,11 +59,11 @@ export const EdgeFunctionSection = ({ form }: HTTPRequestFieldsProps) => {
         name="values.method"
         render={({ field }) => (
           <FormItem_Shadcn_>
-            <FormLabel_Shadcn_>Method</FormLabel_Shadcn_>
+            <FormLabel_Shadcn_>方法</FormLabel_Shadcn_>
             <Select_Shadcn_ onValueChange={field.onChange} value={field.value}>
               <FormControl_Shadcn_>
                 <SelectTrigger_Shadcn_>
-                  <SelectValue_Shadcn_ placeholder="Select a method for the API call" />
+                  <SelectValue_Shadcn_ placeholder="选择发送 API 请求的方法" />
                 </SelectTrigger_Shadcn_>
               </FormControl_Shadcn_>
               <SelectContent_Shadcn_>
@@ -78,11 +78,11 @@ export const EdgeFunctionSection = ({ form }: HTTPRequestFieldsProps) => {
 
       {edgeFunctions.length === 0 ? (
         <div className="space-y-1">
-          <p className="text-sm text-foreground-light">Select which edge function to trigger</p>
+          <p className="text-sm text-foreground-light">选择需要触发的云函数</p>
           <div className="px-4 py-4 border rounded bg-surface-300 border-strong flex items-center justify-between space-x-4">
-            <p className="text-sm">No edge functions created yet</p>
+            <p className="text-sm">还未创建云函数</p>
             <Button asChild>
-              <Link href={`/project/${ref}/functions`}>Create an edge function</Link>
+              <Link href={`/project/${ref}/functions`}>创建云函数</Link>
             </Button>
           </div>
         </div>
@@ -93,7 +93,7 @@ export const EdgeFunctionSection = ({ form }: HTTPRequestFieldsProps) => {
           render={({ field }) => {
             return (
               <FormItem_Shadcn_>
-                <FormLabel_Shadcn_>Edge Function</FormLabel_Shadcn_>
+                <FormLabel_Shadcn_>云函数</FormLabel_Shadcn_>
                 <Select_Shadcn_
                   onValueChange={field.onChange}
                   value={field.value}
@@ -101,7 +101,7 @@ export const EdgeFunctionSection = ({ form }: HTTPRequestFieldsProps) => {
                 >
                   <FormControl_Shadcn_>
                     <SelectTrigger_Shadcn_>
-                      <SelectValue_Shadcn_ placeholder="Select which edge function to trigger" />
+                      <SelectValue_Shadcn_ placeholder="选择需要触发的云函数" />
                     </SelectTrigger_Shadcn_>
                   </FormControl_Shadcn_>
                   <SelectContent_Shadcn_>
@@ -130,12 +130,12 @@ export const EdgeFunctionSection = ({ form }: HTTPRequestFieldsProps) => {
         control={form.control}
         name="values.timeoutMs"
         render={({ field: { ref, ...rest } }) => (
-          <FormItemLayout label="Timeout" layout="vertical" className="gap-1">
+          <FormItemLayout label="超时时间" layout="vertical" className="gap-1">
             <Input
               {...rest}
               type="number"
               placeholder="1000"
-              actions={<p className="text-foreground-light pr-2">ms</p>}
+              actions={<p className="text-foreground-light pr-2">毫秒</p>}
             />
           </FormItemLayout>
         )}

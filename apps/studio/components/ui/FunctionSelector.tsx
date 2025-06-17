@@ -52,7 +52,7 @@ const FunctionSelector = ({
   value,
   onChange,
   filterFunction = () => true,
-  noResultsLabel = <span>No functions found in this schema.</span>,
+  noResultsLabel = <span>在此模式下未找到函数。</span>,
 }: FunctionSelectorProps) => {
   const router = useRouter()
   const { ref } = useParams()
@@ -73,22 +73,22 @@ const FunctionSelector = ({
     <div className={className}>
       {isLoading && (
         <Button type="default" className="justify-start" block size={size} loading>
-          Loading functions...
+          正在加载函数...
         </Button>
       )}
 
       {showError && isError && (
         <Alert_Shadcn_ variant="warning" className="!px-3 !py-3">
           <AlertTitle_Shadcn_ className="text-xs text-amber-900">
-            Failed to load functions
+            加载函数失败
           </AlertTitle_Shadcn_>
 
           <AlertDescription_Shadcn_ className="text-xs mb-2">
-            Error: {error.message}
+            错误：{error.message}
           </AlertDescription_Shadcn_>
 
           <Button type="default" size="tiny" onClick={() => refetch()}>
-            Reload functions
+            重新加载函数
           </Button>
         </Alert_Shadcn_>
       )}
@@ -107,21 +107,21 @@ const FunctionSelector = ({
             >
               {value ? (
                 <div className="w-full flex gap-1">
-                  <p className="text-foreground-lighter">function:</p>
+                  <p className="text-foreground-lighter">函数：</p>
                   <p className="text-foreground">{value}</p>
                 </div>
               ) : (
                 <div className="w-full flex gap-1">
-                  <p className="text-foreground-lighter">Select a function</p>
+                  <p className="text-foreground-lighter">选择一个函数</p>
                 </div>
               )}
             </Button>
           </PopoverTrigger_Shadcn_>
           <PopoverContent_Shadcn_ className="p-0" side="bottom" align="start" sameWidthAsTrigger>
             <Command_Shadcn_>
-              <CommandInput_Shadcn_ placeholder="Search functions..." />
+              <CommandInput_Shadcn_ placeholder="查找函数..." />
               <CommandList_Shadcn_>
-                <CommandEmpty_Shadcn_>No functions found</CommandEmpty_Shadcn_>
+                <CommandEmpty_Shadcn_>未找到函数</CommandEmpty_Shadcn_>
                 <CommandGroup_Shadcn_>
                   <ScrollArea className={(functions || []).length > 7 ? 'h-[210px]' : ''}>
                     {!functions.length && (
@@ -173,7 +173,7 @@ const FunctionSelector = ({
                       className="w-full flex items-center gap-2"
                     >
                       <Plus size={14} strokeWidth={1.5} />
-                      <p>New function</p>
+                      <p>新建函数</p>
                     </Link>
                   </CommandItem_Shadcn_>
                 </CommandGroup_Shadcn_>

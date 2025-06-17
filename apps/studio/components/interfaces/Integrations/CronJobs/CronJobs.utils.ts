@@ -1,6 +1,7 @@
 import parser from 'cron-parser'
 import { toString as CronToString } from 'cronstrue'
 import dayjs from 'dayjs'
+import 'cronstrue/locales/zh_CN'
 
 import { CronJobType } from './CreateCronJobSheet'
 import { HTTPHeader } from './CronJobs.constants'
@@ -191,15 +192,15 @@ export function isSecondsFormat(schedule: string): boolean {
 
 export function getScheduleMessage(scheduleString: string) {
   if (!scheduleString) {
-    return 'Enter a valid cron expression above'
+    return '请输入有效的 cron 表达式'
   }
 
   // if the schedule is in seconds format, scheduleString is same as the schedule
   if (secondsPattern.test(scheduleString)) {
-    return `The cron will run every ${scheduleString}`
+    return `定时任务将会${scheduleString}执行。`
   }
 
-  if (scheduleString.includes('Invalid cron expression')) {
+  if (scheduleString.includes('无效的 cron 表达式')) {
     return scheduleString
   }
 
@@ -208,7 +209,7 @@ export function getScheduleMessage(scheduleString: string) {
     .map((s, i) => (i === 0 ? s.toLowerCase() : s))
     .join(' ')
 
-  return `The cron will run ${readableSchedule}.`
+  return `此定时任务将会${readableSchedule}执行。`
 }
 
 export const formatScheduleString = (value: string) => {
@@ -216,7 +217,7 @@ export const formatScheduleString = (value: string) => {
     if (secondsPattern.test(value)) {
       return value
     } else {
-      return CronToString(value)
+      return CronToString(value, { locale: 'zh_CN', use24HourTimeFormat: true })
     }
   } catch (error) {
     return ''
@@ -227,7 +228,7 @@ export const convertCronToString = (schedule: string) => {
   // pg_cron can also use "30 seconds" format for schedule. Cronstrue doesn't understand that format so just use the
   // original schedule when cronstrue throws
   try {
-    return CronToString(schedule)
+    return CronToString(schedule, { locale: 'zh_CN', use24HourTimeFormat: true })
   } catch (error) {
     return schedule
   }
@@ -239,7 +240,7 @@ export const getNextRun = (schedule: string, lastRun?: string) => {
   // (can't guarantee as scope is quite big)
   if (schedule.includes('*')) {
     try {
-      const interval = parser.parseExpression(schedule, { tz: 'UTC' })
+      const interval = parser.parseExpression(schedule, { tz: 'Asia/Shanghai' })
       return interval.next().getTime()
     } catch (error) {
       return undefined

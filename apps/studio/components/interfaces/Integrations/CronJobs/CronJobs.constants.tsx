@@ -12,27 +12,27 @@ export const CRONJOB_DEFINITIONS = [
   {
     value: 'sql_snippet',
     icon: <SqlEditor strokeWidth={1} />,
-    label: 'SQL Snippet',
-    description: 'Write a SQL snippet to run.',
+    label: 'SQL 语句',
+    description: '执行 SQL 语句。',
   },
   {
     value: 'sql_function',
     icon: <ScrollText strokeWidth={1} />,
-    label: 'Database function',
-    description: 'Choose a database function to run.',
+    label: '数据库函数',
+    description: '执行数据库函数。',
   },
 
   {
     value: 'http_request',
     icon: <RESTApi strokeWidth={1} />,
-    label: 'HTTP Request',
-    description: 'Send an HTTP request to any URL.',
+    label: 'HTTP 请求',
+    description: '发送 HTTP 请求。',
   },
   {
     value: 'edge_function',
     icon: <EdgeFunctions strokeWidth={1} />,
-    label: 'Supabase Edge Function',
-    description: 'Choose a Supabase edge function to run.',
+    label: '云函数',
+    description: '执行云函数。',
   },
 ]
 

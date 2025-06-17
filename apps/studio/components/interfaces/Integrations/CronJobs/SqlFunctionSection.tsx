@@ -19,7 +19,7 @@ export const SqlFunctionSection = ({ form }: SqlFunctionSectionProps) => {
         control={form.control}
         name="values.schema"
         render={({ field }) => (
-          <FormItemLayout label="Schema" className="gap-1">
+          <FormItemLayout label="模式" className="gap-1">
             <SchemaSelector
               portal={false}
               size="small"
@@ -39,7 +39,7 @@ export const SqlFunctionSection = ({ form }: SqlFunctionSectionProps) => {
         control={form.control}
         name="values.functionName"
         render={({ field }) => (
-          <FormItemLayout label="Function name" className="gap-1">
+          <FormItemLayout label="函数名" className="gap-1">
             <FunctionSelector
               size="small"
               className="w-56 2xl:w-full"

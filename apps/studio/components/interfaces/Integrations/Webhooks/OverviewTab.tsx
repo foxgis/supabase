@@ -32,19 +32,19 @@ export const WebhooksOverviewTab = () => {
   const { mutate: enableHooks, isLoading: isEnablingHooks } = useHooksEnableMutation({
     onSuccess: async () => {
       await refetch()
-      toast.success('Successfully enabled webhooks')
+      toast.success('成功启用了 webhooks')
     },
   })
 
   const enableHooksForProject = async () => {
-    if (!projectRef) return console.error('Project ref is required')
+    if (!projectRef) return console.error('未找到项目号')
     enableHooks({ ref: projectRef })
   }
 
   if (isPermissionsLoaded && !canReadWebhooks) {
     return (
       <div className="p-10">
-        <NoPermission isFullPage resourceText="view database webhooks" />
+        <NoPermission isFullPage resourceText="查看数据库 webhooks" />
       </div>
     )
   }
@@ -64,11 +64,10 @@ export const WebhooksOverviewTab = () => {
           <Admonition
             showIcon={false}
             type="default"
-            title="Enable database webhooks on your project"
+            title="启用数据库 webhooks"
           >
             <p>
-              Database Webhooks can be used to trigger serverless functions or send requests to an
-              HTTP endpoint
+              数据库 webhooks 可以用来触发云函数或发送 HTTP 请求
             </p>
             <ButtonTooltip
               className="w-fit"
@@ -79,12 +78,12 @@ export const WebhooksOverviewTab = () => {
                   side: 'bottom',
                   text:
                     isPermissionsLoaded && !canReadWebhooks
-                      ? 'You need additional permissions to enable webhooks'
+                      ? '您需要额外权限才能启用 webhooks'
                       : undefined,
                 },
               }}
             >
-              Enable webhooks
+              启用 webhooks
             </ButtonTooltip>
           </Admonition>
         )

@@ -69,7 +69,7 @@ export const CronjobsTab = () => {
   const onOpenCreateJobSheet = () => {
     sendEvent({
       action: 'cron_job_create_clicked',
-      groups: { project: project?.ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      groups: { project: project?.ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
     })
     setCreateCronJobSheetShown(true)
   }
@@ -79,14 +79,14 @@ export const CronjobsTab = () => {
       <div className="w-full space-y-4 p-4 md:p-10">
         {(cronJobs ?? []).length == 0 ? (
           <div className="border rounded border-default px-20 py-16 flex flex-col items-center justify-center space-y-4 border-dashed">
-            <p className="text-sm text-foreground">No cron jobs created yet</p>
-            <Button onClick={onOpenCreateJobSheet}>Create job</Button>
+            <p className="text-sm text-foreground">还未创建定时任务</p>
+            <Button onClick={onOpenCreateJobSheet}>创建定时任务</Button>
           </div>
         ) : (
           <div className="w-full space-y-4">
             <div className="flex items-center justify-between flex-wrap">
               <Input
-                placeholder="Search for a job"
+                placeholder="查找定时任务"
                 size="small"
                 icon={<Search size={14} />}
                 value={searchQuery || ''}
@@ -94,7 +94,7 @@ export const CronjobsTab = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
 
-              <Button onClick={onOpenCreateJobSheet}>Create job</Button>
+              <Button onClick={onOpenCreateJobSheet}>创建定时任务</Button>
             </div>
             {filteredCronJobs.length === 0 ? (
               <div
@@ -102,9 +102,9 @@ export const CronjobsTab = () => {
                   'border rounded border-default px-20 py-16 flex flex-col items-center justify-center space-y-4 border-dashed'
                 }
               >
-                <p className="text-sm text-foreground">No results found</p>
+                <p className="text-sm text-foreground">没有搜索到结果</p>
                 <p className="text-sm text-foreground-light">
-                  Your search for "{searchQuery}" did not return any results
+                  您搜索的“{searchQuery}”没有返回任何结果
                 </p>
               </div>
             ) : isLoading ? (

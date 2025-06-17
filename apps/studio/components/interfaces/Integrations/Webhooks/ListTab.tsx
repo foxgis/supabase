@@ -32,7 +32,7 @@ export const WebhooksListTab = () => {
   }
 
   if (isPermissionsLoaded && !canReadWebhooks) {
-    return <NoPermission isFullPage resourceText="view database webhooks" />
+    return <NoPermission isFullPage resourceText="查看数据库 webhooks" />
   }
 
   return (

@@ -42,12 +42,12 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
   const [useNaturalLanguage, setUseNaturalLanguage] = useState(false)
 
   const PRESETS = [
-    ...(supportsSeconds ? [{ name: 'Every 30 seconds', expression: '30 seconds' }] : []),
-    { name: 'Every minute', expression: '* * * * *' },
-    { name: 'Every 5 minutes', expression: '*/5 * * * *' },
-    { name: 'Every first of the month, at 00:00', expression: '0 0 1 * *' },
-    { name: 'Every night at midnight', expression: '0 0 * * *' },
-    { name: 'Every Monday at 2 AM', expression: '0 2 * * 1' },
+    ...(supportsSeconds ? [{ name: '每 30 秒', expression: '30 seconds' }] : []),
+    { name: '每分钟', expression: '* * * * *' },
+    { name: '每 5 分钟', expression: '*/5 * * * *' },
+    { name: '每月第一天 00:00', expression: '0 0 1 * *' },
+    { name: '每天 00:00', expression: '0 0 * * *' },
+    { name: '每周一 02:00', expression: '0 2 * * 1' },
   ] as const
 
   const {
@@ -68,7 +68,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
       }
     },
     onError: (error) => {
-      console.error('Error generating cron:', error)
+      console.error('生成定时任务错误：', error)
     },
   })
 
@@ -101,11 +101,11 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
           return (
             <FormItem_Shadcn_ className="flex flex-col gap-1">
               <div className="flex flex-row justify-between">
-                <FormLabel_Shadcn_>Schedule</FormLabel_Shadcn_>
+                <FormLabel_Shadcn_>执行计划</FormLabel_Shadcn_>
                 <span className="text-foreground-lighter text-xs">
                   {useNaturalLanguage
-                    ? 'Describe your schedule in words'
-                    : 'Enter a cron expression'}
+                    ? '使用自然语言描述执行计划'
+                    : '输入 cron 表达式'}
                 </span>
               </div>
 
@@ -113,7 +113,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
                 {useNaturalLanguage ? (
                   <Input
                     value={inputValue}
-                    placeholder="E.g. every 5 minutes"
+                    placeholder="例如：每 5 分钟"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -136,7 +136,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
               </FormControl_Shadcn_>
               <FormMessage_Shadcn_ />
               <div className="flex flex-col gap-y-4 mt-3 mb-2">
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <Switch
                     checked={useNaturalLanguage}
                     onCheckedChange={() => {
@@ -144,8 +144,8 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
                       setInputValue('')
                     }}
                   />
-                  <p className="text-sm text-foreground-light">Use natural language</p>
-                </div>
+                  <p className="text-sm text-foreground-light">使用自然语言描述</p>
+                </div> */}
 
                 <ul className="flex gap-2 flex-wrap mt-2">
                   {PRESETS.map((preset) => (
@@ -171,7 +171,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
                 <Accordion_Shadcn_ type="single" collapsible>
                   <AccordionItem_Shadcn_ value="item-1" className="border-none">
                     <AccordionTrigger_Shadcn_ className="text-xs text-foreground-light font-normal gap-2 justify-start py-1 ">
-                      View syntax chart
+                      查看 cron 表达式语法
                     </AccordionTrigger_Shadcn_>
                     <AccordionContent_Shadcn_ asChild className="!pb-0">
                       <CronSyntaxChart />
@@ -181,7 +181,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
               </div>
               <div className="bg-surface-100 p-4 rounded grid gap-y-4 border">
                 <h4 className="text-sm text-foreground">
-                  Schedule {timezone ? `(${timezone})` : ''}
+                  执行计划时区 {timezone ? `（${timezone}）` : ''}
                 </h4>
                 <span
                   className={cn(
@@ -198,7 +198,7 @@ export const CronJobScheduleSection = ({ form, supportsSeconds }: CronJobSchedul
 
                 {!inputValue && !isGeneratingCron && !scheduleString ? (
                   <span className="text-sm text-foreground-light">
-                    Describe your schedule above
+                    上述执行计划的描述
                   </span>
                 ) : (
                   <span className="text-sm text-foreground-light flex items-center gap-2">

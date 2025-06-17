@@ -62,7 +62,7 @@ export interface CreateCronJobSheetProps {
 const edgeFunctionSchema = z.object({
   type: z.literal('edge_function'),
   method: z.enum(['GET', 'POST']),
-  edgeFunctionName: z.string().trim().min(1, 'Please select one of the listed Edge Functions'),
+  edgeFunctionName: z.string().trim().min(1, '请从列表中选择一个云函数'),
   timeoutMs: z.coerce.number().int().gte(1000).lte(5000).default(1000),
   httpHeaders: z.array(z.object({ name: z.string(), value: z.string() })),
   httpBody: z
@@ -77,7 +77,7 @@ const edgeFunctionSchema = z.object({
       } catch {
         return false
       }
-    }, 'Input must be valid JSON'),
+    }, '输入必须为有效的 JSON'),
   // When editing a cron job, we want to keep the original command as a snippet in case the user wants to manually edit it
   snippet: z.string().trim(),
 })
@@ -88,9 +88,9 @@ const httpRequestSchema = z.object({
   endpoint: z
     .string()
     .trim()
-    .min(1, 'Please provide a URL')
-    .regex(urlRegex(), 'Please provide a valid URL')
-    .refine((value) => value.startsWith('http'), 'Please include HTTP/HTTPs to your URL'),
+    .min(1, '请提供 URL')
+    .regex(urlRegex(), '请提供有效的 URL')
+    .refine((value) => value.startsWith('http'), '请在您的 URL 中包含 HTTP/HTTPs'),
   timeoutMs: z.coerce.number().int().gte(1000).lte(5000).default(1000),
   httpHeaders: z.array(z.object({ name: z.string(), value: z.string() })),
   httpBody: z
@@ -105,15 +105,15 @@ const httpRequestSchema = z.object({
       } catch {
         return false
       }
-    }, 'Input must be valid JSON'),
+    }, '输入必须为有效的 JSON'),
   // When editing a cron job, we want to keep the original command as a snippet in case the user wants to manually edit it
   snippet: z.string().trim(),
 })
 
 const sqlFunctionSchema = z.object({
   type: z.literal('sql_function'),
-  schema: z.string().trim().min(1, 'Please select one of the listed database schemas'),
-  functionName: z.string().trim().min(1, 'Please select one of the listed database functions'),
+  schema: z.string().trim().min(1, '请从列表中选择一个数据库模式'),
+  functionName: z.string().trim().min(1, '请从列表中选择一个数据库函数'),
   // When editing a cron job, we want to keep the original command as a snippet in case the user wants to manually edit it
   snippet: z.string().trim(),
 })
@@ -124,7 +124,7 @@ const sqlSnippetSchema = z.object({
 
 const FormSchema = z
   .object({
-    name: z.string().trim().min(1, 'Please provide a name for your cron job'),
+    name: z.string().trim().min(1, '请提供定时任务的名称'),
     supportsSeconds: z.boolean(),
     schedule: z
       .string()
@@ -142,7 +142,7 @@ const FormSchema = z
           return true
         }
         return false
-      }, 'Invalid Cron format'),
+      }, '无效的 Cron 格式'),
     values: z.discriminatedUnion('type', [
       edgeFunctionSchema,
       httpRequestSchema,
@@ -155,7 +155,7 @@ const FormSchema = z
       if (!(data.supportsSeconds && secondsPattern.test(data.schedule))) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Seconds are supported only in pg_cron v1.5.0+. Please use a valid Cron format.',
+          message: 'pg_cron v1.5.0+ 才支持设置秒，请使用有效的 Cron 格式。',
           path: ['schedule'],
         })
       }
@@ -307,7 +307,7 @@ export const CreateCronJobSheet = ({
     if (nameExists) {
       form.setError('name', {
         type: 'manual',
-        message: 'A cron job with this name already exists',
+        message: '已存在具有此名称的定时任务',
       })
       return
     }
@@ -325,9 +325,9 @@ export const CreateCronJobSheet = ({
       {
         onSuccess: () => {
           if (isEditing) {
-            toast.success(`Successfully updated cron job ${name}`)
+            toast.success(`已成功更新定时任务 ${name}`)
           } else {
-            toast.success(`Successfully created cron job ${name}`)
+            toast.success(`已成功创建定时任务 ${name}`)
           }
 
           if (isEditing) {
@@ -338,8 +338,8 @@ export const CreateCronJobSheet = ({
                 schedule: schedule,
               },
               groups: {
-                project: project?.ref ?? 'Unknown',
-                organization: org?.slug ?? 'Unknown',
+                project: project?.ref ?? '未知项目',
+                organization: org?.slug ?? '未知组织',
               },
             })
           } else {
@@ -350,20 +350,20 @@ export const CreateCronJobSheet = ({
                 schedule: schedule,
               },
               groups: {
-                project: project?.ref ?? 'Unknown',
-                organization: org?.slug ?? 'Unknown',
+                project: project?.ref ?? '未知项目',
+                organization: org?.slug ?? '未知组织',
               },
             })
           }
 
-          onClose()
+          setIsClosing(true)
         },
       }
     )
   }
 
   const { data } = useDatabaseExtensionsQuery({
-    projectRef: project?.ref,
+    projectRef: project?.ref!,
     connectionString: project?.connectionString,
   })
 
@@ -375,7 +375,7 @@ export const CreateCronJobSheet = ({
       <div className="flex flex-col h-full" tabIndex={-1}>
         <SheetHeader>
           <SheetTitle>
-            {isEditing ? `Edit ${selectedCronJob.jobname}` : `Create a new cron job`}
+            {isEditing ? `编辑定时任务 ${selectedCronJob.jobname}` : `创建新的定时任务`}
           </SheetTitle>
         </SheetHeader>
 
@@ -391,12 +391,12 @@ export const CreateCronJobSheet = ({
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItemLayout label="Name" layout="vertical" className="gap-1 relative">
+                    <FormItemLayout label="名称" layout="vertical" className="gap-1 relative">
                       <FormControl_Shadcn_>
                         <Input_Shadcn_ {...field} disabled={isEditing} />
                       </FormControl_Shadcn_>
                       <span className="text-foreground-lighter text-xs absolute top-0 right-0">
-                        Cron jobs cannot be renamed once created
+                        定时任务创建后无法重命名
                       </span>
                     </FormItemLayout>
                   )}
@@ -410,7 +410,7 @@ export const CreateCronJobSheet = ({
                   control={form.control}
                   name="values.type"
                   render={({ field }) => (
-                    <FormItemLayout label="Type" layout="vertical" className="gap-1">
+                    <FormItemLayout label="任务类型" layout="vertical" className="gap-1">
                       <FormControl_Shadcn_>
                         <RadioGroupStacked
                           id="function_type"
@@ -447,7 +447,7 @@ export const CreateCronJobSheet = ({
                                 <div className="w-full flex gap-x-2 pl-11 py-2 items-center">
                                   <WarningIcon />
                                   <span className="text-xs">
-                                    <code>pg_net</code> needs to be installed to use this type
+                                    需安装 <code className="text-xs">pg_net</code> 扩展才能使用此类型
                                   </span>
                                 </div>
                               ) : null}
@@ -464,15 +464,13 @@ export const CreateCronJobSheet = ({
                     // @ts-ignore
                     title={
                       <span>
-                        Enable <code className="text-xs w-min">pg_net</code> for HTTP requests or
-                        Edge Functions
+                        启用 <code className="text-xs w-min">pg_net</code> 扩展以使用 HTTP 请求或云函数
                       </span>
                     }
                     description={
                       <div className="flex flex-col gap-y-2">
                         <span>
-                          This will allow you to send HTTP requests or trigger an edge function
-                          within your cron jobs
+                          这将允许您在定时任务中发送 HTTP 请求或触发云函数
                         </span>
                         <ButtonTooltip
                           type="default"
@@ -483,12 +481,12 @@ export const CreateCronJobSheet = ({
                             content: {
                               side: 'bottom',
                               text: !canToggleExtensions
-                                ? 'You need additional permissions to enable database extensions'
+                                ? '您需要额外的权限才能启用数据库扩展'
                                 : undefined,
                             },
                           }}
                         >
-                          Install pg_net extension
+                          安装 pg_net 扩展
                         </ButtonTooltip>
                       </div>
                     }
@@ -527,7 +525,7 @@ export const CreateCronJobSheet = ({
             onClick={onClosePanel}
             disabled={isLoading}
           >
-            Cancel
+            取消
           </Button>
           <Button
             size="tiny"
@@ -537,20 +535,19 @@ export const CreateCronJobSheet = ({
             disabled={isLoading}
             loading={isLoading}
           >
-            {isEditing ? `Save cron job` : 'Create cron job'}
+            {isEditing ? `保存定时任务` : '创建定时任务'}
           </Button>
         </SheetFooter>
       </div>
       <ConfirmationModal
         visible={isClosing}
-        title="Discard changes"
-        confirmLabel="Discard"
+        title="撤销定时任务"
+        confirmLabel="撤销"
         onCancel={() => setIsClosing(false)}
         onConfirm={() => onClose()}
       >
         <p className="text-sm text-foreground-light">
-          There are unsaved changes. Are you sure you want to close the panel? Your changes will be
-          lost.
+          有未保存的变更，您确定想要关闭此面版吗？您的变更将会丢失
         </p>
       </ConfirmationModal>
       {pgNetExtension && (

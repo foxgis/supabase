@@ -38,7 +38,7 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
 
   return (
     <SheetSection>
-      <FormLabel_Shadcn_>HTTP Headers</FormLabel_Shadcn_>
+      <FormLabel_Shadcn_>HTTP 请求头</FormLabel_Shadcn_>
       <div className="space-y-3 mt-1">
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-center space-x-2">
@@ -51,7 +51,7 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
                       {...field}
                       size="small"
                       className="w-full"
-                      placeholder="Header name"
+                      placeholder="请求头名称"
                     />
                   </FormControl_Shadcn_>
                   <FormMessage_Shadcn_ />
@@ -68,7 +68,7 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
                       value={field.value}
                       size="small"
                       className="w-full"
-                      placeholder="Header value"
+                      placeholder="请求头的值"
                     />
                   </FormControl_Shadcn_>
                   <FormMessage_Shadcn_ />
@@ -92,7 +92,7 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
             className={cn(variant === 'edge_function' && 'rounded-r-none px-3 border-r-0')}
             onClick={() => append({ name: '', value: '' })}
           >
-            Add a new header
+            添加新的请求头
           </Button>
           {variant === 'edge_function' && (
             <DropdownMenu>
@@ -112,9 +112,9 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
                   }
                 >
                   <div className="space-y-1">
-                    <p className="block text-foreground">Add auth header with service key</p>
+                    <p className="block text-foreground">添加授权请求头</p>
                     <p className="text-foreground-light">
-                      Required if your edge function enforces JWT verification
+                      当云函数需要 JWT 验证时，必须添加此请求头
                     </p>
                   </div>
                 </DropdownMenuItem>
@@ -129,9 +129,9 @@ export const HTTPHeaderFieldsSection = ({ variant }: HTTPHeaderFieldsSectionProp
                   }
                 >
                   <div className="space-y-1">
-                    <p className="block text-foreground">Add custom source header</p>
+                    <p className="block text-foreground">添加自定义源请求头</p>
                     <p className="text-foreground-light">
-                      Useful to verify that the edge function was triggered from this webhook
+                      此请求头可用于验证云函数是否是从此 Webhook 触发的
                     </p>
                   </div>
                 </DropdownMenuItem>

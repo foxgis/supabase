@@ -29,11 +29,11 @@ export const HttpRequestSection = ({ form }: HttpRequestSectionProps) => {
         name="values.method"
         render={({ field }) => (
           <FormItem_Shadcn_>
-            <FormLabel_Shadcn_>Method</FormLabel_Shadcn_>
+            <FormLabel_Shadcn_>方法</FormLabel_Shadcn_>
             <Select_Shadcn_ onValueChange={field.onChange} value={field.value}>
               <FormControl_Shadcn_>
                 <SelectTrigger_Shadcn_>
-                  <SelectValue_Shadcn_ placeholder="Select a method for the HTTP request" />
+                  <SelectValue_Shadcn_ placeholder="选择 HTTP 请求的方法" />
                 </SelectTrigger_Shadcn_>
               </FormControl_Shadcn_>
               <SelectContent_Shadcn_>
@@ -50,7 +50,7 @@ export const HttpRequestSection = ({ form }: HttpRequestSectionProps) => {
         control={form.control}
         name="values.endpoint"
         render={({ field: { ref, ...rest } }) => (
-          <FormItemLayout label="Endpoint URL" className="gap-1">
+          <FormItemLayout label="地址" className="gap-1">
             <FormControl_Shadcn_>
               <Input {...rest} placeholder="https://api.example.com/endpoint" />
             </FormControl_Shadcn_>
@@ -62,12 +62,12 @@ export const HttpRequestSection = ({ form }: HttpRequestSectionProps) => {
         control={form.control}
         name="values.timeoutMs"
         render={({ field: { ref, ...rest } }) => (
-          <FormItemLayout label="Timeout" className="gap-1">
+          <FormItemLayout label="超时时间" className="gap-1">
             <Input
               {...rest}
               type="number"
               placeholder="1000"
-              actions={<p className="text-foreground-light pr-2">ms</p>}
+              actions={<p className="text-foreground-light pr-2">毫秒</p>}
             />
           </FormItemLayout>
         )}

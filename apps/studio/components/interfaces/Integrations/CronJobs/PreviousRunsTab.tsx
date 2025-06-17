@@ -3,6 +3,7 @@ import { CircleCheck, CircleX, List, Loader } from 'lucide-react'
 import Link from 'next/link'
 import { UIEvent, useCallback, useEffect, useMemo } from 'react'
 import DataGrid, { Column, Row } from 'react-data-grid'
+import 'cronstrue/locales/zh_CN'
 
 import { useParams } from 'common'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
@@ -27,7 +28,7 @@ import CronJobsEmptyState from './CronJobsEmptyState'
 const cronJobColumns = [
   {
     id: 'runid',
-    name: 'RunID',
+    name: 'ID',
     minWidth: 60,
     value: (row: CronJobRun) => (
       <div className="flex items-center gap-1.5">
@@ -37,7 +38,7 @@ const cronJobColumns = [
   },
   {
     id: 'message',
-    name: 'Message',
+    name: '消息',
     minWidth: 200,
     value: (row: CronJobRun) => (
       <div className="flex items-center gap-1.5">
@@ -63,19 +64,19 @@ const cronJobColumns = [
 
   {
     id: 'status',
-    name: 'Status',
+    name: '状态',
     minWidth: 75,
     value: (row: CronJobRun) => <StatusBadge status={row.status} />,
   },
   {
     id: 'start_time',
-    name: 'Start Time',
+    name: '开始时间',
     minWidth: 120,
     value: (row: CronJobRun) => <div className="text-xs">{formatDate(row.start_time)}</div>,
   },
   {
     id: 'end_time',
-    name: 'End Time',
+    name: '结束时间',
     minWidth: 120,
     value: (row: CronJobRun) => (
       <div className="text-xs">{row.status === 'succeeded' ? formatDate(row.end_time) : '-'}</div>
@@ -84,7 +85,7 @@ const cronJobColumns = [
 
   {
     id: 'duration',
-    name: 'Duration',
+    name: '持续时间',
     minWidth: 100,
     value: (row: CronJobRun) => (
       <span className="text-xs">
@@ -221,7 +222,7 @@ export const PreviousRunsTab = () => {
         ) : (
           <>
             <div className="grid gap-2 w-56">
-              <h3 className="text-sm">Schedule</h3>
+              <h3 className="text-sm">执行计划</h3>
               <p className="text-xs text-foreground-light">
                 {currentJobState?.schedule ? (
                   <>
@@ -231,17 +232,17 @@ export const PreviousRunsTab = () => {
                     <p>
                       {isSecondsFormat(currentJobState.schedule)
                         ? ''
-                        : CronToString(currentJobState.schedule.toLowerCase())}
+                        : CronToString(currentJobState.schedule.toLowerCase(), { locale: 'zh_CN', use24HourTimeFormat: true })}
                     </p>
                   </>
                 ) : (
-                  <span>Loading schedule...</span>
+                  <span>正在加载执行计划...</span>
                 )}
               </p>
             </div>
 
             <div className="grid gap-y-2">
-              <h3 className="text-sm">Command</h3>
+              <h3 className="text-sm">命令</h3>
               <Tooltip>
                 <TooltipTrigger className=" text-left p-0! cursor-pointer truncate max-w-[300px] h-12 relative">
                   <SimpleCodeBlock
@@ -266,11 +267,11 @@ export const PreviousRunsTab = () => {
             </div>
 
             <div className="grid gap-y-2">
-              <h3 className="text-sm">Explore</h3>
+              <h3 className="text-sm">探索</h3>
               <Button asChild type="outline" icon={<List strokeWidth={1.5} size="14" />}>
                 {/* [Terry] need to link to the exact jobid, but not currently supported */}
                 <Link target="_blank" href={`/project/${project?.ref}/logs/pgcron-logs/`}>
-                  View logs
+                  查看日志
                 </Link>
               </Button>
             </div>
@@ -289,7 +290,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
   if (status === 'succeeded') {
     return (
       <span className="text-brand-600 flex items-center gap-1">
-        <CircleCheck size={14} /> Succeeded
+        <CircleCheck size={14} /> 执行成功
       </span>
     )
   }
@@ -297,7 +298,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
   if (status === 'failed') {
     return (
       <span className="text-destructive flex items-center gap-1">
-        <CircleX size={14} /> Failed
+        <CircleX size={14} /> 执行失败
       </span>
     )
   }
@@ -305,7 +306,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
   if (['running', 'starting', 'sending', 'connecting'].includes(status)) {
     return (
       <span className="text-_secondary flex items-center gap-1">
-        <Loader size={14} className="animate-spin" /> Running
+        <Loader size={14} className="animate-spin" /> 执行中
       </span>
     )
   }

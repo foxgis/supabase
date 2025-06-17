@@ -23,15 +23,15 @@ export const DeleteCronJob = ({ cronJob, visible, onClose }: DeleteCronJobProps)
     onSuccess: () => {
       sendEvent({
         action: 'cron_job_deleted',
-        groups: { project: project?.ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+        groups: { project: project?.ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
       })
-      toast.success(`Successfully removed cron job ${cronJob.jobname}`)
+      toast.success(`成功移除了定时任务 ${cronJob.jobname}`)
       onClose()
     },
   })
 
   async function handleDelete() {
-    if (!project) return console.error('Project is required')
+    if (!project) return console.error('未找到项目')
 
     deleteDatabaseCronJob({
       jobId: cronJob.jobid,
@@ -52,10 +52,10 @@ export const DeleteCronJob = ({ cronJob, visible, onClose }: DeleteCronJobProps)
         visible={visible}
         onCancel={() => onClose()}
         onConfirm={handleDelete}
-        title={`Delete the cron job`}
+        title={`删除定时任务`}
         loading={isLoading}
-        confirmLabel={`Delete`}
-        alert={{ title: 'You cannot recover this cron job once deleted.' }}
+        confirmLabel={`删除`}
+        alert={{ title: '删除定时任务后无法恢复。' }}
       />
     )
   }
@@ -66,18 +66,18 @@ export const DeleteCronJob = ({ cronJob, visible, onClose }: DeleteCronJobProps)
       visible={visible}
       onCancel={() => onClose()}
       onConfirm={handleDelete}
-      title="Delete this cron job"
+      title="删除定时任务"
       loading={isLoading}
-      confirmLabel={`Delete cron job ${cronJob.jobname}`}
-      confirmPlaceholder="Type in name of cron job"
-      confirmString={cronJob.jobname ?? 'Unknown'}
+      confirmLabel={`删除定时任务 ${cronJob.jobname}`}
+      confirmPlaceholder="请输入定时任务名称"
+      confirmString={cronJob.jobname ?? '未知定时任务'}
       text={
         <>
-          <span>This will delete the cron job</span>{' '}
+          <span>将会删除定时任务</span>{' '}
           <span className="text-bold text-foreground">{cronJob.jobname}</span>
         </>
       }
-      alert={{ title: 'You cannot recover this cron job once deleted.' }}
+      alert={{ title: '删除定时任务后无法恢复。' }}
     />
   )
 }
