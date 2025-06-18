@@ -19,8 +19,13 @@ export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBuck
   const { mutate: emptyBucket, isLoading } = useBucketEmptyMutation({
     onSuccess: async () => {
       if (bucket === undefined) return
-      await fetchFolderContents({ folderId: bucket.id, folderName: bucket.name, index: -1 })
-      toast.success(`成功清空了存储桶 ${bucket!.name}`)
+      await fetchFolderContents({
+        bucketId: bucket.id,
+        folderId: bucket.id,
+        folderName: bucket.name,
+        index: -1,
+      })
+      toast.success(`成功删除了存储桶 ${bucket!.name}`)
       onClose()
     },
   })

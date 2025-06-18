@@ -94,7 +94,7 @@ export const generateProductRoutes = (
       icon: <Globe size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/gis/tiles`),
     },
-    ...(IS_PLATFORM && edgeFunctionsEnabled
+    ...(edgeFunctionsEnabled
       ? [
           {
             key: 'functions',

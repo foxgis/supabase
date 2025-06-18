@@ -211,6 +211,7 @@ export const UsersV2 = () => {
       if (userIds.includes(selectedUser)) setSelectedUser(undefined)
     } catch (error: any) {
       toast.error(`删除选中的用户失败：${error.message}`)
+    } finally {
       setIsDeletingUsers(false)
     }
   }
