@@ -52,67 +52,67 @@ const authorSupabase = {
 }
 
 const supabaseIntegrations: IntegrationDefinition[] = [
-  {
-    id: 'queues',
-    type: 'postgres_extension' as const,
-    requiredExtensions: ['pgmq'],
-    // missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
-    name: `消息队列`,
-    icon: ({ className, ...props } = {}) => (
-      <Layers className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
-    ),
-    description: '数据库中的轻量级消息队列',
-    docsUrl: 'https://github.com/tembo-io/pgmq',
-    author: {
-      name: 'pgmq',
-      websiteUrl: 'https://github.com/tembo-io/pgmq',
-    },
-    navigation: [
-      {
-        route: 'overview',
-        label: '概览',
-      },
-      {
-        route: 'queues',
-        label: '消息队列',
-        hasChild: true,
-        childIcon: (
-          <Layers size={12} strokeWidth={1.5} className={cn('text-foreground w-full h-full')} />
-        ),
-      },
-      {
-        route: 'settings',
-        label: '设置',
-      },
-    ],
-    navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
-      if (childId) {
-        return dynamic(() => import('../Queues/QueueTab').then((mod) => mod.QueueTab), {
-          loading: Loading,
-        })
-      }
-      switch (pageId) {
-        case 'overview':
-          return dynamic(
-            () =>
-              import('components/interfaces/Integrations/Queues/OverviewTab').then(
-                (mod) => mod.QueuesOverviewTab
-              ),
-            { loading: Loading }
-          )
-        case 'queues':
-          return dynamic(() => import('../Queues/QueuesTab').then((mod) => mod.QueuesTab), {
-            loading: Loading,
-          })
-        case 'settings':
-          return dynamic(
-            () => import('../Queues/QueuesSettings').then((mod) => mod.QueuesSettings),
-            { loading: Loading }
-          )
-      }
-      return null
-    },
-  },
+  // {
+  //   id: 'queues',
+  //   type: 'postgres_extension' as const,
+  //   requiredExtensions: ['pgmq'],
+  //   // missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
+  //   name: `消息队列`,
+  //   icon: ({ className, ...props } = {}) => (
+  //     <Layers className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
+  //   ),
+  //   description: '数据库中的轻量级消息队列',
+  //   docsUrl: 'https://github.com/tembo-io/pgmq',
+  //   author: {
+  //     name: 'pgmq',
+  //     websiteUrl: 'https://github.com/tembo-io/pgmq',
+  //   },
+  //   navigation: [
+  //     {
+  //       route: 'overview',
+  //       label: '概览',
+  //     },
+  //     {
+  //       route: 'queues',
+  //       label: '消息队列',
+  //       hasChild: true,
+  //       childIcon: (
+  //         <Layers size={12} strokeWidth={1.5} className={cn('text-foreground w-full h-full')} />
+  //       ),
+  //     },
+  //     {
+  //       route: 'settings',
+  //       label: '设置',
+  //     },
+  //   ],
+  //   navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
+  //     if (childId) {
+  //       return dynamic(() => import('../Queues/QueueTab').then((mod) => mod.QueueTab), {
+  //         loading: Loading,
+  //       })
+  //     }
+  //     switch (pageId) {
+  //       case 'overview':
+  //         return dynamic(
+  //           () =>
+  //             import('components/interfaces/Integrations/Queues/OverviewTab').then(
+  //               (mod) => mod.QueuesOverviewTab
+  //             ),
+  //           { loading: Loading }
+  //         )
+  //       case 'queues':
+  //         return dynamic(() => import('../Queues/QueuesTab').then((mod) => mod.QueuesTab), {
+  //           loading: Loading,
+  //         })
+  //       case 'settings':
+  //         return dynamic(
+  //           () => import('../Queues/QueuesSettings').then((mod) => mod.QueuesSettings),
+  //           { loading: Loading }
+  //         )
+  //     }
+  //     return null
+  //   },
+  // },
   {
     id: 'cron',
     type: 'postgres_extension' as const,
