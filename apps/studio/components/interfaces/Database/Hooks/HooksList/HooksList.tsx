@@ -65,7 +65,7 @@ const HooksList = ({ createHook = noop, editHook = noop, deleteHook = noop }: Ho
                 side: 'bottom',
                 text:
                   isPermissionsLoaded && !canCreateWebhooks
-                    ? '您需要有额外的权限才能创建 webhooks'
+                    ? '您需要有额外的权限才能创建 webhook'
                     : undefined,
               },
             }}
@@ -81,7 +81,7 @@ const HooksList = ({ createHook = noop, editHook = noop, deleteHook = noop }: Ho
         </div>
       )}
 
-      {isError && <AlertError error={error} subject="获取 webhooks 失败" />}
+      {isError && <AlertError error={error} subject="获取 webhook 失败" />}
 
       {isSuccess &&
         (hooks.length <= 0 ? (

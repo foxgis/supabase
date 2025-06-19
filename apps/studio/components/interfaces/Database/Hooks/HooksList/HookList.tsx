@@ -69,7 +69,7 @@ const HookList = ({ schema, filterString, editHook = noop, deleteHook = noop }: 
                     layout="fixed"
                     width="20"
                     height="20"
-                    title={isEdgeFunction(url) ? 'Supabase Edge Function' : 'HTTP Request'}
+                    title={isEdgeFunction(url) ? '云函数' : 'HTTP 请求'}
                   />
                 </div>
                 <p title={x.name} className="truncate">
@@ -102,12 +102,12 @@ const HookList = ({ schema, filterString, editHook = noop, deleteHook = noop }: 
                       <>
                         <DropdownMenuItem className="space-x-2" onClick={() => editHook(x)}>
                           <Edit3 size="14" />
-                          <p>Edit hook</p>
+                          <p>编辑 webhook</p>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="space-x-2" onClick={() => deleteHook(x)}>
                           <Trash stroke="red" size="14" />
-                          <p>Delete hook</p>
+                          <p>删除 webhook</p>
                         </DropdownMenuItem>
                       </>
                     </DropdownMenuContent>
@@ -121,7 +121,7 @@ const HookList = ({ schema, filterString, editHook = noop, deleteHook = noop }: 
                     tooltip={{
                       content: {
                         side: 'bottom',
-                        text: 'You need additional permissions to update webhooks',
+                        text: '您需要额外的权限才能更新 webhook',
                       },
                     }}
                   />

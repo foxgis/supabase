@@ -30,8 +30,8 @@ export const AVAILABLE_WEBHOOK_TYPES = [
         {
           value: 'supabase_function',
           icon: `${BASE_PATH}/img/function-providers/supabase-severless-function.png`,
-          label: 'Supabase Edge Functions',
-          description: 'Choose a Supabase edge function to run.',
+          label: '云函数',
+          description: '选择需要执行的云函数。',
         },
       ]
     : []),

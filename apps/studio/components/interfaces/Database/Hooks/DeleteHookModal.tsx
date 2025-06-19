@@ -18,7 +18,7 @@ const DeleteHookModal = ({ selectedHook, visible, onClose }: DeleteHookModalProp
   const { mutate: deleteDatabaseTrigger, isLoading: isDeleting } = useDatabaseTriggerDeleteMutation(
     {
       onSuccess: () => {
-        toast.success(`Successfully deleted ${name}`)
+        toast.success(`成功删除了 ${name}`)
         onClose()
       },
     }
@@ -26,10 +26,10 @@ const DeleteHookModal = ({ selectedHook, visible, onClose }: DeleteHookModalProp
 
   async function handleDelete() {
     if (!project) {
-      return console.error('Project ref is required')
+      return toast.error('未找到项目')
     }
     if (!selectedHook) {
-      return toast.error('Unable find selected hook')
+      return toast.error('无法找到选中的 webhook')
     }
 
     deleteDatabaseTrigger({
@@ -46,18 +46,17 @@ const DeleteHookModal = ({ selectedHook, visible, onClose }: DeleteHookModalProp
       size="medium"
       onCancel={() => onClose()}
       onConfirm={handleDelete}
-      title="Delete database webhook"
+      title="删除 webhook"
       loading={isDeleting}
-      confirmLabel={`Delete ${name}`}
-      confirmPlaceholder="Type in name of webhook"
+      confirmLabel={`删除 ${name}`}
+      confirmPlaceholder="输入 webhook 名称"
       confirmString={name || ''}
       text={
         <>
-          This will delete the webhook <span className="text-bold text-foreground">{name}</span>{' '}
-          from the schema <span className="text-bold text-foreground">{schema}</span>
+          此操作将会从 <span className="text-bold text-foreground">{schema}</span> 模式中删除 webhook <span className="text-bold text-foreground">{name}</span>。
         </>
       }
-      alert={{ title: 'You cannot recover this webhook once deleted.' }}
+      alert={{ title: '删除后无法恢复' }}
     />
   )
 }

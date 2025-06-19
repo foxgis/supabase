@@ -24,7 +24,7 @@ const HooksListEmpty = () => {
       body={
         <Table.tr>
           <Table.td colSpan={5}>
-            <p className="text-sm text-foreground">No hooks created yet</p>
+            <p className="text-sm text-foreground">还未创建任何 webhook</p>
             <p className="text-sm text-foreground-light">
               点击“新建 webhook”创建一个新的 webhook
             </p>

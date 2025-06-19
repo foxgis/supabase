@@ -81,9 +81,9 @@ const HTTPRequestFields = ({
             <Input
               id="http_url"
               name="http_url"
-              label="URL"
+              label="URL 地址"
               placeholder="http://api.com/path/resource"
-              descriptionText="HTTP 请求的 URL，必须包含 HTTP/HTTPS"
+              descriptionText="HTTP 请求的 URL 地址，必须包含 HTTP/HTTPS"
             />
           ) : type === 'supabase_function' && edgeFunctions.length === 0 ? (
             <div className="space-y-1">
@@ -115,9 +115,9 @@ const HTTPRequestFields = ({
             id="timeout_ms"
             name="timeout_ms"
             label="超时时间"
-            labelOptional="设置在 1000ms 到 10,000ms 之间"
+            labelOptional="设置在 1000 毫秒到 10,000 毫秒之间"
             type="number"
-            actions={<p className="text-foreground-light pr-2">ms</p>}
+            actions={<p className="text-foreground-light pr-2">毫秒</p>}
           />
         </FormSectionContent>
       </FormSection>
