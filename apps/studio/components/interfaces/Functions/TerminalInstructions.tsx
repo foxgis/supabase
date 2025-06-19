@@ -50,7 +50,7 @@ export const TerminalInstructions = forwardRef<
   const commands: Commands[] = [
     {
       command: 'supabase functions new hello-world',
-      description: ' creates a function stub at ./functions/hello-world/index.ts',
+      description: '在 ./functions/hello-world/index.ts 路径下创建云函数',
       jsx: () => {
         return (
           <>
@@ -58,11 +58,11 @@ export const TerminalInstructions = forwardRef<
           </>
         )
       },
-      comment: 'Create a function',
+      comment: '创建云函数',
     },
     {
       command: `supabase functions deploy hello-world --project-ref ${projectRef}`,
-      description: 'Deploys function at ./functions/hello-world/index.ts',
+      description: '部署 ./functions/hello-world/index.ts 路径下的云函数',
       jsx: () => {
         return (
           <>
@@ -71,13 +71,13 @@ export const TerminalInstructions = forwardRef<
           </>
         )
       },
-      comment: 'Deploy your function',
+      comment: '部署云函数',
     },
     {
       command: `curl -L -X POST 'https://${projectRef}.supabase.${restUrlTld}/functions/v1/hello-world' -H 'Authorization: Bearer ${
         apiKey ?? '[YOUR ANON KEY]'
       }' --data '{"name":"Functions"}'`,
-      description: 'Invokes the hello-world function',
+      description: '调用 hello-world 云函数',
       jsx: () => {
         return (
           <>
@@ -87,7 +87,7 @@ export const TerminalInstructions = forwardRef<
           </>
         )
       },
-      comment: 'Invoke your function',
+      comment: '调用云函数',
     },
   ]
 
@@ -104,7 +104,7 @@ export const TerminalInstructions = forwardRef<
           <div className="flex items-center justify-center w-8 h-8 p-2 border rounded bg-alternative">
             <Terminal strokeWidth={2} />
           </div>
-          <h4>Create your first Edge Function via the CLI</h4>
+          <h4>通过 CLI 创建第一个云函数</h4>
         </div>
         {closable && (
           <div className="cursor-pointer" onClick={() => setShowInstructions(!showInstructions)}>
@@ -121,21 +121,21 @@ export const TerminalInstructions = forwardRef<
         {tokens && tokens.length === 0 ? (
           <div className="px-8 py-4 space-y-3 border-t">
             <div>
-              <p className="text-sm text-foreground">You may need to create an access token</p>
+              <p className="text-sm text-foreground">你可能需要创建一个访问令牌</p>
               <p className="text-sm text-foreground-light">
-                You can create a secure access token in your account section
+                您可以在账户这种中创建一个安全的访问令牌
               </p>
             </div>
             <Button type="default" onClick={() => router.push('/account/tokens')}>
-              Access tokens
+              访问令牌
             </Button>
           </div>
         ) : (
           <div className="py-4 space-y-3 border-t">
             <div>
-              <h3 className="text-base text-foreground">Need help?</h3>
+              <h3 className="text-base text-foreground">需要帮助？</h3>
               <p className="text-sm text-foreground-light">
-                Read the documentation, or browse some sample code.
+                阅读文档，或浏览一些示例代码。
               </p>
             </div>
             <div className="flex gap-2">
@@ -146,7 +146,7 @@ export const TerminalInstructions = forwardRef<
                   rel="noreferrer"
                   href="https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions"
                 >
-                  Examples
+                  示例
                 </a>
               </Button>
             </div>

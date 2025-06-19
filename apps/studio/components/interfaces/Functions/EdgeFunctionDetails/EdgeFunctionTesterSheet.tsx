@@ -92,7 +92,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
   const { mutate: testEdgeFunction, isLoading } = useEdgeFunctionTestMutation({
     onSuccess: (res) => setResponse(res),
     onError: (err) => {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred')
+      setError(err instanceof Error ? err.message : '产生了未知错误')
       if (err instanceof Error) {
         const errorWithStatus = err as ErrorWithStatus
         setResponse({
@@ -161,7 +161,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
     try {
       JSON.parse(values.body)
     } catch (e) {
-      form.setError('body', { message: 'Must be a valid JSON string' })
+      form.setError('body', { message: '必须是有效的 JSON 字符串' })
       return
     }
 
@@ -178,7 +178,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
         const token = await getRoleImpersonationJWT(projectRef, config.jwt_secret, role)
         testAuthorization = 'Bearer ' + token
       } catch (err: any) {
-        console.error('Failed to generate JWT:', {
+        console.error('生成 JWT 失败：', {
           error: err.message,
           roleDetails: role,
         })
@@ -226,7 +226,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
           icon={<Plus size={14} />}
           onClick={() => addKeyValuePair(type)}
         >
-          Add {label}
+          添加 {label}
         </Button>
       </div>
       <div className="border rounded-md bg-surface-200">
@@ -240,7 +240,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                   <Input
                     {...field}
                     size="tiny"
-                    placeholder="Enter key..."
+                    placeholder="输入键..."
                     disabled={isLoading}
                     className="h-auto py-2 font-mono rounded-none shadow-none bg-transparent border-l-0 border-r-1 border-t-0 border-b-0 border-border"
                   />
@@ -255,7 +255,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                   <Input
                     {...field}
                     size="tiny"
-                    placeholder="Enter value..."
+                    placeholder="输入值..."
                     disabled={isLoading}
                     className="h-auto py-2 font-mono rounded-none shadow-none bg-transparent border-none"
                   />
@@ -283,7 +283,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
     <Sheet open={visible} onOpenChange={onClose}>
       <SheetContent size="default" className="flex flex-col gap-0 p-0">
         <SheetHeader>
-          <SheetTitle>Test {functionSlug}</SheetTitle>
+          <SheetTitle>测试 {functionSlug}</SheetTitle>
         </SheetHeader>
 
         <Form_Shadcn_ {...form}>
@@ -298,7 +298,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                     control={form.control}
                     name="method"
                     render={({ field }) => (
-                      <FormItemLayout layout="vertical" label="HTTP Method">
+                      <FormItemLayout layout="vertical" label="HTTP 方法">
                         <FormControl_Shadcn_>
                           <Select
                             value={field.value}
@@ -306,7 +306,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                             disabled={isLoading}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select method" />
+                              <SelectValue placeholder="选择方法" />
                             </SelectTrigger>
                             <SelectContent>
                               {HTTP_METHODS.map((m) => (
@@ -325,11 +325,11 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                       control={form.control}
                       name="body"
                       render={({ field }) => (
-                        <FormItemLayout layout="vertical" label="Request Body">
+                        <FormItemLayout layout="vertical" label="请求体">
                           <FormControl_Shadcn_>
                             <Textarea
                               {...field}
-                              placeholder="Request body (JSON)"
+                              placeholder="请求体（JSON）"
                               rows={3}
                               disabled={isLoading}
                               className="font-mono text-xs"
@@ -352,7 +352,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                       {error ? (
                         <>
                           <div className="flex gap-2 items-center p-5 text-sm pb-3">
-                            Function responded with
+                            云函数响应状态码
                             <Badge variant={response.status >= 400 ? 'destructive' : 'success'}>
                               {response.status}
                             </Badge>
@@ -367,10 +367,10 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                           <TabsList className="gap-4 px-5 pt-2">
                             <div className="flex items-center gap-4 flex-1">
                               <TabsTrigger className="text-sm" value="body">
-                                Body
+                                响应体
                               </TabsTrigger>
                               <TabsTrigger className="text-sm" value="headers">
-                                Headers
+                                响应头
                               </TabsTrigger>
                             </div>
                             <Badge
@@ -402,12 +402,12 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                   ) : isLoading ? (
                     <div className="h-full flex flex-col items-center justify-center gap-2">
                       <Loader2 size={24} className="text-foreground-muted animate-spin" />
-                      <p className="text-sm text-foreground-light">Sending request...</p>
+                      <p className="text-sm text-foreground-light">正在发送请求...</p>
                     </div>
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center gap-2">
                       <Send size={24} className="text-foreground-muted" />
-                      <p className="text-sm text-foreground-light">Send your first test request</p>
+                      <p className="text-sm text-foreground-light">发送您的第一个测试请求</p>
                     </div>
                   )}
                 </div>
@@ -429,13 +429,13 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
                         httpMethod: method,
                       },
                       groups: {
-                        project: projectRef ?? 'Unknown',
-                        organization: org?.slug ?? 'Unknown',
+                        project: projectRef ?? '未知项目',
+                        organization: org?.slug ?? '未知组织',
                       },
                     })
                   }
                 >
-                  Send Request
+                  发送请求
                 </Button>
               </div>
             </SheetFooter>

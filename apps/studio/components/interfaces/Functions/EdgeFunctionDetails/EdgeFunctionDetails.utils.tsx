@@ -12,7 +12,7 @@ export const generateCLICommands = ({
   const managementCommands: any = [
     {
       command: `supabase functions deploy ${selectedFunction?.slug}`,
-      description: 'This will overwrite the deployed function with your new function',
+      description: '此操作将会使用新云函数覆盖已部署的云函数',
       jsx: () => {
         return (
           <>
@@ -21,11 +21,11 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'Deploy a new version',
+      comment: '部署新版本',
     },
     {
       command: `supabase functions delete ${selectedFunction?.slug}`,
-      description: 'This will remove the function and all the logs associated with it',
+      description: '此操作将删除云函数及其关联的所有日志',
       jsx: () => {
         return (
           <>
@@ -34,14 +34,14 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'Delete the function',
+      comment: '删除云函数',
     },
   ]
 
   const secretCommands: any = [
     {
       command: `supabase secrets list`,
-      description: 'This will list all the secrets for your project',
+      description: '此操作将列出所有密钥',
       jsx: () => {
         return (
           <>
@@ -49,11 +49,11 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'View all secrets',
+      comment: '查看所有密钥',
     },
     {
       command: `supabase secrets set NAME1=VALUE1 NAME2=VALUE2`,
-      description: 'This will set secrets for your project',
+      description: '此操作将设置密钥',
       jsx: () => {
         return (
           <>
@@ -61,11 +61,11 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'Set secrets for your project',
+      comment: '设置密钥',
     },
     {
       command: `supabase secrets unset NAME1 NAME2 `,
-      description: 'This will delete secrets for your project',
+      description: '此操作将删除密钥',
       jsx: () => {
         return (
           <>
@@ -73,7 +73,7 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'Unset secrets for your project',
+      comment: '删除密钥',
     },
   ]
 
@@ -82,7 +82,7 @@ export const generateCLICommands = ({
       command: `curl -L -X POST '${functionUrl}' -H 'Authorization: Bearer ${
         anonKey ?? '[YOUR ANON KEY]'
       }' --data '{"name":"Functions"}'`,
-      description: 'Invokes the hello function',
+      description: '调用云函数',
       jsx: () => {
         return (
           <>
@@ -95,7 +95,7 @@ export const generateCLICommands = ({
           </>
         )
       },
-      comment: 'Invoke your function',
+      comment: '调用云函数',
     },
   ]
 

@@ -78,7 +78,7 @@ export const EdgeFunctionsListItem = ({ function: item }: EdgeFunctionsListItemP
       </Table.td>
       <Table.td className="hidden 2xl:table-cell">
         <p className="text-foreground-light">
-          {dayjs(item.created_at).format('DD MMM, YYYY HH:mm')}
+          {dayjs(item.created_at).format('YYYY/MM/DD HH:mm')}
         </p>
       </Table.td>
       <Table.td className="lg:table-cell">
@@ -89,7 +89,7 @@ export const EdgeFunctionsListItem = ({ function: item }: EdgeFunctionsListItemP
             </div>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            Last updated on {dayjs(item.updated_at).format('DD MMM, YYYY HH:mm')}
+            最近更新时间 {dayjs(item.updated_at).format('YYYY/MM/DD HH:mm')}
           </TooltipContent>
         </Tooltip>
       </Table.td>

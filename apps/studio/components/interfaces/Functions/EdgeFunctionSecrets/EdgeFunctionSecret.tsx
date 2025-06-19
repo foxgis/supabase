@@ -31,9 +31,9 @@ const EdgeFunctionSecret = ({ secret, onSelectDelete }: EdgeFunctionSecretProps)
       <Table.td>
         {!!secret.updated_at ? (
           <TimestampInfo
-            displayAs="utc"
+            displayAs="local"
             utcTimestamp={secret.updated_at}
-            labelFormat="DD MMM YYYY HH:mm:ss (ZZ)"
+            labelFormat="YYYY/MM/DD HH:mm:ss (ZZ)"
             className="!text-sm"
           />
         ) : (
@@ -52,9 +52,9 @@ const EdgeFunctionSecret = ({ secret, onSelectDelete }: EdgeFunctionSecretProps)
               content: {
                 side: 'bottom',
                 text: isReservedSecret
-                  ? 'This is a reserved secret and cannot be deleted'
+                  ? '此密钥是保留密钥，无法删除'
                   : !canUpdateSecrets
-                    ? 'You need additional permissions to delete edge function secrets'
+                    ? '您需要额外的权限才能删除云函数密钥'
                     : undefined,
               },
             }}

@@ -76,8 +76,8 @@ const FUNCTION_NAME_REGEX = /^[A-Za-z0-9_-]+$/
 const FormSchema = z.object({
   functionName: z
     .string()
-    .min(1, 'Function name is required')
-    .regex(FUNCTION_NAME_REGEX, 'Only letters, numbers, hyphens, and underscores allowed'),
+    .min(1, '云函数名称是必填项')
+    .regex(FUNCTION_NAME_REGEX, '仅允许字母、数字、连字符和下划线'),
 })
 
 // Generate a random function name
@@ -130,7 +130,7 @@ const NewFunctionPage = () => {
   const { mutate: deployFunction, isLoading: isDeploying } = useEdgeFunctionDeployMutation({
     // [Joshen] To investigate: For some reason, the invalidation for list of edge functions isn't triggering
     onSuccess: () => {
-      toast.success('Successfully deployed edge function')
+      toast.success('云函数部署成功')
       const functionName = form.getValues('functionName')
       if (ref && functionName) {
         router.push(`/project/${ref}/functions/${functionName}/details`)
@@ -154,7 +154,7 @@ const NewFunctionPage = () => {
     sendEvent({
       action: 'edge_function_deploy_button_clicked',
       properties: { origin: 'functions_editor' },
-      groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
     })
   }
 
@@ -193,7 +193,7 @@ const NewFunctionPage = () => {
       sendEvent({
         action: 'edge_function_template_clicked',
         properties: { templateName: template.name, origin: 'editor_page' },
-        groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+        groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
       })
     }
   }
@@ -251,10 +251,10 @@ const NewFunctionPage = () => {
     <PageLayout
       size="full"
       isCompact
-      title="Create new edge function"
+      title="创建云函数"
       breadcrumbs={[
         {
-          label: 'Edge Functions',
+          label: '云函数',
           href: `/project/${ref}/functions`,
         },
       ]}
@@ -269,14 +269,14 @@ const NewFunctionPage = () => {
                 aria-expanded={open}
                 icon={<Book size={14} />}
               >
-                Templates
+                模板
               </Button>
             </PopoverTrigger_Shadcn_>
             <PopoverContent_Shadcn_ portal className="w-[300px] p-0" align="end">
               <Command_Shadcn_>
-                <CommandInput_Shadcn_ placeholder="Search templates..." />
+                <CommandInput_Shadcn_ placeholder="查找模板..." />
                 <CommandList_Shadcn_>
-                  <CommandEmpty_Shadcn_>No templates found.</CommandEmpty_Shadcn_>
+                  <CommandEmpty_Shadcn_>未找到模板。</CommandEmpty_Shadcn_>
                   <CommandGroup_Shadcn_>
                     {EDGE_FUNCTION_TEMPLATES.map((template) => (
                       <CommandItem_Shadcn_
@@ -310,14 +310,14 @@ const NewFunctionPage = () => {
               </Command_Shadcn_>
             </PopoverContent_Shadcn_>
           </Popover_Shadcn_>
-          <Button
+          {/* <Button
             size="tiny"
             type="default"
             onClick={handleChat}
             icon={<AiIconAnimation size={16} />}
           >
             Chat
-          </Button>
+          </Button> */}
         </>
       }
     >
@@ -338,7 +338,7 @@ const NewFunctionPage = () => {
           className="flex items-center bg-background-muted justify-end p-4 border-t bg-surface-100 gap-3"
         >
           <div className="flex items-center gap-3">
-            <Label_Shadcn_ htmlFor="functionName">Function name</Label_Shadcn_>
+            <Label_Shadcn_ htmlFor="functionName">云函数名称</Label_Shadcn_>
             <FormField_Shadcn_
               control={form.control}
               name="functionName"
@@ -350,7 +350,7 @@ const NewFunctionPage = () => {
                         id="functionName"
                         type="text"
                         size={'large'}
-                        placeholder="Give your function a name..."
+                        placeholder="给云函数起个名字..."
                         className="w-[250px]"
                         {...field}
                       />
@@ -376,7 +376,7 @@ const NewFunctionPage = () => {
             disabled={files.length === 0 || isDeploying}
             onClick={handleDeploy}
           >
-            Deploy function
+            部署云函数
           </Button>
         </form>
       </Form_Shadcn_>

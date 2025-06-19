@@ -48,7 +48,7 @@ const EdgeFunctionsPage: NextPageWithLayout = () => {
         rel="noreferrer"
         href="https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions"
       >
-        Examples
+        示例
       </a>
     </Button>,
   ]
@@ -56,8 +56,8 @@ const EdgeFunctionsPage: NextPageWithLayout = () => {
   return (
     <PageLayout
       size="large"
-      title="Edge Functions"
-      subtitle="Deploy edge functions to handle complex business logic"
+      title="云函数"
+      subtitle="部署云函数处理复杂的业务逻辑"
       primaryActions={IS_PLATFORM ? <DeployEdgeFunctionButton /> : undefined}
       secondaryActions={secondaryActions}
     >
@@ -66,18 +66,18 @@ const EdgeFunctionsPage: NextPageWithLayout = () => {
           {IS_PLATFORM ? (
             <>
               {isLoading && <GenericSkeletonLoader />}
-              {isError && <AlertError error={error} subject="Failed to retrieve edge functions" />}
+              {isError && <AlertError error={error} subject="获取云函数失败" />}
               {isSuccess && (
                 <>
                   {hasFunctions ? (
                     <Table
                       head={
                         <>
-                          <Table.th>Name</Table.th>
-                          <Table.th>URL</Table.th>
-                          <Table.th className="hidden 2xl:table-cell">Created</Table.th>
-                          <Table.th className="lg:table-cell">Last updated</Table.th>
-                          <Table.th className="lg:table-cell">Deployments</Table.th>
+                          <Table.th>名称</Table.th>
+                          <Table.th>地址</Table.th>
+                          <Table.th className="hidden 2xl:table-cell">创建时间</Table.th>
+                          <Table.th className="lg:table-cell">最近更新时间</Table.th>
+                          <Table.th className="lg:table-cell">部署次数</Table.th>
                         </>
                       }
                       body={

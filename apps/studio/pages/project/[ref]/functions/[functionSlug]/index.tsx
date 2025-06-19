@@ -35,31 +35,31 @@ import {
 const CHART_INTERVALS: ChartIntervals[] = [
   {
     key: '15min',
-    label: '15 min',
+    label: '15 分钟',
     startValue: 15,
     startUnit: 'minute',
-    format: 'MMM D, h:mm:ssa',
+    format: 'MM/DD h:mm:ssa',
   },
   {
     key: '1hr',
-    label: '1 hour',
+    label: '1 小时',
     startValue: 1,
     startUnit: 'hour',
-    format: 'MMM D, h:mma',
+    format: 'MM/DD h:mma',
   },
   {
     key: '1day',
-    label: '1 day',
+    label: '1 天',
     startValue: 1,
     startUnit: 'hour',
-    format: 'MMM D, h:mma',
+    format: 'MM/DD h:mma',
   },
   // {
   //   key: '7day',
-  //   label: '7 days',
+  //   label: '7 天',
   //   startValue: 7,
   //   startUnit: 'day',
-  //   format: 'MMM D',
+  //   format: 'MM/DD',
   // },
 ]
 
@@ -147,7 +147,7 @@ const PageLayout: NextPageWithLayout = () => {
     functionSlug as string
   )
   if (!canReadFunction) {
-    return <NoPermission isFullPage resourceText="access this edge function" />
+    return <NoPermission isFullPage resourceText="访问云函数" />
   }
 
   return (
@@ -180,7 +180,7 @@ const PageLayout: NextPageWithLayout = () => {
           </div>
 
           <span className="text-xs text-foreground-light">
-            Statistics for past {selectedInterval.label}
+            过去 {selectedInterval.label} 的统计信息
           </span>
         </div>
         <div>
@@ -194,7 +194,7 @@ const PageLayout: NextPageWithLayout = () => {
                 return isErrorExecTime ? (
                   <Alert_Shadcn_ variant="warning">
                     <WarningIcon />
-                    <AlertTitle_Shadcn_>Failed to reterieve execution time</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_>获取执行时间失败</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_>{execTimeError.message}</AlertDescription_Shadcn_>
                   </Alert_Shadcn_>
                 ) : (
@@ -219,7 +219,7 @@ const PageLayout: NextPageWithLayout = () => {
                   return (
                     <Alert_Shadcn_ variant="warning">
                       <WarningIcon />
-                      <AlertTitle_Shadcn_>Failed to reterieve invocations</AlertTitle_Shadcn_>
+                      <AlertTitle_Shadcn_>获取调用次数失败</AlertTitle_Shadcn_>
                       <AlertDescription_Shadcn_>
                         {invocationsError.message}
                       </AlertDescription_Shadcn_>
@@ -272,15 +272,15 @@ const PageLayout: NextPageWithLayout = () => {
               }}
             />
             <ReportWidget
-              title="CPU time"
-              tooltip="Average CPU time usage for the function"
+              title="CPU 时间"
+              tooltip="云函数的平均 CPU 使用时间"
               data={resourceUsageChartData}
               isLoading={resourceUsageResult.isLoading}
               renderer={(props) => {
                 return isErrorResourceUsage ? (
                   <Alert_Shadcn_ variant="warning">
                     <WarningIcon />
-                    <AlertTitle_Shadcn_>Failed to retrieve CPU time</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_>获取 CPU 时间失败</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_>
                       {resourceUsageError.message}
                     </AlertDescription_Shadcn_>
@@ -299,15 +299,15 @@ const PageLayout: NextPageWithLayout = () => {
               }}
             />
             <ReportWidget
-              title="Memory"
-              tooltip="Average memory usage for the function"
+              title="内存"
+              tooltip="云函数的平均内存使用量"
               data={resourceUsageChartData}
               isLoading={resourceUsageResult.isLoading}
               renderer={(props) => {
                 return isErrorResourceUsage ? (
                   <Alert_Shadcn_ variant="warning">
                     <WarningIcon />
-                    <AlertTitle_Shadcn_>Failed to retrieve memory usage</AlertTitle_Shadcn_>
+                    <AlertTitle_Shadcn_>获取内存使用量失败</AlertTitle_Shadcn_>
                     <AlertDescription_Shadcn_>
                       {resourceUsageError.message}
                     </AlertDescription_Shadcn_>

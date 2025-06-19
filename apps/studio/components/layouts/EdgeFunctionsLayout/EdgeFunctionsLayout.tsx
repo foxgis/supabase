@@ -13,17 +13,17 @@ const EdgeFunctionsProductMenu = () => {
 
   const menuItems = [
     {
-      title: 'Manage',
+      title: '管理',
       items: [
         {
-          name: 'Functions',
+          name: '云函数',
           key: 'main',
           pages: ['', '[functionSlug]', 'new'],
           url: `/project/${projectRef}/functions`,
           items: [],
         },
         {
-          name: 'Secrets',
+          name: '密钥',
           key: 'secrets',
           url: `/project/${projectRef}/functions/secrets`,
           items: [],
@@ -38,8 +38,8 @@ const EdgeFunctionsProductMenu = () => {
 const EdgeFunctionsLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <ProjectLayout
-      title="Edge Functions"
-      product="Edge Functions"
+      title="云函数"
+      product="云函数"
       productMenu={<EdgeFunctionsProductMenu />}
       isBlocking={false}
     >

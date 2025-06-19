@@ -63,7 +63,7 @@ const CodePage = () => {
 
   const { mutate: deployFunction, isLoading: isDeploying } = useEdgeFunctionDeployMutation({
     onSuccess: () => {
-      toast.success('Successfully updated edge function')
+      toast.success('成功更新了云函数')
       setShowDeployWarning(false)
     },
   })
@@ -117,7 +117,7 @@ const CodePage = () => {
       })
     } catch (error) {
       toast.error(
-        `Failed to update function: ${error instanceof Error ? error.message : 'Unknown error'}`
+        `更新云函数失败：${error instanceof Error ? error.message : '未知错误'}`
       )
     }
   }
@@ -130,7 +130,7 @@ const CodePage = () => {
     try {
       return dirname(new URL(entrypoint).pathname)
     } catch (e) {
-      console.error('Failed to parse entrypoint', entrypoint)
+      console.error('解析云函数入口失败', entrypoint)
       return '/'
     }
   }
@@ -140,14 +140,14 @@ const CodePage = () => {
     setShowDeployWarning(true)
     sendEvent({
       action: 'edge_function_deploy_updates_button_clicked',
-      groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
     })
   }
 
   const handleDeployConfirm = () => {
     sendEvent({
       action: 'edge_function_deploy_updates_confirm_clicked',
-      groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
     })
     onUpdate()
   }
@@ -205,10 +205,10 @@ const CodePage = () => {
         <div className="flex flex-col items-center justify-center h-full bg-surface-200">
           <div className="flex flex-col items-center text-center gap-2 max-w-md">
             <AlertCircle size={24} strokeWidth={1.5} className="text-amber-900" />
-            <h3 className="text-md mt-4">Failed to load function code</h3>
+            <h3 className="text-md mt-4">加载云函数代码失败</h3>
             <p className="text-sm text-foreground-light">
               {filesError?.message ||
-                'There was an error loading the function code. The format may be invalid or the function may be corrupted.'}
+                '加载云函数代码失败，可能是格式无效或函数已损坏。'}
             </p>
           </div>
         </div>
@@ -245,12 +245,12 @@ const CodePage = () => {
                 content: {
                   side: 'top',
                   text: !canDeployFunction
-                    ? 'You need additional permissions to update edge functions'
+                    ? '你需要额外的权限才能更新云函数'
                     : undefined,
                 },
               }}
             >
-              Deploy updates
+              部署更新
             </ButtonTooltip>
           </div>
         </>

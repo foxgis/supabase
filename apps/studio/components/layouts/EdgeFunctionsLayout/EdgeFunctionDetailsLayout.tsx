@@ -65,7 +65,7 @@ const EdgeFunctionDetailsLayout = ({
 
   const breadcrumbItems = [
     {
-      label: 'Edge Functions',
+      label: '云函数',
       href: `/project/${ref}/functions`,
     },
   ]
@@ -73,30 +73,30 @@ const EdgeFunctionDetailsLayout = ({
   const navigationItems = functionSlug
     ? [
         {
-          label: 'Overview',
+          label: '概览',
           href: `/project/${ref}/functions/${functionSlug}`,
         },
         {
-          label: 'Invocations',
+          label: '调用',
           href: `/project/${ref}/functions/${functionSlug}/invocations`,
         },
         {
-          label: 'Logs',
+          label: '日志',
           href: `/project/${ref}/functions/${functionSlug}/logs`,
         },
         {
-          label: 'Code',
+          label: '代码',
           href: `/project/${ref}/functions/${functionSlug}/code`,
         },
         {
-          label: 'Details',
+          label: '详情',
           href: `/project/${ref}/functions/${functionSlug}/details`,
         },
       ]
     : []
 
   const downloadFunction = async () => {
-    if (filesError) return toast.error('Failed to retrieve edge function files')
+    if (filesError) return toast.error('获取云函数文件失败')
 
     const zipFileWriter = new BlobWriter('application/zip')
     const zipWriter = new ZipWriter(zipFileWriter, { bufferedWrite: true })
@@ -122,7 +122,7 @@ const EdgeFunctionDetailsLayout = ({
     let cancel = false
 
     if (!!functionSlug && isError && error.code === 404 && !cancel) {
-      toast('Edge function cannot be found in your project')
+      toast('云函数不存在')
       router.push(`/project/${ref}/functions`)
     }
 
@@ -133,8 +133,8 @@ const EdgeFunctionDetailsLayout = ({
 
   if (!isLoading && !canReadFunctions) {
     return (
-      <ProjectLayout title={title || 'Edge Functions'} product="Edge Functions">
-        <NoPermission isFullPage resourceText="access your project's edge functions" />
+      <ProjectLayout title={title || '云函数'} product="云函数">
+        <NoPermission isFullPage resourceText="访问云函数" />
       </ProjectLayout>
     )
   }
@@ -144,7 +144,7 @@ const EdgeFunctionDetailsLayout = ({
       <PageLayout
         isCompact
         size="full"
-        title={functionSlug ? name : 'Edge Functions'}
+        title={functionSlug ? name : '云函数'}
         breadcrumbs={breadcrumbItems}
         navigationItems={navigationItems}
         primaryActions={
@@ -160,12 +160,12 @@ const EdgeFunctionDetailsLayout = ({
             <Popover_Shadcn_>
               <PopoverTrigger_Shadcn_ asChild>
                 <Button type="default" icon={<Download />}>
-                  Download
+                  下载
                 </Button>
               </PopoverTrigger_Shadcn_>
               <PopoverContent_Shadcn_ align="end" className="p-0">
                 <div className="p-3 flex flex-col gap-y-2">
-                  <p className="text-xs text-foreground-light">Download via CLI</p>
+                  <p className="text-xs text-foreground-light">通过 CLI 下载</p>
                   <Input
                     copy
                     showCopyOnHover
@@ -183,7 +183,7 @@ const EdgeFunctionDetailsLayout = ({
                     icon={<FileArchive />}
                     onClick={downloadFunction}
                   >
-                    Download as ZIP
+                    下载为 ZIP
                   </Button>
                 </div>
               </PopoverContent_Shadcn_>
@@ -197,13 +197,13 @@ const EdgeFunctionDetailsLayout = ({
                   sendEvent({
                     action: 'edge_function_test_side_panel_opened',
                     groups: {
-                      project: ref ?? 'Unknown',
-                      organization: org?.slug ?? 'Unknown',
+                      project: ref ?? '未知项目',
+                      organization: org?.slug ?? '未知组织',
                     },
                   })
                 }}
               >
-                Test
+                测试
               </Button>
             )}
           </div>

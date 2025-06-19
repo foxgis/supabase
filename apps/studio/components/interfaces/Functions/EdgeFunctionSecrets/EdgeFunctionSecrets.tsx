@@ -45,11 +45,11 @@ const EdgeFunctionSecrets = () => {
   return (
     <>
       {isLoading && <GenericSkeletonLoader />}
-      {isError && <AlertError error={error} subject="Failed to retrieve project secrets" />}
+      {isError && <AlertError error={error} subject="获取密钥失败" />}
       {isSuccess && (
         <>
           {!canUpdateSecrets ? (
-            <NoPermission resourceText="manage this project's edge function secrets" />
+            <NoPermission resourceText="管理云函数密钥" />
           ) : (
             <div className="grid gap-5">
               <AddNewSecretForm />
@@ -57,14 +57,14 @@ const EdgeFunctionSecrets = () => {
             </div>
           )}
           {canUpdateSecrets && !canReadSecrets ? (
-            <NoPermission resourceText="view this project's edge function secrets" />
+            <NoPermission resourceText="查看云函数密钥" />
           ) : canReadSecrets ? (
             <div className="space-y-4 mt-4">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
                 <Input
                   size="small"
                   className="w-full md:w-80"
-                  placeholder="Search for a secret"
+                  placeholder="查找密钥"
                   value={searchString}
                   onChange={(e: any) => setSearchString(e.target.value)}
                   icon={<Search size={14} />}
@@ -74,14 +74,14 @@ const EdgeFunctionSecrets = () => {
               <div className="w-full overflow-hidden overflow-x-auto">
                 <Table
                   head={[
-                    <Table.th key="secret-name">Name</Table.th>,
+                    <Table.th key="secret-name">名称</Table.th>,
                     <Table.th key="secret-value" className="flex items-center gap-x-2">
-                      Digest{' '}
+                      摘要{' '}
                       <Badge color="scale" className="font-mono">
                         SHA256
                       </Badge>
                     </Table.th>,
-                    <Table.th key="secret-updated-at">Updated at</Table.th>,
+                    <Table.th key="secret-updated-at">更新时间</Table.th>,
                     <Table.th key="actions" />,
                   ]}
                   body={
@@ -96,18 +96,18 @@ const EdgeFunctionSecrets = () => {
                     ) : secrets.length === 0 && searchString.length > 0 ? (
                       <Table.tr>
                         <Table.td colSpan={3}>
-                          <p className="text-sm text-foreground">No results found</p>
+                          <p className="text-sm text-foreground">未找到结果</p>
                           <p className="text-sm text-foreground-light">
-                            Your search for "{searchString}" did not return any results
+                            您搜索的“{searchString}”未找到任何结果
                           </p>
                         </Table.td>
                       </Table.tr>
                     ) : (
                       <Table.tr>
                         <Table.td colSpan={3}>
-                          <p className="text-sm text-foreground">No secrets created</p>
+                          <p className="text-sm text-foreground">未创建密钥</p>
                           <p className="text-sm text-foreground-light">
-                            There are no secrets associated with your project yet
+                            您的项目还没有任何密钥
                           </p>
                         </Table.td>
                       </Table.tr>
@@ -124,9 +124,9 @@ const EdgeFunctionSecrets = () => {
         variant="destructive"
         loading={isDeleting}
         visible={selectedSecret !== undefined}
-        confirmLabel="Delete secret"
-        confirmLabelLoading="Deleting secret"
-        title={`Confirm to delete secret "${selectedSecret?.name}"`}
+        confirmLabel="删除密钥"
+        confirmLabelLoading="正在删除密钥"
+        title={`确认删除密钥“${selectedSecret?.name}”`}
         onCancel={() => setSelectedSecret(undefined)}
         onConfirm={() => {
           if (selectedSecret !== undefined) {
@@ -135,8 +135,8 @@ const EdgeFunctionSecrets = () => {
         }}
       >
         <p className="text-sm">
-          Before removing this secret, ensure none of your Edge Functions are actively using it.
-          This action cannot be undone.
+          在移除此密钥之前，请确保没有任何云函数正在使用它。
+          此操作无法撤销。
         </p>
       </ConfirmationModal>
     </>

@@ -19,10 +19,10 @@ const FunctionsNav = ({ item }: any) => {
         }
       }}
     >
-      <Tabs.Panel id="overview" label="Overview" />
-      <Tabs.Panel id="invocations" label="Invocations" />
-      <Tabs.Panel id="logs" label="Logs" />
-      <Tabs.Panel id="details" label="Details" />
+      <Tabs.Panel id="overview" label="概览" />
+      <Tabs.Panel id="invocations" label="调用次数" />
+      <Tabs.Panel id="logs" label="日志" />
+      <Tabs.Panel id="details" label="详情" />
     </Tabs>
   )
 }

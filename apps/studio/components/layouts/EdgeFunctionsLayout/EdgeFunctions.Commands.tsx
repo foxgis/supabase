@@ -12,7 +12,7 @@ export function useFunctionsGotoCommands(options?: CommandOptions) {
     [
       {
         id: 'nav-functions',
-        name: 'Edge Functions',
+        name: '云函数',
         route: `/project/${ref}/functions`,
         defaultHidden: true,
       },

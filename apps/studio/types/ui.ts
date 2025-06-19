@@ -22,7 +22,7 @@ export interface ChartIntervals {
   label: string
   startValue: number
   startUnit: 'minute' | 'hour' | 'day'
-  format?: 'MMM D, h:mm:ssa' | 'MMM D, h:mma' | 'MMM D, ha' | 'MMM D'
+  format?: 'MM/DD h:mm:ssa' | 'MM/DD h:mma' | 'MM/DD ha' | 'MM/DD'
   availableIn?: PlanId[]
 }
 

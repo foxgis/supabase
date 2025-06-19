@@ -1,8 +1,8 @@
 export const EDGE_FUNCTION_TEMPLATES = [
   {
     value: 'hello-world',
-    name: 'Simple Hello World',
-    description: 'Basic function that returns a JSON response',
+    name: '简单的 Hello World',
+    description: '能够返回 JSON 响应的基础云函数',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 interface reqPayload {
@@ -25,8 +25,8 @@ Deno.serve(async (req: Request) => {
   },
   {
     value: 'database-access',
-    name: 'Supabase Database Access',
-    description: 'Example using Supabase client to query your database',
+    name: '访问数据库',
+    description: '使用客户端 SDK 访问数据库的示例',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from 'jsr:@supabase/supabase-js@2'
@@ -53,15 +53,15 @@ Deno.serve(async (req) => {
   } catch (err) {
     return new Response(JSON.stringify({ message: err?.message ?? err }), {
       headers: { 'Content-Type': 'application/json' },
-      status: 500 
+      status: 500
     })
   }
 })`,
   },
   {
     value: 'storage-upload',
-    name: 'Supabase Storage Upload',
-    description: 'Upload files to Supabase Storage',
+    name: '上传文件',
+    description: '上传文件到文件存储',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from 'jsr:@supabase/supabase-js@2'
@@ -75,7 +75,7 @@ const supabase = createClient(
 Deno.serve(async (req) => {
   const formData = await req.formData()
   const file = formData.get('file')
-  
+
   // TODO: update your-bucket to the bucket you want to write files
   const { data, error } = await supabase
     .storage
@@ -94,8 +94,8 @@ Deno.serve(async (req) => {
   },
   {
     value: 'node-api',
-    name: 'Node Built-in API Example',
-    description: 'Example using Node.js built-in crypto and http modules',
+    name: 'Node 内置模块示例',
+    description: '使用 Node.js 内置 crypto 和 http 模块的示例',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { randomBytes } from "node:crypto";
@@ -119,8 +119,8 @@ server.listen(9999);`,
   },
   {
     value: 'express',
-    name: 'Express Server',
-    description: 'Example using Express.js for routing',
+    name: 'Express 服务',
+    description: '使用 Express.js 路由的示例',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import express from "npm:express@4.18.2";
@@ -137,8 +137,8 @@ app.listen(8000);`,
   },
   {
     value: 'openai-completion',
-    name: 'OpenAI Text Completion',
-    description: 'Generate text completions using OpenAI GPT-3',
+    name: 'OpenAI 文本补全',
+    description: '使用 OpenAI GPT-3.5 生成文本补全',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { OpenAI } from "npm:openai@4.8.0"
@@ -170,8 +170,8 @@ Deno.serve(async (req)=>{
   },
   {
     value: 'stripe-webhook',
-    name: 'Stripe Webhook Example',
-    description: 'Handle Stripe webhook events securely',
+    name: 'Stripe Webhook 示例',
+    description: '安全地处理 Stripe webhook 事件',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import Stripe from 'npm:stripe@12.0.0'
@@ -211,8 +211,8 @@ Deno.serve(async (request) => {
   },
   {
     value: 'resend-email',
-    name: 'Send Emails',
-    description: 'Send emails using the Resend API',
+    name: '发送电子邮件',
+    description: '使用 Resend API 发送电子邮件',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
@@ -241,8 +241,8 @@ Deno.serve(async (req) => {
   },
   {
     value: 'image-transform',
-    name: 'Image Transformation',
-    description: 'Transform images using ImageMagick WASM',
+    name: '图像转换',
+    description: '使用 ImageMagick WASM 转换图像',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import {
@@ -269,8 +269,8 @@ Deno.serve(async (req) => {
   },
   {
     value: 'websocket-server',
-    name: 'Websocket Server Example',
-    description: 'Create a real-time WebSocket server',
+    name: 'Websocket 服务示例',
+    description: '创建一个实时的 WebSocket 服务',
     content: `// Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 

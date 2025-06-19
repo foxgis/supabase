@@ -43,17 +43,17 @@ export const FunctionsEmptyState = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Create your first edge function</CardTitle>
+          <CardTitle>创建第一个云函数</CardTitle>
         </CardHeader>
         <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] divide-y md:divide-y-0 md:divide-x divide-default items-stretch">
           {/* Editor Option */}
           <div className="p-8">
             <div className="flex items-center gap-2">
               <Code strokeWidth={1.5} size={20} />
-              <h4 className="text-base text-foreground">Via Editor</h4>
+              <h4 className="text-base text-foreground">通过编辑器</h4>
             </div>
             <p className="text-sm text-foreground-light mb-4 mt-1">
-              Create and edit functions directly in the browser. Download to local at any time.
+              直接在浏览器中创建云函数，随时下载到本地。
             </p>
             <Button
               type="default"
@@ -62,16 +62,16 @@ export const FunctionsEmptyState = () => {
                 sendEvent({
                   action: 'edge_function_via_editor_button_clicked',
                   properties: { origin: 'no_functions_block' },
-                  groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+                  groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
                 })
               }}
             >
-              Open Editor
+              打开编辑器
             </Button>
           </div>
 
           {/* AI Assistant Option */}
-          <div className="p-8">
+          {/* <div className="p-8">
             <div className="flex items-center gap-2">
               <AiIconAnimation size={20} />
               <h4 className="text-base text-foreground">AI Assistant</h4>
@@ -105,17 +105,16 @@ export const FunctionsEmptyState = () => {
             >
               Open Assistant
             </Button>
-          </div>
+          </div> */}
 
           {/* CLI Option */}
           <div className="p-8">
             <div className="flex items-center gap-2">
               <Terminal strokeWidth={1.5} size={20} />
-              <h4 className="text-base text-foreground">Via CLI</h4>
+              <h4 className="text-base text-foreground">通过 CLI</h4>
             </div>
             <p className="text-sm text-foreground-light mb-4 mt-1">
-              Create and deploy functions using the Supabase CLI. Ideal for local development and
-              version control.
+              使用 CLI 创建和部署云函数，适用于本地开发和版本控制。
             </p>
 
             <Dialog>
@@ -126,11 +125,11 @@ export const FunctionsEmptyState = () => {
                     sendEvent({
                       action: 'edge_function_via_cli_button_clicked',
                       properties: { origin: 'no_functions_block' },
-                      groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+                      groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
                     })
                   }
                 >
-                  View CLI Instructions
+                  查看 CLI 指令
                 </Button>
               </DialogTrigger>
               <DialogContent size="large">
@@ -143,7 +142,7 @@ export const FunctionsEmptyState = () => {
         </CardContent>
       </Card>
       <ScaffoldSectionTitle className="text-xl mb-4 mt-12">
-        Start with a template
+        从模板开始
       </ScaffoldSectionTitle>
       <ResourceList>
         {EDGE_FUNCTION_TEMPLATES.map((template) => (
@@ -154,7 +153,7 @@ export const FunctionsEmptyState = () => {
               sendEvent({
                 action: 'edge_function_template_clicked',
                 properties: { templateName: template.name, origin: 'functions_page' },
-                groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+                groups: { project: ref ?? '未知项目', organization: org?.slug ?? '未知组织' },
               })
             }}
           >
@@ -175,7 +174,7 @@ export const FunctionsEmptyStateLocal = () => {
       <div className="flex flex-col gap-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Developing Edge Functions locally</CardTitle>
+            <CardTitle>本地开发云函数</CardTitle>
           </CardHeader>
           <CardContent
             className={cn(
@@ -187,11 +186,10 @@ export const FunctionsEmptyStateLocal = () => {
             <div className="p-8">
               <div className="flex items-center gap-2">
                 <Code size={20} />
-                <h4 className="text-base text-foreground">Create an Edge Function</h4>
+                <h4 className="text-base text-foreground">创建云函数</h4>
               </div>
               <p className="text-sm text-foreground-light mt-1 mb-4 prose [&>code]:text-xs text-sm max-w-full">
-                Create a new edge function called <code>hello-world</code> in your project via the
-                Supabase CLI.
+                通过 CLI创建一个 <code>hello-world</code> 的云函数。
               </p>
               <div className="mb-4">
                 <CodeBlock
@@ -209,10 +207,10 @@ export const FunctionsEmptyStateLocal = () => {
             <div className="p-8">
               <div className="flex items-center gap-2">
                 <Play size={20} />
-                <h4 className="text-base text-foreground">Run Edge Functions locally</h4>
+                <h4 className="text-base text-foreground">本地运行云函数</h4>
               </div>
               <p className="text-sm text-foreground-light mt-1 mb-4 prose [&>code]:text-xs text-sm max-w-full">
-                You can run your Edge Function locally using <code>supabase functions serve</code>.
+                您可以在本地使用 <code>supabase functions serve</code> 运行云函数。
               </p>
               <div className="mb-4">
                 <CodeBlock
@@ -232,11 +230,10 @@ supabase functions serve # start the Functions watcher`.trim()}
             <div className="p-8">
               <div className="flex items-center gap-2">
                 <Terminal strokeWidth={1.5} size={20} />
-                <h4 className="text-base text-foreground">Invoke Edge Functions locally</h4>
+                <h4 className="text-base text-foreground">本地调用云函数</h4>
               </div>
               <p className="text-sm text-foreground-light mt-1 mb-4">
-                While serving your local Edge Functions, you can invoke it using cURL or one of the
-                client libraries.
+                当您在本地运行云函数时，您可以使用 cURL 或其他客户端库调用它。
               </p>
               <div className="mb-4">
                 <CodeBlock
@@ -259,18 +256,17 @@ curl --request POST 'http://localhost:54321/functions/v1/hello-world' \\
 
         <Card>
           <CardHeader>
-            <CardTitle>Self-hosting Edge Functions</CardTitle>
+            <CardTitle>自托管云函数</CardTitle>
           </CardHeader>
           <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] divide-y md:divide-y-0 md:divide-x divide-default items-stretch">
             <div className="p-8">
               <div className="flex items-center gap-2">
                 <Server size={20} />
-                <h4 className="text-base text-foreground">Self-hosting Edge Functions</h4>
+                <h4 className="text-base text-foreground">自托管云函数</h4>
               </div>
               <p className="text-sm text-foreground-light mt-1 mb-4 max-w-3xl">
-                Supabase Edge Runtime consists of a web server based on the Deno runtime, capable of
-                running Javascript, Typescript, and WASM services. You may self-host edge functions
-                on providers like Fly.io, Digital Ocean, or AWS.
+                云函数的运行时包含一个基于 Deno 运行时的 web 服务器，能够运行Javascript、Typescript 和 WASM 开发的服务。
+                您可以在 Fly.io、Digital Ocean 或 AWS 上自托管云函数。
               </p>
               <div className="flex items-center gap-x-2">
                 <DocsButton href="https://supabase.com/docs/reference/self-hosting-functions/introduction" />
@@ -282,7 +278,7 @@ curl --request POST 'http://localhost:54321/functions/v1/hello-world' \\
           </CardContent>
         </Card>
 
-        <ScaffoldSectionTitle className="text-xl mt-12">Explore our templates</ScaffoldSectionTitle>
+        <ScaffoldSectionTitle className="text-xl mt-12">探索模板</ScaffoldSectionTitle>
         <ResourceList>
           {EDGE_FUNCTION_TEMPLATES.map((template) => (
             <Dialog>
@@ -326,27 +322,26 @@ export const FunctionsSecretsEmptyStateLocal = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Managing secrets and environment variables locally</CardTitle>
+        <CardTitle>管理本地的密钥和环境变量</CardTitle>
       </CardHeader>
       <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] divide-y md:divide-y-0 md:divide-x divide-default items-stretch">
         <div className="p-8">
           <div className="flex items-center gap-2">
             <Lock size={20} />
-            <h4 className="text-base text-foreground">Managing secrets</h4>
+            <h4 className="text-base text-foreground">管理密钥</h4>
           </div>
           <div className="text-sm text-foreground-light mt-1 mb-4 max-w-3xl">
             <p>
-              Local secrets and environment variables can be loaded in either of the following two
-              ways
+              本地密钥和环境变量可以通过以下两种方式加载：
             </p>
             <ul className="list-disc pl-6">
               <li className="prose [&>code]:text-xs text-sm max-w-full">
-                Through an <code>.env</code> file placed at <code>supabase/functions/.env</code>,
-                which is automatically loaded on <code>supabase start</code>
+                通过放置在 <code>supabase/functions/.env</code> 路径下的<code>.env</code> 文件，
+                该文件将在执行 <code>supabase start</code> 时自动加载。
               </li>
               <li className="prose [&>code]:text-xs text-sm max-w-full">
-                Through the <code>--env-file</code> option for <code>supabase functions serve</code>
-                , for example: <code>supabase functions serve --env-file ./path/to/.env-file</code>
+                通过 <code>supabase functions serve</code> 的 <code>--env-file</code> 选项，
+                例如：<code>supabase functions serve --env-file ./path/to/.env-file</code>
               </li>
             </ul>
           </div>

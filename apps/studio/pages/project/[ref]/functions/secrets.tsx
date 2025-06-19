@@ -21,8 +21,8 @@ SecretsPage.getLayout = (page) => {
       <EdgeFunctionsLayout>
         <PageLayout
           size="large"
-          title="Edge Function Secrets"
-          subtitle="Manage the secrets for your project's Edge Functions"
+          title="云函数密钥"
+          subtitle="管理云函数的密钥"
         >
           {page}
         </PageLayout>

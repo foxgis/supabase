@@ -29,11 +29,11 @@ const FormSchema = z.object({
     z.object({
       name: z
         .string()
-        .min(1, 'Please provide a name for your secret')
+        .min(1, '请为密钥提供名称')
         .refine((value) => !value.match(/^(SUPABASE_).*/), {
-          message: 'Name must not start with the SUPABASE_ prefix',
+          message: '名称不能以 SUPABASE_ 开头',
         }),
-      value: z.string().min(1, 'Please provide a value for your secret'),
+      value: z.string().min(1, '请为密钥提供值'),
     })
   ),
 })
@@ -120,7 +120,7 @@ const AddNewSecretForm = () => {
   return (
     <Panel>
       <Panel.Content className="grid gap-4">
-        <h2 className="text-sm">Add new secrets</h2>
+        <h2 className="text-sm">添加新密钥</h2>
         <Form_Shadcn_ {...form}>
           <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
             {fields.map((fieldItem, index) => (
@@ -130,11 +130,11 @@ const AddNewSecretForm = () => {
                   name={`secrets.${index}.name`}
                   render={({ field }) => (
                     <FormItem_Shadcn_ className="w-full">
-                      <FormLabel_Shadcn_>Key</FormLabel_Shadcn_>
+                      <FormLabel_Shadcn_>键名</FormLabel_Shadcn_>
                       <FormControl_Shadcn_>
                         <Input
                           {...field}
-                          placeholder="e.g. CLIENT_KEY"
+                          placeholder="例如 CLIENT_KEY"
                           onPaste={(e) => handlePaste(e.nativeEvent)}
                         />
                       </FormControl_Shadcn_>
@@ -147,7 +147,7 @@ const AddNewSecretForm = () => {
                   name={`secrets.${index}.value`}
                   render={({ field }) => (
                     <FormItem_Shadcn_ className="w-full relative">
-                      <FormLabel_Shadcn_>Value</FormLabel_Shadcn_>
+                      <FormLabel_Shadcn_>键值</FormLabel_Shadcn_>
                       <FormControl_Shadcn_>
                         <Input
                           {...field}
@@ -191,12 +191,12 @@ const AddNewSecretForm = () => {
                 }
               }}
             >
-              Add another
+              添加另一个
             </Button>
 
             <div className="flex items-center gap-2 col-span-2 -mx-6 px-6 border-t pt-4 mt-4">
               <Button type="primary" htmlType="submit" disabled={isCreating} loading={isCreating}>
-                {isCreating ? 'Saving...' : 'Save'}
+                {isCreating ? '正在保存...' : '保存'}
               </Button>
             </div>
           </form>
