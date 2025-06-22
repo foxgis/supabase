@@ -159,7 +159,7 @@ export const EdgeFunctionTesterSheet = ({ visible, onClose }: EdgeFunctionTester
 
     // Validate that the body is valid JSON
     try {
-      JSON.parse(values.body)
+      JSON.parse(JSON.stringify(values.body))
     } catch (e) {
       form.setError('body', { message: '必须是有效的 JSON 字符串' })
       return
