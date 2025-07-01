@@ -13,7 +13,8 @@ import {
 import { useProjectStorageConfigQuery } from 'data/config/project-storage-config-query'
 import { useBucketCreateMutation } from 'data/storage/bucket-create-mutation'
 import { IS_PLATFORM } from 'lib/constants'
-import { Alert, Button, Collapsible, Form, Input, Listbox, Modal, Toggle, cn } from 'ui'
+import { Button, Collapsible, Form, Input, Listbox, Modal, Toggle, cn } from 'ui'
+import { Admonition } from 'ui-patterns'
 
 export interface CreateBucketModalProps {
   visible: boolean
@@ -115,36 +116,43 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
         onSubmit={onSubmit}
       >
         {({ values }: { values: any }) => {
+          const isPublicBucket = values.public
+
           return (
             <>
-              <Modal.Content>
+              <Modal.Content className={cn('!px-0', isPublicBucket && '!pb-0')}>
                 <Input
                   id="name"
                   name="name"
                   type="text"
-                  className="w-full"
+                  className="w-full px-5"
                   layout="vertical"
                   label="存储桶名称"
                   labelOptional="存储桶名称创建后不能更改。"
                   descriptionText="仅限使用小写字母、数字、点和连字符"
                 />
-                <div className="space-y-2 mt-6">
+                <div className="flex flex-col gap-y-2 mt-6">
                   <Toggle
                     id="public"
                     name="public"
                     layout="flex"
-                    label="公开的存储桶"
-                    descriptionText="任何人都可以读取任何对象，无需任何授权"
+                    className="px-5"
+                    label="公开存储桶"
+                    descriptionText="任何人都可以读取文件对象，无需任何授权"
                   />
-                  {values.public && (
-                    <Alert title="公开的存储桶不受保护" variant="warning" withIcon>
+                  {isPublicBucket && (
+                    <Admonition
+                      type="warning"
+                      className="rounded-none border-x-0 border-b-0 mb-0 [&>div>p]:!leading-normal"
+                      title="公开存储桶不受保护"
+                    >
                       <p className="mb-2">
                         用户可以读取公开存储桶中的对象，无需任何授权。
                       </p>
                       <p>
                         其他操作需要仍需遵守行级安全（RLS）策略，例如上传和删除对象。
                       </p>
-                    </Alert>
+                    </Admonition>
                   )}
                 </div>
               </Modal.Content>

@@ -32,7 +32,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/pages'
 import { ErrorInfo } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { FeatureFlagProvider, ThemeProvider, useThemeSandbox } from 'common'
+import { FeatureFlagProvider, TelemetryTagManager, ThemeProvider, useThemeSandbox } from 'common'
 import MetaFaviconsPagesRouter from 'common/MetaFavicons/pages-router'
 import { RouteValidationWrapper } from 'components/interfaces/App'
 import { AppBannerContextProvider } from 'components/interfaces/App/AppBannerWrapperContext'
@@ -40,7 +40,6 @@ import { StudioCommandMenu } from 'components/interfaces/App/CommandMenu'
 import { FeaturePreviewContextProvider } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 import FeaturePreviewModal from 'components/interfaces/App/FeaturePreview/FeaturePreviewModal'
 import { MonacoThemeProvider } from 'components/interfaces/App/MonacoThemeProvider'
-import { GenerateSql } from 'components/interfaces/SqlGenerator/SqlGenerator'
 import { GlobalErrorBoundaryState } from 'components/ui/GlobalErrorBoundaryState'
 import { useRootQueryClient } from 'data/query-client'
 import { customFont, sourceCodePro } from 'fonts'
@@ -116,6 +115,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                   <Head>
                     <title>数据中间件</title>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                    <meta property="og:image" content={`${BASE_PATH}/img/supabase-logo.png`} />
                     {/* [Alaister]: This has to be an inline style tag here and not a separate component due to next/font */}
                     <style
                       dangerouslySetInnerHTML={{
@@ -137,7 +137,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                             <FeaturePreviewContextProvider>
                               {getLayout(<Component {...pageProps} />)}
                               <StudioCommandMenu />
-                              <GenerateSql />
                               <FeaturePreviewModal />
                             </FeaturePreviewContextProvider>
                             <SonnerToaster position="top-right" />
@@ -158,6 +157,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
           </Hydrate>
         </NuqsAdapter>
       </QueryClientProvider>
+      <TelemetryTagManager />
     </ErrorBoundary>
   )
 }

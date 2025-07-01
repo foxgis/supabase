@@ -63,7 +63,7 @@ export const EXAMPLE_PROJECTS = [
     framework: 'nextjs',
     title: 'Next.js 订阅和认证',
     description: '高性能 SaaS 应用程序的一站式入门套件。',
-    url: 'https://github.com/vercel/nextjs-subscription-payments',
+    url: 'https://github.com/nextjs/saas-starter',
     type: 'app',
   },
   {

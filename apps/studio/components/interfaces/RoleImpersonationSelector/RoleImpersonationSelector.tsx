@@ -10,11 +10,13 @@ import UserImpersonationSelector from './UserImpersonationSelector'
 export interface RoleImpersonationSelectorProps {
   serviceRoleLabel?: string
   padded?: boolean
+  disallowAuthenticatedOption?: boolean
 }
 
 const RoleImpersonationSelector = ({
   serviceRoleLabel,
   padded = true,
+  disallowAuthenticatedOption = false,
 }: RoleImpersonationSelectorProps) => {
   const state = useRoleImpersonationStateSnapshot()
 
@@ -81,39 +83,45 @@ const RoleImpersonationSelector = ({
               icon={<AnonIcon isSelected={selectedOption === 'anon'} />}
             />
 
-            <RoleImpersonationRadio
-              value="authenticated"
-              isSelected={
-                selectedOption === 'authenticated' &&
-                (isAuthenticatedOptionFullySelected || 'partially')
-              }
-              onSelectedChange={onSelectedChange}
-              icon={<AuthenticatedIcon isSelected={selectedOption === 'authenticated'} />}
-            />
+            {!disallowAuthenticatedOption && (
+              <RoleImpersonationRadio
+                value="authenticated"
+                isSelected={
+                  selectedOption === 'authenticated' &&
+                  (isAuthenticatedOptionFullySelected || 'partially')
+                }
+                onSelectedChange={onSelectedChange}
+                icon={<AuthenticatedIcon isSelected={selectedOption === 'authenticated'} />}
+              />
+            )}
           </fieldset>
         </form>
 
         {selectedOption === 'service_role' && (
           <p className="text-foreground-light text-sm">
-            默认的 postgres/superuser 角色。此角色具有管理员权限。
+            默认的超级用户。
+            {disallowAuthenticatedOption ? <br /> : ''}
+            此角色拥有管理员权限。
             <br />
-            它会绕过行级安全策略（RLS）。
+            此角色会绕过行级安全策略（RLS）。
           </p>
         )}
 
         {selectedOption === 'anon' && (
           <p className="text-foreground-light text-sm">
-            用于“匿名访问”。此角色是 REST 接口服务在用户未登录时使用的角色。
+            用于“匿名访问”。
+            {disallowAuthenticatedOption ? <br /> : ''}
+            当用户未登录时，通过 API 访问将使用此角色。
             <br />
-            它将遵守行级安全策略（RLS）。
+            此角色会遵守行级安全策略（RLS）。
           </p>
         )}
 
         {selectedOption === 'authenticated' && (
           <p className="text-foreground-light text-sm">
-            用于“已认证访问”。此角色是 REST 接口服务在用户登录时使用的角色。
+            用于“已认证访问”。当用户已登录时，通过 API 访问将使用此角色。
             <br />
-            它将遵守行级安全策略（RLS）。
+            此角色会遵守行级安全策略（RLS）。
           </p>
         )}
       </div>

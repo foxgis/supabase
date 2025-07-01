@@ -42,6 +42,18 @@ const EdgeFunctionSecrets = () => {
         []
       : data ?? []
 
+  const headers = [
+    <Table.th key="secret-name">Name</Table.th>,
+    <Table.th key="secret-value" className="flex items-center gap-x-2">
+      Digest{' '}
+      <Badge color="scale" className="font-mono">
+        SHA256
+      </Badge>
+    </Table.th>,
+    <Table.th key="secret-updated-at">Updated at</Table.th>,
+    <Table.th key="actions" />,
+  ]
+
   return (
     <>
       {isLoading && <GenericSkeletonLoader />}
@@ -73,17 +85,7 @@ const EdgeFunctionSecrets = () => {
 
               <div className="w-full overflow-hidden overflow-x-auto">
                 <Table
-                  head={[
-                    <Table.th key="secret-name">名称</Table.th>,
-                    <Table.th key="secret-value" className="flex items-center gap-x-2">
-                      摘要{' '}
-                      <Badge color="scale" className="font-mono">
-                        SHA256
-                      </Badge>
-                    </Table.th>,
-                    <Table.th key="secret-updated-at">更新时间</Table.th>,
-                    <Table.th key="actions" />,
-                  ]}
+                  head={headers}
                   body={
                     secrets.length > 0 ? (
                       secrets.map((secret) => (
@@ -95,7 +97,7 @@ const EdgeFunctionSecrets = () => {
                       ))
                     ) : secrets.length === 0 && searchString.length > 0 ? (
                       <Table.tr>
-                        <Table.td colSpan={3}>
+                        <Table.td colSpan={headers.length}>
                           <p className="text-sm text-foreground">未找到结果</p>
                           <p className="text-sm text-foreground-light">
                             您搜索的“{searchString}”未找到任何结果
@@ -104,7 +106,7 @@ const EdgeFunctionSecrets = () => {
                       </Table.tr>
                     ) : (
                       <Table.tr>
-                        <Table.td colSpan={3}>
+                        <Table.td colSpan={headers.length}>
                           <p className="text-sm text-foreground">未创建密钥</p>
                           <p className="text-sm text-foreground-light">
                             您的项目还没有任何密钥

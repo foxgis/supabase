@@ -3,16 +3,18 @@ import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Alert, Button, Collapsible, Form, Input, Listbox, Modal, Toggle, cn } from 'ui'
+import { Button, Collapsible, Form, Input, Listbox, Modal, Toggle, cn } from 'ui'
 
 import { StorageSizeUnits } from 'components/to-be-cleaned/Storage/StorageSettings/StorageSettings.constants'
 import {
   convertFromBytes,
   convertToBytes,
 } from 'components/to-be-cleaned/Storage/StorageSettings/StorageSettings.utils'
+import { InlineLink } from 'components/ui/InlineLink'
 import { useProjectStorageConfigQuery } from 'data/config/project-storage-config-query'
 import { useBucketUpdateMutation } from 'data/storage/bucket-update-mutation'
 import { IS_PLATFORM } from 'lib/constants'
+import { Admonition } from 'ui-patterns'
 import type { StorageBucket } from './Storage.types'
 
 export interface EditBucketModalProps {
@@ -84,6 +86,10 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
     >
       <Form validateOnBlur={false} initialValues={{}} validate={validate} onSubmit={onSubmit}>
         {({ values, resetForm }: { values: any; resetForm: any }) => {
+          const isChangingBucketVisibility = bucket?.public !== values.public
+          const isMakingBucketPrivate = bucket?.public && !values.public
+          const isMakingBucketPublic = !bucket?.public && values.public
+
           // [Alaister] although this "technically" is breaking the rules of React hooks
           // it won't error because the hooks are always rendered in the same order
           // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -106,45 +112,56 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
 
           return (
             <>
-              <Modal.Content>
+              <Modal.Content className={cn('!px-0', isChangingBucketVisibility && '!pb-0')}>
                 <Input
                   disabled
                   id="name"
                   name="name"
                   type="text"
-                  className="w-full"
+                  className="w-full px-5"
                   layout="vertical"
                   label="存储桶名称"
                   labelOptional="存储桶一旦创建就不能再改名"
                 />
-                <div className="space-y-2 mt-6">
+                <div className={cn('flex flex-col gap-y-2 mt-6')}>
                   <Toggle
                     id="public"
                     name="public"
                     layout="flex"
                     label="公开存储桶"
-                    descriptionText="任何人都可以读取存储桶中的任何对象，无需任何授权"
+                    className="px-5"
+                    descriptionText="任何人都可以读取存储桶中的对象，无需任何授权"
                   />
-                  {bucket?.public !== values.public && (
-                    <Alert
+                  {isChangingBucketVisibility && (
+                    <Admonition
+                      type="warning"
+                      className="rounded-none border-x-0 border-b-0 mb-0 [&>div>p]:!leading-normal"
                       title={
-                        !bucket?.public && values.public
-                          ? '警告：将存储桶设为公开'
-                          : bucket?.public && !values.public
-                            ? '警告：将存储桶设为私有'
+                        isMakingBucketPublic
+                          ? '警告：正在将存储桶设为公开'
+                          : isMakingBucketPrivate
+                            ? '警告：正在将存储桶设为私有'
                             : ''
                       }
-                      variant="warning"
-                      withIcon
                     >
-                      <p className="mb-2">
-                        {!bucket?.public && values.public
-                          ? `本操作将使存储桶 "${bucket?.name}" 中的所有对象公开`
-                          : bucket?.public && !values.public
-                            ? `存储桶 "${bucket?.name}" 中的所有对象都将设为私有，仅可通过签名 URL 或正确的授权头进行访问`
+                      <p>
+                        {isMakingBucketPublic
+                          ? `此操作将使存储桶中的所有对象可公开访问。`
+                          : isMakingBucketPrivate
+                            ? `存储桶中的所有对象都将设为私有，仅可通过签名 URL 或正确的授权头进行访问。`
                             : ''}
                       </p>
-                    </Alert>
+                      {isMakingBucketPrivate && (
+                        <p>
+                          缓存在 CDN 中的资源仍然能够公开访问。
+                          您可以考虑{' '}
+                          <InlineLink href="https://supabase.com/docs/guides/storage/cdn/smart-cdn#cache-eviction">
+                            刷新缓存
+                          </InlineLink>{' '}
+                          或者将资源迁移到新的存储桶。
+                        </p>
+                      )}
+                    </Admonition>
                   )}
                 </div>
               </Modal.Content>
