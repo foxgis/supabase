@@ -4,20 +4,20 @@ import { Input, SidePanel } from 'ui'
 
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import { useSchemaCreateMutation } from 'data/database/schema-create-mutation'
-import ActionBar from './ActionBar'
 
 interface SchemaEditorProps {
   visible: boolean
+  onSuccess: (schema: string) => void
   closePanel: () => void
 }
 
-const SchemaEditor = ({ visible, closePanel }: SchemaEditorProps) => {
+const SchemaEditor = ({ visible, onSuccess, closePanel }: SchemaEditorProps) => {
   const { project } = useProjectContext()
 
   const [errors, setErrors] = useState<{ name?: string }>({ name: undefined })
   const [name, setName] = useState('')
 
-  const { mutate: createSchema } = useSchemaCreateMutation()
+  const { mutateAsync: createSchema, isLoading } = useSchemaCreateMutation()
 
   useEffect(() => {
     if (visible) {
@@ -26,51 +26,46 @@ const SchemaEditor = ({ visible, closePanel }: SchemaEditorProps) => {
     }
   }, [visible])
 
-  const onSaveChanges = (resolve: any) => {
+  const onSaveChanges = async () => {
     const errors: any = {}
     if (name.length === 0) errors.name = '请为模式指定名称'
     if (Object.keys(errors).length > 0) {
-      resolve()
       return setErrors(errors)
     }
 
     if (project === undefined) return console.error('未找到项目')
-    createSchema(
-      { projectRef: project.ref, connectionString: project.connectionString, name },
-      {
-        onSuccess: () => {
-          resolve()
-          closePanel()
-          toast.success(`成功创建了模式 "${name}"`)
-        },
-      }
-    )
+    try {
+      await createSchema({
+        projectRef: project.ref,
+        connectionString: project.connectionString,
+        name,
+      })
+      onSuccess(name)
+      toast.success(`成功创建了模式“${name}”`)
+    } catch (error) {
+      toast.error(`创建模式失败：${error}`)
+    }
   }
 
   return (
     <SidePanel
-      size="large"
+      size="medium"
       key="SchemaEditor"
       visible={visible}
       header={'创建模式'}
       className="transition-all duration-100 ease-in"
       onCancel={closePanel}
-      onConfirm={() => (resolve: () => void) => onSaveChanges(resolve)}
-      customFooter={
-        <ActionBar
-          backButtonLabel="取消"
-          applyButtonLabel="保存"
-          closePanel={closePanel}
-          applyFunction={(resolve: () => void) => onSaveChanges(resolve)}
-        />
-      }
+      onConfirm={onSaveChanges}
+      loading={isLoading}
+      cancelText="取消"
+      confirmText="保存"
     >
       <>
         <SidePanel.Content>
           <div className="space-y-10 py-6">
             <Input
-              label="名称"
-              layout="horizontal"
+              label="模式名"
+              layout="vertical"
               type="text"
               error={errors?.name}
               value={name}
