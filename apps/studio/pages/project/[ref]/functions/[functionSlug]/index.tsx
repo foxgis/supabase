@@ -180,7 +180,7 @@ const PageLayout: NextPageWithLayout = () => {
           </div>
 
           <span className="text-xs text-foreground-light">
-            过去 {selectedInterval.label} 的统计信息
+            最近 {selectedInterval.label} 的统计信息
           </span>
         </div>
         <div>

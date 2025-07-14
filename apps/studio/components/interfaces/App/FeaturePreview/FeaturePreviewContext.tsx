@@ -81,3 +81,8 @@ export const useIsInlineEditorEnabled = () => {
   // return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_INLINE_EDITOR]
   return true
 }
+
+export const useIsRealtimeSettingsEnabled = () => {
+  const { flags } = useFeaturePreviewContext()
+  return flags[LOCAL_STORAGE_KEYS.UI_PREVIEW_REALTIME_SETTINGS]
+}

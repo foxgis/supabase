@@ -173,9 +173,15 @@ export const EdgeFunctionDetails = () => {
                     name="verify_jwt"
                     render={({ field }) => (
                       <FormItemLayout
-                        label="强制 JWT 验证"
+                        label="使用旧密钥验证 JWT"
                         layout="flex-row-reverse"
-                        description="调用云函数时，要求授权头中包含有效 JWT"
+                        description={
+                          <>
+                            要求在<code>Authorization</code>头中包含的 JWT <em className="text-brand not-italic">仅由旧密钥签名</em>。
+                            可使用<code>anon</code>密钥满足此要求。
+                            建议：关闭此选项，在函数代码中使用 JWT 实现自定义认证逻辑。
+                          </>
+                        }
                       >
                         <FormControl_Shadcn_>
                           <Switch

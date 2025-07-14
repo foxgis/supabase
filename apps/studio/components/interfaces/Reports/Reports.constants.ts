@@ -6,56 +6,67 @@ import { PresetConfig, Presets, ReportFilterItem } from './Reports.types'
 
 export const LAYOUT_COLUMN_COUNT = 2
 
-interface ReportsDatetimeHelper extends DatetimeHelper {
+export interface ReportsDatetimeHelper extends DatetimeHelper {
   availableIn: PlanId[]
+}
+
+export enum REPORT_DATERANGE_HELPER_LABELS {
+  LAST_10_MINUTES = '最近 10 分钟',
+  LAST_30_MINUTES = '最近 30 分钟',
+  LAST_60_MINUTES = '最近 60 分钟',
+  LAST_3_HOURS = '最近 3 小时',
+  LAST_24_HOURS = '最近 24 小时',
+  LAST_7_DAYS = '最近 7 天',
+  LAST_14_DAYS = '最近 14 天',
+  LAST_28_DAYS = '最近 28 天',
 }
 
 export const REPORTS_DATEPICKER_HELPERS: ReportsDatetimeHelper[] = [
   {
-    text: 'Last 10 minutes',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_10_MINUTES,
     calcFrom: () => dayjs().subtract(10, 'minute').toISOString(),
     calcTo: () => dayjs().toISOString(),
     availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
-    text: 'Last 30 minutes',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_30_MINUTES,
     calcFrom: () => dayjs().subtract(30, 'minute').toISOString(),
     calcTo: () => dayjs().toISOString(),
     availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
-    text: 'Last 60 minutes',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_60_MINUTES,
     calcFrom: () => dayjs().subtract(1, 'hour').startOf('day').toISOString(),
     calcTo: () => dayjs().toISOString(),
     default: true,
     availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
-    text: 'Last 3 hours',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_3_HOURS,
     calcFrom: () => dayjs().subtract(3, 'hour').startOf('day').toISOString(),
     calcTo: () => dayjs().toISOString(),
     availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
-    text: '过去 24 小时',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_24_HOURS,
     calcFrom: () => dayjs().subtract(1, 'day').startOf('day').toISOString(),
     calcTo: () => dayjs().toISOString(),
     availableIn: ['free', 'pro', 'team', 'enterprise'],
   },
   {
-    text: '过去 7 天',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_7_DAYS,
     calcFrom: () => dayjs().subtract(7, 'day').startOf('day').toISOString(),
     calcTo: () => '',
     availableIn: ['pro', 'team', 'enterprise'],
   },
   {
-    text: '过去 14 天',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_14_DAYS,
     calcFrom: () => dayjs().subtract(14, 'day').startOf('day').toISOString(),
     calcTo: () => '',
     availableIn: ['team', 'enterprise'],
   },
   {
-    text: '过去 28 天',
+    text: REPORT_DATERANGE_HELPER_LABELS.LAST_28_DAYS,
     calcFrom: () => dayjs().subtract(28, 'day').startOf('day').toISOString(),
     calcTo: () => '',
     availableIn: ['team', 'enterprise'],
@@ -334,7 +345,7 @@ from edge_logs f
 where starts_with(r.path, '/storage/v1/object')
   and r.method = 'GET'
   and h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
-  ${generateRegexpWhere(filters, false)} 
+  ${generateRegexpWhere(filters, false)}
 group by path, search
 order by count desc
 limit 12
