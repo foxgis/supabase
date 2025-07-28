@@ -1,4 +1,4 @@
-import { Blocks, FileText, Globe, Lightbulb, List, Logs, Settings } from 'lucide-react'
+import { Blocks, FileText, Lightbulb, List, Settings, Globe } from 'lucide-react'
 
 import { ICON_SIZE, ICON_STROKE_WIDTH } from 'components/interfaces/Sidebar'
 import { generateAuthMenu } from 'components/layouts/AuthLayout/AuthLayout.utils'
@@ -122,15 +122,9 @@ export const generateProductRoutes = (
   ]
 }
 
-export const generateOtherRoutes = (
-  ref?: string,
-  project?: Project,
-  features?: { unifiedLogs?: boolean }
-): Route[] => {
+export const generateOtherRoutes = (ref?: string, project?: Project, features?: {}): Route[] => {
   const isProjectBuilding = project?.status === PROJECT_STATUS.COMING_UP
   const buildingUrl = `/project/${ref}`
-
-  const showUnifiedLogs = features?.unifiedLogs ?? false
 
   return [
     {
@@ -155,16 +149,6 @@ export const generateOtherRoutes = (
       icon: <List size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
       link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/logs`),
     },
-    ...(showUnifiedLogs
-      ? [
-          {
-            key: 'unified-logs',
-            label: 'Unified Logs',
-            icon: <Logs size={ICON_SIZE} strokeWidth={ICON_STROKE_WIDTH} />,
-            link: ref && (isProjectBuilding ? buildingUrl : `/project/${ref}/unified-logs`),
-          },
-        ]
-      : []),
     {
       key: 'api',
       label: 'API 文档',

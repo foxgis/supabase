@@ -35,6 +35,7 @@ import {
   Separator,
   SonnerProgress,
 } from 'ui'
+import { ExportDialog } from './ExportDialog'
 import { FilterPopover } from './filter/FilterPopover'
 import { SortPopover } from './sort/SortPopover'
 // [Joshen] CSV exports require this guard as a fail-safe if the table is
@@ -230,6 +231,7 @@ const RowHeader = () => {
   const { sorts } = useTableSort()
 
   const [isExporting, setIsExporting] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   const { data } = useTableRowsQuery({
     projectRef: project?.ref,
@@ -441,61 +443,73 @@ const RowHeader = () => {
   })
 
   return (
-    <div className="flex items-center gap-x-2">
-      {snap.editable && (
-        <ButtonTooltip
-          type="default"
-          size="tiny"
-          icon={<Trash />}
-          onClick={onRowsDelete}
-          disabled={snap.allRowsSelected && isImpersonatingRole}
-          tooltip={{
-            content: {
-              side: 'bottom',
-              text:
-                snap.allRowsSelected && isImpersonatingRole
-                  ? '当处于角色切换状态时不支持表清空操作'
-                  : undefined,
-            },
-          }}
-        >
-          {snap.allRowsSelected
-            ? `删除表中所有行`
-            : snap.selectedRows.size > 1
-              ? `删除 ${snap.selectedRows.size} 行`
-              : `删除 ${snap.selectedRows.size} 行`}
-        </ButtonTooltip>
-      )}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
+    <>
+      <div className="flex items-center gap-x-2">
+        {snap.editable && (
+          <ButtonTooltip
             type="default"
             size="tiny"
-            iconRight={<ChevronDown />}
-            loading={isExporting}
-            disabled={isExporting}
+            icon={<Trash />}
+            onClick={onRowsDelete}
+            disabled={snap.allRowsSelected && isImpersonatingRole}
+            tooltip={{
+              content: {
+                side: 'bottom',
+                text:
+                  snap.allRowsSelected && isImpersonatingRole
+                    ? '当处于角色切换状态时不支持表清空操作'
+                    : undefined,
+              },
+            }}
           >
-            导出
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40">
-          <DropdownMenuItem onClick={onRowsExportCSV}>
-            <span className="text-foreground-light">导出为 CSV</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={onRowsExportSQL}>导出为 SQL</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+            {snap.allRowsSelected
+              ? `删除表中所有行`
+              : snap.selectedRows.size > 1
+                ? `删除 ${snap.selectedRows.size} 行`
+                : `删除 ${snap.selectedRows.size} 行`}
+          </ButtonTooltip>
+        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="default"
+              size="tiny"
+              iconRight={<ChevronDown />}
+              loading={isExporting}
+              disabled={isExporting}
+            >
+              Export
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className={snap.allRowsSelected ? 'w-52' : 'w-40'}>
+            <DropdownMenuItem onClick={onRowsExportCSV}>Export as CSV</DropdownMenuItem>
+            <DropdownMenuItem onClick={onRowsExportSQL}>Export as SQL</DropdownMenuItem>
+            {/* [Joshen] Should make this available for all cases, but that'll involve updating
+            the Dialog's SQL output to be dynamic based on any filters applied */}
+            {snap.allRowsSelected && (
+              <DropdownMenuItem className="group" onClick={() => setShowExportModal(true)}>
+                <div>
+                  <p className="group-hover:text-foreground">Export via CLI</p>
+                  <p className="text-foreground-lighter">Recommended for large tables</p>
+                </div>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-      {!snap.allRowsSelected && totalRows > allRows.length && (
-        <>
-          <div className="h-6 ml-0.5">
-            <Separator orientation="vertical" />
-          </div>
-          <Button type="text" onClick={() => onSelectAllRows()}>
-            选中表中所有行
-          </Button>
-        </>
-      )}
-    </div>
+        {!snap.allRowsSelected && totalRows > allRows.length && (
+          <>
+            <div className="h-6 ml-0.5">
+              <Separator orientation="vertical" />
+            </div>
+            <Button type="text" onClick={() => onSelectAllRows()}>
+              Select all rows in table
+            </Button>
+          </>
+        )}
+      </div>
+
+      <ExportDialog open={showExportModal} onOpenChange={() => setShowExportModal(false)} />
+    </>
   )
 }

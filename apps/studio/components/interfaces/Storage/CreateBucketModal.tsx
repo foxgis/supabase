@@ -1,105 +1,170 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { snakeCase } from 'lodash'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import z from 'zod'
 
 import { useParams } from 'common'
-import { StorageSizeUnits } from 'components/to-be-cleaned/Storage/StorageSettings/StorageSettings.constants'
-import {
-  convertFromBytes,
-  convertToBytes,
-} from 'components/to-be-cleaned/Storage/StorageSettings/StorageSettings.utils'
+import { useIcebergWrapperExtension } from 'components/interfaces/Storage/AnalyticBucketDetails/useIcebergWrapper'
+import { StorageSizeUnits } from 'components/interfaces/Storage/StorageSettings/StorageSettings.constants'
+import { InlineLink } from 'components/ui/InlineLink'
 import { useProjectStorageConfigQuery } from 'data/config/project-storage-config-query'
 import { useBucketCreateMutation } from 'data/storage/bucket-create-mutation'
-import { IS_PLATFORM } from 'lib/constants'
-import { Button, Collapsible, Form, Input, Listbox, Modal, Toggle, cn } from 'ui'
-import { Admonition } from 'ui-patterns'
+import { useIcebergWrapperCreateMutation } from 'data/storage/iceberg-wrapper-create-mutation'
+import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
+import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
+import { BASE_PATH, IS_PLATFORM } from 'lib/constants'
+import {
+  Alert_Shadcn_,
+  AlertDescription_Shadcn_,
+  AlertTitle_Shadcn_,
+  Button,
+  cn,
+  Collapsible,
+  Form_Shadcn_,
+  FormControl_Shadcn_,
+  FormField_Shadcn_,
+  Input_Shadcn_,
+  Label_Shadcn_,
+  Listbox,
+  Modal,
+  RadioGroupStacked,
+  RadioGroupStackedItem,
+  Toggle,
+  WarningIcon,
+} from 'ui'
+import { Admonition } from 'ui-patterns/admonition'
+import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
+import { convertFromBytes, convertToBytes } from './StorageSettings/StorageSettings.utils'
 
 export interface CreateBucketModalProps {
   visible: boolean
   onClose: () => void
 }
 
+const FormSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, 'Please provide a name for your bucket')
+    .regex(
+      /^[a-z0-9.-]+$/,
+      'The name of the bucket must only contain lowercase letters, numbers, dots, and hyphens'
+    )
+    .refine((value) => !value.endsWith(' '), 'The name of the bucket cannot end with a whitespace')
+    .refine(
+      (value) => value !== 'public',
+      '"public" is a reserved name. Please choose another name'
+    ),
+  type: z.enum(['STANDARD', 'ANALYTICS']).default('STANDARD'),
+  public: z.boolean().default(false),
+  has_file_size_limit: z.boolean().default(false),
+  formatted_size_limit: z.coerce
+    .number()
+    .min(0, 'File size upload limit has to be at least 0')
+    .default(0),
+  allowed_mime_types: z.string().trim().default(''),
+})
+
+export type CreateBucketForm = z.infer<typeof FormSchema>
+
 const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
   const { ref } = useParams()
+  const org = useSelectedOrganization()
+  const { mutate: sendEvent } = useSendEventMutation()
   const router = useRouter()
 
-  const { mutate: createBucket, isLoading: isCreating } = useBucketCreateMutation({
-    onSuccess: (res) => {
-      toast.success(`成功创建了存储桶：${res.name}`)
-      router.push(`/project/${ref}/storage/buckets/${res.name}`)
-      onClose()
-    },
+  const { mutateAsync: createBucket, isLoading: isCreating } = useBucketCreateMutation({
+    // [Joshen] Silencing the error here as it's being handled in onSubmit
+    onError: () => {},
   })
+  const { mutateAsync: createIcebergWrapper, isLoading: isCreatingIcebergWrapper } =
+    useIcebergWrapperCreateMutation()
 
-  const { data } = useProjectStorageConfigQuery(
-    { projectRef: ref },
-    { enabled: IS_PLATFORM && visible }
-  )
+  const { data } = useProjectStorageConfigQuery({ projectRef: ref }, { enabled: IS_PLATFORM })
   const { value, unit } = convertFromBytes(data?.fileSizeLimit ?? 0)
   const formattedGlobalUploadLimit = `${value} ${unit}`
 
   const [selectedUnit, setSelectedUnit] = useState<StorageSizeUnits>(StorageSizeUnits.BYTES)
   const [showConfiguration, setShowConfiguration] = useState(false)
 
-  const initialValues = {
-    name: '',
-    public: false,
-    file_size_limit: 0,
-    allowed_mime_types: '',
-    has_file_size_limit: false,
-    formatted_size_limit: 0,
-  }
+  const form = useForm<CreateBucketForm>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: '',
+      public: false,
+      type: 'STANDARD',
+      has_file_size_limit: false,
+      formatted_size_limit: 0,
+      allowed_mime_types: '',
+    },
+  })
 
-  const validate = (values: any) => {
-    const errors = {} as any
+  const bucketName = snakeCase(form.watch('name'))
+  const isPublicBucket = form.watch('public')
+  const isStandardBucket = form.watch('type') === 'STANDARD'
+  const hasFileSizeLimit = form.watch('has_file_size_limit')
+  const formattedSizeLimit = form.watch('formatted_size_limit')
+  const icebergWrapperExtensionState = useIcebergWrapperExtension()
 
-    if (!values.name) {
-      errors.name = '请为您的存储桶提供一个名称'
-    }
-
-    if (values.name && !/^[a-z0-9.-]+$/.test(values.name)) {
-      errors.name =
-        'The name of the bucket must only container lowercase letters, numbers, dots, and hyphens'
-    }
-
-    if (values.name && values.name.endsWith(' ')) {
-      errors.name = '存储桶名称不能以空格结尾'
-    }
-
-    if (values.has_file_size_limit && values.formatted_size_limit < 0) {
-      errors.formatted_size_limit = '上传的文件大小限制必须大于0'
-    }
-    if (values.name === 'public') {
-      errors.name = '“public”是一个保留名称。请选择另一个名称'
-    }
-    return errors
-  }
-
-  const onSubmit = async (values: any) => {
+  const onSubmit: SubmitHandler<CreateBucketForm> = async (values) => {
     if (!ref) return console.error('未找到项目号')
 
-    createBucket({
-      projectRef: ref,
-      id: values.name,
-      isPublic: values.public,
-      file_size_limit: values.has_file_size_limit
+    if (values.type === 'ANALYTICS' && !icebergCatalogEnabled) {
+      toast.error(
+        '分析存储桶功能未启用，请联系支持以启用该功能。'
+      )
+      return
+    }
+
+    try {
+      const fileSizeLimit = values.has_file_size_limit
         ? convertToBytes(values.formatted_size_limit, selectedUnit)
-        : null,
-      allowed_mime_types:
+        : undefined
+
+      const allowedMimeTypes =
         values.allowed_mime_types.length > 0
-          ? values.allowed_mime_types.split(',').map((x: string) => x.trim())
-          : null,
-    })
+          ? values.allowed_mime_types.split(',').map((x) => x.trim())
+          : undefined
+
+      await createBucket({
+        projectRef: ref,
+        id: values.name,
+        type: values.type,
+        isPublic: values.public,
+        file_size_limit: fileSizeLimit,
+        allowed_mime_types: allowedMimeTypes,
+      })
+      sendEvent({
+        action: 'storage_bucket_created',
+        properties: { bucketType: values.type },
+        groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+      })
+
+      if (values.type === 'ANALYTICS' && icebergWrapperExtensionState === 'installed') {
+        await createIcebergWrapper({ bucketName: values.name })
+      }
+      toast.success(`Successfully created bucket ${values.name}`)
+      router.push(`/project/${ref}/storage/buckets/${values.name}`)
+      onClose()
+    } catch (error: any) {
+      toast.error(`Failed to create bucket: ${error.message}`)
+    }
   }
 
   useEffect(() => {
     if (visible) {
+      form.reset()
       setSelectedUnit(StorageSizeUnits.BYTES)
       setShowConfiguration(false)
     }
-  }, [visible])
+  }, [visible, form])
+
+  const icebergCatalogEnabled = data?.features?.icebergCatalog?.enabled
 
   return (
     <Modal
@@ -109,36 +174,106 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
       header="创建存储桶"
       onCancel={() => onClose()}
     >
-      <Form
-        validateOnBlur={false}
-        initialValues={initialValues}
-        validate={validate}
-        onSubmit={onSubmit}
-      >
-        {({ values }: { values: any }) => {
-          const isPublicBucket = values.public
-
-          return (
-            <>
-              <Modal.Content className={cn('!px-0', isPublicBucket && '!pb-0')}>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="w-full px-5"
-                  layout="vertical"
+      <Form_Shadcn_ {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <Modal.Content>
+            <FormField_Shadcn_
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItemLayout
                   label="存储桶名称"
-                  labelOptional="存储桶名称创建后不能更改。"
-                  descriptionText="仅限使用小写字母、数字、点和连字符"
-                />
-                <div className="flex flex-col gap-y-2 mt-6">
-                  <Toggle
-                    id="public"
+                  labelOptional="存储桶名称一旦创建就不能更改。"
+                  description="仅包含小写字母、数字、点和连字符"
+                  layout="vertical"
+                >
+                  <FormControl_Shadcn_>
+                    <Input_Shadcn_ {...field} placeholder="请输入存储桶名称" />
+                  </FormControl_Shadcn_>
+                </FormItemLayout>
+              )}
+            />
+
+            <div className="flex flex-col gap-y-2 mt-6">
+              <FormField_Shadcn_
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItemLayout>
+                    <FormControl_Shadcn_>
+                      <RadioGroupStacked
+                        id="type"
+                        onValueChange={(v) => field.onChange(v)}
+                        value={field.value}
+                      >
+                        <RadioGroupStackedItem
+                          value="STANDARD"
+                          id="STANDARD"
+                          label="标准存储桶"
+                          showIndicator={false}
+                        >
+                          <div className="flex  gap-x-5">
+                            <div className="flex flex-col">
+                              <p className="text-foreground-light text-left">
+                                与 S3 存储桶兼容。
+                              </p>
+                            </div>
+                          </div>
+                        </RadioGroupStackedItem>
+                        {IS_PLATFORM && (
+                          <RadioGroupStackedItem
+                            value="ANALYTICS"
+                            id="ANALYTICS"
+                            label="分析存储桶"
+                            showIndicator={false}
+                            disabled={!icebergCatalogEnabled}
+                          >
+                            <div className="flex  gap-x-5">
+                              <div className="flex flex-col">
+                                <p className="text-foreground-light text-left">
+                                  存储 Iceberg 文件并针对分析工作负载进行了优化。
+                                </p>
+                              </div>
+                            </div>
+                            {!icebergCatalogEnabled && (
+                              <div className="w-full flex gap-x-2 py-2 items-center">
+                                <WarningIcon />
+                                <span className="text-xs text-left text-foreground-lighter">
+                                  分析存储桶目前处于 alpha 阶段，尚未启用。
+                                </span>
+                              </div>
+                            )}
+                          </RadioGroupStackedItem>
+                        )}
+                      </RadioGroupStacked>
+                    </FormControl_Shadcn_>
+                  </FormItemLayout>
+                )}
+              />
+            </div>
+          </Modal.Content>
+          <Modal.Separator />
+          {isStandardBucket ? (
+            <>
+              <Modal.Content className="!px-0 !pb-0">
+                <div className="flex flex-col gap-y-2">
+                  <FormField_Shadcn_
+                    control={form.control}
                     name="public"
-                    layout="flex"
-                    className="px-5"
-                    label="公开存储桶"
-                    descriptionText="任何人都可以读取文件对象，无需任何授权"
+                    render={({ field }) => (
+                      <FormItemLayout className="px-5">
+                        <FormControl_Shadcn_>
+                          <Toggle
+                            id="public"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            layout="flex"
+                            label="公开存储桶"
+                            descriptionText="任何人都可以读取任何对象，无需任何授权"
+                          />
+                        </FormControl_Shadcn_>
+                      </FormItemLayout>
+                    )}
                   />
                   {isPublicBucket && (
                     <Admonition
@@ -156,12 +291,13 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                   )}
                 </div>
               </Modal.Content>
+              <Modal.Separator />
               <Collapsible
                 open={showConfiguration}
                 onOpenChange={() => setShowConfiguration(!showConfiguration)}
               >
                 <Collapsible.Trigger asChild>
-                  <div className="w-full cursor-pointer py-3 px-5 flex items-center justify-between border-t border-default">
+                  <div className="w-full cursor-pointer py-3 px-5 flex items-center justify-between">
                     <p className="text-sm">其他配置</p>
                     <ChevronDown
                       size={18}
@@ -173,37 +309,59 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                 <Collapsible.Content className="py-4">
                   <div className="w-full space-y-5 px-5">
                     <div className="space-y-5">
-                      <Toggle
-                        id="has_file_size_limit"
+                      <FormField_Shadcn_
+                        control={form.control}
                         name="has_file_size_limit"
-                        layout="flex"
-                        label="限制存储桶中上传文件的大小"
-                        descriptionText="防止上传文件的大小超过指定限制"
+                        render={({ field }) => (
+                          <FormItemLayout>
+                            <FormControl_Shadcn_>
+                              <Toggle
+                                id="has_file_size_limit"
+                                checked={field.value}
+                                onChange={field.onChange}
+                                layout="flex"
+                                label="限制存储桶中上传文件的大小"
+                                descriptionText="防止上传文件的大小超过指定限制"
+                              />
+                            </FormControl_Shadcn_>
+                          </FormItemLayout>
+                        )}
                       />
-                      {values.has_file_size_limit && (
+                      {hasFileSizeLimit && (
                         <div className="grid grid-cols-12 col-span-12 gap-x-2 gap-y-1">
                           <div className="col-span-8">
-                            <Input
-                              type="number"
-                              step={1}
-                              id="formatted_size_limit"
+                            <FormField_Shadcn_
+                              control={form.control}
                               name="formatted_size_limit"
-                              disabled={false}
-                              onKeyPress={(event) => {
-                                if (event.charCode < 48 || event.charCode > 57) {
-                                  event.preventDefault()
-                                }
-                              }}
-                              descriptionText={`相当于 ${convertToBytes(
-                                values.formatted_size_limit,
-                                selectedUnit
-                              ).toLocaleString()} 字节。`}
+                              render={({ field }) => (
+                                <FormItemLayout>
+                                  <FormControl_Shadcn_>
+                                    <Input_Shadcn_
+                                      type="number"
+                                      step={1}
+                                      {...field}
+                                      onKeyPress={(event) => {
+                                        if (event.charCode < 48 || event.charCode > 57) {
+                                          event.preventDefault()
+                                        }
+                                      }}
+                                    />
+                                  </FormControl_Shadcn_>
+                                  <span className="text-foreground-light text-xs">
+                                    相当于{' '}
+                                    {convertToBytes(
+                                      formattedSizeLimit,
+                                      selectedUnit
+                                    ).toLocaleString()}{' '}
+                                    字节。
+                                  </span>
+                                </FormItemLayout>
+                              )}
                             />
                           </div>
                           <div className="col-span-4">
                             <Listbox
                               id="size_limit_units"
-                              disabled={false}
                               value={selectedUnit}
                               onChange={setSelectedUnit}
                             >
@@ -231,36 +389,122 @@ const CreateBucketModal = ({ visible, onClose }: CreateBucketModalProps) => {
                         </div>
                       )}
                     </div>
-                    <Input
-                      id="allowed_mime_types"
+                    <FormField_Shadcn_
+                      control={form.control}
                       name="allowed_mime_types"
-                      layout="vertical"
-                      label="允许的 MIME 类型"
-                      placeholder="例如 image/jpeg，image/png，audio/mpeg，video/mp4等"
-                      labelOptional="使用逗号分隔值"
-                      descriptionText="允许使用通配符，例如 image/*。留空表示允许任何 MIME 类型。"
+                      render={({ field }) => (
+                        <FormItemLayout
+                          label="允许的 MIME 类型"
+                          labelOptional="逗号分隔值"
+                          description="允许使用通配符，例如 image/*。留空表示允许任何 MIME 类型。"
+                          layout="vertical"
+                        >
+                          <FormControl_Shadcn_>
+                            <Input_Shadcn_
+                              {...field}
+                              placeholder="例如 image/jpeg，image/png，audio/mpeg，video/mp4等"
+                            />
+                          </FormControl_Shadcn_>
+                        </FormItemLayout>
+                      )}
                     />
                   </div>
                 </Collapsible.Content>
               </Collapsible>
-              <Modal.Separator />
-              <Modal.Content className="flex items-center space-x-2 justify-end">
-                <Button
-                  type="default"
-                  htmlType="button"
-                  disabled={isCreating}
-                  onClick={() => onClose()}
-                >
-                  取消
-                </Button>
-                <Button type="primary" htmlType="submit" loading={isCreating} disabled={isCreating}>
-                  保存
-                </Button>
-              </Modal.Content>
             </>
-          )
-        }}
-      </Form>
+          ) : (
+            <Modal.Content>
+              {icebergWrapperExtensionState === 'installed' ? (
+                <Label_Shadcn_ className="text-foreground-lighter leading-1 flex flex-col gap-y-2">
+                  <p>
+                    <span>Supabase will setup a </span>
+                    <a
+                      href={`${BASE_PATH}/project/${ref}/integrations/iceberg_wrapper/overview`}
+                      target="_blank"
+                      className="underline text-foreground-light"
+                    >
+                      foreign data wrapper
+                      {bucketName && <span className="text-brand"> {`${bucketName}_fdw`}</span>}
+                    </a>
+                    <span>
+                      {' '}
+                      for easier access to the data. This action will also create{' '}
+                      <a
+                        href={`${BASE_PATH}/project/${ref}/storage/access-keys`}
+                        target="_blank"
+                        className="underline text-foreground-light"
+                      >
+                        S3 Access Keys
+                        {bucketName && (
+                          <>
+                            {' '}
+                            named <span className="text-brand"> {`${bucketName}_keys`}</span>
+                          </>
+                        )}
+                      </a>
+                      <span> and </span>
+                      <a
+                        href={`${BASE_PATH}/project/${ref}/integrations/vault/secrets`}
+                        target="_blank"
+                        className="underline text-foreground-light"
+                      >
+                        four Vault Secrets
+                        {bucketName && (
+                          <>
+                            {' '}
+                            prefixed with{' '}
+                            <span className="text-brand"> {`${bucketName}_vault_`}</span>
+                          </>
+                        )}
+                      </a>
+                      .
+                    </span>
+                  </p>
+                  <p>
+                    As a final step, you'll need to create an{' '}
+                    <span className="text-foreground-light">Iceberg namespace</span> before you
+                    connect the Iceberg data to your database.
+                  </p>
+                </Label_Shadcn_>
+              ) : (
+                <Alert_Shadcn_ variant="warning">
+                  <WarningIcon />
+                  <AlertTitle_Shadcn_>
+                    You need to install the Iceberg wrapper extension to connect your Analytic
+                    bucket to your database.
+                  </AlertTitle_Shadcn_>
+                  <AlertDescription_Shadcn_ className="flex flex-col gap-y-2">
+                    <p>
+                      You need to install the <span className="text-brand">wrappers</span> extension
+                      (with the minimum version of <span>0.5.3</span>) if you want to connect your
+                      Analytics bucket to your database.
+                    </p>
+                  </AlertDescription_Shadcn_>
+                </Alert_Shadcn_>
+              )}
+            </Modal.Content>
+          )}
+          <Modal.Separator />
+          <Modal.Content className="flex items-center space-x-2 justify-end">
+            <Button
+              type="default"
+              htmlType="button"
+              disabled={isCreating || isCreatingIcebergWrapper}
+              onClick={() => onClose()}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isCreating || isCreatingIcebergWrapper}
+              disabled={isCreating || isCreatingIcebergWrapper}
+            >
+              Create
+            </Button>
+          </Modal.Content>
+        </form>
+      </Form_Shadcn_>
     </Modal>
   )
 }

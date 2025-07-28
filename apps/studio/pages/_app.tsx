@@ -48,7 +48,6 @@ import { getFlags as getConfigCatFlags } from 'lib/configcat'
 import { API_URL, BASE_PATH, IS_PLATFORM } from 'lib/constants'
 import { ProfileProvider } from 'lib/profile'
 import { Telemetry } from 'lib/telemetry'
-import HCaptchaLoadedStore from 'stores/hcaptcha-loaded-store'
 import { AppPropsWithLayout } from 'types'
 import { SonnerToaster, TooltipProvider } from 'ui'
 import { CommandProvider } from 'ui-patterns/CommandMenu'
@@ -147,7 +146,6 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
                     </RouteValidationWrapper>
                   </TooltipProvider>
                   <Telemetry />
-                  {!isTestEnv && <HCaptchaLoadedStore />}
                   {!isTestEnv && (
                     <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
                   )}
