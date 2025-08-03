@@ -7,7 +7,7 @@ import 'cronstrue/locales/zh_CN'
 
 import { useParams } from 'common'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
-import { useCronJobsQuery } from 'data/database-cron-jobs/database-cron-jobs-query'
+import { useCronJobQuery } from 'data/database-cron-jobs/database-cron-job-query'
 import {
   CronJobRun,
   useCronJobRunsInfiniteQuery,
@@ -139,9 +139,10 @@ export const PreviousRunsTab = () => {
 
   const jobId = Number(childId)
 
-  const { data: cronJobs, isLoading: isLoadingCronJobs } = useCronJobsQuery({
+  const { data: job, isLoading: isLoadingCronJobs } = useCronJobQuery({
     projectRef: project?.ref,
     connectionString: project?.connectionString,
+    id: jobId,
   })
 
   const {
@@ -178,7 +179,6 @@ export const PreviousRunsTab = () => {
     [fetchNextPage, isLoadingCronJobRuns]
   )
 
-  const currentJobState = cronJobs?.find((job) => job.jobid === jobId)
   const cronJobRuns = useMemo(() => data?.pages.flatMap((p) => p) || [], [data?.pages])
 
   return (
@@ -224,15 +224,13 @@ export const PreviousRunsTab = () => {
             <div className="grid gap-2 w-56">
               <h3 className="text-sm">执行计划</h3>
               <p className="text-xs text-foreground-light">
-                {currentJobState?.schedule ? (
+                {job?.schedule ? (
                   <>
-                    <span className="font-mono text-lg">
-                      {currentJobState.schedule.toLocaleLowerCase()}
-                    </span>
+                    <span className="font-mono text-lg">{job.schedule.toLocaleLowerCase()}</span>
                     <p>
-                      {isSecondsFormat(currentJobState.schedule)
+                      {isSecondsFormat(job.schedule)
                         ? ''
-                        : CronToString(currentJobState.schedule.toLowerCase(), { locale: 'zh_CN', use24HourTimeFormat: true })}
+                        : CronToString(job.schedule.toLowerCase(), { locale: 'zh_CN', use24HourTimeFormat: true })}
                     </p>
                   </>
                 ) : (
@@ -250,7 +248,7 @@ export const PreviousRunsTab = () => {
                     className="sql"
                     parentClassName=" [&>div>span]:text-xs bg-alternative-200 !p-2 rounded-md"
                   >
-                    {currentJobState?.command}
+                    {job?.command}
                   </SimpleCodeBlock>
                   <div className="bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background-200 to-transparent absolute " />
                 </TooltipTrigger>
@@ -260,7 +258,7 @@ export const PreviousRunsTab = () => {
                     className="sql"
                     parentClassName=" [&>div>span]:text-xs bg-alternative-200 !p-2 rounded-md"
                   >
-                    {currentJobState?.command}
+                    {job?.command}
                   </SimpleCodeBlock>
                 </TooltipContent>
               </Tooltip>

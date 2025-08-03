@@ -1,30 +1,41 @@
-import { Search } from 'lucide-react'
+import { Loader2, RefreshCw, Search, X } from 'lucide-react'
+import { useRouter } from 'next/router'
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
-import { useState } from 'react'
+import { UIEvent, useMemo, useRef, useState } from 'react'
+import DataGrid, { DataGridHandle, Row } from 'react-data-grid'
 
+import { useParams } from 'common'
 import { CreateCronJobSheet } from 'components/interfaces/Integrations/CronJobs/CreateCronJobSheet'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
+import AlertError from 'components/ui/AlertError'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
-import { CronJob, useCronJobsQuery } from 'data/database-cron-jobs/database-cron-jobs-query'
+import { useCronJobsCountQuery } from 'data/database-cron-jobs/database-cron-jobs-count-query'
+import {
+  CronJob,
+  useCronJobsInfiniteQuery,
+} from 'data/database-cron-jobs/database-cron-jobs-infinite-query'
 import { useDatabaseExtensionsQuery } from 'data/database-extensions/database-extensions-query'
 import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
-import { Button, Input, Sheet, SheetContent } from 'ui'
-import { CronJobCard } from './CronJobCard'
+import { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'
+import { isAtBottom } from 'lib/helpers'
+import { Button, cn, LoadingLine, Sheet, SheetContent } from 'ui'
+import { Input } from 'ui-patterns/DataInputs/Input'
+import { formatCronJobColumns } from './CronJobs.utils'
 import { DeleteCronJob } from './DeleteCronJob'
-import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
 
-const EMPTY_CRON_JOB = {
-  jobname: '',
-  schedule: '',
-  active: true,
-  command: '',
-}
+const EMPTY_CRON_JOB = { jobname: '', schedule: '', active: true, command: '' }
 
 export const CronjobsTab = () => {
+  const router = useRouter()
+  const { ref } = useParams()
   const { project } = useProjectContext()
-  const org = useSelectedOrganization()
+  const { data: org } = useSelectedOrganizationQuery()
+
+  const xScroll = useRef<number>(0)
+  const gridRef = useRef<DataGridHandle>(null)
 
   const [searchQuery, setSearchQuery] = useQueryState('search', parseAsString.withDefault(''))
+  const [search, setSearch] = useState(searchQuery)
   const [createCronJobSheetShown, setCreateCronJobSheetShown] = useQueryState(
     'dialog-shown',
     parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true })
@@ -37,34 +48,79 @@ export const CronjobsTab = () => {
   >()
   const [cronJobForDeletion, setCronJobForDeletion] = useState<CronJob | undefined>()
 
-  const { data: cronJobs, isLoading } = useCronJobsQuery({
+  const {
+    data,
+    error,
+    isLoading,
+    isError,
+    isRefetching,
+    isFetchingNextPage,
+    hasNextPage,
+    refetch,
+    fetchNextPage,
+  } = useCronJobsInfiniteQuery(
+    {
+      projectRef: project?.ref,
+      connectionString: project?.connectionString,
+      searchTerm: searchQuery,
+    },
+    { keepPreviousData: Boolean(searchQuery), staleTime: Infinity }
+  )
+  const cronJobs = useMemo(() => data?.pages.flatMap((p) => p) || [], [data?.pages])
+
+  const { data: count, isLoading: isLoadingCount } = useCronJobsCountQuery({
     projectRef: project?.ref,
     connectionString: project?.connectionString,
   })
 
-  const { data: extensions } = useDatabaseExtensionsQuery({
+  const { data: extensions = [] } = useDatabaseExtensionsQuery({
     projectRef: project?.ref,
     connectionString: project?.connectionString,
   })
 
   const { mutate: sendEvent } = useSendEventMutation()
 
+  const columns = useMemo(() => {
+    return formatCronJobColumns({
+      onSelectEdit: (job: any) => {
+        sendEvent({
+          action: 'cron_job_update_clicked',
+          groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+        })
+        setCreateCronJobSheetShown(true)
+        setCronJobForEditing(job)
+      },
+      onSelectDelete: (job: CronJob) => {
+        sendEvent({
+          action: 'cron_job_delete_clicked',
+          groups: { project: ref ?? 'Unknown', organization: org?.slug ?? 'Unknown' },
+        })
+        setCronJobForDeletion(job)
+      },
+    })
+  }, [org?.slug, ref, sendEvent, setCreateCronJobSheetShown])
+
   // check pg_cron version to see if it supports seconds
-  const pgCronExtension = (extensions ?? []).find((ext) => ext.name === 'pg_cron')
+  const pgCronExtension = extensions.find((ext) => ext.name === 'pg_cron')
   const installedVersion = pgCronExtension?.installed_version
   const supportsSeconds = installedVersion ? parseFloat(installedVersion) >= 1.5 : false
 
-  if (isLoading)
-    return (
-      <div className="p-10">
-        <GenericSkeletonLoader />
-      </div>
-    )
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const isScrollingHorizontally = xScroll.current !== event.currentTarget.scrollLeft
+    xScroll.current = event.currentTarget.scrollLeft
 
-  const filteredCronJobs =
-    searchQuery.length > 0
-      ? (cronJobs ?? []).filter((cj) => cj?.jobname?.includes(searchQuery || ''))
-      : cronJobs ?? []
+    if (
+      isLoading ||
+      isFetchingNextPage ||
+      isScrollingHorizontally ||
+      !isAtBottom(event) ||
+      !hasNextPage
+    ) {
+      return
+    }
+
+    fetchNextPage()
+  }
 
   const onOpenCreateJobSheet = () => {
     sendEvent({
@@ -76,56 +132,132 @@ export const CronjobsTab = () => {
 
   return (
     <>
-      <div className="w-full space-y-4 p-4 md:p-10">
-        {(cronJobs ?? []).length == 0 ? (
-          <div className="border rounded border-default px-20 py-16 flex flex-col items-center justify-center space-y-4 border-dashed">
-            <p className="text-sm text-foreground">还未创建定时任务</p>
-            <Button onClick={onOpenCreateJobSheet}>创建定时任务</Button>
-          </div>
-        ) : (
-          <div className="w-full space-y-4">
-            <div className="flex items-center justify-between flex-wrap">
-              <Input
-                placeholder="查找定时任务"
-                size="small"
-                icon={<Search size={14} />}
-                value={searchQuery || ''}
-                className="w-64"
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+      <div className="h-full w-full space-y-4">
+        <div className="h-full w-full flex flex-col relative">
+          <div className="bg-surface-200 py-3 px-10 flex items-center justify-between flex-wrap">
+            <Input
+              size="tiny"
+              className="w-52"
+              placeholder="查找定时任务"
+              icon={<Search size={14} />}
+              value={search ?? ''}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.code === 'Enter') setSearchQuery(search.trim())
+              }}
+              actions={[
+                search && (
+                  <Button
+                    size="tiny"
+                    type="text"
+                    icon={<X />}
+                    onClick={() => {
+                      setSearch('')
+                      setSearchQuery(null)
+                    }}
+                    className="p-0 h-5 w-5"
+                  />
+                ),
+              ]}
+            />
 
+            <div className="flex items-center gap-x-2">
+              <Button
+                type="default"
+                icon={<RefreshCw />}
+                loading={isRefetching && !isFetchingNextPage}
+                onClick={() => refetch()}
+              >
+                刷新
+              </Button>
               <Button onClick={onOpenCreateJobSheet}>创建定时任务</Button>
             </div>
-            {filteredCronJobs.length === 0 ? (
-              <div
-                className={
-                  'border rounded border-default px-20 py-16 flex flex-col items-center justify-center space-y-4 border-dashed'
-                }
-              >
-                <p className="text-sm text-foreground">没有搜索到结果</p>
-                <p className="text-sm text-foreground-light">
-                  您搜索的“{searchQuery}”没有返回任何结果
-                </p>
-              </div>
-            ) : isLoading ? (
-              <div className="p-10">
+          </div>
+
+          <LoadingLine loading={isLoading || isRefetching || isFetchingNextPage} />
+
+          <DataGrid
+            ref={gridRef}
+            className="flex-grow border-t-0"
+            rowHeight={44}
+            headerRowHeight={36}
+            columns={columns}
+            rows={cronJobs}
+            rowKeyGetter={(row) => row.id}
+            rowClass={() => {
+              return cn(
+                'cursor-pointer',
+                '[&>.rdg-cell]:border-box [&>.rdg-cell]:outline-none [&>.rdg-cell]:shadow-none',
+                '[&>.rdg-cell:first-child>div]:ml-8'
+              )
+            }}
+            onScroll={handleScroll}
+            renderers={{
+              renderRow(key, props) {
+                return (
+                  <Row
+                    key={props.row.jobid}
+                    {...props}
+                    onClick={(e) => {
+                      const { jobid, jobname } = props.row
+                      const url = `/project/${ref}/integrations/cron/jobs/${jobid}?child-label=${encodeURIComponent(jobname || `Job #${jobid}`)}`
+
+                      sendEvent({
+                        action: 'cron_job_history_clicked',
+                        groups: {
+                          project: ref ?? '未知项目',
+                          organization: org?.slug ?? '未知组织',
+                        },
+                      })
+
+                      if (e.metaKey) {
+                        window.open(url, '_blank')
+                      } else {
+                        router.push(url)
+                      }
+                    }}
+                  />
+                )
+              },
+            }}
+          />
+
+          {/* [Joshen] Render 0 rows state outside of the grid so that their position isn't relative to the grid scroll position */}
+          {cronJobs.length === 0 ? (
+            isLoading ? (
+              <div className="absolute top-28 px-10 w-full">
                 <GenericSkeletonLoader />
               </div>
+            ) : isError ? (
+              <div className="absolute top-28 px-10 flex flex-col items-center justify-center w-full">
+                <AlertError subject="获取定时任务失败" error={error} />
+              </div>
             ) : (
-              filteredCronJobs.map((job) => (
-                <CronJobCard
-                  key={job.jobid}
-                  job={job}
-                  onEditCronJob={(job) => {
-                    setCronJobForEditing(job)
-                    setCreateCronJobSheetShown(true)
-                  }}
-                  onDeleteCronJob={(job) => setCronJobForDeletion(job)}
-                />
-              ))
+              <div className="absolute top-32 px-6 w-full">
+                <div className="text-center text-sm flex flex-col gap-y-1">
+                  <p className="text-foreground">
+                    {!!searchQuery ? '未找到定时任务' : '无定时任务'}
+                  </p>
+                  <p className="text-foreground-light">
+                    {!!searchQuery
+                      ? '当前没有符合搜索条件的定时任务'
+                      : '当前没有创建任何定时任务'}
+                  </p>
+                </div>
+              </div>
+            )
+          ) : null}
+
+          <div className="flex justify-between min-h-9 h-9 overflow-hidden items-center px-6 w-full border-t text-xs text-foreground-light">
+            {isLoadingCount ? (
+              <span className="flex items-center gap-2">
+                <Loader2 size={14} className="animate-spin" /> 加载中...
+              </span>
+            ) : (
+              `总定时任务数: ${count}`
             )}
           </div>
-        )}
+        </div>
       </div>
 
       <DeleteCronJob

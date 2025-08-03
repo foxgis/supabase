@@ -35,7 +35,7 @@ import { useTablesQuery } from 'data/tables/tables-query'
 import { useViewsQuery } from 'data/views/views-query'
 import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
-import { PROTECTED_SCHEMAS } from 'lib/constants/schemas'
+import { useIsProtectedSchema } from 'hooks/useProtectedSchemas'
 import {
   Button,
   Checkbox_Shadcn_,
@@ -54,7 +54,7 @@ import {
   TooltipTrigger,
   cn,
 } from 'ui'
-import ProtectedSchemaWarning from '../ProtectedSchemaWarning'
+import { ProtectedSchemaWarning } from '../ProtectedSchemaWarning'
 import { formatAllEntities } from './Tables.utils'
 
 interface TableListProps {
@@ -184,7 +184,7 @@ const TableList = ({
     (x) => visibleTypes.includes(x.type)
   )
 
-  const isLocked = PROTECTED_SCHEMAS.includes(selectedSchema)
+  const { isSchemaLocked } = useIsProtectedSchema({ schema: selectedSchema })
 
   const error = tablesError || viewsError || materializedViewsError || foreignTablesError
   const isError = isErrorTables || isErrorViews || isErrorMaterializedViews || isErrorForeignTables
@@ -265,7 +265,7 @@ const TableList = ({
             icon={<Search size={12} />}
           />
 
-          {!isLocked && (
+          {!isSchemaLocked && (
             <ButtonTooltip
               className="w-auto ml-auto"
               icon={<Plus />}
@@ -286,7 +286,7 @@ const TableList = ({
         </div>
       </div>
 
-      {isLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="表" />}
+      {isSchemaLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="表" />}
 
       {isLoading && <GenericSkeletonLoader />}
 
@@ -455,7 +455,7 @@ const TableList = ({
                             </Link>
                           </Button>
 
-                          {!isLocked && (
+                          {!isSchemaLocked && (
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button type="default" className="px-1" icon={<MoreVertical />} />
@@ -512,10 +512,10 @@ const TableList = ({
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <DropdownMenuItem
-                                          disabled={!canUpdateTables || isLocked}
+                                          disabled={!canUpdateTables || isSchemaLocked}
                                           className="!pointer-events-auto gap-x-2"
                                           onClick={() => {
-                                            if (canUpdateTables && !isLocked) {
+                                            if (canUpdateTables && !isSchemaLocked) {
                                               onDeleteTable({
                                                 ...x,
                                                 schema: selectedSchema,

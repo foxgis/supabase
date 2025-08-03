@@ -661,7 +661,7 @@ export const SQLEditor = () => {
           direction="vertical"
           autoSaveId={LOCAL_STORAGE_KEYS.SQL_EDITOR_SPLIT_SIZE}
         >
-          <ResizablePanel maxSize={70}>
+          {/* <ResizablePanel maxSize={70}>
             <div className="flex-grow overflow-y-auto border-b h-full">
               {isLoading ? (
                 <div className="flex h-full w-full items-center justify-center">
@@ -718,6 +718,13 @@ export const SQLEditor = () => {
                   <div key={id} className="w-full h-full relative">
                     <MonacoEditor
                       autoFocus
+                      placeholder={
+                        !promptState.isOpen && !editorRef.current?.getValue()
+                          ? 'Hit ' +
+                            (os === 'macos' ? 'CMD+K' : `CTRL+K`) +
+                            ' to generate query or just start typing'
+                          : ''
+                      }
                       id={id}
                       className={cn(isDiffOpen && 'hidden')}
                       editorRef={editorRef}
@@ -743,7 +750,7 @@ export const SQLEditor = () => {
                         }))
                       }}
                     />
-                    {/* {editorRef.current && promptState.isOpen && !isDiffOpen && (
+                    {editorRef.current && promptState.isOpen && !isDiffOpen && (
                       <ResizableAIWidget
                         editor={editorRef.current}
                         id="ask-ai"
@@ -763,25 +770,13 @@ export const SQLEditor = () => {
                         endLineNumber={promptState.endLineNumber}
                       />
                     )}
-                    <AnimatePresence>
-                      {!promptState.isOpen && !editorRef.current?.getValue() && (
-                        <motion.p
-                          initial={{ y: 5, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: 5, opacity: 0 }}
-                          className="text-foreground-lighter absolute bottom-4 left-4 z-10 font-mono text-xs flex items-center gap-1"
-                        >
-                          按 {os === 'macos' ? <Command size={12} /> : `CTRL+`}K 呼出 AI 助手
-                        </motion.p>
-                      )}
-                    </AnimatePresence> */}
                   </div>
                 </>
               )}
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle />
+          <ResizableHandle withHandle /> */}
 
           <ResizablePanel maxSize={70}>
             {isLoading ? (

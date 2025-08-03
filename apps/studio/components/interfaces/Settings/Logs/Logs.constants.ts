@@ -369,7 +369,6 @@ export enum LogsTableName {
   POSTGREST = 'postgrest_logs',
   SUPAVISOR = 'supavisor_logs',
   PGBOUNCER = 'pgbouncer_logs',
-  WAREHOUSE = 'warehouse_logs',
   PG_UPGRADE = 'pg_upgrade_logs',
   PG_CRON = 'pg_cron_logs',
 }
@@ -384,7 +383,6 @@ export const LOGS_TABLES = {
   storage: LogsTableName.STORAGE,
   postgrest: LogsTableName.POSTGREST,
   supavisor: LogsTableName.SUPAVISOR,
-  warehouse: LogsTableName.WAREHOUSE,
   pg_upgrade: LogsTableName.PG_UPGRADE,
   pg_cron: LogsTableName.POSTGRES,
   pgbouncer: LogsTableName.PGBOUNCER,
@@ -401,7 +399,6 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.POSTGREST]: 'REST 接口服务日志',
   [LogsTableName.SUPAVISOR]: '数据库连接池（supavisor）日志',
   [LogsTableName.PGBOUNCER]: '数据库连接池（pgbouncer）日志',
-  [LogsTableName.WAREHOUSE]: '数据仓库日志',
   [LogsTableName.PG_UPGRADE]: '数据库升级日志',
   [LogsTableName.PG_CRON]: '定时任务日志',
 }

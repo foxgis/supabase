@@ -1,11 +1,12 @@
 import { useDebounce } from '@uidotdev/usehooks'
-import { ChevronDown, ExternalLink, User as IconUser, Loader2, Search, X } from 'lucide-react'
+import { ChevronDown, User as IconUser, Loader2, Search, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 import { LOCAL_STORAGE_KEYS, useParams } from 'common'
 import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
 import AlertError from 'components/ui/AlertError'
+import { InlineLink } from 'components/ui/InlineLink'
 import { User, useUsersInfiniteQuery } from 'data/auth/users-infinite-query'
 import { useCustomAccessTokenHookDetails } from 'hooks/misc/useCustomAccessTokenHookDetails'
 import { useLocalStorage } from 'hooks/misc/useLocalStorage'
@@ -13,13 +14,18 @@ import { useRoleImpersonationStateSnapshot } from 'state/role-impersonation-stat
 import { ResponseError } from 'types'
 import {
   Button,
+  cn,
   Collapsible_Shadcn_,
   CollapsibleContent_Shadcn_,
   CollapsibleTrigger_Shadcn_,
+  DropdownMenuSeparator,
   Input,
-  Switch,
   ScrollArea,
-  cn,
+  Switch,
+  Tabs_Shadcn_,
+  TabsContent_Shadcn_,
+  TabsList_Shadcn_,
+  TabsTrigger_Shadcn_,
 } from 'ui'
 import { InfoTooltip } from 'ui-patterns/info-tooltip'
 import { getAvatarUrl, getDisplayName } from '../Auth/Users/Users.utils'
@@ -33,13 +39,13 @@ const UserImpersonationSelector = () => {
   const [additionalClaims, setAdditionalClaims] = useState('')
 
   const { id: tableId } = useParams()
+  const [selectedTab, setSelectedTab] = useState<'user' | 'external'>('user')
 
   const [previousSearches, setPreviousSearches] = useLocalStorage<User[]>(
     LOCAL_STORAGE_KEYS.USER_IMPERSONATION_SELECTOR_PREVIOUS_SEARCHES(tableId!),
     []
   )
 
-  const [showExternalAuth, setShowExternalAuth] = useState(false)
   const state = useRoleImpersonationStateSnapshot()
   const debouncedSearchText = useDebounce(searchText, 300)
 
@@ -146,7 +152,6 @@ const UserImpersonationSelector = () => {
 
   function stopImpersonating() {
     state.setRole(undefined)
-    setShowExternalAuth(false) // Reset external auth impersonation when stopping impersonation
   }
 
   function toggleAalState() {
@@ -167,249 +172,244 @@ const UserImpersonationSelector = () => {
     setPreviousSearches([])
   }
 
-  // Select a previous search
-  function selectPreviousSearch(prevUser: User) {
-    setSearchText(prevUser.email ?? prevUser.phone ?? prevUser.id ?? '')
-  }
-
   return (
-    <div className="flex flex-col gap-1">
-      <h2 className="text-foreground text-sm">
-        {displayName ? `切换到用户 ${displayName}` : '切换用户'}
-      </h2>
-      <p className="text-sm text-foreground-light">
-        {!impersonatingUser && !isExternalAuthImpersonating
-          ? "选择一个受数据库行级安全策略限制的用户。"
-          : "查询结果将按照此用户的行级安全策略返回。"}
-      </p>
+    <>
+      <div className="px-5 py-3">
+        <h2 className="text-foreground text-sm">
+          {displayName ? `正在切换用户 ${displayName}` : '切换用户'}
+        </h2>
+        <p className="text-sm text-foreground-light">
+          {!impersonatingUser && !isExternalAuthImpersonating
+            ? '选择一个用户以符合该用户的数据库行级安全策略'
+            : '结果将符合该用户的数据库行级安全策略'}
+        </p>
+
+        {impersonatingUser && (
+          <UserImpersonatingRow
+            user={impersonatingUser}
+            onClick={stopImpersonating}
+            isImpersonating={true}
+            aal={aal}
+            isLoading={isImpersonateLoading}
+          />
+        )}
+        {isExternalAuthImpersonating && (
+          <ExternalAuthImpersonatingRow
+            sub={state.role.externalAuth.sub}
+            onClick={stopImpersonating}
+            aal={aal}
+            isLoading={isImpersonateLoading}
+          />
+        )}
+
+        {!impersonatingUser && !isExternalAuthImpersonating && (
+          <Tabs_Shadcn_ value={selectedTab} onValueChange={(value: any) => setSelectedTab(value)}>
+            <TabsList_Shadcn_ className="gap-x-3">
+              <TabsTrigger_Shadcn_ value="user">项目用户</TabsTrigger_Shadcn_>
+              <TabsTrigger_Shadcn_ value="external" className="gap-x-1.5">
+                外部用户
+                <InfoTooltip side="bottom" className="flex flex-col gap-1 max-w-96">
+                  测试外部认证提供程序（如Clerk或Auth0）的行级安全策略，提供用户ID和可选的声明。
+                </InfoTooltip>
+              </TabsTrigger_Shadcn_>
+            </TabsList_Shadcn_>
+
+            <TabsContent_Shadcn_ value="user">
+              <div className="flex flex-col gap-y-2">
+                <Input
+                  size="tiny"
+                  className="table-editor-search border-none"
+                  icon={
+                    isSearching ? (
+                      <Loader2
+                        className="animate-spin text-foreground-lighter"
+                        size={16}
+                        strokeWidth={1.5}
+                      />
+                    ) : (
+                      <Search className="text-foreground-lighter" size={16} strokeWidth={1.5} />
+                    )
+                  }
+                  placeholder="根据ID、邮箱、手机号或姓名搜索用户..."
+                  onChange={(e) => setSearchText(e.target.value)}
+                  value={searchText}
+                  actions={
+                    searchText && (
+                      <Button
+                        size="tiny"
+                        type="text"
+                        className="px-1"
+                        onClick={() => setSearchText('')}
+                      >
+                        <X size={12} strokeWidth={2} />
+                      </Button>
+                    )
+                  }
+                />
+                {isLoading && (
+                  <div className="flex flex-col gap-2 items-center justify-center h-24">
+                    <Loader2 className="animate-spin" size={24} />
+                    <span className="text-foreground-light">正在加载用户...</span>
+                  </div>
+                )}
+
+                {isError && <AlertError error={error} subject="获取用户失败" />}
+
+                {isSuccess &&
+                  (users.length > 0 ? (
+                    <div>
+                      <ul className="divide-y max-h-[150px] overflow-y-scroll" role="list">
+                        {users.map((user) => (
+                          <li key={user.id} role="listitem">
+                            <UserRow
+                              user={user}
+                              onClick={impersonateUser}
+                              isLoading={isImpersonateLoading}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2 items-center justify-center h-24">
+                      <p className="text-foreground-light text-xs" role="status">
+                        未找到用户
+                      </p>
+                    </div>
+                  ))}
+
+                <>
+                  {previousSearches.length > 0 && (
+                    <div>
+                      {previousSearches.length > 0 ? (
+                        <>
+                          <Collapsible_Shadcn_ className="relative">
+                            <CollapsibleTrigger_Shadcn_ className="group font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
+                              <div className="flex items-center gap-x-1 w-full">
+                                <p className="text-xs text-foreground-light group-hover:text-foreground transition">
+                                  最近搜索
+                                </p>
+                                <ChevronDown
+                                  className="transition-transform duration-200"
+                                  strokeWidth={1.5}
+                                  size={14}
+                                />
+                              </div>
+                            </CollapsibleTrigger_Shadcn_>
+
+                            <CollapsibleContent_Shadcn_ className="mt-1 flex flex-col gap-y-4">
+                              <Button
+                                size="tiny"
+                                type="text"
+                                className="absolute right-0 top-0 py-2 hover:bg-muted flex items-center text"
+                                onClick={clearSearchHistory}
+                              >
+                                <span className="flex items-center">清除</span>
+                              </Button>
+                              <ScrollArea
+                                className={cn(previousSearches.length > 3 ? 'h-36' : 'h-auto')}
+                              >
+                                <ul className="grid gap-2 ">
+                                  {previousSearches.map((search) => (
+                                    <li key={search.id}>
+                                      <UserRow user={search} onClick={impersonateUser} />
+                                    </li>
+                                  ))}
+                                </ul>
+                              </ScrollArea>
+                            </CollapsibleContent_Shadcn_>
+                          </Collapsible_Shadcn_>
+                        </>
+                      ) : (
+                        <div className="p-4 text-center text-muted-foreground">
+                          无最近搜索记录
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
+              </div>
+            </TabsContent_Shadcn_>
+
+            <TabsContent_Shadcn_ value="external">
+              <div className="flex flex-col gap-y-4">
+                <Input
+                  size="small"
+                  layout="horizontal"
+                  label="外部用户ID"
+                  descriptionText="从您的外部认证提供程序获取用户ID"
+                  placeholder="e.g. user_abc123"
+                  value={externalUserId}
+                  onChange={(e) => setExternalUserId(e.target.value)}
+                />
+                <Input
+                  size="small"
+                  layout="horizontal"
+                  label="额外声明 (JSON)"
+                  descriptionText="可选：添加自定义声明，如 org_id 或 roles"
+                  placeholder='例如 {"app_metadata": {"org_id": "org_456"}}'
+                  value={additionalClaims}
+                  onChange={(e) => setAdditionalClaims(e.target.value)}
+                />
+                <div className="flex items-center justify-end">
+                  <Button
+                    type="default"
+                    disabled={!externalUserId}
+                    onClick={impersonateExternalUser}
+                  >
+                    切换
+                  </Button>
+                </div>
+              </div>
+            </TabsContent_Shadcn_>
+          </Tabs_Shadcn_>
+        )}
+      </div>
 
       {/* Check for both regular user and external auth impersonation since they use different data structures but both need to be handled for displaying impersonation UI */}
       {!impersonatingUser && !isExternalAuthImpersonating ? (
-        <div className="flex flex-col gap-2 mt-2 relative">
-          <Input
-            className="table-editor-search border-none"
-            icon={
-              isSearching ? (
-                <Loader2
-                  className="animate-spin text-foreground-lighter"
-                  size={16}
-                  strokeWidth={1.5}
-                />
-              ) : (
-                <Search className="text-foreground-lighter" size={16} strokeWidth={1.5} />
-              )
-            }
-            placeholder="查找用户..."
-            onChange={(e) => setSearchText(e.target.value)}
-            value={searchText}
-            size="small"
-            actions={
-              searchText && (
-                <Button size="tiny" type="text" className="px-1" onClick={() => setSearchText('')}>
-                  <X size={12} strokeWidth={2} />
-                </Button>
-              )
-            }
-          />
-
-          <Collapsible_Shadcn_>
-            <CollapsibleTrigger_Shadcn_ className="group font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
-              <div className="flex items-center gap-x-1 w-full">
-                <p className="text-xs text-foreground-light group-hover:text-foreground transition">
-                  高级选项
-                </p>
-                <ChevronDown
-                  className="transition-transform duration-200"
-                  strokeWidth={1.5}
-                  size={14}
-                />
-              </div>
-            </CollapsibleTrigger_Shadcn_>
-            <CollapsibleContent_Shadcn_ className="mt-1 flex flex-col gap-y-4">
-              <div className="flex flex-row items-center gap-x-4 text-sm text-foreground-light">
-                <div className="flex items-center gap-x-1">
-                  <h3>MFA 认证级别</h3>
-                  <InfoTooltip side="top" className="flex flex-col gap-1 max-w-96">
-                    <p>
-                      AAL1 级别通过标准登录方法验证用户，而 AAL2 添加了第二身份验证因素。
-                      <br />
-                      如果您没有使用 MFA，您可以将此设置为 AAL1。
-                    </p>
-                    <a
-                      href="/docs/guides/auth/auth-mfa"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-x-1 opacity-50 hover:opacity-100 transition"
-                    >
-                      了解更多有关 MFA 的信息 <ExternalLink size={14} strokeWidth={2} />
-                    </a>
-                  </InfoTooltip>
-                </div>
-
-                <div className="flex flex-row items-center gap-x-2 text-xs font-bold">
-                  <p className={aal === 'aal1' ? undefined : 'text-foreground-lighter'}>AAL1</p>
-                  <Switch checked={aal === 'aal2'} onCheckedChange={toggleAalState} />
-                  <p className={aal === 'aal2' ? undefined : 'text-foreground-lighter'}>AAL2</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-y-2">
-                <div className="flex items-center gap-x-1">
-                  <h3 className="text-sm text-foreground-light">通过外部身份验证切换</h3>
-                  <InfoTooltip side="top" className="flex flex-col gap-1 max-w-96">
-                    <p>
-                      通过提供用户 ID 和可选声明，测试与 Clerk 或 Auth0 等外部身份验证提供商的行级安全策略。
-                    </p>
-                  </InfoTooltip>
-                </div>
-
-                <div className="flex flex-row items-center gap-x-2">
-                  <Switch checked={showExternalAuth} onCheckedChange={setShowExternalAuth} />
-                  <p className="text-xs text-foreground-light">
-                    启用外部身份验证切换
-                  </p>
-                </div>
-
-                {showExternalAuth && (
-                  <div className="flex flex-col gap-y-4 mt-2 border rounded-md p-4 bg-surface-100">
-                    <Input
-                      className="border-strong"
-                      label="外部用户 ID"
-                      descriptionText="来自外部身份验证提供商的用户 ID"
-                      placeholder="例如：user_abc123"
-                      value={externalUserId}
-                      onChange={(e) => setExternalUserId(e.target.value)}
-                      size="small"
-                    />
-                    <Input
-                      className="border-strong"
-                      label="附加信息（JSON）"
-                      descriptionText="可选：添加自定义信息如 org_id 或 role"
-                      placeholder='例如：{"app_metadata": {"org_id": "org_456"}}'
-                      value={additionalClaims}
-                      onChange={(e) => setAdditionalClaims(e.target.value)}
-                      size="small"
-                    />
-                    <div className="flex items-center justify-between">
-                      <div />
-                      <Button
-                        type="default"
-                        disabled={!externalUserId}
-                        onClick={impersonateExternalUser}
-                      >
-                        切换用户
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CollapsibleContent_Shadcn_>
-          </Collapsible_Shadcn_>
-
-          {!showExternalAuth && (
-            <>
-              {isLoading && (
-                <div className="flex flex-col gap-2 items-center justify-center h-24">
-                  <Loader2 className="animate-spin" size={24} />
-                  <span className="text-foreground-light">正在加载用户列表...</span>
-                </div>
-              )}
-
-              {isError && <AlertError error={error} subject="获取用户列表失败" />}
-
-              {isSuccess &&
-                (users.length > 0 ? (
-                  <div>
-                    <ul className="divide-y max-h-[150px] overflow-y-scroll" role="list">
-                      {users.map((user) => (
-                        <li key={user.id} role="listitem">
-                          <UserRow
-                            user={user}
-                            onClick={impersonateUser}
-                            isLoading={isImpersonateLoading}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-2 items-center justify-center h-24">
-                    <p className="text-foreground-light text-xs" role="status">
-                      未找到任何用户
-                    </p>
-                  </div>
-                ))}
-              {previousSearches.length > 0 && (
-                <div className="border-t">
-                  {previousSearches.length > 0 ? (
-                    <>
-                      <Collapsible_Shadcn_ className="mt-2 relative">
-                        <CollapsibleTrigger_Shadcn_ className="group font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
-                          <div className="flex items-center gap-x-1 w-full">
-                            <p className="text-xs text-foreground-light group-hover:text-foreground transition">
-                              Recents
-                            </p>
-                            <ChevronDown
-                              className="transition-transform duration-200"
-                              strokeWidth={1.5}
-                              size={14}
-                            />
-                          </div>
-                        </CollapsibleTrigger_Shadcn_>
-
-                        <CollapsibleContent_Shadcn_ className="mt-1 flex flex-col gap-y-4">
-                          <Button
-                            size="tiny"
-                            type="text"
-                            className="absolute right-0 top-0 py-2 hover:bg-muted flex items-center text"
-                            onClick={clearSearchHistory}
-                          >
-                            <span className="flex items-center">Clear</span>
-                          </Button>
-                          <ScrollArea
-                            className={cn(previousSearches.length > 3 ? 'h-36' : 'h-auto')}
-                          >
-                            <ul className="grid gap-2 ">
-                              {previousSearches.map((search) => (
-                                <li key={search.id}>
-                                  <UserRow user={search} onClick={impersonateUser} />
-                                </li>
-                              ))}
-                            </ul>
-                          </ScrollArea>
-                        </CollapsibleContent_Shadcn_>
-                      </Collapsible_Shadcn_>
-                    </>
-                  ) : (
-                    <div className="p-4 text-center text-muted-foreground">No recent searches</div>
-                  )}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      ) : (
         <>
-          {impersonatingUser && (
-            <UserImpersonatingRow
-              user={impersonatingUser}
-              onClick={stopImpersonating}
-              isImpersonating={true}
-              aal={aal}
-              isLoading={isImpersonateLoading}
-            />
-          )}
-          {isExternalAuthImpersonating && (
-            <ExternalAuthImpersonatingRow
-              sub={state.role.externalAuth.sub}
-              onClick={stopImpersonating}
-              aal={aal}
-              isLoading={isImpersonateLoading}
-            />
-          )}
+          <DropdownMenuSeparator className="m-0" />
+          <div className="px-5 py-2 flex flex-col gap-2 relative">
+            <Collapsible_Shadcn_>
+              <CollapsibleTrigger_Shadcn_ className="group font-normal p-0 [&[data-state=open]>div>svg]:!-rotate-180">
+                <div className="flex items-center gap-x-1 w-full">
+                  <p className="text-xs text-foreground-light group-hover:text-foreground transition">
+                    高级选项
+                  </p>
+                  <ChevronDown
+                    className="transition-transform duration-200"
+                    strokeWidth={1.5}
+                    size={14}
+                  />
+                </div>
+              </CollapsibleTrigger_Shadcn_>
+              <CollapsibleContent_Shadcn_ className="mt-1 flex flex-col gap-y-4">
+                <div className="flex flex-row items-center gap-x-4 text-sm text-foreground-light">
+                  <div className="flex items-center gap-x-1">
+                    <h3>多因素认证</h3>
+                    <InfoTooltip side="top" className="max-w-96">
+                      AAL1 仅通过标准登录方法验证用户，而 AAL2 添加第二个认证因素。如果您不使用 MFA，您可以将其设置为 AAL1。
+                      从{' '}
+                      <InlineLink href="https://supabase.com/docs/guides/auth/auth-mfa">
+                        这里
+                      </InlineLink>
+                      了解更多关于 MFA 的信息。
+                    </InfoTooltip>
+                  </div>
+
+                  <div className="flex flex-row items-center gap-x-2 text-xs font-bold">
+                    <p className={aal === 'aal1' ? undefined : 'text-foreground-lighter'}>AAL1</p>
+                    <Switch checked={aal === 'aal2'} onCheckedChange={toggleAalState} />
+                    <p className={aal === 'aal2' ? undefined : 'text-foreground-lighter'}>AAL2</p>
+                  </div>
+                </div>
+              </CollapsibleContent_Shadcn_>
+            </Collapsible_Shadcn_>
+          </div>
         </>
-      )}
-    </div>
+      ) : null}
+    </>
   )
 }
 
