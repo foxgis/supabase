@@ -50,27 +50,7 @@ with check (true);`.trim(),
   {
     id: 'policy-3',
     preview: false,
-    templateName: '基于用户的电子邮件允许用户更新数据 *',
-    description:
-      '此策略假定您的表有“email”列，只允许用户更新匹配其电子邮件的行。',
-    statement: `
-create policy "Enable update for users based on email"
-on "${schema}"."${table}"
-for update using (
-  (select auth.jwt()) ->> 'email' = email
-) with check (
-  (select auth.jwt()) ->> 'email' = email
-);`.trim(),
-    name: '基于用户的电子邮件允许用户更新数据',
-    definition: `(select auth.jwt()) ->> 'email' = email`,
-    check: `(select auth.jwt()) ->> 'email' = email`,
-    command: 'UPDATE',
-    roles: [],
-  },
-  {
-    id: 'policy-4',
-    preview: false,
-    templateName: '基于用户的 ID 允许用户删除数据 *',
+    templateName: '基于用户的 ID 允许用户删除数据',
     description:
       '此策略假定您的表有“user_id”列，只允许用户删除匹配其 ID 的行。',
     statement: `
@@ -86,7 +66,7 @@ for delete using (
     roles: [],
   },
   {
-    id: 'policy-5',
+    id: 'policy-4',
     preview: false,
     templateName: '基于用户的 ID 允许用户插入数据 *',
     description:
@@ -104,7 +84,7 @@ for insert with check (
     roles: [],
   },
   {
-    id: 'policy-6',
+    id: 'policy-5',
     preview: true,
     name: '使用表关联的策略',
     templateName: '使用表关联的策略',
@@ -126,7 +106,7 @@ on teams for update using (
     roles: [],
   },
   {
-    id: 'policy-7',
+    id: 'policy-6',
     preview: true,
     templateName: '使用 security definer 函数的策略',
     description: `
@@ -152,7 +132,7 @@ for all using (
     roles: [],
   },
   {
-    id: 'policy-8',
+    id: 'policy-7',
     preview: true,
     name: '实现 TTL 功能的策略',
     templateName: '实现 TTL 功能的策略',
@@ -173,7 +153,7 @@ for select using (
     roles: [],
   },
   {
-    id: 'policy-9',
+    id: 'policy-8',
     preview: false,
     templateName: '仅允许用户查看他们自己的数据',
     description: '限制用户仅查看自己的数据。',

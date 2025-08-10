@@ -409,11 +409,11 @@ supabase functions new hello-world
 //     description: `
 // 如果您有 GraphQL 使用经历，您可能会想知道是否可以在单个往返中获取您的数据。答案是肯定的！语法非常相似。这个例子展示了如何使用 Apollo GraphQL 和 Supabase 实现相同的功能。
 
-// 仍然想使用 GraphQL？
-// 如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要您的中间件可以连接到数据库，您就可以继续使用您喜爱的工具。您可以在 [设置](/project/[ref]/settings/database) 中找到数据库连接详细信息。
+// Still want GraphQL?
+// If you still want to use GraphQL, you can. Supabase provides you with a full Postgres database, so as long as your middleware can connect to the database then you can still use the tools you love. You can find the database connection details [in the settings](/project/[ref]/database/settings).
 // `,
 //     js: (apikey?: string, endpoint?: string) => `
-// // 使用 Apollo GraphQL
+// // With Apollo GraphQL
 // const { loading, error, data } = useQuery(gql\`
 //   query GetDogs {
 //     dogs {

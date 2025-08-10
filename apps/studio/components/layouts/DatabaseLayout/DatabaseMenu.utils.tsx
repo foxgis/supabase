@@ -85,7 +85,7 @@ export const generateDatabaseMenu = (
       ],
     },
     {
-      title: '访问控制',
+      title: '配置',
       items: [
         { name: '角色', key: 'roles', url: `/project/${ref}/database/roles`, items: [] },
         ...(columnLevelPrivileges
@@ -106,6 +106,7 @@ export const generateDatabaseMenu = (
           rightIcon: <ArrowUpRight strokeWidth={1} className="h-4 w-4" />,
           items: [],
         },
+        { name: 'Settings', key: 'settings', url: `/project/${ref}/database/settings`, items: [] },
       ],
     },
     // {

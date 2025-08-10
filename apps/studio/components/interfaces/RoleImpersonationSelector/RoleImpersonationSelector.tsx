@@ -59,7 +59,7 @@ const RoleImpersonationSelector = ({
   return (
     <>
       <div className={cn('flex flex-col gap-3', padded ? 'p-5' : 'pb-5')}>
-        <h2 className="text-foreground text-base">数据库角色设置</h2>
+        <p className="text-foreground text-base">数据库角色设置</p>
 
         <form
           onSubmit={(e) => {

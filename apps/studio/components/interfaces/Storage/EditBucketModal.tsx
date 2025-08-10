@@ -228,7 +228,7 @@ const EditBucketModal = ({ visible, bucket, onClose }: EditBucketModalProps) => 
                               <p className="text-foreground-light text-sm">
                                 注意：单个存储桶上传限制仍然服从于{' '}
                                 <Link
-                                  href={`/project/${ref}/settings/storage`}
+                                  href={`/project/${ref}/storage/settings`}
                                   className="font-bold underline"
                                 >
                                   全局上传限制

@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 
 import { useIsAdvisorRulesEnabled } from 'components/interfaces/App/FeaturePreview/FeaturePreviewContext'
 import { ProductMenu } from 'components/ui/ProductMenu'
-import { useSelectedProject } from 'hooks/misc/useSelectedProject'
+import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { withAuth } from 'hooks/misc/withAuth'
 import ProjectLayout from '../ProjectLayout/ProjectLayout'
 import { generateAdvisorsMenu } from './AdvisorsMenu.utils'
@@ -12,8 +12,8 @@ export interface AdvisorsLayoutProps {
   title?: string
 }
 
-const AdvisorsLayout = ({ children, title }: PropsWithChildren<AdvisorsLayoutProps>) => {
-  const project = useSelectedProject()
+const AdvisorsLayout = ({ title, children }: PropsWithChildren<AdvisorsLayoutProps>) => {
+  const { data: project } = useSelectedProjectQuery()
   const advisorRules = useIsAdvisorRulesEnabled()
 
   const router = useRouter()

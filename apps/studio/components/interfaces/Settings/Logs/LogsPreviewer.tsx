@@ -12,7 +12,7 @@ import useLogsPreview from 'hooks/analytics/useLogsPreview'
 import { useLogsUrlState } from 'hooks/analytics/useLogsUrlState'
 import { useSelectedLog } from 'hooks/analytics/useSelectedLog'
 import useSingleLog from 'hooks/analytics/useSingleLog'
-import { useSelectedOrganization } from 'hooks/misc/useSelectedOrganization'
+import { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'
 import { useUpgradePrompt } from 'hooks/misc/useUpgradePrompt'
 import { useFlag } from 'hooks/ui/useFlag'
 import { useDatabaseSelectorStateSnapshot } from 'state/database-selector'
@@ -64,7 +64,7 @@ export const LogsPreviewer = ({
 
   const router = useRouter()
   const { db } = useParams()
-  const organization = useSelectedOrganization()
+  const { data: organization } = useSelectedOrganizationQuery()
   const state = useDatabaseSelectorStateSnapshot()
 
   const [showChart, setShowChart] = useState(true)
@@ -271,7 +271,7 @@ export const LogsPreviewer = ({
               }}
               EmptyState={
                 <div className="flex flex-col items-center justify-center h-[67px]">
-                  <h2 className="text-foreground-light text-xs">无数据</h2>
+                  <p className="text-foreground-light text-xs">无数据</p>
                   <p className="text-foreground-lighter text-xs">
                     可能最多要24小时等待数据刷新
                   </p>

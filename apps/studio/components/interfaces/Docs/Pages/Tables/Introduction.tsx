@@ -61,10 +61,10 @@ const Introduction = ({ selectedLang }: IntroductionProps) => {
           </p>
           <h4>仍然想使用 GraphQL？</h4>
           <p>
-            如果您仍然想使用 GraphQL，可以的。Supabase 提供了一个完整的 Postgres 数据库，因此只要确保您的中间件可以连接到数据库，您就可以继续您喜欢的工具。
-            您可以在{' '}
-            <Link href={`/project/${projectRef}/settings/database`}>数据库设置</Link>{' '}
-            中找到数据库连接信息。
+            If you still want to use GraphQL, you can. Supabase provides you with a full Postgres
+            database, so as long as your middleware can connect to the database then you can still
+            use the tools you love. You can find the database connection details{' '}
+            <Link href={`/project/${projectRef}/database/settings`}>in the settings.</Link>
           </p>
         </article>
         <article className="code">

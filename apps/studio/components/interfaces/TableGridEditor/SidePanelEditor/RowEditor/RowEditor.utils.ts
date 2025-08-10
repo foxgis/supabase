@@ -93,7 +93,7 @@ export const validateFields = (fields: RowField[]) => {
       try {
         JSON.parse(field.value)
       } catch {
-        errors[field.name] = '不是一个有效的数组'
+        errors[field.name] = '不是有效的数组'
       }
     }
     if (field.format.includes('json') && (field.value?.length ?? 0) > 0) {
@@ -275,7 +275,11 @@ export const isValueTruncated = (value: string | null | undefined) => {
       (value.match(/","/g) || []).length === MAX_ARRAY_SIZE) ||
     // if the string represent a multi-dimentional array we always consider it as possibly truncated
     // so user load the whole value before edition
-    (typeof value === 'string' && value.startsWith('[["'))
+    (typeof value === 'string' && value.startsWith('[["')) ||
+    // [Joshen] For json arrays, refer to getTableRowsSql from table-row-query
+    // for array types, we're adding {"truncated": true} as the last item of the JSON to
+    // maintain the JSON array structure
+    (typeof value === 'string' && value.endsWith(',{"truncated":true}]'))
   )
 }
 
