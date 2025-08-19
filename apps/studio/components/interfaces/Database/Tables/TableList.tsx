@@ -20,9 +20,9 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { useParams } from 'common'
-import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
 import { ButtonTooltip } from 'components/ui/ButtonTooltip'
+import { DropdownMenuItemTooltip } from 'components/ui/DropdownMenuItemTooltip'
 import SchemaSelector from 'components/ui/SchemaSelector'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useDatabasePublicationsQuery } from 'data/database-publications/database-publications-query'
@@ -32,12 +32,13 @@ import { useMaterializedViewsQuery } from 'data/materialized-views/materialized-
 import { usePrefetchEditorTablePage } from 'data/prefetchers/project.$ref.editor.$id'
 import { useTablesQuery } from 'data/tables/tables-query'
 import { useViewsQuery } from 'data/views/views-query'
-import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
+import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { useIsProtectedSchema } from 'hooks/useProtectedSchemas'
 import {
   Button,
+  Card,
   Checkbox_Shadcn_,
   DropdownMenu,
   DropdownMenuContent,
@@ -52,6 +53,12 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  Table,
+  TableHeader,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
   cn,
 } from 'ui'
 import { ProtectedSchemaWarning } from '../ProtectedSchemaWarning'
@@ -64,7 +71,7 @@ interface TableListProps {
   onDuplicateTable: (table: PostgresTable) => void
 }
 
-const TableList = ({
+export const TableList = ({
   onDuplicateTable,
   onAddTable = noop,
   onEditTable = noop,
@@ -80,7 +87,11 @@ const TableList = ({
 
   const [filterString, setFilterString] = useState<string>('')
   const [visibleTypes, setVisibleTypes] = useState<string[]>(Object.values(ENTITY_TYPE))
-  const canUpdateTables = useCheckPermissions(PermissionAction.TENANT_SQL_ADMIN_WRITE, 'tables')
+
+  const { can: canUpdateTables } = useAsyncCheckProjectPermissions(
+    PermissionAction.TENANT_SQL_ADMIN_WRITE,
+    'tables'
+  )
 
   const {
     data: tables,
@@ -294,261 +305,265 @@ const TableList = ({
 
       {isSuccess && (
         <div className="w-full">
-          <Table
-            head={[
-              <Table.th key="icon" className="!px-0" />,
-              <Table.th key="name">名称</Table.th>,
-              <Table.th key="description" className="hidden lg:table-cell">
-                描述
-              </Table.th>,
-              <Table.th key="rows" className="hidden text-right xl:table-cell">
-                行数（估计）
-              </Table.th>,
-              <Table.th key="size" className="hidden text-right xl:table-cell">
-                大小（估计）
-              </Table.th>,
-              <Table.th key="realtime" className="hidden xl:table-cell text-center">
-                实时通信
-              </Table.th>,
-              <Table.th key="buttons"></Table.th>,
-            ]}
-            body={
-              <>
-                {entities.length === 0 && filterString.length === 0 && (
-                  <Table.tr key={selectedSchema}>
-                    <Table.td colSpan={7}>
-                      {visibleTypes.length === 0 ? (
-                        <>
-                          <p className="text-sm text-foreground">
-                            请至少选择一种表类型进行筛选
-                          </p>
-                          <p className="text-sm text-foreground-light">
-                            根据您选择的筛选条件未找到任何表
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-sm text-foreground">还未创建表</p>
-                          <p className="text-sm text-foreground-light">
-                            在模式 "{selectedSchema}" 中未找到任何
-                            {visibleTypes.length === 5
-                              ? '表'
-                              : visibleTypes.length === 1
-                                ? `${formatTooltipText(visibleTypes[0])}`
-                                : `${visibleTypes
-                                    .slice(0, -1)
-                                    .map((x) => `${formatTooltipText(x)}`)
-                                    .join(
-                                      '、'
-                                    )}和${formatTooltipText(visibleTypes[visibleTypes.length - 1])}`}
-                          </p>
-                        </>
-                      )}
-                    </Table.td>
-                  </Table.tr>
-                )}
-                {entities.length === 0 && filterString.length > 0 && (
-                  <Table.tr key={selectedSchema}>
-                    <Table.td colSpan={7}>
-                      <p className="text-sm text-foreground">未找到结果</p>
-                      <p className="text-sm text-foreground-light">
-                        您搜索的“{filterString}”没有返回任何结果
-                      </p>
-                    </Table.td>
-                  </Table.tr>
-                )}
-                {entities.length > 0 &&
-                  entities.map((x) => (
-                    <Table.tr key={x.id}>
-                      <Table.td className="!pl-5 !pr-1">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {x.type === ENTITY_TYPE.TABLE ? (
-                              <Table2
-                                size={15}
-                                strokeWidth={1.5}
-                                className="text-foreground-lighter"
-                              />
-                            ) : x.type === ENTITY_TYPE.VIEW ? (
-                              <Eye
-                                size={15}
-                                strokeWidth={1.5}
-                                className="text-foreground-lighter"
-                              />
-                            ) : (
-                              <div
-                                className={cn(
-                                  'flex items-center justify-center text-xs h-4 w-4 rounded-[2px] font-bold',
-                                  x.type === ENTITY_TYPE.FOREIGN_TABLE &&
-                                    'text-yellow-900 bg-yellow-500',
-                                  x.type === ENTITY_TYPE.MATERIALIZED_VIEW &&
-                                    'text-purple-1000 bg-purple-500'
-                                  // [Alaister]: tables endpoint doesn't distinguish between tables and partitioned tables
-                                  // once we update the endpoint to include partitioned tables, we can uncomment this
-                                  // x.type === ENTITY_TYPE.PARTITIONED_TABLE &&
-                                  //   'text-foreground-light bg-border-stronger'
-                                )}
-                              >
-                                {ENTITY_TYPE_LABELS[x.type]}
-                              </div>
-                            )}
-                          </TooltipTrigger>
-                          <TooltipContent side="bottom" className="capitalize">
-                            {formatTooltipText(x.type)}
-                          </TooltipContent>
-                        </Tooltip>
-                      </Table.td>
-                      <Table.td>
-                        {/* only show tooltips if required, to reduce noise */}
-                        {x.name.length > 20 ? (
-                          <Tooltip disableHoverableContent={true}>
-                            <TooltipTrigger
-                              asChild
-                              className="max-w-[95%] overflow-hidden text-ellipsis whitespace-nowrap"
-                            >
-                              <p>{x.name}</p>
-                            </TooltipTrigger>
-
-                            <TooltipContent side="bottom">{x.name}</TooltipContent>
-                          </Tooltip>
+          <Card>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead key="icon" className="!px-0" />
+                  <TableHead key="name">名称</TableHead>
+                  <TableHead key="description" className="hidden lg:table-cell">
+                    描述
+                  </TableHead>
+                  <TableHead key="rows" className="hidden text-right xl:table-cell">
+                    行数 (估算值)
+                  </TableHead>
+                  <TableHead key="size" className="hidden text-right xl:table-cell">
+                    大小 (估算)
+                  </TableHead>
+                  <TableHead key="realtime" className="hidden xl:table-cell text-center">
+                    启用实时消息
+                  </TableHead>
+                  <TableHead key="buttons"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <>
+                  {entities.length === 0 && filterString.length === 0 && (
+                    <TableRow key={selectedSchema}>
+                      <TableCell colSpan={7}>
+                        {visibleTypes.length === 0 ? (
+                          <>
+                            <p className="text-sm text-foreground">
+                              请选择至少一种实体类型进行筛选
+                            </p>
+                            <p className="text-sm text-foreground-light">
+                              基于您选择的实体类型，当前没有结果
+                            </p>
+                          </>
                         ) : (
-                          <p>{x.name}</p>
+                          <>
+                            <p className="text-sm text-foreground">还未创建表</p>
+                            <p className="text-sm text-foreground-light">
+                              在模式 "{selectedSchema}" 中没有找到{' '}
+                              {visibleTypes.length === 5
+                                ? '表'
+                                : visibleTypes.length === 1
+                                  ? `${formatTooltipText(visibleTypes[0])}`
+                                  : `${visibleTypes
+                                      .slice(0, -1)
+                                      .map((x) => `${formatTooltipText(x)}`)
+                                      .join(
+                                        '、'
+                                      )}和${formatTooltipText(visibleTypes[visibleTypes.length - 1])}`}{' '}
+                            </p>
+                          </>
                         )}
-                      </Table.td>
-                      <Table.td className="hidden lg:table-cell ">
-                        {x.comment !== null ? (
-                          <span className="lg:max-w-40 truncate inline-block" title={x.comment}>
-                            {x.comment}
-                          </span>
-                        ) : (
-                          <p className="text-border-stronger">无描述信息</p>
-                        )}
-                      </Table.td>
-                      <Table.td className="hidden text-right xl:table-cell">
-                        {x.rows !== undefined ? x.rows.toLocaleString() : '-'}
-                      </Table.td>
-                      <Table.td className="hidden text-right xl:table-cell">
-                        {x.size !== undefined ? <code className="text-xs">{x.size}</code> : '-'}
-                      </Table.td>
-                      <Table.td className="hidden xl:table-cell text-center">
-                        {(realtimePublication?.tables ?? []).find((table) => table.id === x.id) ? (
-                          <div className="flex justify-center">
-                            <Check size={18} strokeWidth={2} className="text-brand" />
-                          </div>
-                        ) : (
-                          <div className="flex justify-center">
-                            <X size={18} strokeWidth={2} className="text-foreground-lighter" />
-                          </div>
-                        )}
-                      </Table.td>
-                      <Table.td>
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            asChild
-                            type="default"
-                            iconRight={<Columns size={14} className="text-foreground-light" />}
-                            className="whitespace-nowrap hover:border-muted"
-                            style={{ paddingTop: 3, paddingBottom: 3 }}
-                          >
-                            <Link href={`/project/${ref}/database/tables/${x.id}`}>
-                              {x.columns.length} 列
-                            </Link>
-                          </Button>
-
-                          {!isSchemaLocked && (
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button type="default" className="px-1" icon={<MoreVertical />} />
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent side="bottom" align="end" className="w-40">
-                                <DropdownMenuItem
-                                  className="flex items-center space-x-2"
-                                  onClick={() =>
-                                    router.push(`/project/${project?.ref}/editor/${x.id}`)
-                                  }
-                                  onMouseEnter={() =>
-                                    prefetchEditorTablePage({ id: x.id ? String(x.id) : undefined })
-                                  }
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {entities.length === 0 && filterString.length > 0 && (
+                    <TableRow key={selectedSchema}>
+                      <TableCell colSpan={7}>
+                        <p className="text-sm text-foreground">未找到结果</p>
+                        <p className="text-sm text-foreground-light">
+                          您搜索的 "{filterString}" 没有返回任何结果
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {entities.length > 0 &&
+                    entities.map((x) => (
+                      <TableRow key={x.id}>
+                        <TableCell className="!pl-5 !pr-1">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              {x.type === ENTITY_TYPE.TABLE ? (
+                                <Table2
+                                  size={15}
+                                  strokeWidth={1.5}
+                                  className="text-foreground-lighter"
+                                />
+                              ) : x.type === ENTITY_TYPE.VIEW ? (
+                                <Eye
+                                  size={15}
+                                  strokeWidth={1.5}
+                                  className="text-foreground-lighter"
+                                />
+                              ) : (
+                                <div
+                                  className={cn(
+                                    'flex items-center justify-center text-xs h-4 w-4 rounded-[2px] font-bold',
+                                    x.type === ENTITY_TYPE.FOREIGN_TABLE &&
+                                      'text-yellow-900 bg-yellow-500',
+                                    x.type === ENTITY_TYPE.MATERIALIZED_VIEW &&
+                                      'text-purple-1000 bg-purple-500'
+                                    // [Alaister]: tables endpoint doesn't distinguish between tables and partitioned tables
+                                    // once we update the endpoint to include partitioned tables, we can uncomment this
+                                    // x.type === ENTITY_TYPE.PARTITIONED_TABLE &&
+                                    //   'text-foreground-light bg-border-stronger'
+                                  )}
                                 >
-                                  <Eye size={12} />
-                                  <p>在数据管理中查看</p>
-                                </DropdownMenuItem>
+                                  {Object.entries(ENTITY_TYPE)
+                                    .find(([, value]) => value === x.type)?.[0]?.[0]
+                                    ?.toUpperCase()}
+                                </div>
+                              )}
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="capitalize">
+                              {formatTooltipText(x.type)}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>
+                          {/* only show tooltips if required, to reduce noise */}
+                          {x.name.length > 20 ? (
+                            <Tooltip disableHoverableContent={true}>
+                              <TooltipTrigger
+                                asChild
+                                className="max-w-[95%] overflow-hidden text-ellipsis whitespace-nowrap"
+                              >
+                                <p>{x.name}</p>
+                              </TooltipTrigger>
 
-                                {x.type === ENTITY_TYPE.TABLE && (
-                                  <>
-                                    <DropdownMenuSeparator />
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <DropdownMenuItem
-                                          className="!pointer-events-auto gap-x-2"
-                                          disabled={!canUpdateTables}
-                                          onClick={() => {
-                                            if (canUpdateTables) onEditTable(x)
-                                          }}
-                                        >
-                                          <Edit size={12} />
-                                          <p>编辑表</p>
-                                        </DropdownMenuItem>
-                                      </TooltipTrigger>
-                                      {!canUpdateTables && (
-                                        <TooltipContent side="left">
-                                          您需要额外的权限才能编辑表
-                                        </TooltipContent>
-                                      )}
-                                    </Tooltip>
-                                    <DropdownMenuItem
-                                      key="duplicate-table"
-                                      className="space-x-2"
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        if (canUpdateTables) {
-                                          onDuplicateTable(x)
-                                        }
-                                      }}
-                                    >
-                                      <Copy size={12} />
-                                      <span>复制表</span>
-                                    </DropdownMenuItem>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <DropdownMenuItem
-                                          disabled={!canUpdateTables || isSchemaLocked}
-                                          className="!pointer-events-auto gap-x-2"
-                                          onClick={() => {
-                                            if (canUpdateTables && !isSchemaLocked) {
-                                              onDeleteTable({
-                                                ...x,
-                                                schema: selectedSchema,
-                                              })
-                                            }
-                                          }}
-                                        >
-                                          <Trash stroke="red" size={12} />
-                                          <p>删除表</p>
-                                        </DropdownMenuItem>
-                                      </TooltipTrigger>
-                                      {!canUpdateTables && (
-                                        <TooltipContent side="left">
-                                          您需要额外的权限才能删除表
-                                        </TooltipContent>
-                                      )}
-                                    </Tooltip>
-                                  </>
-                                )}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                              <TooltipContent side="bottom">{x.name}</TooltipContent>
+                            </Tooltip>
+                          ) : (
+                            <p>{x.name}</p>
                           )}
-                        </div>
-                      </Table.td>
-                    </Table.tr>
-                  ))}
-              </>
-            }
-          />
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell ">
+                          {x.comment !== null ? (
+                            <span className="lg:max-w-48 truncate inline-block" title={x.comment}>
+                              {x.comment}
+                            </span>
+                          ) : (
+                            <p className="text-border-stronger">No description</p>
+                          )}
+                        </TableCell>
+                        <TableCell className="hidden text-right xl:table-cell">
+                          {x.rows !== undefined ? x.rows.toLocaleString() : '-'}
+                        </TableCell>
+                        <TableCell className="hidden text-right xl:table-cell">
+                          {x.size !== undefined ? <code className="text-xs">{x.size}</code> : '-'}
+                        </TableCell>
+                        <TableCell className="hidden xl:table-cell text-center">
+                          {(realtimePublication?.tables ?? []).find(
+                            (table) => table.id === x.id
+                          ) ? (
+                            <div className="flex justify-center">
+                              <Check size={18} strokeWidth={2} className="text-brand" />
+                            </div>
+                          ) : (
+                            <div className="flex justify-center">
+                              <X size={18} strokeWidth={2} className="text-foreground-lighter" />
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              asChild
+                              type="default"
+                              iconRight={<Columns size={14} className="text-foreground-light" />}
+                              className="whitespace-nowrap hover:border-muted"
+                              style={{ paddingTop: 3, paddingBottom: 3 }}
+                            >
+                              <Link href={`/project/${ref}/database/tables/${x.id}`}>
+                                {x.columns.length} columns
+                              </Link>
+                            </Button>
+
+                            {!isSchemaLocked && (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button type="default" className="px-1" icon={<MoreVertical />} />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent side="bottom" align="end" className="w-40">
+                                  <DropdownMenuItem
+                                    className="flex items-center space-x-2"
+                                    onClick={() =>
+                                      router.push(`/project/${project?.ref}/editor/${x.id}`)
+                                    }
+                                    onMouseEnter={() =>
+                                      prefetchEditorTablePage({
+                                        id: x.id ? String(x.id) : undefined,
+                                      })
+                                    }
+                                  >
+                                    <Eye size={12} />
+                                    <p>View in Table Editor</p>
+                                  </DropdownMenuItem>
+
+                                  {x.type === ENTITY_TYPE.TABLE && (
+                                    <>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItemTooltip
+                                        className="gap-x-2"
+                                        disabled={!canUpdateTables}
+                                        onClick={() => {
+                                          if (canUpdateTables) onEditTable(x)
+                                        }}
+                                        tooltip={{
+                                          content: {
+                                            side: 'left',
+                                            text: 'You need additional permissions to edit this table',
+                                          },
+                                        }}
+                                      >
+                                        <Edit size={12} />
+                                        <p>Edit table</p>
+                                      </DropdownMenuItemTooltip>
+                                      <DropdownMenuItemTooltip
+                                        key="duplicate-table"
+                                        className="gap-x-2"
+                                        disabled={!canUpdateTables}
+                                        onClick={() => {
+                                          if (canUpdateTables) onDuplicateTable(x)
+                                        }}
+                                        tooltip={{
+                                          content: {
+                                            side: 'left',
+                                            text: 'You need additional permissions to duplicate tables',
+                                          },
+                                        }}
+                                      >
+                                        <Copy size={12} />
+                                        <span>Duplicate Table</span>
+                                      </DropdownMenuItemTooltip>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItemTooltip
+                                        disabled={!canUpdateTables || isSchemaLocked}
+                                        className="gap-x-2"
+                                        onClick={() => {
+                                          if (canUpdateTables && !isSchemaLocked) {
+                                            onDeleteTable({ ...x, schema: selectedSchema })
+                                          }
+                                        }}
+                                        tooltip={{
+                                          content: {
+                                            side: 'left',
+                                            text: 'You need additional permissions to delete tables',
+                                          },
+                                        }}
+                                      >
+                                        <Trash size={12} />
+                                        <p>Delete table</p>
+                                      </DropdownMenuItemTooltip>
+                                    </>
+                                  )}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </>
+              </TableBody>
+            </Table>
+          </Card>
         </div>
       )}
     </div>
   )
 }
-
-export default TableList

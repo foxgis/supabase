@@ -4,7 +4,17 @@ import { toast } from 'sonner'
 import { useBucketEmptyMutation } from 'data/storage/bucket-empty-mutation'
 import type { Bucket } from 'data/storage/buckets-query'
 import { useStorageExplorerStateSnapshot } from 'state/storage-explorer'
-import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogTitle,
+  DialogContent,
+  DialogSection,
+  DialogSectionSeparator,
+  DialogFooter,
+} from 'ui'
+import { Admonition } from 'ui-patterns'
 
 export interface EmptyBucketModalProps {
   visible: boolean
@@ -12,7 +22,7 @@ export interface EmptyBucketModalProps {
   onClose: () => void
 }
 
-export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBucketModalProps) => {
+export const EmptyBucketModal = ({ visible, bucket, onClose }: EmptyBucketModalProps) => {
   const { ref: projectRef } = useParams()
   const { fetchFolderContents } = useStorageExplorerStateSnapshot()
 
@@ -37,21 +47,38 @@ export const EmptyBucketModal = ({ visible = false, bucket, onClose }: EmptyBuck
   }
 
   return (
-    <ConfirmationModal
-      variant={'destructive'}
-      size="small"
-      title={`确认要清空存储桶 "${bucket?.name}" 中的所有内容？`}
-      confirmLabel="清空存储桶"
-      visible={visible}
-      loading={isLoading}
-      onCancel={() => onClose()}
-      onConfirm={onEmptyBucket}
-      alert={{
-        title: '本操作无法撤销',
-        description: '存储桶中的内容一旦删除，无法恢复',
+    <Dialog
+      open={visible}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose()
+        }
       }}
     >
-      <p className="text-sm">您确定要清空存储桶 "{bucket?.name}" ？</p>
-    </ConfirmationModal>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{`确认删除 ${bucket?.name} 中的所有内容`}</DialogTitle>
+        </DialogHeader>
+        <DialogSectionSeparator />
+        <DialogSection className="flex flex-col gap-4">
+          <Admonition
+            type="destructive"
+            title="此操作无法撤销"
+            description="删除存储桶后，其中的内容将无法恢复。"
+          />
+          <p className="text-sm">您确定要清空存储桶 "{bucket?.name}" 吗？</p>
+        </DialogSection>
+        <DialogFooter>
+          <Button type="default" disabled={isLoading} onClick={onClose}>
+            取消
+          </Button>
+          <Button type="danger" loading={isLoading} onClick={onEmptyBucket}>
+            清空存储桶
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
+
+export default EmptyBucketModal

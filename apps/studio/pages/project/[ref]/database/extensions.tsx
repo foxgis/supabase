@@ -4,37 +4,37 @@ import { Extensions } from 'components/interfaces/Database'
 import DatabaseLayout from 'components/layouts/DatabaseLayout/DatabaseLayout'
 import DefaultLayout from 'components/layouts/DefaultLayout'
 import { ScaffoldContainer, ScaffoldSection } from 'components/layouts/Scaffold'
-import { FormHeader } from 'components/ui/Forms/FormHeader'
+import { PageLayout } from 'components/layouts/PageLayout/PageLayout'
 import NoPermission from 'components/ui/NoPermission'
-import { useCheckPermissions, usePermissionsLoaded } from 'hooks/misc/useCheckPermissions'
+import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
 import type { NextPageWithLayout } from 'types'
 
 const DatabaseExtensions: NextPageWithLayout = () => {
-  const canReadExtensions = useCheckPermissions(
-    PermissionAction.TENANT_SQL_ADMIN_READ,
-    'extensions'
-  )
-  const isPermissionsLoaded = usePermissionsLoaded()
+  const { can: canReadExtensions, isSuccess: isPermissionsLoaded } =
+    useAsyncCheckProjectPermissions(PermissionAction.TENANT_SQL_ADMIN_READ, 'extensions')
 
   if (isPermissionsLoaded && !canReadExtensions) {
     return <NoPermission isFullPage resourceText="查看数据库扩展" />
   }
 
   return (
-    <ScaffoldContainer>
-      <ScaffoldSection>
-        <div className="col-span-12">
-          <FormHeader title="数据库扩展" />
+    <PageLayout
+      size="large"
+      title="数据库扩展"
+      subtitle="管理数据库中安装的扩展"
+    >
+      <ScaffoldContainer size="large">
+        <ScaffoldSection isFullWidth>
           <Extensions />
-        </div>
-      </ScaffoldSection>
-    </ScaffoldContainer>
+        </ScaffoldSection>
+      </ScaffoldContainer>
+    </PageLayout>
   )
 }
 
 DatabaseExtensions.getLayout = (page) => (
   <DefaultLayout>
-    <DatabaseLayout title="Database">{page}</DatabaseLayout>
+    <DatabaseLayout title="数据库扩展">{page}</DatabaseLayout>
   </DefaultLayout>
 )
 

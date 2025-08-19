@@ -229,21 +229,22 @@ limit 100
     description: '检查在 Storage Affecting Egress 上的请求数',
     mode: 'custom',
     searchString: `select
-    r.method as http_verb,
-    r.path as filepath,
-    count(*) as num_requests,
-  from edge_logs
-    cross join unnest(metadata) as m
-    cross join unnest(m.request) AS r
-    cross join unnest(r.headers) AS h
-  where
-    (path like '%storage/v1/object/%' or path like '%storage/v1/render/%')
-    and r.method = 'GET'
-  group by
-    r.path, r.method
-  order by
-    num_requests desc
-  limit 100
+  request.method as http_verb,
+  request.path as filepath,
+  (responseHeaders.cf_cache_status = 'HIT') as cached,
+  count(*) as num_requests
+from
+  edge_logs
+  cross join unnest(metadata) as metadata
+  cross join unnest(metadata.request) as request
+  cross join unnest(metadata.response) as response
+  cross join unnest(response.headers) as responseHeaders
+where
+  (path like '%storage/v1/object/%' or path like '%storage/v1/render/%')
+  and request.method = 'GET'
+group by 1, 2, 3
+order by num_requests desc
+limit 100;
 `,
     for: ['api'],
   },
@@ -265,7 +266,7 @@ where starts_with(r.path, '/storage/v1/object')
   and h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
 group by path, search
 order by count desc
-limit 100
+limit 100;
 `,
     for: ['api'],
   },
@@ -371,6 +372,7 @@ export enum LogsTableName {
   PGBOUNCER = 'pgbouncer_logs',
   PG_UPGRADE = 'pg_upgrade_logs',
   PG_CRON = 'pg_cron_logs',
+  ETL = 'etl_replication_logs',
 }
 
 export const LOGS_TABLES = {
@@ -386,6 +388,7 @@ export const LOGS_TABLES = {
   pg_upgrade: LogsTableName.PG_UPGRADE,
   pg_cron: LogsTableName.POSTGRES,
   pgbouncer: LogsTableName.PGBOUNCER,
+  etl: LogsTableName.ETL,
 }
 
 export const LOGS_SOURCE_DESCRIPTION = {
@@ -401,6 +404,7 @@ export const LOGS_SOURCE_DESCRIPTION = {
   [LogsTableName.PGBOUNCER]: '数据库连接池（pgbouncer）日志',
   [LogsTableName.PG_UPGRADE]: '数据库升级日志',
   [LogsTableName.PG_CRON]: '定时任务日志',
+  [LogsTableName.ETL]: 'ETL 日志',
 }
 
 export const FILTER_OPTIONS: FilterTableSet = {

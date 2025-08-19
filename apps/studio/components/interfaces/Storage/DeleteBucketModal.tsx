@@ -1,26 +1,57 @@
-import { useParams } from 'common'
 import { get as _get, find } from 'lodash'
 import { useRouter } from 'next/router'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 import { toast } from 'sonner'
 
+import { useParams } from 'common'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
 import { useDatabasePolicyDeleteMutation } from 'data/database-policies/database-policy-delete-mutation'
 import { useBucketDeleteMutation } from 'data/storage/bucket-delete-mutation'
 import { Bucket, useBucketsQuery } from 'data/storage/buckets-query'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
-import TextConfirmModal from 'ui-patterns/Dialogs/TextConfirmModal'
 import { formatPoliciesForStorage } from './Storage.utils'
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogSectionSeparator,
+  DialogTitle,
+  Form_Shadcn_,
+  FormControl_Shadcn_,
+  FormField_Shadcn_,
+  Input_Shadcn_,
+  Label_Shadcn_,
+} from 'ui'
+import { Admonition } from 'ui-patterns'
+import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
 
 export interface DeleteBucketModalProps {
   visible: boolean
-  bucket?: Bucket
+  bucket: Bucket
   onClose: () => void
 }
 
-const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketModalProps) => {
+const formId = `delete-storage-bucket-form`
+
+export const DeleteBucketModal = ({ visible, bucket, onClose }: DeleteBucketModalProps) => {
   const router = useRouter()
   const { ref: projectRef } = useParams()
   const { data: project } = useSelectedProjectQuery()
+
+  const schema = z.object({
+    confirm: z.literal(bucket.name, {
+      errorMap: () => ({ message: `Please enter "${bucket.name}" to confirm` }),
+    }),
+  })
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  })
 
   const { data } = useBucketsQuery({ projectRef })
   const { data: policies } = useDatabasePoliciesQuery({
@@ -30,7 +61,7 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
   })
   const { mutateAsync: deletePolicy } = useDatabasePolicyDeleteMutation()
 
-  const { mutate: deleteBucket, isLoading: isDeleting } = useBucketDeleteMutation({
+  const { mutate: deleteBucket, isLoading } = useBucketDeleteMutation({
     onSuccess: async () => {
       if (!project) return console.error('未找到项目')
 
@@ -41,7 +72,7 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
         storageObjectsPolicies
       )
       const bucketPolicies = _get(
-        find(formattedStorageObjectPolicies, { name: bucket!.name }),
+        find(formattedStorageObjectPolicies, { name: bucket.name }),
         ['policies'],
         []
       )
@@ -57,12 +88,12 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
           )
         )
 
-        toast.success(`成功删除了存储桶 ${bucket?.name}`)
+        toast.success(`成功删除了存储桶 ${bucket.name}`)
         router.push(`/project/${projectRef}/storage/buckets`)
         onClose()
       } catch (error) {
-        toast.error(
-          `成功删除了存储桶 ${bucket?.name}。然而，删除存储桶所关联的策略时出现了问题。请在存储策略模块中查看它们。`
+        toast.success(
+          `成功删除了存储桶 ${bucket.name}。然而，删除存储桶所关联的策略时出现了问题。请在存储策略模块中查看它们。`
         )
       }
     },
@@ -70,33 +101,81 @@ const DeleteBucketModal = ({ visible = false, bucket, onClose }: DeleteBucketMod
 
   const buckets = data ?? []
 
-  const onDeleteBucket = async () => {
+  const onSubmit: SubmitHandler<z.infer<typeof schema>> = async () => {
     if (!projectRef) return console.error('未找到项目号')
     if (!bucket) return console.error('未选中存储桶')
     deleteBucket({ projectRef, id: bucket.id, type: bucket.type })
   }
 
   return (
-    <TextConfirmModal
-      variant={'destructive'}
-      visible={visible}
-      title={`确认删除 ${bucket?.name}`}
-      confirmPlaceholder="输入存储桶名称"
-      onConfirm={onDeleteBucket}
-      onCancel={onClose}
-      confirmString={bucket?.name ?? ''}
-      loading={isDeleting}
-      text={
-        <>
-          您将永久删除存储桶 <span className="font-bold text-foreground">{bucket?.name}</span> 及其所有内容。
-        </>
-      }
-      alert={{
-        title: '一旦删除，您将无法恢复此存储桶。',
-        description: '所有存储桶数据都会丢失。',
+    <Dialog
+      open={visible}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose()
+        }
       }}
-      confirmLabel="删除存储桶"
-    />
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{`确认删除 ${bucket.name}`}</DialogTitle>
+        </DialogHeader>
+        <DialogSectionSeparator />
+        <DialogSection className="flex flex-col gap-4">
+          <Admonition
+            type="destructive"
+            title="删除后无法恢复"
+            description="存储桶中的所有数据将被永久删除。"
+          />
+          <p>
+            存储桶 <span className="font-bold text-foreground">{bucket.name}</span> 及其所有内容将被永久删除。
+          </p>
+        </DialogSection>
+        <DialogSectionSeparator />
+        <DialogSection>
+          <Form_Shadcn_ {...form}>
+            <form
+              id={formId}
+              className="flex flex-col gap-4"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              <FormField_Shadcn_
+                key="confirm"
+                name="confirm"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItemLayout
+                    name="confirm"
+                    label={
+                      <>
+                        输入 <span className="font-bold text-foreground">{bucket.name}</span> 以确认删除。
+                      </>
+                    }
+                  >
+                    <FormControl_Shadcn_>
+                      <Input_Shadcn_
+                        id="confirm"
+                        autoComplete="off"
+                        {...field}
+                        placeholder={`输入存储桶的名称`}
+                      />
+                    </FormControl_Shadcn_>
+                  </FormItemLayout>
+                )}
+              />
+            </form>
+          </Form_Shadcn_>
+        </DialogSection>
+        <DialogFooter>
+          <Button type="default" disabled={isLoading} onClick={onClose}>
+            取消
+          </Button>
+          <Button form={formId} htmlType="submit" type="danger" loading={isLoading}>
+            删除存储桶
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 

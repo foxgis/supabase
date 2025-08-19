@@ -4,14 +4,13 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { useParams } from 'common'
-import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
 import NoPermission from 'components/ui/NoPermission'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useSecretsDeleteMutation } from 'data/secrets/secrets-delete-mutation'
 import { ProjectSecret, useSecretsQuery } from 'data/secrets/secrets-query'
-import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
-import { Badge, Separator } from 'ui'
+import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
+import { Badge, Card, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'ui'
 import { Input } from 'ui-patterns/DataInputs/Input'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import AddNewSecretForm from './AddNewSecretForm'
@@ -22,8 +21,14 @@ const EdgeFunctionSecrets = () => {
   const [searchString, setSearchString] = useState('')
   const [selectedSecret, setSelectedSecret] = useState<ProjectSecret>()
 
-  const canReadSecrets = useCheckPermissions(PermissionAction.SECRETS_READ, '*')
-  const canUpdateSecrets = useCheckPermissions(PermissionAction.SECRETS_WRITE, '*')
+  const { can: canReadSecrets, isLoading: isLoadingPermissions } = useAsyncCheckProjectPermissions(
+    PermissionAction.SECRETS_READ,
+    '*'
+  )
+  const { can: canUpdateSecrets } = useAsyncCheckProjectPermissions(
+    PermissionAction.SECRETS_WRITE,
+    '*'
+  )
 
   const { data, error, isLoading, isSuccess, isError } = useSecretsQuery({
     projectRef: projectRef,
@@ -31,7 +36,7 @@ const EdgeFunctionSecrets = () => {
 
   const { mutate: deleteSecret, isLoading: isDeleting } = useSecretsDeleteMutation({
     onSuccess: () => {
-      toast.success(`Successfully deleted ${selectedSecret?.name}`)
+      toast.success(`成功删除了 ${selectedSecret?.name}`)
       setSelectedSecret(undefined)
     },
   })
@@ -43,82 +48,89 @@ const EdgeFunctionSecrets = () => {
       : data ?? []
 
   const headers = [
-    <Table.th key="secret-name">Name</Table.th>,
-    <Table.th key="secret-value" className="flex items-center gap-x-2">
-      Digest{' '}
+    <TableHead key="secret-name">名称</TableHead>,
+    <TableHead key="secret-value" className="flex items-center gap-x-2">
+      摘要{' '}
       <Badge color="scale" className="font-mono">
         SHA256
       </Badge>
-    </Table.th>,
-    <Table.th key="secret-updated-at">Updated at</Table.th>,
-    <Table.th key="actions" />,
+    </TableHead>,
+    <TableHead key="secret-updated-at">更新时间</TableHead>,
+    <TableHead key="actions" />,
   ]
 
   return (
     <>
-      {isLoading && <GenericSkeletonLoader />}
-      {isError && <AlertError error={error} subject="获取密钥失败" />}
-      {isSuccess && (
+      {isLoading || isLoadingPermissions ? (
+        <GenericSkeletonLoader />
+      ) : (
         <>
-          {!canUpdateSecrets ? (
-            <NoPermission resourceText="管理云函数密钥" />
-          ) : (
-            <div className="grid gap-5">
-              <AddNewSecretForm />
-              <Separator />
-            </div>
-          )}
-          {canUpdateSecrets && !canReadSecrets ? (
-            <NoPermission resourceText="查看云函数密钥" />
-          ) : canReadSecrets ? (
-            <div className="space-y-4 mt-4">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                <Input
-                  size="small"
-                  className="w-full md:w-80"
-                  placeholder="查找密钥"
-                  value={searchString}
-                  onChange={(e: any) => setSearchString(e.target.value)}
-                  icon={<Search size={14} />}
-                />
-              </div>
+          {isError && <AlertError error={error} subject="获取密钥失败" />}
 
-              <div className="w-full overflow-hidden overflow-x-auto">
-                <Table
-                  head={headers}
-                  body={
-                    secrets.length > 0 ? (
-                      secrets.map((secret) => (
-                        <EdgeFunctionSecret
-                          key={secret.name}
-                          secret={secret}
-                          onSelectDelete={() => setSelectedSecret(secret)}
-                        />
-                      ))
-                    ) : secrets.length === 0 && searchString.length > 0 ? (
-                      <Table.tr>
-                        <Table.td colSpan={headers.length}>
-                          <p className="text-sm text-foreground">未找到结果</p>
-                          <p className="text-sm text-foreground-light">
-                            您搜索的“{searchString}”未找到任何结果
-                          </p>
-                        </Table.td>
-                      </Table.tr>
-                    ) : (
-                      <Table.tr>
-                        <Table.td colSpan={headers.length}>
-                          <p className="text-sm text-foreground">未创建密钥</p>
-                          <p className="text-sm text-foreground-light">
-                            您的项目还没有任何密钥
-                          </p>
-                        </Table.td>
-                      </Table.tr>
-                    )
-                  }
-                />
+          {isSuccess && (
+            <>
+              <div className="mb-6">
+                {!canUpdateSecrets ? (
+                  <NoPermission resourceText="管理密钥" />
+                ) : (
+                  <AddNewSecretForm />
+                )}
               </div>
-            </div>
-          ) : null}
+              {canUpdateSecrets && !canReadSecrets ? (
+                <NoPermission resourceText="查看云函数的密钥" />
+              ) : canReadSecrets ? (
+                <div className="space-y-4 mt-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                    <Input
+                      size="small"
+                      className="w-full md:w-80"
+                      placeholder="Search for a secret"
+                      value={searchString}
+                      onChange={(e: any) => setSearchString(e.target.value)}
+                      icon={<Search size={14} />}
+                    />
+                  </div>
+
+                  <Card>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>{headers}</TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {secrets.length > 0 ? (
+                          secrets.map((secret) => (
+                            <EdgeFunctionSecret
+                              key={secret.name}
+                              secret={secret}
+                              onSelectDelete={() => setSelectedSecret(secret)}
+                            />
+                          ))
+                        ) : secrets.length === 0 && searchString.length > 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={headers.length}>
+                              <p className="text-sm text-foreground">未找到结果</p>
+                              <p className="text-sm text-foreground-light">
+                                您搜索的“{searchString}”未返回任何结果
+                              </p>
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={headers.length}>
+                              <p className="text-sm text-foreground">还未创建密钥</p>
+                              <p className="text-sm text-foreground-light">
+                                当前无密钥。
+                              </p>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </Card>
+                </div>
+              ) : null}
+            </>
+          )}
         </>
       )}
 

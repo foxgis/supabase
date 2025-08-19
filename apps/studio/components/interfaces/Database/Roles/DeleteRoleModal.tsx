@@ -11,7 +11,7 @@ interface DeleteRoleModalProps {
   onClose: () => void
 }
 
-const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
+export const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
   const { data: project } = useSelectedProjectQuery()
 
   const { mutate: deleteDatabaseRole, isLoading: isDeleting } = useDatabaseRoleDeleteMutation({
@@ -49,5 +49,3 @@ const DeleteRoleModal = ({ role, visible, onClose }: DeleteRoleModalProps) => {
     </Modal>
   )
 }
-
-export default DeleteRoleModal

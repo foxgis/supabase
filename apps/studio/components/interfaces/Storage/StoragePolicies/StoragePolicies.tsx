@@ -4,18 +4,23 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import PolicyEditorModal from 'components/interfaces/Auth/Policies/PolicyEditorModal'
+import {
+  ScaffoldSection,
+  ScaffoldSectionDescription,
+  ScaffoldSectionTitle,
+} from 'components/layouts/Scaffold'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
 import { useDatabasePolicyCreateMutation } from 'data/database-policies/database-policy-create-mutation'
 import { useDatabasePolicyDeleteMutation } from 'data/database-policies/database-policy-delete-mutation'
 import { useDatabasePolicyUpdateMutation } from 'data/database-policies/database-policy-update-mutation'
 import { useBucketsQuery } from 'data/storage/buckets-query'
+import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { Loader } from 'lucide-react'
 import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
 import { formatPoliciesForStorage } from '../Storage.utils'
 import StoragePoliciesBucketRow from './StoragePoliciesBucketRow'
 import StoragePoliciesEditPolicyModal from './StoragePoliciesEditPolicyModal'
 import StoragePoliciesPlaceholder from './StoragePoliciesPlaceholder'
-import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 
 const StoragePolicies = () => {
   const { data: project } = useSelectedProjectQuery()
@@ -176,65 +181,72 @@ const StoragePolicies = () => {
 
   return (
     <div className="flex min-h-full w-full flex-col">
-      <h3 className="text-xl">存储策略</h3>
-      <p className="mt-2 text-sm text-foreground-light">
-        通过策略定义存储桶级别所允许的操作来保护您的文件。
-      </p>
-
       {isLoading ? (
         <div className="flex h-full items-center justify-center">
           <Loader className="animate-spin" size={16} />
         </div>
       ) : (
-        <div className="mt-4 space-y-4">
-          {buckets.length === 0 && <StoragePoliciesPlaceholder />}
+        <div>
+          <ScaffoldSection isFullWidth>
+            <ScaffoldSectionTitle>存储桶</ScaffoldSectionTitle>
+            <ScaffoldSectionDescription className="mb-6">
+              为每个存储桶编写访问策略以控制对存储桶及其内容的访问
+            </ScaffoldSectionDescription>
+            {buckets.length === 0 && <StoragePoliciesPlaceholder />}
 
-          {/* Sections for policies grouped by buckets */}
-          {buckets.map((bucket) => {
-            const bucketPolicies = get(
-              find(formattedStorageObjectPolicies, { name: bucket.name }),
-              ['policies'],
-              []
-            ).sort((a: any, b: any) => a.name.localeCompare(b.name))
+            {/* Sections for policies grouped by buckets */}
+            <div className="flex flex-col gap-y-4">
+              {buckets.map((bucket) => {
+                const bucketPolicies = get(
+                  find(formattedStorageObjectPolicies, { name: bucket.name }),
+                  ['policies'],
+                  []
+                ).sort((a: any, b: any) => a.name.localeCompare(b.name))
 
-            return (
+                return (
+                  <StoragePoliciesBucketRow
+                    key={bucket.name}
+                    table="objects"
+                    label={bucket.name}
+                    bucket={bucket}
+                    policies={bucketPolicies}
+                    onSelectPolicyAdd={onSelectPolicyAdd}
+                    onSelectPolicyEdit={onSelectPolicyEdit}
+                    onSelectPolicyDelete={onSelectPolicyDelete}
+                  />
+                )
+              })}
+            </div>
+          </ScaffoldSection>
+
+          <ScaffoldSection isFullWidth>
+            <ScaffoldSectionTitle>模式</ScaffoldSectionTitle>
+            <ScaffoldSectionDescription className="mb-6">
+              为 storage 模式中的表编写访问策略以实现更加精细的访问控制
+            </ScaffoldSectionDescription>
+
+            <div className="flex flex-col gap-y-4">
+              {/* Section for policies under storage.objects that are not tied to any buckets */}
               <StoragePoliciesBucketRow
-                key={bucket.name}
                 table="objects"
-                label={bucket.name}
-                bucket={bucket}
-                policies={bucketPolicies}
+                label="storage.objects 上的访问策略"
+                policies={ungroupedPolicies}
                 onSelectPolicyAdd={onSelectPolicyAdd}
                 onSelectPolicyEdit={onSelectPolicyEdit}
                 onSelectPolicyDelete={onSelectPolicyDelete}
               />
-            )
-          })}
 
-          <div className="!mb-4 w-full border-b border-muted" />
-          <p className="text-sm text-foreground-light">
-            您也可以直接编写 storage 模式中表的访问策略，以实现更加精细的访问控制
-          </p>
-
-          {/* Section for policies under storage.objects that are not tied to any buckets */}
-          <StoragePoliciesBucketRow
-            table="objects"
-            label="storage.objects 上的其他策略"
-            policies={ungroupedPolicies}
-            onSelectPolicyAdd={onSelectPolicyAdd}
-            onSelectPolicyEdit={onSelectPolicyEdit}
-            onSelectPolicyDelete={onSelectPolicyDelete}
-          />
-
-          {/* Section for policies under storage.buckets */}
-          <StoragePoliciesBucketRow
-            table="buckets"
-            label="storage.buckets 上的策略"
-            policies={storageBucketPolicies}
-            onSelectPolicyAdd={onSelectPolicyAdd}
-            onSelectPolicyEdit={onSelectPolicyEdit}
-            onSelectPolicyDelete={onSelectPolicyDelete}
-          />
+              {/* Section for policies under storage.buckets */}
+              <StoragePoliciesBucketRow
+                table="buckets"
+                label="storage.buckets 上的访问策略"
+                policies={storageBucketPolicies}
+                onSelectPolicyAdd={onSelectPolicyAdd}
+                onSelectPolicyEdit={onSelectPolicyEdit}
+                onSelectPolicyDelete={onSelectPolicyDelete}
+              />
+            </div>
+          </ScaffoldSection>
         </div>
       )}
 

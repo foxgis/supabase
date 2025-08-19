@@ -7,7 +7,7 @@ import NoPermission from 'components/ui/NoPermission'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useHooksEnableMutation } from 'data/database/hooks-enable-mutation'
 import { useSchemasQuery } from 'data/database/schemas-query'
-import { useCheckPermissions, usePermissionsLoaded } from 'hooks/misc/useCheckPermissions'
+import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { Admonition } from 'ui-patterns'
 import { IntegrationOverviewTab } from '../Integration/IntegrationOverviewTab'
@@ -26,8 +26,10 @@ export const WebhooksOverviewTab = () => {
   })
 
   const isHooksEnabled = schemas?.some((schema) => schema.name === 'supabase_functions')
-  const canReadWebhooks = useCheckPermissions(PermissionAction.TENANT_SQL_ADMIN_READ, 'triggers')
-  const isPermissionsLoaded = usePermissionsLoaded()
+  const { can: canReadWebhooks, isLoading: isLoadingPermissions } = useAsyncCheckProjectPermissions(
+    PermissionAction.TENANT_SQL_ADMIN_READ,
+    'triggers'
+  )
 
   const { mutate: enableHooks, isLoading: isEnablingHooks } = useHooksEnableMutation({
     onSuccess: async () => {
@@ -41,18 +43,18 @@ export const WebhooksOverviewTab = () => {
     enableHooks({ ref: projectRef })
   }
 
-  if (isPermissionsLoaded && !canReadWebhooks) {
+  if (!isSchemasLoaded || isLoadingPermissions) {
     return (
       <div className="p-10">
-        <NoPermission isFullPage resourceText="查看数据库 webhooks" />
+        <GenericSkeletonLoader />
       </div>
     )
   }
 
-  if (!isSchemasLoaded) {
+  if (!canReadWebhooks) {
     return (
       <div className="p-10">
-        <GenericSkeletonLoader />
+        <NoPermission isFullPage resourceText="查看数据库 webhooks" />
       </div>
     )
   }
@@ -72,14 +74,13 @@ export const WebhooksOverviewTab = () => {
             <ButtonTooltip
               className="w-fit"
               onClick={() => enableHooksForProject()}
-              disabled={!isPermissionsLoaded || isEnablingHooks}
+              disabled={isEnablingHooks}
               tooltip={{
                 content: {
                   side: 'bottom',
-                  text:
-                    isPermissionsLoaded && !canReadWebhooks
-                      ? '您需要额外权限才能启用 webhooks'
-                      : undefined,
+                  text: !canReadWebhooks
+                    ? '您需要额外的权限才能启用 webhooks'
+                    : undefined,
                 },
               }}
             >

@@ -1,18 +1,11 @@
-import { PermissionAction } from '@supabase/shared-types/out/constants'
-import { Edit } from 'lucide-react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 import { useParams } from 'common'
-import { DeleteBucketModal } from 'components/interfaces/Storage'
 import CreateBucketModal from 'components/interfaces/Storage/CreateBucketModal'
-import EditBucketModal from 'components/interfaces/Storage/EditBucketModal'
-import { EmptyBucketModal } from 'components/interfaces/Storage/EmptyBucketModal'
-import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import ShimmeringLoader from 'components/ui/ShimmeringLoader'
-import { Bucket, useBucketsQuery } from 'data/storage/buckets-query'
-import { useCheckPermissions } from 'hooks/misc/useCheckPermissions'
+import { useBucketsQuery } from 'data/storage/buckets-query'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { useStorageExplorerStateSnapshot } from 'state/storage-explorer'
 import { Alert_Shadcn_, AlertDescription_Shadcn_, AlertTitle_Shadcn_, Menu } from 'ui'
@@ -28,16 +21,11 @@ import BucketRow from './BucketRow'
 const StorageMenu = () => {
   const router = useRouter()
   const { ref, bucketId } = useParams()
-  const { data: project } = useSelectedProjectQuery()
+  const { data: projectDetails } = useSelectedProjectQuery()
   const snap = useStorageExplorerStateSnapshot()
-  const isBranch = project?.parent_project_ref !== undefined
+  const isBranch = projectDetails?.parent_project_ref !== undefined
 
   const [searchText, setSearchText] = useState<string>('')
-  const [showCreateBucketModal, setShowCreateBucketModal] = useState(false)
-  const [selectedBucketToEdit, setSelectedBucketToEdit] = useState<Bucket>()
-  const [selectedBucketToEmpty, setSelectedBucketToEmpty] = useState<Bucket>()
-  const [selectedBucketToDelete, setSelectedBucketToDelete] = useState<Bucket>()
-  const canCreateBuckets = useCheckPermissions(PermissionAction.STORAGE_WRITE, '*')
 
   const page = router.pathname.split('/')[4] as
     | undefined
@@ -69,29 +57,12 @@ const StorageMenu = () => {
     <>
       <Menu type="pills" className="mt-6 flex flex-grow flex-col">
         <div className="mb-6 mx-5 flex flex-col gap-y-1.5">
-          <ButtonTooltip
-            block
-            type="default"
-            icon={<Edit />}
-            disabled={!canCreateBuckets}
-            style={{ justifyContent: 'start' }}
-            onClick={() => setShowCreateBucketModal(true)}
-            tooltip={{
-              content: {
-                side: 'bottom',
-                text: !canCreateBuckets
-                  ? '您需要额外的权限才能创建存储桶'
-                  : undefined,
-              },
-            }}
-          >
-            新建存储桶
-          </ButtonTooltip>
+          <CreateBucketModal />
 
           <InnerSideBarFilters className="px-0">
             <InnerSideBarFilterSearchInput
               name="search-buckets"
-              aria-labelledby="Search buckets"
+              aria-labelledby="查找存储桶"
               placeholder="查找存储桶..."
               value={searchText}
               onChange={(e) => {
@@ -170,9 +141,6 @@ const StorageMenu = () => {
                       bucket={bucket}
                       projectRef={ref}
                       isSelected={isSelected}
-                      onSelectEmptyBucket={() => setSelectedBucketToEmpty(bucket)}
-                      onSelectDeleteBucket={() => setSelectedBucketToDelete(bucket)}
-                      onSelectEditBucket={() => setSelectedBucketToEdit(bucket)}
                     />
                   )
                 })}
@@ -195,29 +163,6 @@ const StorageMenu = () => {
           </div>
         </div>
       </Menu>
-
-      <CreateBucketModal
-        visible={showCreateBucketModal}
-        onClose={() => setShowCreateBucketModal(false)}
-      />
-
-      <EditBucketModal
-        visible={selectedBucketToEdit !== undefined}
-        bucket={selectedBucketToEdit}
-        onClose={() => setSelectedBucketToEdit(undefined)}
-      />
-
-      <EmptyBucketModal
-        visible={selectedBucketToEmpty !== undefined}
-        bucket={selectedBucketToEmpty}
-        onClose={() => setSelectedBucketToEmpty(undefined)}
-      />
-
-      <DeleteBucketModal
-        visible={selectedBucketToDelete !== undefined}
-        bucket={selectedBucketToDelete}
-        onClose={() => setSelectedBucketToDelete(undefined)}
-      />
     </>
   )
 }

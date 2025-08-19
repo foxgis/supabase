@@ -11,14 +11,13 @@ import DefaultLayout from 'components/layouts/DefaultLayout'
 import EdgeFunctionsLayout from 'components/layouts/EdgeFunctionsLayout/EdgeFunctionsLayout'
 import { PageLayout } from 'components/layouts/PageLayout/PageLayout'
 import { ScaffoldContainer, ScaffoldSection } from 'components/layouts/Scaffold'
-import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
 import { DocsButton } from 'components/ui/DocsButton'
 import { GenericSkeletonLoader } from 'components/ui/ShimmeringLoader'
 import { useEdgeFunctionsQuery } from 'data/edge-functions/edge-functions-query'
 import { IS_PLATFORM } from 'lib/constants'
 import type { NextPageWithLayout } from 'types'
-import { Button } from 'ui'
+import { Button, Table, TableHead, TableRow, TableHeader, TableBody, Card } from 'ui'
 
 const EdgeFunctionsPage: NextPageWithLayout = () => {
   const { ref } = useParams()
@@ -62,25 +61,28 @@ const EdgeFunctionsPage: NextPageWithLayout = () => {
               {isSuccess && (
                 <>
                   {hasFunctions ? (
-                    <Table
-                      head={
-                        <>
-                          <Table.th>名称</Table.th>
-                          <Table.th>地址</Table.th>
-                          <Table.th className="hidden 2xl:table-cell">创建时间</Table.th>
-                          <Table.th className="lg:table-cell">最近更新时间</Table.th>
-                          <Table.th className="lg:table-cell">部署次数</Table.th>
-                        </>
-                      }
-                      body={
-                        <>
-                          {functions.length > 0 &&
-                            functions.map((item) => (
-                              <EdgeFunctionsListItem key={item.id} function={item} />
-                            ))}
-                        </>
-                      }
-                    />
+                    <Card>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>名称</TableHead>
+                            <TableHead>URL</TableHead>
+                            <TableHead className="hidden 2xl:table-cell">创建时间</TableHead>
+                            <TableHead className="lg:table-cell">更新时间</TableHead>
+                            <TableHead className="lg:table-cell">部署次数</TableHead>
+                          </TableRow>
+                        </TableHeader>
+
+                        <TableBody>
+                          <>
+                            {functions.length > 0 &&
+                              functions.map((item) => (
+                                <EdgeFunctionsListItem key={item.id} function={item} />
+                              ))}
+                          </>
+                        </TableBody>
+                      </Table>
+                    </Card>
                   ) : (
                     <FunctionsEmptyState />
                   )}

@@ -1,4 +1,4 @@
-import { Eye, EyeOffIcon, Heart, Unlock } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -14,8 +14,6 @@ import EditorMenuListSkeleton from 'components/layouts/TableEditorLayout/EditorM
 import { useSqlEditorTabsCleanup } from 'components/layouts/Tabs/Tabs.utils'
 import { useContentCountQuery } from 'data/content/content-count-query'
 import { useContentDeleteMutation } from 'data/content/content-delete-mutation'
-import { getContentById } from 'data/content/content-id-query'
-import { useContentUpsertMutation } from 'data/content/content-upsert-mutation'
 import { useSQLSnippetFoldersDeleteMutation } from 'data/content/sql-folders-delete-mutation'
 import { Snippet, SnippetFolder, useSQLSnippetFoldersQuery } from 'data/content/sql-folders-query'
 import { useSqlSnippetsQuery } from 'data/content/sql-snippets-query'
@@ -23,13 +21,8 @@ import { useLocalStorage } from 'hooks/misc/useLocalStorage'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { useProfile } from 'lib/profile'
 import uuidv4 from 'lib/uuid'
-import {
-  SnippetWithContent,
-  useSnippetFolders,
-  useSqlEditorV2StateSnapshot,
-} from 'state/sql-editor-v2'
+import { useSnippetFolders, useSqlEditorV2StateSnapshot } from 'state/sql-editor-v2'
 import { createTabId, useTabsStateSnapshot } from 'state/tabs'
-import { SqlSnippets } from 'types'
 import { TreeView } from 'ui'
 import {
   InnerSideBarEmptyPanel,
@@ -40,10 +33,13 @@ import {
 } from 'ui-patterns'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { CommunitySnippetsSection } from './CommunitySnippetsSection'
+import { DeleteSnippetsModal } from './DeleteSnippetsModal'
 import SQLEditorLoadingSnippets from './SQLEditorLoadingSnippets'
 import { DEFAULT_SECTION_STATE, type SectionState } from './SQLEditorNav.constants'
 import { formatFolderResponseForTreeView, getLastItemIds, ROOT_NODE } from './SQLEditorNav.utils'
 import { SQLEditorTreeViewItem } from './SQLEditorTreeViewItem'
+import { ShareSnippetModal } from './ShareSnippetModal'
+import { UnshareSnippetModal } from './UnshareSnippetModal'
 
 interface SQLEditorNavProps {
   sort?: 'inserted_at' | 'name'
@@ -282,13 +278,7 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
   // Snippet mutations from  RQ
   // ==========================
 
-  const { mutate: upsertContent, isLoading: isUpserting } = useContentUpsertMutation({
-    onError: (error) => {
-      toast.error(`Failed to update query: ${error.message}`)
-    },
-  })
-
-  const { mutate: deleteContent, isLoading: isDeleting } = useContentDeleteMutation({
+  const { mutate: deleteContent } = useContentDeleteMutation({
     onSuccess: (data) => {
       // Update Tabs state - currently unknown how to differentiate between sql and non-sql content
       // so we're just deleting all tabs for with matching IDs
@@ -331,101 +321,6 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
     }
 
     if (ids.length > 0) ids.forEach((id) => snapV2.removeSnippet(id))
-  }
-
-  const onConfirmDelete = () => {
-    if (!projectRef) return console.error('未找到项目号')
-    deleteContent(
-      { projectRef, ids: selectedSnippets.map((x) => x.id) },
-      {
-        onSuccess: (data) => {
-          toast.success(
-            `成功删除了 ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`
-          )
-          postDeleteCleanup(data)
-        },
-      }
-    )
-  }
-
-  const onUpdateVisibility = async (action: 'share' | 'unshare') => {
-    const snippet = action === 'share' ? selectedSnippetToShare : selectedSnippetToUnshare
-    if (!projectRef) return console.error('未找到项目号')
-    if (!snippet) return console.error('未找到查询 ID')
-
-    const storeSnippet = snapV2.snippets[snippet.id]
-    let snippetContent = storeSnippet?.snippet?.content
-
-    if (snippetContent === undefined) {
-      const { content } = await getContentById({ projectRef, id: snippet.id })
-      snippetContent = content as unknown as SqlSnippets.Content
-    }
-
-    // [Joshen] Just as a final check - to ensure that the content is minimally there (empty string is fine)
-    if (snippetContent === undefined) {
-      return toast.error('未能更新查询的可见性：未找到查询内容')
-    }
-
-    const visibility = action === 'share' ? 'project' : 'user'
-
-    upsertContent(
-      {
-        projectRef,
-        payload: {
-          ...snippet,
-          visibility,
-          folder_id: null,
-          content: snippetContent,
-        },
-      },
-      {
-        onSuccess: () => {
-          setSelectedSnippetToShare(undefined)
-          setSelectedSnippetToUnshare(undefined)
-          setSectionVisibility({ ...sectionVisibility, shared: true })
-          snapV2.updateSnippet({
-            id: snippet.id,
-            snippet: { visibility, folder_id: null },
-            skipSave: true,
-          })
-          toast.success(
-            action === 'share'
-              ? '查询已共享到项目'
-              : '查询已从项目中取消共享'
-          )
-        },
-      }
-    )
-  }
-
-  const onSelectDuplicate = async (snippet: SnippetWithContent) => {
-    if (!profile) return console.error('未找到用户信息')
-    if (!project) return console.error('未找到项目')
-    if (!projectRef) return console.error('未找到项目号')
-    if (!id) return console.error('未找到查询 ID')
-
-    let sql: string = ''
-    if (snippet.content && snippet.content.sql) {
-      sql = snippet.content.sql
-    } else {
-      // Fetch the content first
-      const { content } = await getContentById({ projectRef, id: snippet.id })
-      if ('sql' in content) {
-        sql = content.sql
-      }
-    }
-
-    const snippetCopy = createSqlSnippetSkeletonV2({
-      id: uuidv4(),
-      name: `${snippet.name} (Duplicate)`,
-      sql,
-      owner_id: profile?.id,
-      project_id: project?.id,
-    })
-
-    snapV2.addSnippet({ projectRef, snippet: snippetCopy })
-    snapV2.addNeedsSaving(snippetCopy.id!)
-    router.push(`/project/${projectRef}/sql/${snippetCopy.id}`)
   }
 
   const onConfirmDeleteFolder = async () => {
@@ -601,9 +496,6 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
                     onSelectDownload={() => {
                       setSelectedSnippetToDownload(element.metadata as Snippet)
                     }}
-                    onSelectDuplicate={() => {
-                      onSelectDuplicate(element.metadata as Snippet)
-                    }}
                     onSelectUnshare={() => {
                       setSelectedSnippetToUnshare(element.metadata as Snippet)
                     }}
@@ -682,9 +574,6 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
                     }}
                     onSelectDownload={() => {
                       setSelectedSnippetToDownload(element.metadata as Snippet)
-                    }}
-                    onSelectDuplicate={() => {
-                      onSelectDuplicate(element.metadata as Snippet)
                     }}
                     onSelectShare={() => setSelectedSnippetToShare(element.metadata as Snippet)}
                     onSelectUnshare={() => {
@@ -801,7 +690,6 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
                     onSelectDownload={() =>
                       setSelectedSnippetToDownload(element.metadata as Snippet)
                     }
-                    onSelectDuplicate={() => onSelectDuplicate(element.metadata as Snippet)}
                     onSelectShare={() => setSelectedSnippetToShare(element.metadata as Snippet)}
                     onEditSave={(name: string) => {
                       // [Joshen] Inline editing only for folders for now
@@ -861,83 +749,26 @@ export const SQLEditorNav = ({ sort = 'inserted_at' }: SQLEditorNavProps) => {
         onCancel={() => setSelectedSnippetToDownload(undefined)}
       />
 
-      <ConfirmationModal
-        size="medium"
-        loading={isUpserting}
-        title={`确认分享查询：${selectedSnippetToShare?.name}`}
-        confirmLabel="分享查询"
-        confirmLabelLoading="正在分享查询"
-        visible={selectedSnippetToShare !== undefined}
-        onCancel={() => setSelectedSnippetToShare(undefined)}
-        onConfirm={() => onUpdateVisibility('share')}
-        alert={{
-          title: '此 SQL 查询将会对所有团队成员公开',
-          description: '任何可访问本项目的人都可以查看它',
-        }}
-      >
-        <ul className="text-sm text-foreground-light space-y-5">
-          <li className="flex gap-3 items-center">
-            <Eye size={16} />
-            <span>项目成员将具有此查询的只读访问权限。</span>
-          </li>
-          <li className="flex gap-3 items-center">
-            <Unlock size={16} />
-            <span>任何人都可以将它复制到他们的个人代码段收藏中。</span>
-          </li>
-        </ul>
-      </ConfirmationModal>
+      <ShareSnippetModal
+        snippet={selectedSnippetToShare}
+        onClose={() => setSelectedSnippetToShare(undefined)}
+        onSuccess={() => setSectionVisibility({ ...sectionVisibility, shared: true })}
+      />
 
-      <ConfirmationModal
-        size="medium"
-        title={`确认取消分享：${selectedSnippetToUnshare?.name}`}
-        confirmLabel="取消分享查询"
-        confirmLabelLoading="正在取消分享查询"
-        visible={selectedSnippetToUnshare !== undefined}
-        onCancel={() => setSelectedSnippetToUnshare(undefined)}
-        onConfirm={() => onUpdateVisibility('unshare')}
-        alert={{
-          title: '此 SQL 查询不再对所有团队成员公开',
-          description: '只有您才有访问此查询的权限',
-        }}
-      >
-        <ul className="text-sm text-foreground-light space-y-5">
-          <li className="flex gap-3">
-            <EyeOffIcon />
-            <span>项目成员将不再能够查看此查询。</span>
-          </li>
-        </ul>
-      </ConfirmationModal>
+      <UnshareSnippetModal
+        snippet={selectedSnippetToUnshare}
+        onClose={() => setSelectedSnippetToUnshare(undefined)}
+        onSuccess={() => setSectionVisibility({ ...sectionVisibility, private: true })}
+      />
 
-      <ConfirmationModal
-        size="small"
-        title={`确认删除${selectedSnippets.length === 1 ? '查询' : ` ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`}`}
-        confirmLabel={`删除 ${selectedSnippets.length.toLocaleString()} 条查询${selectedSnippets.length > 1 ? '' : ''}`}
-        confirmLabelLoading="正在删除查询"
-        loading={isDeleting}
+      <DeleteSnippetsModal
         visible={showDeleteModal}
-        variant="destructive"
-        onCancel={() => {
+        snippets={selectedSnippets}
+        onClose={() => {
           setShowDeleteModal(false)
           setSelectedSnippets([])
         }}
-        onConfirm={onConfirmDelete}
-        alert={
-          (selectedSnippets[0]?.visibility as unknown as string) === 'project'
-            ? {
-                title: '此 SQL 代码段将永远丢失',
-                description:
-                  '删除此查询也将从项目团队的所有成员中移除。',
-              }
-            : undefined
-        }
-      >
-        <p className="text-sm">
-          本操作无法撤销。{' '}
-          {selectedSnippets.length === 1
-            ? `您确定想要删除 '${selectedSnippets[0]?.name}' 吗？`
-            : `您确定想要删除选中的 ${selectedSnippets.length} 条查询吗？`}
-        </p>
-      </ConfirmationModal>
+      />
 
       <ConfirmationModal
         size="small"

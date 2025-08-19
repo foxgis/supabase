@@ -21,7 +21,7 @@ const LinterPageFooter = ({
       >
         <p>重置优化建议</p>
         <p className="text-xs text-foreground-light">
-          在做出更改后建议重置分析
+          建议在做出更改后重置分析
         </p>
 
         <Button

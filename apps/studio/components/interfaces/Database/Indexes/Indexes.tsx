@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { useParams } from 'common'
-import Table from 'components/to-be-cleaned/Table'
 import AlertError from 'components/ui/AlertError'
 import CodeEditor from 'components/ui/CodeEditor/CodeEditor'
 import SchemaSelector from 'components/ui/SchemaSelector'
@@ -15,7 +14,18 @@ import { useSchemasQuery } from 'data/database/schemas-query'
 import { useQuerySchemaState } from 'hooks/misc/useSchemaQueryState'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { useIsProtectedSchema } from 'hooks/useProtectedSchemas'
-import { Button, Input, SidePanel } from 'ui'
+import {
+  Button,
+  Input,
+  SidePanel,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableHeader,
+  Card,
+} from 'ui'
 import ConfirmationModal from 'ui-patterns/Dialogs/ConfirmationModal'
 import { ProtectedSchemaWarning } from '../ProtectedSchemaWarning'
 import CreateIndexSidePanel from './CreateIndexSidePanel'
@@ -139,49 +149,51 @@ const Indexes = () => {
           )}
 
           {isSuccessIndexes && (
-            <div className="w-full overflow-hidden overflow-x-auto">
-              <Table
-                head={[
-                  <Table.th key="schema">模式</Table.th>,
-                  <Table.th key="table">表</Table.th>,
-                  <Table.th key="name">名称</Table.th>,
-                  <Table.th key="buttons"></Table.th>,
-                ]}
-                body={
-                  <>
+            <div className="w-full overflow-hidden">
+              <Card>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead key="schema">模式</TableHead>
+                      <TableHead key="table">表</TableHead>
+                      <TableHead key="name">名称</TableHead>
+                      <TableHead key="buttons"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {sortedIndexes.length === 0 && search.length === 0 && (
-                      <Table.tr>
-                        <Table.td colSpan={4}>
-                          <p className="text-sm text-foreground">还未创建索引</p>
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <p className="text-sm text-foreground">No indexes created yet</p>
                           <p className="text-sm text-foreground-light">
                             在模式 "{selectedSchema}" 未找到任何索引
                           </p>
-                        </Table.td>
-                      </Table.tr>
+                        </TableCell>
+                      </TableRow>
                     )}
                     {sortedIndexes.length === 0 && search.length > 0 && (
-                      <Table.tr>
-                        <Table.td colSpan={4}>
+                      <TableRow>
+                        <TableCell colSpan={4}>
                           <p className="text-sm text-foreground">未找到结果</p>
                           <p className="text-sm text-foreground-light">
                             您搜索的 "{search}" 未找到任何结果
                           </p>
-                        </Table.td>
-                      </Table.tr>
+                        </TableCell>
+                      </TableRow>
                     )}
                     {indexes.length > 0 &&
                       indexes.map((index) => (
-                        <Table.tr key={index.name}>
-                          <Table.td>
+                        <TableRow key={index.name}>
+                          <TableCell>
                             <p title={index.schema}>{index.schema}</p>
-                          </Table.td>
-                          <Table.td>
+                          </TableCell>
+                          <TableCell>
                             <p title={index.table}>{index.table}</p>
-                          </Table.td>
-                          <Table.td>
+                          </TableCell>
+                          <TableCell>
                             <p title={index.name}>{index.name}</p>
-                          </Table.td>
-                          <Table.td>
+                          </TableCell>
+                          <TableCell>
                             <div className="flex justify-end items-center space-x-2">
                               <Button type="default" onClick={() => setSelectedIndex(index)}>
                                 查看定义
@@ -196,12 +208,12 @@ const Indexes = () => {
                                 />
                               )}
                             </div>
-                          </Table.td>
-                        </Table.tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                  </>
-                }
-              />
+                  </TableBody>
+                </Table>
+              </Card>
             </div>
           )}
         </div>

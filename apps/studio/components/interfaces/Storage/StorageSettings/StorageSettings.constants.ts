@@ -5,7 +5,7 @@ export const STORAGE_FILE_SIZE_LIMIT_MAX_BYTES_CAPPED = 50 * 1024 * 1024 * 1024 
 export const STORAGE_FILE_SIZE_LIMIT_MAX_BYTES_UNCAPPED = 500 * 1024 * 1024 * 1024 // 500 GB
 
 export enum StorageSizeUnits {
-  BYTES = 'bytes',
+  BYTES = '字节',
   KB = 'KB',
   MB = 'MB',
   GB = 'GB',
