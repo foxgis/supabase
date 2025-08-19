@@ -1,6 +1,5 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
-import { get } from 'lib/common/fetch'
-import { handleError } from 'data/fetchers'
+import { get, handleError } from 'data/fetchers'
 import type { ResponseError } from 'types'
 import { GISKeys } from './keys'
 

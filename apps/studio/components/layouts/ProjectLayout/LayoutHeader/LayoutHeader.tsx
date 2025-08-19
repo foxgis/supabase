@@ -135,8 +135,8 @@ const LayoutHeader = ({
                       ease: 'easeOut',
                     }}
                   >
-                    <LayoutHeaderDivider />
-                    <ProjectDropdown />
+                    {/* <LayoutHeaderDivider />
+                    <ProjectDropdown /> */}
 
                     {exceedingLimits && (
                       <div className="ml-2">
@@ -150,7 +150,7 @@ const LayoutHeader = ({
 
                     {selectedProject && (
                       <>
-                        <LayoutHeaderDivider />
+                        {/* <LayoutHeaderDivider /> */}
                         {IS_PLATFORM && <BranchDropdown />}
                       </>
                     )}
@@ -210,7 +210,7 @@ const LayoutHeader = ({
                     {!!projectRef && (
                       <>
                         <InlineEditorButton onClick={() => setShowEditorPanel(true)} />
-                        <AssistantButton />
+                        {/* <AssistantButton /> */}
                       </>
                     )}
                   </AnimatePresence>
@@ -225,7 +225,7 @@ const LayoutHeader = ({
                     {!!projectRef && (
                       <>
                         <InlineEditorButton onClick={() => setShowEditorPanel(true)} />
-                        <AssistantButton />
+                        {/* <AssistantButton /> */}
                       </>
                     )}
                   </AnimatePresence>

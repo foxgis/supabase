@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { PropsWithChildren } from 'react'
 
 import { ProductMenu } from 'components/ui/ProductMenu'
-import { useSelectedProject } from 'hooks/misc/useSelectedProject'
+import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import { withAuth } from 'hooks/misc/withAuth'
 import ProjectLayout from '../ProjectLayout/ProjectLayout'
 import { generateGISMenu } from './GISMenu.utils'
@@ -12,7 +12,7 @@ export interface GISLayoutProps {
 }
 
 const GISLayout = ({ children, title }: PropsWithChildren<GISLayoutProps>) => {
-  const project = useSelectedProject()
+  const { data: project } = useSelectedProjectQuery()
 
   const router = useRouter()
   const page = router.pathname.split('/')[4]

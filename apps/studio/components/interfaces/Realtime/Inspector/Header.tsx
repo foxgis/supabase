@@ -64,7 +64,7 @@ export const Header = ({ config, onChangeConfig }: HeaderProps) => {
             content: {
               side: 'bottom',
               text: !canReadAPIKeys
-                ? '您需要额外的权限才能使用实时消息检视器'
+                ? '您需要额外的权限才能使用实时通信检视器'
                 : config.channelName.length === 0
                   ? '您需要先加入一个频道'
                   : undefined,

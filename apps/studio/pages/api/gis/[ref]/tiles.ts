@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import apiWrapper from 'lib/api/apiWrapper'
-import { get } from 'lib/common/fetch'
+import { get } from 'data/fetchers'
 import { constructHeaders } from 'lib/api/apiHelpers'
 
 const SUPABASE_URL = process.env.SUPABASE_URL

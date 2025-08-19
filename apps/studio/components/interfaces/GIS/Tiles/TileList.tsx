@@ -2,7 +2,7 @@ import { includes, sortBy } from 'lodash'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { useProjectContext } from 'components/layouts/ProjectLayout/ProjectContext'
+import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
 import Table from 'components/to-be-cleaned/Table'
 import { useProjectSettingsV2Query } from 'data/config/project-settings-v2-query'
 import { useGISTilesQuery } from 'data/gis/gis-tiles-query'
@@ -19,7 +19,7 @@ const TileList = ({
   filterString,
 }: TileListProps) => {
   const router = useRouter()
-  const { project: selectedProject } = useProjectContext()
+  const { data: selectedProject } = useSelectedProjectQuery()
 
   const { data: tiles } = useGISTilesQuery({
     projectRef: selectedProject?.ref

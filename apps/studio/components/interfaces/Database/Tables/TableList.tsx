@@ -321,7 +321,7 @@ export const TableList = ({
                     大小 (估算)
                   </TableHead>
                   <TableHead key="realtime" className="hidden xl:table-cell text-center">
-                    启用实时消息
+                    启用实时通信
                   </TableHead>
                   <TableHead key="buttons"></TableHead>
                 </TableRow>

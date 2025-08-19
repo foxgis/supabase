@@ -126,7 +126,7 @@ const Home: NextPageWithLayout = () => {
                     {parentProject?.name}
                   </Link>
                 )}
-                <h1 className="text-3xl">{projectName}</h1>
+                <h1 className="text-3xl px-8">欢迎访问数据中间件</h1>
               </div>
               <div className="flex items-center gap-x-2 mb-1">
                 {isOrioleDb && (

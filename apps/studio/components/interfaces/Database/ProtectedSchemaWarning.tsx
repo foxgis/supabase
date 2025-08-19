@@ -85,7 +85,7 @@ export const ProtectedSchemaWarning = ({
       ) : (
         <>
           <p className="mb-2">
-            <code className="text-xs">{schema}</code> 模式是由数据中间件管理的，不可编辑。
+            <code className="text-xs">{schema}</code> 模式是由系统管理的，不可编辑。
           </p>
           <Dialog open={showModal} onOpenChange={setShowModal}>
             <DialogTrigger asChild>

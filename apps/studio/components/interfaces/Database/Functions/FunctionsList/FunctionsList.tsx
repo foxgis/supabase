@@ -175,7 +175,7 @@ const FunctionsList = ({
             </div>
           </div>
 
-          {isSchemaLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="functions" />}
+          {isSchemaLocked && <ProtectedSchemaWarning schema={selectedSchema} entity="函数" />}
           <Card>
             <Table className="table-fixed overflow-x-auto">
               <TableHeader>

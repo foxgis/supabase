@@ -1,6 +1,5 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
-import { get } from 'lib/common/fetch'
-import { handleError } from 'data/fetchers'
+import { get, handleError } from 'data/fetchers'
 import type { ResponseError } from 'types'
 import { GISKeys } from './keys'
 
@@ -17,7 +16,7 @@ export type Feature = {
 export async function getGISFeatures({ projectRef }: GISFeaturesVariables, signal?: AbortSignal) {
   if (!projectRef) throw new Error('projectRef is required')
 
-  const response = await get(`/api/gis/${projectRef}/features`, {
+  const response: any = await get(`/api/gis/${projectRef}/features`, {
     signal,
   })
 
