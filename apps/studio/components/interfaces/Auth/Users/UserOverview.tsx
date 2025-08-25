@@ -16,6 +16,7 @@ import { useUserSendOTPMutation } from 'data/auth/user-send-otp-mutation'
 import { useUserUpdateMutation } from 'data/auth/user-update-mutation'
 import { User } from 'data/auth/users-infinite-query'
 import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
+import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { BASE_PATH } from 'lib/constants'
 import { timeout } from 'lib/helpers'
 import { Button, cn, Separator } from 'ui'
@@ -44,6 +45,10 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
   const isEmailAuth = user.email !== null
   const isPhoneAuth = user.phone !== null
   const isBanned = user.banned_until !== null
+
+  const { authenticationSignInProviders } = useIsFeatureEnabled([
+    'authentication:sign_in_providers',
+  ])
 
   const providers = ((user.raw_app_meta_data?.providers as string[]) ?? []).map(
     (provider: string) => {
@@ -239,13 +244,15 @@ export const UserOverview = ({ user, onDeleteSuccess }: UserOverviewProps) => {
                     {providerName === 'SAML' ? 'SSO' : 'OAuth'}
                     方式使用 {providerName} 账号登录
                   </p>
-                  <Button asChild type="default" className="mt-2">
-                    <Link
-                      href={`/project/${projectRef}/auth/providers?provider=${provider.name === 'SAML' ? 'SAML 2.0' : provider.name}`}
-                    >
-                      配置 {providerName} 认证
-                    </Link>
-                  </Button>
+                  {authenticationSignInProviders && (
+                    <Button asChild type="default" className="mt-2">
+                      <Link
+                        href={`/project/${projectRef}/auth/providers?provider=${provider.name === 'SAML' ? 'SAML 2.0' : provider.name}`}
+                      >
+                        配置 {providerName} 认证
+                      </Link>
+                    </Button>
+                  )}
                 </div>
                 {isActive ? (
                   <div className="flex items-center gap-1 rounded-full border border-brand-400 bg-brand-200 py-1 px-1 text-xs text-brand">

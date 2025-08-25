@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import { useParams } from 'common'
 import { useProjectSettingsV2Query } from 'data/config/project-settings-v2-query'
+import { useIsFeatureEnabled } from 'hooks/misc/useIsFeatureEnabled'
 import { makeRandomString } from 'lib/helpers'
 import CodeSnippet from '../CodeSnippet'
 import Snippets from '../Snippets'
@@ -14,10 +15,14 @@ interface UserManagementProps {
   showApiKey: string
 }
 
-export default function UserManagement({ selectedLang, showApiKey }: UserManagementProps) {
+export const UserManagement = ({ selectedLang, showApiKey }: UserManagementProps) => {
   const router = useRouter()
   const { ref: projectRef } = useParams()
   const keyToShow = showApiKey ? showApiKey : 'SUPABASE_KEY'
+
+  const { authenticationSignInProviders } = useIsFeatureEnabled([
+    'authentication:sign_in_providers',
+  ])
 
   const { data: settings } = useProjectSettingsV2Query({ projectRef })
   const protocol = settings?.app_config?.protocol ?? 'https'
@@ -145,70 +150,78 @@ export default function UserManagement({ selectedLang, showApiKey }: UserManagem
         </article>
       </div>
 
-      <h2 className="doc-heading">通过第三方 OAuth 登录</h2>
-      <div className="doc-section ">
-        <article className="code-column text-foreground">
-          <p>
-            用户可以通过第三方 OAuth 登录，如 Google、Facebook、GitHub 等。您必须首先在身份验证提供商设置{' '}
-            <span className="text-green-500">
-              <Link key={'AUTH'} href={`/project/${router.query.ref}/auth/providers`}>
-                这里
-              </Link>
-            </span>{' '}
-            中启用这些选项。
-          </p>
-          <p>
-            查看所有可用的{' '}
-            <a
-              href="https://supabase.com/docs/guides/auth#providers"
-              target="_blank"
-              rel="noreferrer"
-            >
-              第三方 OAuth 认证提供商
-            </a>
-          </p>
-          <p>
-            一旦他们登录，通过客户端 SDK 的所有交互都会被视为“该用户”。
-          </p>
-          <p>
-            从以下位置生成您的 Client ID 和 secret：{` `}
-            <a
-              href="https://console.developers.google.com/apis/credentials"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Google
-            </a>
-            ,{` `}
-            <a href="https://github.com/settings/applications/new" target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            ,{` `}
-            <a href="https://gitlab.com/oauth/applications" target="_blank" rel="noreferrer">
-              GitLab
-            </a>
-            ,{` `}
-            <a href="https://developers.facebook.com/apps/" target="_blank" rel="noreferrer">
-              Facebook
-            </a>
-            ,{` `}
-            <a
-              href="https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Bitbucket
-            </a>
-            .
-          </p>
-        </article>
-        <article className="code">
-          <CodeSnippet
-            selectedLang={selectedLang}
-            snippet={Snippets.authThirdPartyLogin(endpoint, keyToShow)}
-          />
-        </article>
-      </div>
+      {authenticationSignInProviders && (
+        <>
+          <h2 className="doc-heading">使用第三方 OAuth 登录</h2>
+          <div className="doc-section ">
+            <article className="code-column text-foreground">
+              <p>
+                用户可以使用第三方 OAuth 登录，如 Google、Facebook、GitHub 等。您必须先在{' '}
+                <span className="text-green-500">
+                  <Link key={'AUTH'} href={`/project/${router.query.ref}/auth/providers`}>
+                    这里
+                  </Link>
+                </span>{' '}
+                设置第三方 OAuth 登录方式。
+              </p>
+              <p>
+                查看所有可用的{' '}
+                <a
+                  href="https://supabase.com/docs/guides/auth#providers"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  第三方 OAuth 登录方式
+                </a>
+              </p>
+              <p>
+                完成登录后，通过客户端 SDK 的所有交互都会被视为“该用户”。
+              </p>
+              <p>
+                从{` `}
+                <a
+                  href="https://console.developers.google.com/apis/credentials"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Google
+                </a>
+                ,{` `}
+                <a
+                  href="https://github.com/settings/applications/new"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </a>
+                ,{` `}
+                <a href="https://gitlab.com/oauth/applications" target="_blank" rel="noreferrer">
+                  GitLab
+                </a>
+                ,{` `}
+                <a href="https://developers.facebook.com/apps/" target="_blank" rel="noreferrer">
+                  Facebook
+                </a>
+                ,{` `}
+                <a
+                  href="https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Bitbucket
+                </a>
+                生成客户端 ID 和密钥。
+              </p>
+            </article>
+            <article className="code">
+              <CodeSnippet
+                selectedLang={selectedLang}
+                snippet={Snippets.authThirdPartyLogin(endpoint, keyToShow)}
+              />
+            </article>
+          </div>
+        </>
+      )}
 
       <h2 className="doc-heading">用户</h2>
       <div className="doc-section ">
