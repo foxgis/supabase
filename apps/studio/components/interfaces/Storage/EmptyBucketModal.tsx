@@ -7,12 +7,12 @@ import { useStorageExplorerStateSnapshot } from 'state/storage-explorer'
 import {
   Button,
   Dialog,
-  DialogHeader,
-  DialogTitle,
   DialogContent,
+  DialogFooter,
+  DialogHeader,
   DialogSection,
   DialogSectionSeparator,
-  DialogFooter,
+  DialogTitle,
 } from 'ui'
 import { Admonition } from 'ui-patterns'
 
@@ -50,9 +50,7 @@ export const EmptyBucketModal = ({ visible, bucket, onClose }: EmptyBucketModalP
     <Dialog
       open={visible}
       onOpenChange={(open) => {
-        if (!open) {
-          onClose()
-        }
+        if (!open) onClose()
       }}
     >
       <DialogContent>
@@ -60,13 +58,14 @@ export const EmptyBucketModal = ({ visible, bucket, onClose }: EmptyBucketModalP
           <DialogTitle>{`确认删除 ${bucket?.name} 中的所有内容`}</DialogTitle>
         </DialogHeader>
         <DialogSectionSeparator />
-        <DialogSection className="flex flex-col gap-4">
-          <Admonition
-            type="destructive"
-            title="此操作无法撤销"
-            description="删除存储桶后，其中的内容将无法恢复。"
-          />
-          <p className="text-sm">您确定要清空存储桶 "{bucket?.name}" 吗？</p>
+        <Admonition
+          type="destructive"
+          className="rounded-none border-x-0 border-t-0 mb-0"
+          title="此操作无法撤销"
+          description="删除存储桶后，其中的内容将无法恢复。"
+        />
+        <DialogSection>
+          <p className="text-sm">您确定想要清空存储桶 "{bucket?.name}" 吗？</p>
         </DialogSection>
         <DialogFooter>
           <Button type="default" disabled={isLoading} onClick={onClose}>
@@ -80,5 +79,3 @@ export const EmptyBucketModal = ({ visible, bucket, onClose }: EmptyBucketModalP
     </Dialog>
   )
 }
-
-export default EmptyBucketModal

@@ -1,17 +1,27 @@
 import type { PostgresPolicy } from '@supabase/postgres-meta'
 import { noop } from 'lodash'
-import { Info } from 'lucide-react'
 
 import AlertError from 'components/ui/AlertError'
-import Panel from 'components/ui/Panel'
 import { useProjectPostgrestConfigQuery } from 'data/config/project-postgrest-config-query'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
 import { useTableRolesAccessQuery } from 'data/tables/table-roles-access-query'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
-import { cn, Tooltip, TooltipContent, TooltipTrigger } from 'ui'
+import {
+  Alert_Shadcn_,
+  AlertDescription_Shadcn_,
+  Card,
+  CardContent,
+  CardHeader,
+  cn,
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from 'ui'
 import ShimmeringLoader from 'ui-patterns/ShimmeringLoader'
-import PolicyRow from './PolicyRow'
-import PolicyTableRowHeader from './PolicyTableRowHeader'
+import { PolicyRow } from './PolicyRow'
+import { PolicyTableRowHeader } from './PolicyTableRowHeader'
 
 export interface PolicyTableRowProps {
   table: {
@@ -73,84 +83,86 @@ export const PolicyTableRow = ({
     .filter((policy) => policy.schema === table.schema && policy.table === table.name)
     .sort((a, b) => a.name.localeCompare(b.name))
   const rlsEnabledNoPolicies = isRLSEnabled && policies.length === 0
+  const isRealtimeSchema = table.schema === 'realtime'
+  const isRealtimeMessagesTable = isRealtimeSchema && table.name === 'messages'
+  const isTableLocked = isRealtimeSchema ? !isRealtimeMessagesTable : isLocked
 
   return (
-    <Panel
-      className="!m-0"
-      title={
+    <Card className={cn(isPubliclyReadableWritable && 'border-warning-500')}>
+      <CardHeader
+        className={cn(
+          'py-3 px-4',
+          (isPubliclyReadableWritable || rlsEnabledNoPolicies) && 'border-b-0'
+        )}
+      >
         <PolicyTableRowHeader
           table={table}
           isLocked={isLocked}
           onSelectToggleRLS={onSelectToggleRLS}
           onSelectCreatePolicy={onSelectCreatePolicy}
         />
-      }
-    >
+      </CardHeader>
+
       {(isPubliclyReadableWritable || rlsEnabledNoPolicies) && (
-        <div
-          className={cn(
-            'dark:bg-alternative-200 bg-surface-200 px-6 py-2 text-xs flex items-center gap-2',
-            policies.length === 0 ? '' : 'border-b'
-          )}
+        <Alert_Shadcn_
+          className="border-0 rounded-none mb-0 border-b border-t"
+          variant={isPubliclyReadableWritable ? 'warning' : 'default'}
         >
-          <div
-            className={cn(
-              'w-1.5 h-1.5 rounded-full bg-warning-600 ',
-              rlsEnabledNoPolicies && 'bg-selection'
-            )}
-          />
-          <span
-            className={cn('font-bold text-warning-600', rlsEnabledNoPolicies && 'text-foreground')}
-          >
-            {isPubliclyReadableWritable ? '警告' : '注意'}:
-          </span>{' '}
-          <span className="text-foreground-light">
+          <AlertDescription_Shadcn_>
             {isPubliclyReadableWritable
-              ? '未启用行级安全性，表可被公开读写。'
-              : '虽已启用行级安全性，但未定义策略，因此无法通过 API 读取表的数据。'}
-          </span>
-          {isPubliclyReadableWritable && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3" />
-              </TooltipTrigger>
-              <TooltipContent className="w-[400px]">
-                任何人都可以通过匿名密钥修改或删除数据，请启用 RLS 并创建策略以保证数据安全。
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </div>
+              ? '任何人都可以通过匿名密钥读取、修改或删除您的数据。'
+              : '虽然启用了 RLS 但未创建任何访问策略，因此无法通过 API 查询到数据。'}
+          </AlertDescription_Shadcn_>
+        </Alert_Shadcn_>
       )}
+
       {isLoading && (
-        <div className="px-6 py-4">
+        <CardContent>
           <ShimmeringLoader />
-        </div>
+        </CardContent>
       )}
+
       {isError && (
-        <AlertError
-          className="border-0 rounded-none"
-          error={error}
-          subject="Failed to retrieve policies"
-        />
+        <CardContent>
+          <AlertError
+            className="border-0 rounded-none"
+            error={error}
+            subject="获取访问策略失败"
+          />
+        </CardContent>
       )}
+
       {isSuccess && (
-        <>
-          {policies.length === 0 && (
-            <div className="px-6 py-4 flex flex-col gap-y-3">
-              <p className="text-foreground-lighter text-sm">还未创建策略</p>
-            </div>
+        <CardContent className="p-0">
+          {policies.length === 0 ? (
+            <p className="text-foreground-lighter text-sm p-4">暂无访问策略</p>
+          ) : (
+            <Table className="table-fixed">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[40%]">名称</TableHead>
+                  <TableHead className="w-[20%]">命令</TableHead>
+                  <TableHead className="w-[30%]">作用于</TableHead>
+                  <TableHead className="text-right">
+                    <span className="sr-only">操作</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {policies.map((policy) => (
+                  <PolicyRow
+                    key={policy.id}
+                    policy={policy}
+                    isLocked={isTableLocked}
+                    onSelectEditPolicy={onSelectEditPolicy}
+                    onSelectDeletePolicy={onSelectDeletePolicy}
+                  />
+                ))}
+              </TableBody>
+            </Table>
           )}
-          {policies?.map((policy) => (
-            <PolicyRow
-              key={policy.id}
-              isLocked={isLocked}
-              policy={policy}
-              onSelectEditPolicy={onSelectEditPolicy}
-              onSelectDeletePolicy={onSelectDeletePolicy}
-            />
-          ))}
-        </>
+        </CardContent>
       )}
-    </Panel>
+    </Card>
   )
 }

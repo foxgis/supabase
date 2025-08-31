@@ -8,14 +8,17 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
 
+import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { useParams } from 'common'
 import { useIcebergWrapperExtension } from 'components/interfaces/Storage/AnalyticBucketDetails/useIcebergWrapper'
 import { StorageSizeUnits } from 'components/interfaces/Storage/StorageSettings/StorageSettings.constants'
+import { ButtonTooltip } from 'components/ui/ButtonTooltip'
 import { InlineLink } from 'components/ui/InlineLink'
 import { useProjectStorageConfigQuery } from 'data/config/project-storage-config-query'
 import { useBucketCreateMutation } from 'data/storage/bucket-create-mutation'
 import { useIcebergWrapperCreateMutation } from 'data/storage/iceberg-wrapper-create-mutation'
 import { useSendEventMutation } from 'data/telemetry/send-event-mutation'
+import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
 import { useSelectedOrganizationQuery } from 'hooks/misc/useSelectedOrganization'
 import { BASE_PATH, IS_PLATFORM } from 'lib/constants'
 import {
@@ -53,10 +56,7 @@ import {
 import { Admonition } from 'ui-patterns/admonition'
 import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
 import { inverseValidBucketNameRegex, validBucketNameRegex } from './CreateBucketModal.utils'
-import { ButtonTooltip } from 'components/ui/ButtonTooltip'
-import { PermissionAction } from '@supabase/shared-types/out/constants'
 import { convertFromBytes, convertToBytes } from './StorageSettings/StorageSettings.utils'
-import { useAsyncCheckProjectPermissions } from 'hooks/misc/useCheckPermissions'
 
 const FormSchema = z
   .object({
@@ -229,18 +229,17 @@ const CreateBucketModal = () => {
           新建存储桶
         </ButtonTooltip>
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle>创建存储桶</DialogTitle>
         </DialogHeader>
+
         <DialogSectionSeparator />
-        <DialogSection>
-          <Form_Shadcn_ {...form}>
-            <form
-              id={formId}
-              className="flex flex-col gap-4"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
+
+        <Form_Shadcn_ {...form}>
+          <form id={formId} onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogSection>
               <FormField_Shadcn_
                 key="name"
                 name="name"
@@ -310,17 +309,20 @@ const CreateBucketModal = () => {
                   </FormItemLayout>
                 )}
               />
+            </DialogSection>
 
-              <DialogSectionSeparator />
+            <DialogSectionSeparator />
 
-              {isStandardBucket ? (
-                <>
+            {isStandardBucket ? (
+              <>
+                <DialogSection>
                   <FormField_Shadcn_
                     key="public"
                     name="public"
                     control={form.control}
                     render={({ field }) => (
                       <FormItemLayout
+                        hideMessage
                         name="public"
                         label="公开存储桶"
                         description="任何人都可以读取任何对象，无需任何授权"
@@ -337,29 +339,35 @@ const CreateBucketModal = () => {
                       </FormItemLayout>
                     )}
                   />
-                  {isPublicBucket && (
-                    <Admonition
-                      type="warning"
-                      className="rounded-none border-x-0 border-b-0 mb-0 pb-0 px-0 [&>svg]:left-0 [&>div>p]:!leading-normal"
-                      title="公开存储桶不受保护"
-                      description={
-                        <>
-                          <p className="mb-2">
-                            公开存储桶中的对象无需任何授权即可读取。
-                          </p>
-                          <p>
-                            其他操作，例如对象上传和删除，仍然需要遵守行级安全 (RLS) 策略。
-                          </p>
-                        </>
-                      }
-                    />
-                  )}
+                </DialogSection>
+
+                {isPublicBucket && (
+                  <Admonition
+                    type="warning"
+                    className="rounded-none border-x-0 border-b-0 mb-0 [&>div>p]:!leading-normal"
+                    title="公开存储桶不是安全的"
+                    description={
+                      <>
+                        <p className="mb-2">
+                          用户可以无需授权即可读取公开存储桶中的对象。
+                        </p>
+                        <p>
+                          其他操作仍然需要符合行级安全 (RLS) 策略，例如对象上传和删除。
+                        </p>
+                      </>
+                    }
+                  />
+                )}
+
+                <DialogSectionSeparator />
+
+                <DialogSection>
                   <Collapsible_Shadcn_
                     open={showConfiguration}
                     onOpenChange={() => setShowConfiguration(!showConfiguration)}
                   >
                     <CollapsibleTrigger_Shadcn_ asChild>
-                      <button className="w-full cursor-pointer py-3 flex items-center justify-between border-t border-default">
+                      <button className="w-full cursor-pointer flex items-center justify-between">
                         <p className="text-sm">其他配置</p>
                         <ChevronDown
                           size={18}
@@ -368,7 +376,7 @@ const CreateBucketModal = () => {
                         />
                       </button>
                     </CollapsibleTrigger_Shadcn_>
-                    <CollapsibleContent_Shadcn_ className="py-4 space-y-4">
+                    <CollapsibleContent_Shadcn_ className="pt-4 space-y-4">
                       <div className="space-y-2">
                         <FormField_Shadcn_
                           key="has_file_size_limit"
@@ -477,79 +485,83 @@ const CreateBucketModal = () => {
                       />
                     </CollapsibleContent_Shadcn_>
                   </Collapsible_Shadcn_>
-                </>
-              ) : (
-                <>
-                  {icebergWrapperExtensionState === 'installed' ? (
-                    <Label_Shadcn_ className="text-foreground-lighter leading-1 flex flex-col gap-y-2">
-                      <p>
-                        <span>系统将设置一个</span>
+                </DialogSection>
+              </>
+            ) : (
+              <>
+                {icebergWrapperExtensionState === 'installed' ? (
+                  <Label_Shadcn_ className="text-foreground-lighter leading-1 flex flex-col gap-y-2">
+                    <p>
+                      <span>Supabase will setup a </span>
+                      <a
+                        href={`${BASE_PATH}/project/${ref}/integrations/iceberg_wrapper/overview`}
+                        target="_blank"
+                        className="underline text-foreground-light"
+                      >
+                        foreign data wrapper
+                        {bucketName && <span className="text-brand"> {`${bucketName}_fdw`}</span>}
+                      </a>
+                      <span>
+                        {' '}
+                        for easier access to the data. This action will also create{' '}
                         <a
-                          href={`${BASE_PATH}/project/${ref}/integrations/iceberg_wrapper/overview`}
+                          href={`${BASE_PATH}/project/${ref}/storage/access-keys`}
                           target="_blank"
                           className="underline text-foreground-light"
                         >
-                          外部数据包装器
-                          {bucketName && <span className="text-brand"> {`${bucketName}_fdw`}</span>}
+                          S3 Access Keys
+                          {bucketName && (
+                            <>
+                              {' '}
+                              named <span className="text-brand"> {`${bucketName}_keys`}</span>
+                            </>
+                          )}
                         </a>
-                        <span>
-                          {' '}
-                          以方便访问数据。 此操作还将创建{' '}
-                          <a
-                            href={`${BASE_PATH}/project/${ref}/storage/access-keys`}
-                            target="_blank"
-                            className="underline text-foreground-light"
-                          >
-                            S3 访问密钥
-                            {bucketName && (
-                              <>
-                                {' '}
-                                命名为 <span className="text-brand"> {`${bucketName}_keys`}</span>
-                              </>
-                            )}
-                          </a>
-                          <span> 以及 </span>
-                          <a
-                            href={`${BASE_PATH}/project/${ref}/integrations/vault/secrets`}
-                            target="_blank"
-                            className="underline text-foreground-light"
-                          >
-                            四个 Vault 密钥
-                            {bucketName && (
-                              <>
-                                {' '}
-                                前缀为{' '}
-                                <span className="text-brand"> {`${bucketName}_vault_`}</span>
-                              </>
-                            )}
-                          </a>
-                          .
-                        </span>
-                      </p>
+                        <span> and </span>
+                        <a
+                          href={`${BASE_PATH}/project/${ref}/integrations/vault/secrets`}
+                          target="_blank"
+                          className="underline text-foreground-light"
+                        >
+                          four Vault Secrets
+                          {bucketName && (
+                            <>
+                              {' '}
+                              prefixed with{' '}
+                              <span className="text-brand"> {`${bucketName}_vault_`}</span>
+                            </>
+                          )}
+                        </a>
+                        .
+                      </span>
+                    </p>
+                    <p>
+                      As a final step, you'll need to create an{' '}
+                      <span className="text-foreground-light">Iceberg namespace</span> before you
+                      connect the Iceberg data to your database.
+                    </p>
+                  </Label_Shadcn_>
+                ) : (
+                  <Alert_Shadcn_ variant="warning">
+                    <WarningIcon />
+                    <AlertTitle_Shadcn_>
+                      You need to install the Iceberg wrapper extension to connect your Analytic
+                      bucket to your database.
+                    </AlertTitle_Shadcn_>
+                    <AlertDescription_Shadcn_ className="flex flex-col gap-y-2">
                       <p>
-                        最后，在数据库连接到 Iceberg 数据之前，您需要创建一个{' '}
-                        <span className="text-foreground-light">Iceberg 命名空间</span>。
+                        You need to install the <span className="text-brand">wrappers</span>{' '}
+                        extension (with the minimum version of <span>0.5.3</span>) if you want to
+                        connect your Analytics bucket to your database.
                       </p>
-                    </Label_Shadcn_>
-                  ) : (
-                    <Alert_Shadcn_ variant="warning">
-                      <WarningIcon />
-                      <AlertTitle_Shadcn_>
-                        您需要安装 Iceberg 包装器扩展才能将您的分析存储桶连接到数据库。
-                      </AlertTitle_Shadcn_>
-                      <AlertDescription_Shadcn_ className="flex flex-col gap-y-2">
-                        <p>
-                          如果您想将分析存储桶连接到数据库，您需要安装 <span className="text-brand">wrappers</span> 扩展（最低版本为{' '}
-                          <span>0.5.3</span>）。
-                        </p>
-                      </AlertDescription_Shadcn_>
-                    </Alert_Shadcn_>
-                  )}
-                </>
-              )}
-            </form>
-          </Form_Shadcn_>
-        </DialogSection>
+                    </AlertDescription_Shadcn_>
+                  </Alert_Shadcn_>
+                )}
+              </>
+            )}
+          </form>
+        </Form_Shadcn_>
+
         <DialogFooter>
           <Button
             type="default"

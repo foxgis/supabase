@@ -1,9 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { get as _get, find } from 'lodash'
 import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import z from 'zod'
 import { toast } from 'sonner'
+import z from 'zod'
 
 import { useParams } from 'common'
 import { useDatabasePoliciesQuery } from 'data/database-policies/database-policies-query'
@@ -11,7 +11,6 @@ import { useDatabasePolicyDeleteMutation } from 'data/database-policies/database
 import { useBucketDeleteMutation } from 'data/storage/bucket-delete-mutation'
 import { Bucket, useBucketsQuery } from 'data/storage/buckets-query'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
-import { formatPoliciesForStorage } from './Storage.utils'
 import {
   Button,
   Dialog,
@@ -25,10 +24,10 @@ import {
   FormControl_Shadcn_,
   FormField_Shadcn_,
   Input_Shadcn_,
-  Label_Shadcn_,
 } from 'ui'
 import { Admonition } from 'ui-patterns'
 import { FormItemLayout } from 'ui-patterns/form/FormItemLayout/FormItemLayout'
+import { formatPoliciesForStorage } from './Storage.utils'
 
 export interface DeleteBucketModalProps {
   visible: boolean
@@ -111,34 +110,32 @@ export const DeleteBucketModal = ({ visible, bucket, onClose }: DeleteBucketModa
     <Dialog
       open={visible}
       onOpenChange={(open) => {
-        if (!open) {
-          onClose()
-        }
+        if (!open) onClose()
       }}
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{`确认删除 ${bucket.name}`}</DialogTitle>
+          <DialogTitle>确认删除存储桶 {bucket.name}</DialogTitle>
         </DialogHeader>
+
         <DialogSectionSeparator />
-        <DialogSection className="flex flex-col gap-4">
-          <Admonition
-            type="destructive"
-            title="删除后无法恢复"
-            description="存储桶中的所有数据将被永久删除。"
-          />
-          <p>
-            存储桶 <span className="font-bold text-foreground">{bucket.name}</span> 及其所有内容将被永久删除。
+
+        <Admonition
+          type="destructive"
+          className="rounded-none border-x-0 border-t-0 mb-0"
+          title="存储桶删除后无法恢复"
+          description="存储桶中的所有数据也将被永久删除。"
+        />
+
+        <DialogSection>
+          <p className="text-sm">
+            存储桶 <span className="font-bold text-foreground">{bucket.name}</span> 及其中所有内容将被永久删除。
           </p>
         </DialogSection>
         <DialogSectionSeparator />
         <DialogSection>
           <Form_Shadcn_ {...form}>
-            <form
-              id={formId}
-              className="flex flex-col gap-4"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
+            <form id={formId} onSubmit={form.handleSubmit(onSubmit)}>
               <FormField_Shadcn_
                 key="confirm"
                 name="confirm"
@@ -178,5 +175,3 @@ export const DeleteBucketModal = ({ visible, bucket, onClose }: DeleteBucketModa
     </Dialog>
   )
 }
-
-export default DeleteBucketModal

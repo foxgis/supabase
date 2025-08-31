@@ -56,12 +56,12 @@ const supabaseIntegrations: IntegrationDefinition[] = [
   //   id: 'queues',
   //   type: 'postgres_extension' as const,
   //   requiredExtensions: ['pgmq'],
-  //   // missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
-  //   name: `消息队列`,
+  //   missingExtensionsAlert: <UpgradeDatabaseAlert minimumVersion="15.6.1.143" />,
+  //   name: `队列`,
   //   icon: ({ className, ...props } = {}) => (
   //     <Layers className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
   //   ),
-  //   description: '数据库中的轻量级消息队列',
+  //   description: '在数据库中实现的轻量级消息队列',
   //   docsUrl: 'https://github.com/tembo-io/pgmq',
   //   author: {
   //     name: 'pgmq',
@@ -74,7 +74,7 @@ const supabaseIntegrations: IntegrationDefinition[] = [
   //     },
   //     {
   //       route: 'queues',
-  //       label: '消息队列',
+  //       label: '队列',
   //       hasChild: true,
   //       childIcon: (
   //         <Layers size={12} strokeWidth={1.5} className={cn('text-foreground w-full h-full')} />
@@ -87,7 +87,7 @@ const supabaseIntegrations: IntegrationDefinition[] = [
   //   ],
   //   navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
   //     if (childId) {
-  //       return dynamic(() => import('../Queues/QueueTab').then((mod) => mod.QueueTab), {
+  //       return dynamic(() => import('../Queues/QueuePage').then((mod) => mod.QueuePage), {
   //         loading: Loading,
   //       })
   //     }
@@ -121,7 +121,7 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     icon: ({ className, ...props } = {}) => (
       <Clock5 className={cn('inset-0 p-2 text-black w-full h-full', className)} {...props} />
     ),
-    description: '数据库中设置定时任务。',
+    description: '在数据库中设置定时任务',
     docsUrl: 'https://github.com/citusdata/pg_cron',
     author: {
       name: 'Citus Data',
@@ -143,12 +143,9 @@ const supabaseIntegrations: IntegrationDefinition[] = [
     ],
     navigate: (id: string, pageId: string = 'overview', childId: string | undefined) => {
       if (childId) {
-        return dynamic(
-          () => import('../CronJobs/PreviousRunsTab').then((mod) => mod.PreviousRunsTab),
-          {
-            loading: Loading,
-          }
-        )
+        return dynamic(() => import('../CronJobs/CronJobPage').then((mod) => mod.CronJobPage), {
+          loading: Loading,
+        })
       }
       switch (pageId) {
         case 'overview':

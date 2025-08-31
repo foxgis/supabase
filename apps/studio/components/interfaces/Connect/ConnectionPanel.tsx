@@ -199,7 +199,7 @@ export const ConnectionPanel = ({
                 <div className="flex flex-col pl-[52px]">
                   <span className="text-xs text-foreground">
                     {type === 'transaction'
-                      ? '预热数据库连接池'
+                      ? '所有客户端共享一个连接池'
                       : '每个客户端都有一个单独的数据库连接'}
                   </span>
                 </div>

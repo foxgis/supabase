@@ -1,7 +1,6 @@
 import type { PostgresPolicy } from '@supabase/postgres-meta'
 import { isEmpty } from 'lodash'
-import { HelpCircle } from 'lucide-react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -11,32 +10,34 @@ import {
   PolicyTableRowProps,
 } from 'components/interfaces/Auth/Policies/PolicyTableRow'
 import { ProtectedSchemaWarning } from 'components/interfaces/Database/ProtectedSchemaWarning'
-import NoSearchResults from 'components/to-be-cleaned/NoSearchResults'
-import ProductEmptyState from 'components/to-be-cleaned/ProductEmptyState'
-import InformationBox from 'components/ui/InformationBox'
+import { NoSearchResults } from 'components/ui/NoSearchResults'
 import { useDatabasePolicyDeleteMutation } from 'data/database-policies/database-policy-delete-mutation'
 import { useTableUpdateMutation } from 'data/tables/table-update-mutation'
 import { useSelectedProjectQuery } from 'hooks/misc/useSelectedProject'
+import { Button, Card, CardContent } from 'ui'
 import ConfirmModal from 'ui-patterns/Dialogs/ConfirmDialog'
 
 interface PoliciesProps {
+  search?: string
   schema: string
   tables: PolicyTableRowProps['table'][]
   hasTables: boolean
   isLocked: boolean
   onSelectCreatePolicy: (table: string) => void
   onSelectEditPolicy: (policy: PostgresPolicy) => void
+  onResetSearch?: () => void
 }
 
-const Policies = ({
+export const Policies = ({
+  search,
   schema,
   tables,
   hasTables,
   isLocked,
   onSelectCreatePolicy,
   onSelectEditPolicy: onSelectEditPolicyAI,
+  onResetSearch,
 }: PoliciesProps) => {
-  const router = useRouter()
   const { ref } = useParams()
   const { data: project } = useSelectedProjectQuery()
 
@@ -115,38 +116,20 @@ const Policies = ({
     })
   }
 
-  if (tables.length === 0) {
+  if (!hasTables) {
     return (
-      <div className="flex-grow flex items-center justify-center">
-        <ProductEmptyState
-          size="large"
-          title="行级安全性（RLS）策略"
-          ctaButtonLabel="创建表"
-          infoButtonLabel="什么是 RLS？"
-          infoButtonUrl="https://supabase.com/docs/guides/auth/row-level-security"
-          onClickCta={() => router.push(`/project/${ref}/editor`)}
-        >
-          <div className="space-y-4">
-            <InformationBox
-              title="什么是策略？"
-              icon={<HelpCircle size={14} strokeWidth={2} />}
-              description={
-                <div className="space-y-2">
-                  <p className="text-sm">
-                    策略是从用户层面上限制哪些行可以通过普通查询返回，或者通过插入、更新或删除修改数据。
-                  </p>
-                  <p className="text-sm">
-                    这也称为行级安全性（RLS）。每个策略都附加到一张表上，并且每次访问该策略时都会执行该策略。
-                  </p>
-                </div>
-              }
-            />
-            <p className="text-sm text-foreground-light">
-              在这个模式下先创建一张表，然后再创建策略。
-            </p>
-          </div>
-        </ProductEmptyState>
-      </div>
+      <Card className="w-full bg-transparent">
+        <CardContent className="flex flex-col items-center justify-center p-8">
+          <h2 className="heading-default">暂无表可以用来创建访问策略</h2>
+
+          <p className="text-sm text-foreground-light text-center mb-4">
+            RLS 策略用来控制用户对表中数据行的访问权限。在创建策略之前，请先在模式下创建一张表。
+          </p>
+          <Button asChild type="default">
+            <Link href={`/project/${ref}/editor`}>创建表</Link>
+          </Button>
+        </CardContent>
+      </Card>
     )
   }
 
@@ -168,7 +151,7 @@ const Policies = ({
             </section>
           ))
         ) : hasTables ? (
-          <NoSearchResults />
+          <NoSearchResults searchString={search ?? ''} onResetFilter={onResetSearch} />
         ) : null}
       </div>
 
@@ -200,5 +183,3 @@ const Policies = ({
     </>
   )
 }
-
-export default Policies
